@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Target Name="UGridIOLibsPostBuild" AfterTargets="Build">
+    <ItemGroup>
+      <_FilesToCopyUGridIOLibs Include="$(MSBuildThisFileDirectory)..\..\runtimes\**\*"/>      
+    </ItemGroup>
+    
+    <Copy SourceFiles="@(_FilesToCopyUGridIOLibs)" DestinationFolder="$(OutDir)\%(RecursiveDir)" SkipUnchangedFiles="true"/>    
+  </Target>
+  
+  <Target Name="UGridIOLibsClean" AfterTargets="Clean">
+    <ItemGroup>
+      <_OriginalFilesUGridIO Include="$(MSBuildThisFileDirectory)..\..\runtimes\**\*"/>
+      <_FilesToCleanUGridIO Include="$(OutDir)\%(_OriginalFilesDimrLibs.RecursiveDir)%(_OriginalFilesDimrLibs.FileName)%(_OriginalFilesDimrLibs.Extension)"/>      
+    </ItemGroup>
+    <Delete Files="@(_FilesToCleanUGridIO)"/>    
+  </Target>
+</Project>
