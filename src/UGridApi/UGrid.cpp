@@ -65,18 +65,22 @@ namespace ugridapi
         }
     }
 
-    UGRID_API int ug_open(char const* filePath, int mode)
+    UGRID_API int ug_open(char const* filePath, int mode, int& ugrid_id)
     {
         int exitCode = Success;
         try
         {
-            netCDF::NcFile ncFile(filePath, netCDF::NcFile::read, netCDF::NcFile::classic);
-            ugrid_states.insert({ num_instances, UGridState() });
-            const auto variables = ncFile.getVars();
-            auto meshes = ugrid::Mesh2D::Create(variables);
-            ugrid_states[num_instances].m_mesh2d = meshes;
+            if (mode == netCDF::NcFile::read)
+            {
 
-            num_instances++;
+                auto ncFile = std::make_shared< netCDF::NcFile>(filePath, netCDF::NcFile::read, netCDF::NcFile::classic);
+                ugrid_states.insert({ num_instances, UGridState(ncFile) });
+
+                auto meshes = ugrid::Mesh2D::Create(ncFile);
+                ugrid_states[num_instances].m_mesh2d = meshes;
+                ugrid_id = num_instances;
+                num_instances++;
+            }
         }
         catch (...)
         {
@@ -103,6 +107,64 @@ namespace ugridapi
         ugrid_states.erase(ugrid_id);
         return exitCode;
     };
+
+    UGRID_API int ug_mesh2d_def(int ugrid_id, Mesh2D mesh2dapi, int& topology_id)
+    {
+        int exitCode = Success;
+        try
+        {
+            //ugrid::Mesh2D mesh2d;
+            //mesh2d.Define(mesh2dapi);
+            //ugrid_states[ugrid_id].m_mesh2d.push_back(mesh2d);
+        }
+        catch (...)
+        {
+            exitCode = HandleExceptions(std::current_exception());
+        }
+        return exitCode;
+    }
+
+    UGRID_API int ug_mesh2d_put(int ugrid_id, int topology_id, Mesh2D mesh2d)
+    {
+        int exitCode = Success;
+        try
+        {
+            ugrid_states[ugrid_id].m_mesh2d[topology_id].Put(mesh2d);
+        }
+        catch (...)
+        {
+            exitCode = HandleExceptions(std::current_exception());
+        }
+        return exitCode;
+    }
+
+    UGRID_API int ug_mesh2d_inq(int ugrid_id, int topology_id, Mesh2D& mesh2d)
+    {
+        int exitCode = Success;
+        try
+        {
+            ugrid_states[ugrid_id].m_mesh2d[topology_id].Inquire(mesh2d);
+        }
+        catch (...)
+        {
+            exitCode = HandleExceptions(std::current_exception());
+        }
+        return exitCode;
+    }
+
+    UGRID_API int ug_mesh2d_get(int ugrid_id, int topology_id, Mesh2D& mesh2d)
+    {
+        int exitCode = Success;
+        try
+        {
+            ugrid_states[ugrid_id].m_mesh2d[topology_id].Get(mesh2d);
+        }
+        catch (...)
+        {
+            exitCode = HandleExceptions(std::current_exception());
+        }
+        return exitCode;
+    }
 
     UGRID_API int ug_network1d_def(int ugrid_id, Network1D network, int& topology_id)
     {
@@ -176,63 +238,28 @@ namespace ugridapi
         return exitCode;
     }
 
-    UGRID_API int ug_mesh2d_def(int ugrid_id, Mesh2D mesh2dapi, int& topology_id)
-    {
-        int exitCode = Success;
-        try
-        {
-            //ugrid::Mesh2D mesh2d;
-            //mesh2d.Define(mesh2dapi);
-            //ugrid_states[ugrid_id].m_mesh2d.push_back(mesh2d);
-        }
-        catch (...)
-        {
-            exitCode = HandleExceptions(std::current_exception());
-        }
-        return exitCode;
-    }
 
-    UGRID_API int ug_mesh2d_put(int ugrid_id, int topology_id, Mesh2D mesh2d)
+    UGRID_API int ug_get_topology_num(int ugrid_id, int topology_type)
     {
-        int exitCode = Success;
-        try
-        {
-            ugrid_states[ugrid_id].m_mesh2d[topology_id].Put(mesh2d);
-        }
-        catch (...)
-        {
-            exitCode = HandleExceptions(std::current_exception());
-        }
-        return exitCode;
-    }
 
-    UGRID_API int ug_mesh2d_inq(int ugrid_id, int topology_id, Mesh2D& mesh2d)
-    {
-        int exitCode = Success;
-        try
+        if (topology_type == Network1dTopology)
         {
-            ugrid_states[ugrid_id].m_mesh2d[topology_id].Inquire(mesh2d);
+            return ugrid_states[ugrid_id].m_network1d.size();
         }
-        catch (...)
+        if (topology_type == Mesh1dTopology)
         {
-            exitCode = HandleExceptions(std::current_exception());
+            return ugrid_states[ugrid_id].m_mesh1d.size();
         }
-        return exitCode;
-    }
+        if (topology_type == Mesh2dTopology)
+        {
+            return ugrid_states[ugrid_id].m_mesh2d.size();
+        }
+        if (topology_type == ContactsTopology)
+        {
+            return ugrid_states[ugrid_id].m_contacts.size();
+        }
 
-    UGRID_API int ug_mesh2d_get(int ugrid_id, int topology_id, Mesh2D& mesh2d)
-    {
-        int exitCode = Success;
-        try
-        {
-            ugrid_states[ugrid_id].m_mesh2d[topology_id].Get(mesh2d);
-        }
-        catch (...)
-        {
-            exitCode = HandleExceptions(std::current_exception());
-        }
-        return exitCode;
+        return 0;
     }
-
 
 } // namespace meshkernelapi

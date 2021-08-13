@@ -47,23 +47,40 @@ int Mesh2D::Put(const ugridapi::Mesh2D& mes2d)
     return netcdf_error_code;
 }
 
-int Mesh2D::Inquire(ugridapi::Mesh2D& mesh2d) const
+void Mesh2D::Inquire(ugridapi::Mesh2D& mesh2d) const
 {
-    mesh2d.num_nodes = m_dimensions.at("node_dimension").at(0).getSize();
-    mesh2d.num_edges = m_dimensions.at("edge_dimension").at(0).getSize();
-    mesh2d.num_faces = m_dimensions.at("face_dimension").at(0).getSize();
+    if (m_ncFile == nullptr || m_ncFile->isNull())
+    {
+        return;
+    }
+
+    mesh2d.num_nodes = m_attribute_to_variables.at("node_coordinates").at(0).getDim(0).getSize();
+    mesh2d.num_nodes = m_attribute_to_variables.at("edge_coordinates").at(0).getDim(0).getSize();
+    mesh2d.num_nodes = m_attribute_to_variables.at("face_coordinates").at(0).getDim(0).getSize();
+
+    // Optional numerical values
+    if (m_attribute_to_variables.find("face_node_connectivity") != m_attribute_to_variables.end())
+    {
+        mesh2d.num_face_nodes_max = m_attribute_to_variables.at("face_node_connectivity").at(0).getDim(1).getSize();
+    }
 }
 
-int Mesh2D::Get(ugridapi::Mesh2D& mesh2d) const
+void Mesh2D::Get(ugridapi::Mesh2D& mesh2d) const
 {
-    int netcdf_error_code = 0;
-    return netcdf_error_code;
+    // Inquire in case dimensions are not there
+    Inquire(mesh2d);
+
+    //m_attributes
+
+
+
 
 }
 
-std::vector<Mesh2D> Mesh2D::Create(std::multimap<std::string, netCDF::NcVar> const& variables)
+std::vector<Mesh2D> Mesh2D::Create(std::shared_ptr<netCDF::NcFile> const& ncFile)
 {
     // Get all vars in this file
+    const auto variables = ncFile->getVars();
     std::vector<Mesh2D> result;
     for (auto const& variable : variables)
     {
@@ -79,8 +96,8 @@ std::vector<Mesh2D> Mesh2D::Create(std::multimap<std::string, netCDF::NcVar> con
 
         if (dimensionality == 2)
         {
-            const auto [mapped_variables, mapped_variables_dimensions] = FillMappedVariables(attributes, variables);
-            result.emplace_back(attributes, mapped_variables, mapped_variables_dimensions);
+            const auto attributes_to_variables = FillMappedVariables(attributes, variables);
+            result.emplace_back(ncFile, attributes, attributes_to_variables);
         }
     }
 

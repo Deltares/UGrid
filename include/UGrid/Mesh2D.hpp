@@ -50,13 +50,21 @@ namespace ugrid
         /// @brief The default constructor
         Mesh2D() = default;
 
+        /// @brief 
+        /// @param m_nc_file 
+        /// @param m_attributes 
+        /// @param m_attribute_to_variables 
+        Mesh2D(const std::shared_ptr<netCDF::NcFile>& m_nc_file,
+            const std::map<std::string, netCDF::NcVarAtt>& m_attributes,
+            const std::map<std::string, std::vector<netCDF::NcVar>>& m_attribute_to_variables)
+            : UGridEntity(m_nc_file, m_attributes, m_attribute_to_variables)
+        {
+        }
+
         /// @brief Constructor producing a class instance
         /// @param topology_variable The topology variable 
-        /// @param mapped_variables The variables referred in mesh topology
-        explicit Mesh2D(std::map<std::string, netCDF::NcVarAtt> const& topology_variable,
-            std::map<std::string, netCDF::NcVar> const& mapped_variables,
-            std::map<std::string, std::vector<netCDF::NcDim>> const& mapped_variables_dimensions) :
-            UGridEntity(topology_variable, mapped_variables, mapped_variables_dimensions) {};
+        /// @param attribute_to_variables For every attribute the mapped variable
+
 
         /// @brief Define mesh dimensions
         /// @param mes2d The mesh2d  
@@ -70,17 +78,15 @@ namespace ugrid
 
         /// @brief Inquires the mesh dimensions
         /// @param mes2d The mesh2d filled with dimension values
-        /// @return A NetCDF error code
-        int Inquire(ugridapi::Mesh2D& mes2d) const;
+        void Inquire(ugridapi::Mesh2D& mes2d) const;
 
         /// @brief Inquires the mesh arrays
         /// @param mes2d The mesh2d with pointers to mesh arrays
-        /// @return A NetCDF error code
-        int Get(ugridapi::Mesh2D& mes2d) const;
+        void Get(ugridapi::Mesh2D& mes2d) const;
 
         /// @brief Factory method producing current class instances for the file variables
         /// @return The vector of produced class instances
-        static std::vector<Mesh2D> Create(std::multimap<std::string, netCDF::NcVar> const& variables);
+        static std::vector<Mesh2D> Create(std::shared_ptr<netCDF::NcFile> const& ncFile);
 
     };
 } // namespace ugrid

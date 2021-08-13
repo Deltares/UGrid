@@ -50,13 +50,11 @@ namespace ugrid
 
     }
 
-    static std::tuple<std::map<std::string, netCDF::NcVar>,
-        std::map<std::string, std::vector<netCDF::NcDim>>> FillMappedVariables(
-            std::map<std::string, netCDF::NcVarAtt> const& topology_variable,
-            std::multimap<std::string, netCDF::NcVar> const& variables)
+    static std::map<std::string, std::vector<netCDF::NcVar>> FillMappedVariables(
+        std::map<std::string, netCDF::NcVarAtt> const& topology_variable,
+        std::multimap<std::string, netCDF::NcVar> const& variables)
     {
-        std::map<std::string, netCDF::NcVar> mapped_variables;
-        std::map<std::string, std::vector<netCDF::NcDim>> mapped_variables_dimensions;
+        std::map<std::string, std::vector<netCDF::NcVar>> attributes_to_variables;
         for (const auto& attribute : topology_variable)
         {
             if (attribute.second.getType() != netCDF::NcType::nc_CHAR)
@@ -67,21 +65,21 @@ namespace ugrid
             attribute.second.getValues(name);
             std::vector<std::string> variable_names;
             split(variable_names, name, boost::is_any_of(" "));
-
+            std::vector<netCDF::NcVar> attribute_variables;
             for (auto const& variable_name : variable_names)
             {
                 const auto variable_iterator = variables.find(variable_name);
                 if (variable_iterator != variables.end())
                 {
-                    auto const variable = variables.find(variable_name)->second;
-                    mapped_variables.insert({ variable_name, variable });
-                    mapped_variables_dimensions.insert({ attribute.first, variable.getDims() });
+                    attribute_variables.emplace_back(variable_iterator->second);
                 }
             }
-
-
+            if (!attribute_variables.empty())
+            {
+                attributes_to_variables.insert({ attribute.first, attribute_variables });
+            }
         }
-        return { mapped_variables, mapped_variables_dimensions };
+        return attributes_to_variables;
     }
 
 } // namespace ugrid

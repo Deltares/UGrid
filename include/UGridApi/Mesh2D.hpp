@@ -95,5 +95,7 @@ namespace ugridapi
         int num_layers;
 
         int start_index;
+
+        int num_face_nodes_max;
     };
 }

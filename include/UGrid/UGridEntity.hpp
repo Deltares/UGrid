@@ -44,16 +44,18 @@ namespace ugrid
     /// @brief A class containing the ids of UGrid netcdf file
     struct UGridEntity
     {
-
-        UGridEntity(const std::map<std::string, netCDF::NcVarAtt> const& attributes,
-            const std::map<std::string, netCDF::NcVar> const& mapped_variables,
-            std::map < std::string, std::vector<netCDF::NcDim>> const& mapped_variables_dimensions)
-            : m_attributes(attributes), m_mapped_variables(mapped_variables), m_dimensions(mapped_variables_dimensions)
+        UGridEntity(const std::shared_ptr<netCDF::NcFile>& m_nc_file,
+            const std::map<std::string, netCDF::NcVarAtt>& m_attributes,
+            const std::map<std::string, std::vector<netCDF::NcVar>>& m_attribute_to_variables)
+            : m_ncFile(m_nc_file),
+            m_attributes(m_attributes),
+            m_attribute_to_variables(m_attribute_to_variables)
         {
         }
 
-        std::map<std::string, netCDF::NcVarAtt> m_attributes;                                   /// the topology variable
-        std::map<std::string, netCDF::NcVar> m_mapped_variables;                                /// the mapped variable
-        std::map<std::string, std::vector<netCDF::NcDim>> m_dimensions; /// the dimensions associated with the cf names
+        std::shared_ptr<netCDF::NcFile> m_ncFile;                                                 /// A pointer to the opened file
+        std::map<std::string, netCDF::NcVarAtt> m_attributes;                                     /// all attributes of the topology variable
+        std::map<std::string, std::vector<netCDF::NcVar>> m_attribute_to_variables;               /// for each attribute the related variables
+
     };
 } // namespace ugrid

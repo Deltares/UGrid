@@ -50,7 +50,16 @@ namespace ugridapi
     extern "C"
     {
 #endif
-        /// @brief Enumeration for api error types
+        /// @brief Enumeration for the UGridTopologyType
+        enum UGridTopologyType
+        {
+            Network1dTopology = 0,
+            Mesh1dTopology = 1,
+            Mesh2dTopology = 2,
+            ContactsTopology = 3
+        };
+
+        /// @brief Enumeration for the api error types
         enum UGridioApiErrors
         {
             Success = 0,
@@ -66,7 +75,7 @@ namespace ugridapi
         /// @param filePath The path of the file
         /// @param mode The netcdf opening mode
         /// @return An error if is not able to open it or it is not  
-        UGRID_API int ug_open(char const* filePath, int mode);
+        UGRID_API int ug_open(char const* filePath, int mode, int& ugrid_id);
 
         /// @brief Close a file
         /// @param ugrid_id 
@@ -201,11 +210,6 @@ namespace ugridapi
         UGRID_API int ug_get_int(int ugrid_id, int topology_type, int topology_id, char* data_variable_name, int* data);
 
         UGRID_API int ug_get_char(int ugrid_id, int topology_type, int topology_id, char* data_variable_name, char* data);
-
-
-        /// to create
-        /// ug_inq_varids
-        /// ug_get_var_attset get all attributes associated with a variable
 
 #ifdef __cplusplus
     }
