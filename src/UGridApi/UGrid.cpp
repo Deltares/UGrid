@@ -72,11 +72,12 @@ namespace ugridapi
         {
             if (mode == netCDF::NcFile::read)
             {
-
                 auto ncFile = std::make_shared< netCDF::NcFile>(filePath, netCDF::NcFile::read, netCDF::NcFile::classic);
-                ugrid_states.insert({ num_instances, UGridState(ncFile) });
+                UGridState ugridState;
+                ugridState.m_file = ncFile;
+                ugrid_states.insert({ num_instances, ugridState });
 
-                auto meshes = ugrid::Mesh2D::Create(ncFile);
+                auto const meshes = ugrid::Mesh2D::Create(ncFile);
                 ugrid_states[num_instances].m_mesh2d = meshes;
                 ugrid_id = num_instances;
                 num_instances++;
@@ -98,13 +99,13 @@ namespace ugridapi
             {
                 throw std::invalid_argument("UGrid: The selected ugrid_id does not exist.");
             }
+            ugrid_states[ugrid_id].m_file->close();
             ugrid_states.erase(ugrid_id);
         }
         catch (...)
         {
             exitCode = HandleExceptions(std::current_exception());
         }
-        ugrid_states.erase(ugrid_id);
         return exitCode;
     };
 

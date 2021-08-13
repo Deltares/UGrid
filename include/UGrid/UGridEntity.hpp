@@ -44,16 +44,13 @@ namespace ugrid
     /// @brief A class containing the ids of UGrid netcdf file
     struct UGridEntity
     {
-        UGridEntity(const std::shared_ptr<netCDF::NcFile>& m_nc_file,
-            const std::map<std::string, netCDF::NcVarAtt>& m_attributes,
+        UGridEntity(const std::map<std::string, netCDF::NcVarAtt>& m_attributes,
             const std::map<std::string, std::vector<netCDF::NcVar>>& m_attribute_to_variables)
-            : m_ncFile(m_nc_file),
-            m_attributes(m_attributes),
+            : m_attributes(m_attributes),
             m_attribute_to_variables(m_attribute_to_variables)
         {
         }
-
-        std::shared_ptr<netCDF::NcFile> m_ncFile;                                                 /// A pointer to the opened file
+        /// A pointer to the opened file
         std::map<std::string, netCDF::NcVarAtt> m_attributes;                                     /// all attributes of the topology variable
         std::map<std::string, std::vector<netCDF::NcVar>> m_attribute_to_variables;               /// for each attribute the related variables
 

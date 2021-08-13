@@ -54,10 +54,9 @@ namespace ugrid
         /// @param m_nc_file 
         /// @param m_attributes 
         /// @param m_attribute_to_variables 
-        Mesh2D(const std::shared_ptr<netCDF::NcFile>& m_nc_file,
-            const std::map<std::string, netCDF::NcVarAtt>& m_attributes,
+        Mesh2D(const std::map<std::string, netCDF::NcVarAtt>& m_attributes,
             const std::map<std::string, std::vector<netCDF::NcVar>>& m_attribute_to_variables)
-            : UGridEntity(m_nc_file, m_attributes, m_attribute_to_variables)
+            : UGridEntity(m_attributes, m_attribute_to_variables)
         {
         }
 

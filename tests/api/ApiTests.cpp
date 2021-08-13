@@ -31,6 +31,13 @@ TEST(ApiTest, Open_AFileWithOneMesh2d_ShouldCreateANewStateWithOneMesh2D)
     mesh2d.node_x = node_x.get();
     std::unique_ptr<double> const node_y(new double[mesh2d.num_nodes]);
     mesh2d.node_y = node_y.get();
+    std::unique_ptr<double> const face_x(new double[mesh2d.num_faces]);
+    mesh2d.face_x = face_x.get();
+    std::unique_ptr<double> const face_y(new double[mesh2d.num_faces]);
+    mesh2d.face_y = face_y.get();
+    std::unique_ptr<int> const face_nodes(new int[mesh2d.num_faces * mesh2d.num_face_nodes_max]);
+    mesh2d.face_nodes = face_nodes.get();
+
     error_code = ug_mesh2d_get(ugrid_id, 0, mesh2d);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 

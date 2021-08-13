@@ -10,12 +10,21 @@ namespace ugridapi
     /// @brief The class holding the state of the UGridIO
     struct UGridState
     {
-        explicit UGridState(std::shared_ptr<netCDF::NcFile> const& m_file)
+        explicit UGridState(const std::shared_ptr<netCDF::NcFile> m_file)
             : m_file(m_file)
         {
         }
 
         UGridState() = default;
+
+
+        ~UGridState()
+        {
+            if (m_file.use_count() <= 1)
+            {
+                m_file->close();
+            }
+        }
 
         std::shared_ptr<netCDF::NcFile> m_file;                ///< a pointer to the opened file
 
