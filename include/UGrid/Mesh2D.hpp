@@ -45,16 +45,18 @@ namespace ugrid
     class UGridFile;
 
     /// @brief A class containing the ids of UGrid netcdf file
-    struct Mesh2D : private UGridEntity
+    struct Mesh2D : public UGridEntity
     {
         /// @brief The default constructor
         Mesh2D() = default;
 
-        /// @brief Constructor producing a class instance from 
-        /// @param attributes 
-        /// @param mapped_variables 
-        explicit Mesh2D(std::map<std::string, netCDF::NcVarAtt> const& attributes,
-            std::map<std::string, netCDF::NcVar> const& mapped_variables) : UGridEntity(attributes, mapped_variables) {};
+        /// @brief Constructor producing a class instance
+        /// @param topology_variable The topology variable 
+        /// @param mapped_variables The variables referred in mesh topology
+        explicit Mesh2D(std::map<std::string, netCDF::NcVarAtt> const& topology_variable,
+            std::map<std::string, netCDF::NcVar> const& mapped_variables,
+            std::map<std::string, std::vector<netCDF::NcDim>> const& mapped_variables_dimensions) :
+            UGridEntity(topology_variable, mapped_variables, mapped_variables_dimensions) {};
 
         /// @brief Define mesh dimensions
         /// @param mes2d The mesh2d  

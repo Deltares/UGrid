@@ -27,7 +27,6 @@
 
 #pragma once
 #include <string>
-#include "netcdf.h"
 
 #include <boost/algorithm/string/split.hpp>
 #include <boost/algorithm/string.hpp>
@@ -51,12 +50,14 @@ namespace ugrid
 
     }
 
-    static std::map<std::string, netCDF::NcVar> FillMappedVariables(
-        std::map<std::string, netCDF::NcVarAtt> const& attributes,
-        std::multimap<std::string, netCDF::NcVar> const& file_vars)
+    static std::tuple<std::map<std::string, netCDF::NcVar>,
+        std::map<std::string, std::vector<netCDF::NcDim>>> FillMappedVariables(
+            std::map<std::string, netCDF::NcVarAtt> const& topology_variable,
+            std::multimap<std::string, netCDF::NcVar> const& variables)
     {
-        std::map<std::string, netCDF::NcVar> result;
-        for (const auto& attribute : attributes)
+        std::map<std::string, netCDF::NcVar> mapped_variables;
+        std::map<std::string, std::vector<netCDF::NcDim>> mapped_variables_dimensions;
+        for (const auto& attribute : topology_variable)
         {
             if (attribute.second.getType() != netCDF::NcType::nc_CHAR)
             {
@@ -66,19 +67,21 @@ namespace ugrid
             attribute.second.getValues(name);
             std::vector<std::string> variable_names;
             split(variable_names, name, boost::is_any_of(" "));
+
             for (auto const& variable_name : variable_names)
             {
-                const auto variable_iterator = file_vars.find(variable_name);
-                if (variable_iterator == file_vars.end())
+                const auto variable_iterator = variables.find(variable_name);
+                if (variable_iterator != variables.end())
                 {
-                    continue;
+                    auto const variable = variables.find(variable_name)->second;
+                    mapped_variables.insert({ variable_name, variable });
+                    mapped_variables_dimensions.insert({ attribute.first, variable.getDims() });
                 }
-                auto const variable = file_vars.find(variable_name)->second;
-                result.insert({ variable_name, variable });
-
             }
+
+
         }
-        return result;
+        return { mapped_variables, mapped_variables_dimensions };
     }
 
 } // namespace ugrid

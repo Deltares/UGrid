@@ -28,10 +28,11 @@
 #pragma once
 
 #include <string>
-#include <unordered_map>
 #include <vector>
+#include <map>
 
 #include <ncFile.h>
+#include <NcDim.h>
 #include <ncVar.h>
 #include <NcVarAtt.h>
 #include <UGridApi/Mesh2D.hpp>
@@ -41,18 +42,18 @@
 namespace ugrid
 {
     /// @brief A class containing the ids of UGrid netcdf file
-    class UGridEntity
+    struct UGridEntity
     {
-    public:
-        UGridEntity(const std::map<std::string, netCDF::NcVarAtt>& m_attributes,
-            const std::map<std::string, netCDF::NcVar>& m_mapped_variables)
-            : m_attributes(m_attributes),
-            m_mapped_variables(m_mapped_variables)
+
+        UGridEntity(const std::map<std::string, netCDF::NcVarAtt> const& attributes,
+            const std::map<std::string, netCDF::NcVar> const& mapped_variables,
+            std::map < std::string, std::vector<netCDF::NcDim>> const& mapped_variables_dimensions)
+            : m_attributes(attributes), m_mapped_variables(mapped_variables), m_dimensions(mapped_variables_dimensions)
         {
         }
 
-    private:
-        std::map<std::string, netCDF::NcVarAtt> m_attributes; // all attributes associated with this entity
-        std::map<std::string, netCDF::NcVar> m_mapped_variables; // all attributes associated with this entity
+        std::map<std::string, netCDF::NcVarAtt> m_attributes;                                   /// the topology variable
+        std::map<std::string, netCDF::NcVar> m_mapped_variables;                                /// the mapped variable
+        std::map<std::string, std::vector<netCDF::NcDim>> m_dimensions; /// the dimensions associated with the cf names
     };
 } // namespace ugrid

@@ -27,6 +27,7 @@
 
 #include <ncFile.h>
 #include <ncVar.h>
+#include <ncDim.h>
 
 #include <UGrid/Mesh2D.hpp>
 #include <UGrid/Operations.hpp>
@@ -48,8 +49,9 @@ int Mesh2D::Put(const ugridapi::Mesh2D& mes2d)
 
 int Mesh2D::Inquire(ugridapi::Mesh2D& mesh2d) const
 {
-    int netcdf_error_code = 0;
-    return netcdf_error_code;
+    mesh2d.num_nodes = m_dimensions.at("node_dimension").at(0).getSize();
+    mesh2d.num_edges = m_dimensions.at("edge_dimension").at(0).getSize();
+    mesh2d.num_faces = m_dimensions.at("face_dimension").at(0).getSize();
 }
 
 int Mesh2D::Get(ugridapi::Mesh2D& mesh2d) const
@@ -77,8 +79,8 @@ std::vector<Mesh2D> Mesh2D::Create(std::multimap<std::string, netCDF::NcVar> con
 
         if (dimensionality == 2)
         {
-            const auto mapped_variables = FillMappedVariables(attributes, variables);
-            result.emplace_back(attributes, mapped_variables);
+            const auto [mapped_variables, mapped_variables_dimensions] = FillMappedVariables(attributes, variables);
+            result.emplace_back(attributes, mapped_variables, mapped_variables_dimensions);
         }
     }
 
