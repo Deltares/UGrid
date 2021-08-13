@@ -94,11 +94,11 @@ namespace ugridapi
         int exitCode = Success;
         try
         {
-            int err = nc_close(ugrid_id);
-            if (err != NC_NOERR)
+            if (ugrid_states.count(ugrid_id) == 0)
             {
-                throw std::exception();
+                throw std::invalid_argument("UGrid: The selected ugrid_id does not exist.");
             }
+            ugrid_states.erase(ugrid_id);
         }
         catch (...)
         {

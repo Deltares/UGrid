@@ -70,10 +70,8 @@ void Mesh2D::Get(ugridapi::Mesh2D& mesh2d) const
     // Inquire in case dimensions are not there
     Inquire(mesh2d);
 
-    //m_attributes
-
-
-
+    m_attribute_to_variables.at("node_coordinates").at(0).getVar(mesh2d.node_x);
+    m_attribute_to_variables.at("node_coordinates").at(1).getVar(mesh2d.node_y);
 
 }
 
