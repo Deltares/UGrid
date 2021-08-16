@@ -46,14 +46,17 @@ namespace ugrid
     {
         UGridEntity(
             std::shared_ptr<netCDF::NcFile> const& ncFile,
+            std::string const& entity_name,
             std::map<std::string, std::vector<std::string>> const& attribute_variable_names)
             :
             m_ncFile(ncFile),
+            m_entity_name(entity_name),
             m_attribute_variable_names(attribute_variable_names)
         {
         }
         /// A pointer to the opened file
         std::shared_ptr<netCDF::NcFile> m_ncFile;                                               /// a reference to the nc file
+        std::string m_entity_name;                                                              /// the name of the entity
         std::map<std::string, std::vector<std::string>>  m_attribute_variable_names;            /// for each UGridEntity attribute, get the corresponding names
 
     };

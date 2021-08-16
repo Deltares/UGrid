@@ -50,21 +50,18 @@ namespace ugrid
         /// @brief The default constructor
         Mesh2D() = default;
 
+
         /// @brief 
-        /// @param m_nc_file 
-        /// @param m_attributes 
-        /// @param m_attribute_to_variables 
+        /// @param ncFile 
+        /// @param name 
+        /// @param attribute_variable_names 
         Mesh2D(
             std::shared_ptr<netCDF::NcFile> const& ncFile,
+            std::string const& name,
             std::map<std::string, std::vector<std::string>> const& attribute_variable_names)
-            : UGridEntity(ncFile, attribute_variable_names)
+            : UGridEntity(ncFile, name, attribute_variable_names)
         {
         }
-
-        /// @brief Constructor producing a class instance
-        /// @param topology_variable The topology variable 
-        /// @param attribute_to_variables For every attribute the mapped variable
-
 
         /// @brief Define mesh dimensions
         /// @param mes2d The mesh2d  

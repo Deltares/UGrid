@@ -90,7 +90,7 @@ namespace ugridapi
 
         double* volume_coordinates = nullptr;
 
-        char* name = nullptr;
+        const char* name = nullptr;
 
         int num_layers;
 

@@ -32,11 +32,8 @@
 /// @brief Contains the logic of the C++ static library
 namespace ugrid
 {
-    const int ids_string_len = 40;
-    const std::string str_length_id_var_name = "strLengthIds";
-
-    const int long_name_string_len = 80;
-    const std::string str_length_long_name_var_name = "strLengthLongNames";
+    const int name_lengths = 40;
+    const int name_long_lengths = 80;
 
     const std::string two_string = "Two";
 

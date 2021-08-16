@@ -71,6 +71,10 @@ namespace ugridapi
         /// @return 
         UGRID_API int ug_get_error(const char*& error_message);
 
+        UGRID_API int ug_name_get_length();
+
+        UGRID_API int ug_name_get_long_length();
+
         /// @brief Opens a file and fills the state with the entities upon reading
         /// @param filePath The path of the file
         /// @param mode The netcdf opening mode

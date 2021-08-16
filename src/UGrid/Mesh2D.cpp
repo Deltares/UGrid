@@ -62,28 +62,18 @@ void Mesh2D::Inquire(ugridapi::Mesh2D& mesh2d) const
 
 void Mesh2D::Get(ugridapi::Mesh2D& mesh2d) const
 {
-    //// Inquire in case dimensions are not there
     Inquire(mesh2d);
+    mesh2d.name = m_entity_name.c_str();
 
     m_ncFile->getVar(m_attribute_variable_names.at("node_coordinates").at(0)).getVar(mesh2d.node_x);
     m_ncFile->getVar(m_attribute_variable_names.at("node_coordinates").at(1)).getVar(mesh2d.node_y);
+
+    m_ncFile->getVar(m_attribute_variable_names.at("edge_node_connectivity").at(0)).getVar(mesh2d.edge_nodes);
 
     m_ncFile->getVar(m_attribute_variable_names.at("face_coordinates").at(0)).getVar(mesh2d.face_x);
     m_ncFile->getVar(m_attribute_variable_names.at("face_coordinates").at(1)).getVar(mesh2d.face_y);
 
     m_ncFile->getVar(m_attribute_variable_names.at("face_node_connectivity").at(0)).getVar(mesh2d.face_nodes);
-
-
-    //m_attribute_to_variables.at("node_coordinates").at(0).getVar(mesh2d.node_x);
-    //m_attribute_to_variables.at("node_coordinates").at(1).getVar(mesh2d.node_y);
-    //m_attribute_to_variables.at("face_coordinates").at(0).getVar(mesh2d.face_x);
-    //m_attribute_to_variables.at("face_coordinates").at(0).getVar(mesh2d.face_y);
-
-    //// to correct
-
-    //m_ncFile->getVar()
-    //    //m_attribute_to_variables.at("face_nodes").at(0).getVar(mesh2d.face_nodes);
-
 }
 
 std::vector<Mesh2D> Mesh2D::Create(std::shared_ptr<netCDF::NcFile> const& ncFile)
@@ -103,10 +93,11 @@ std::vector<Mesh2D> Mesh2D::Create(std::shared_ptr<netCDF::NcFile> const& ncFile
         int dimensionality;
         attributes["topology_dimension"].getValues(&dimensionality);
 
+
         if (dimensionality == 2)
         {
             const auto attributes_variable_names = GetAttributesNames(attributes, variables);
-            result.emplace_back(ncFile, attributes_variable_names);
+            result.emplace_back(ncFile, variable.first, attributes_variable_names);
         }
     }
 

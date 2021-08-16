@@ -41,6 +41,7 @@
 #include <ncFile.h>
 
 #include <UGrid/Mesh2D.hpp>
+#include <UGrid/Constants.hpp>
 #include <UGridApi/UGrid.hpp>
 #include <UGridApi/UGridState.hpp>
 
@@ -62,6 +63,16 @@ namespace ugridapi
             strcpy(exceptionMessage, e.what());
             return Exception;
         }
+    }
+
+    UGRID_API int ug_name_get_length()
+    {
+        return ugrid::name_lengths;
+    }
+
+    UGRID_API int ug_name_get_long_length()
+    {
+        return ugrid::name_long_lengths;
     }
 
     UGRID_API int ug_open(char const* filePath, int mode, int& ugrid_id)
