@@ -29,16 +29,16 @@
 
 namespace ugridapi
 {
-    struct Mesh2DOptions
+    struct TopologyOptions
     {
-        int add_edge_face_connectivity;
+        int add_edge_face_connectivity = 0;
 
-        int add_face_edge_connectivity;
+        int add_face_edge_connectivity = 0;
 
-        int add_face_face_connectivity;
+        int add_face_face_connectivity = 0;
 
-        int add_layers;
+        int add_layers = 0;
 
-        int add_spherical_coordinates;
+        int add_spherical_coordinates = 0;
     };
 }

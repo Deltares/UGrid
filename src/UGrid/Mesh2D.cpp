@@ -33,11 +33,11 @@
 
 #include <UGrid/Mesh2D.hpp>
 #include <UGrid/Operations.hpp>
-#include <UGridApi/Options.hpp>
+#include <UGridApi/TopologyOptions.hpp>
 
 using ugrid::Mesh2D;
 
-void Mesh2D::Define(ugridapi::Mesh2D const& mesh2d, ugridapi::Mesh2DOptions const& mesh2d_options)
+void Mesh2D::Define(ugridapi::Mesh2D const& mesh2d, ugridapi::TopologyOptions const& mesh2d_options)
 {
     std::string mesh2d_name(mesh2d.name);
     auto topology_variable = m_nc_file->addVar(mesh2d_name, netCDF::NcType::nc_CHAR);

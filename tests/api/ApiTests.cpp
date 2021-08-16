@@ -5,7 +5,7 @@
 #include <gtest/gtest.h>
 
 #include <TestUtils/Definitions.hpp>
-#include <UGridApi/Options.hpp>
+#include <UGridApi/TopologyOptions.hpp>
 #include <UGridApi/UGrid.hpp>
 
 TEST(ApiTest, InquireAndGet_AFileWithOneMesh2d_ShouldReadMesh2d)
@@ -129,8 +129,8 @@ TEST(ApiTest, DefineAndPut_OneMesh2D_ShouldWriteData)
 
     int topology_id = -1;
     ugridapi::Mesh2D mesh2d;
-    ugridapi::Mesh2DOptions mesh2d_options;
-    error_code = ug_mesh2d_def(file_id, mesh2d, mesh2d_options, topology_id);
+    ugridapi::TopologyOptions topology_options;
+    error_code = ug_mesh2d_def(file_id, mesh2d, topology_options, topology_id);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
     ASSERT_EQ(0, topology_id);
 

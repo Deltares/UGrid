@@ -131,7 +131,7 @@ namespace ugridapi
         return exitCode;
     };
 
-    UGRID_API int ug_mesh2d_def(int file_id, Mesh2D const& mesh2dapi, Mesh2DOptions const& mesh2d_options, int& topology_id)
+    UGRID_API int ug_mesh2d_def(int file_id, Mesh2D const& mesh2dapi, TopologyOptions const& mesh2d_options, int& topology_id)
     {
         int exitCode = Success;
         try
