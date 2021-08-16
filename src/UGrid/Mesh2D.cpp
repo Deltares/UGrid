@@ -49,29 +49,40 @@ int Mesh2D::Put(const ugridapi::Mesh2D& mes2d)
 
 void Mesh2D::Inquire(ugridapi::Mesh2D& mesh2d) const
 {
-
-    mesh2d.num_nodes = m_attribute_to_variables.at("node_coordinates").at(0).getDim(0).getSize();
-    mesh2d.num_edges = m_attribute_to_variables.at("edge_coordinates").at(0).getDim(0).getSize();
-    mesh2d.num_faces = m_attribute_to_variables.at("face_coordinates").at(0).getDim(0).getSize();
+    mesh2d.num_nodes = m_ncFile->getVar(m_attribute_variable_names.at("node_coordinates").at(0)).getDims().at(0).getSize();
+    mesh2d.num_edges = m_ncFile->getVar(m_attribute_variable_names.at("edge_coordinates").at(0)).getDims().at(0).getSize();
+    mesh2d.num_faces = m_ncFile->getVar(m_attribute_variable_names.at("face_coordinates").at(0)).getDims().at(0).getSize();
 
     // Optional numerical values
-    if (m_attribute_to_variables.find("face_node_connectivity") != m_attribute_to_variables.end())
+    if (m_attribute_variable_names.find("face_node_connectivity") != m_attribute_variable_names.end())
     {
-        mesh2d.num_face_nodes_max = m_attribute_to_variables.at("face_node_connectivity").at(0).getDim(1).getSize();
+        mesh2d.num_face_nodes_max = m_ncFile->getVar(m_attribute_variable_names.at("face_node_connectivity").at(0)).getDims().at(1).getSize();
     }
 }
 
 void Mesh2D::Get(ugridapi::Mesh2D& mesh2d) const
 {
-    // Inquire in case dimensions are not there
+    //// Inquire in case dimensions are not there
     Inquire(mesh2d);
 
-    m_attribute_to_variables.at("node_coordinates").at(0).getVar(mesh2d.node_x);
-    m_attribute_to_variables.at("node_coordinates").at(1).getVar(mesh2d.node_y);
-    m_attribute_to_variables.at("face_coordinates").at(0).getVar(mesh2d.face_x);
-    m_attribute_to_variables.at("face_coordinates").at(0).getVar(mesh2d.face_y);
-    // to correct
-    m_attribute_to_variables.at("face_nodes").at(0).getVar(mesh2d.face_nodes);
+    m_ncFile->getVar(m_attribute_variable_names.at("node_coordinates").at(0)).getVar(mesh2d.node_x);
+    m_ncFile->getVar(m_attribute_variable_names.at("node_coordinates").at(1)).getVar(mesh2d.node_y);
+
+    m_ncFile->getVar(m_attribute_variable_names.at("face_coordinates").at(0)).getVar(mesh2d.face_x);
+    m_ncFile->getVar(m_attribute_variable_names.at("face_coordinates").at(1)).getVar(mesh2d.face_y);
+
+    m_ncFile->getVar(m_attribute_variable_names.at("face_node_connectivity").at(0)).getVar(mesh2d.face_nodes);
+
+
+    //m_attribute_to_variables.at("node_coordinates").at(0).getVar(mesh2d.node_x);
+    //m_attribute_to_variables.at("node_coordinates").at(1).getVar(mesh2d.node_y);
+    //m_attribute_to_variables.at("face_coordinates").at(0).getVar(mesh2d.face_x);
+    //m_attribute_to_variables.at("face_coordinates").at(0).getVar(mesh2d.face_y);
+
+    //// to correct
+
+    //m_ncFile->getVar()
+    //    //m_attribute_to_variables.at("face_nodes").at(0).getVar(mesh2d.face_nodes);
 
 }
 
@@ -94,8 +105,8 @@ std::vector<Mesh2D> Mesh2D::Create(std::shared_ptr<netCDF::NcFile> const& ncFile
 
         if (dimensionality == 2)
         {
-            const auto attributes_to_variables = FillMappedVariables(attributes, variables);
-            result.emplace_back(attributes, attributes_to_variables);
+            const auto attributes_variable_names = GetAttributesNames(attributes, variables);
+            result.emplace_back(ncFile, attributes_variable_names);
         }
     }
 

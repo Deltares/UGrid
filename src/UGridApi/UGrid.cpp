@@ -50,7 +50,6 @@ namespace ugridapi
 {
     static std::map<int, UGridState> ugrid_states;
     static char exceptionMessage[512] = "";
-    static int num_instances = 0;
 
     int HandleExceptions(const std::exception_ptr exceptionPtr)
     {
@@ -73,14 +72,11 @@ namespace ugridapi
             if (mode == netCDF::NcFile::read)
             {
                 auto ncFile = std::make_shared< netCDF::NcFile>(filePath, netCDF::NcFile::read, netCDF::NcFile::classic);
-                UGridState ugridState;
-                ugridState.m_file = ncFile;
-                ugrid_states.insert({ num_instances, ugridState });
+                ugrid_id = ncFile->getId();
+                ugrid_states.insert({ ncFile->getId(), UGridState(ncFile) });
 
                 auto const meshes = ugrid::Mesh2D::Create(ncFile);
-                ugrid_states[num_instances].m_mesh2d = meshes;
-                ugrid_id = num_instances;
-                num_instances++;
+                ugrid_states[ugrid_id].m_mesh2d = meshes;
             }
         }
         catch (...)
@@ -99,7 +95,7 @@ namespace ugridapi
             {
                 throw std::invalid_argument("UGrid: The selected ugrid_id does not exist.");
             }
-            ugrid_states[ugrid_id].m_file->close();
+            ugrid_states[ugrid_id].m_ncFile->close();
             ugrid_states.erase(ugrid_id);
         }
         catch (...)

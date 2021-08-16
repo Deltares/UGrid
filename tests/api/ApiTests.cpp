@@ -7,7 +7,7 @@
 #include <TestUtils/Definitions.hpp>
 #include <UGridApi/UGrid.hpp>
 
-TEST(ApiTest, Open_AFileWithOneMesh2d_ShouldCreateANewStateWithOneMesh2D)
+TEST(ApiTest, Open_AFileWithOneMesh2d_ShouldReadFile)
 {
 
     std::string filePath = TEST_FOLDER + "/data/OneMesh2D.nc";
@@ -41,7 +41,11 @@ TEST(ApiTest, Open_AFileWithOneMesh2d_ShouldCreateANewStateWithOneMesh2D)
     error_code = ug_mesh2d_get(ugrid_id, 0, mesh2d);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
-    std::vector<double> validMeshNodesX(node_x.get(), node_x.get() + mesh2d.num_nodes);
+    std::vector<double> node_x_vector(node_x.get(), node_x.get() + mesh2d.num_nodes);
+    std::vector<double> node_y_vector(node_y.get(), node_y.get() + mesh2d.num_nodes);
+    std::vector<double> face_x_vector(face_x.get(), face_x.get() + mesh2d.num_faces);
+    std::vector<double> face_y_vector(face_y.get(), face_y.get() + mesh2d.num_faces);
+    std::vector<double> face_nodes_vector(face_nodes.get(), face_nodes.get() + mesh2d.num_faces * mesh2d.num_face_nodes_max);
 
     // close the file
     error_code = ugridapi::ug_close(ugrid_id);

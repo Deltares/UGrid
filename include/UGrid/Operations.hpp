@@ -50,11 +50,11 @@ namespace ugrid
 
     }
 
-    static std::map<std::string, std::vector<netCDF::NcVar>> FillMappedVariables(
+    static std::map < std::string, std::vector<std::string>> GetAttributesNames(
         std::map<std::string, netCDF::NcVarAtt> const& topology_variable,
         std::multimap<std::string, netCDF::NcVar> const& variables)
     {
-        std::map<std::string, std::vector<netCDF::NcVar>> attributes_to_variables;
+        std::map<std::string, std::vector<std::string>> attribute_names;
         for (const auto& attribute : topology_variable)
         {
             if (attribute.second.getType() != netCDF::NcType::nc_CHAR)
@@ -65,21 +65,27 @@ namespace ugrid
             attribute.second.getValues(name);
             std::vector<std::string> variable_names;
             split(variable_names, name, boost::is_any_of(" "));
-            std::vector<netCDF::NcVar> attribute_variables;
+            std::vector<std::string> valid_variable_names;
             for (auto const& variable_name : variable_names)
             {
                 const auto variable_iterator = variables.find(variable_name);
                 if (variable_iterator != variables.end())
                 {
-                    attribute_variables.emplace_back(variable_iterator->second);
+                    valid_variable_names.emplace_back(variable_name);
                 }
             }
-            if (!attribute_variables.empty())
+            // It is a variable
+            if (!valid_variable_names.empty())
             {
-                attributes_to_variables.insert({ attribute.first, attribute_variables });
+                attribute_names.insert({ attribute.first, valid_variable_names });
+            }
+            // it is not a variable name
+            if (valid_variable_names.empty())
+            {
+                attribute_names.insert({ attribute.first, variable_names });
             }
         }
-        return attributes_to_variables;
+        return attribute_names;
     }
 
 } // namespace ugrid
