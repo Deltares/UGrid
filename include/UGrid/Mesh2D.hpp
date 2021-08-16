@@ -66,7 +66,7 @@ namespace ugrid
         /// @brief Define mesh dimensions
         /// @param mesh2d The mesh2d  
         /// @return A NetCDF error code
-        void Define(ugridapi::Mesh2D const& mesh2d, ugridapi::TopologyOptions const& mesh2d_options);
+        void Define(ugridapi::Mesh2D const& mesh2d);
 
         /// @brief Put mesh2d data
         /// @param mesh2d The mesh2d

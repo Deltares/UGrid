@@ -59,16 +59,16 @@ namespace ugridapi
         double* face_y = nullptr;
 
         /// @brief The number of mesh nodes
-        int num_nodes;
+        int num_nodes = 0;
 
         /// @brief The number of edges
-        int num_edges;
+        int num_edges = 0;
 
         /// @brief The number of faces
-        int num_faces;
+        int num_faces = 0;
 
         /// @brief The total number of nodes composing the mesh 2d faces
-        int num_face_nodes;
+        int num_face_nodes = 0;
 
         int* edge_faces = nullptr;
 
@@ -97,5 +97,7 @@ namespace ugridapi
         int start_index;
 
         int num_face_nodes_max;
+
+        int is_spherical = 0;
     };
 }

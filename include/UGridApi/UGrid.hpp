@@ -111,7 +111,7 @@ namespace ugridapi
         /// @param mesh2d 
         /// @param topology_id 
         /// @return 
-        UGRID_API int ug_mesh2d_def(int file_id, Mesh2D const& mesh2d, TopologyOptions const& mesh2d_options, int& topology_id);
+        UGRID_API int ug_mesh2d_def(int file_id, Mesh2D const& mesh2d, int& topology_id);
 
         UGRID_API int ug_mesh2d_put(int file_id, int topology_id, Mesh2D const& mesh2d);
 

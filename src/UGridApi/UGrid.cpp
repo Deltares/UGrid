@@ -131,14 +131,14 @@ namespace ugridapi
         return exitCode;
     };
 
-    UGRID_API int ug_mesh2d_def(int file_id, Mesh2D const& mesh2dapi, TopologyOptions const& mesh2d_options, int& topology_id)
+    UGRID_API int ug_mesh2d_def(int file_id, Mesh2D const& mesh2dapi, int& topology_id)
     {
         int exitCode = Success;
         try
         {
 
             ugrid::Mesh2D mesh2d;
-            mesh2d.Define(mesh2dapi, mesh2d_options);
+            mesh2d.Define(mesh2dapi);
             ugrid_states[file_id].m_mesh2d.emplace_back(mesh2d);
         }
         catch (...)

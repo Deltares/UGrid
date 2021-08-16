@@ -33,11 +33,10 @@
 
 #include <UGrid/Mesh2D.hpp>
 #include <UGrid/Operations.hpp>
-#include <UGridApi/TopologyOptions.hpp>
 
 using ugrid::Mesh2D;
 
-void Mesh2D::Define(ugridapi::Mesh2D const& mesh2d, ugridapi::TopologyOptions const& mesh2d_options)
+void Mesh2D::Define(ugridapi::Mesh2D const& mesh2d)
 {
     std::string mesh2d_name(mesh2d.name);
     auto topology_variable = m_nc_file->addVar(mesh2d_name, netCDF::NcType::nc_CHAR);
@@ -51,27 +50,93 @@ void Mesh2D::Define(ugridapi::Mesh2D const& mesh2d, ugridapi::TopologyOptions co
 
     variableAttributes.emplace_back(topology_variable.putAtt("topology_dimension", netCDF::NcType::nc_INT, 2));
 
-    if (mesh2d_options.add_spherical_coordinates == 1)
+    if (mesh2d.is_spherical == 1)
     {
-        ss.clear();
-        ss << mesh2d_name << "_node_x " << mesh2d_name << "_node_y " << mesh2d_name << "_node_lon " << mesh2d_name << "_node_lat";
+        ss.clear(); ss << mesh2d_name << "_node_x " << mesh2d_name << "_node_y " << mesh2d_name << "_node_lon " << mesh2d_name << "_node_lat";
         variableAttributes.emplace_back(topology_variable.putAtt("node_coordinates", ss.str()));
     }
     else
     {
-        ss.clear();
-        ss << mesh2d_name << "_node_x " << mesh2d_name << "_node_y";
+        ss.clear(); ss << mesh2d_name << "_node_x " << mesh2d_name << "_node_y";
         variableAttributes.emplace_back(topology_variable.putAtt("node_coordinates", ss.str()));
     }
 
-    ss.clear();
-    ss << mesh2d_name << "_nNodes";
+    ss.clear(); ss << mesh2d_name << "_nNodes";
     variableAttributes.emplace_back(topology_variable.putAtt("node_dimension", ss.str()));
 
-    ss.clear();
-    ss << mesh2d_name << "_nMax_face_nodes";
+    ss.clear(); ss << mesh2d_name << "_nMax_face_nodes";
     variableAttributes.emplace_back(topology_variable.putAtt("max_face_nodes_dimension", ss.str()));
 
+    if (mesh2d.num_edges > 0)
+    {
+        ss.clear(); ss << mesh2d_name << "_edge_nodes";
+        variableAttributes.emplace_back(topology_variable.putAtt("edge_node_connectivity", ss.str()));
+
+        ss.clear(); ss << mesh2d_name << "_nEdges";
+        variableAttributes.emplace_back(topology_variable.putAtt("edge_dimension", ss.str()));
+
+        if (mesh2d.is_spherical == 1)
+        {
+            ss.clear(); ss << mesh2d_name << "_edge_x " << mesh2d_name << "_edge_y " << mesh2d_name << "_edge_lon " << mesh2d_name << "_edge_lat";
+            variableAttributes.emplace_back(topology_variable.putAtt("edge_coordinates", ss.str()));
+        }
+        else
+        {
+            ss.clear(); ss << mesh2d_name << "_edge_x " << mesh2d_name << "_edge_y";
+            variableAttributes.emplace_back(topology_variable.putAtt("edge_coordinates", ss.str()));
+        }
+    }
+
+    if (mesh2d.num_faces > 0)
+    {
+        ss.clear(); ss << mesh2d_name << "_face_nodes";
+        variableAttributes.emplace_back(topology_variable.putAtt("face_node_connectivity", ss.str()));
+
+        ss.clear(); ss << mesh2d_name << "_nFaces";
+        variableAttributes.emplace_back(topology_variable.putAtt("face_dimension", ss.str()));
+
+        if (mesh2d.face_edges != nullptr)
+        {
+            ss.clear(); ss << mesh2d_name << "_face_edges";
+            variableAttributes.emplace_back(topology_variable.putAtt("face_edge_connectivity", ss.str()));
+        }
+        if (mesh2d.face_face != nullptr)
+        {
+            ss.clear(); ss << mesh2d_name << "_face_links";
+            variableAttributes.emplace_back(topology_variable.putAtt("face_face_connectivity", ss.str()));
+        }
+        if (mesh2d.edge_faces != nullptr)
+        {
+            ss.clear(); ss << mesh2d_name << "_edge_faces";
+            variableAttributes.emplace_back(topology_variable.putAtt("edge_face_connectivity", ss.str()));
+        }
+        if (mesh2d.face_x != nullptr && mesh2d.face_y != nullptr)
+        {
+            if (mesh2d.is_spherical == 1)
+            {
+                ss.clear(); ss << mesh2d_name << "_face_x " << mesh2d_name << "_face_y " << mesh2d_name << "_face_lon " << mesh2d_name << "_face_lat";
+                variableAttributes.emplace_back(topology_variable.putAtt("face_coordinates", ss.str()));
+            }
+            else
+            {
+                ss.clear(); ss << mesh2d_name << "_face_x " << mesh2d_name << "_face_y";
+                variableAttributes.emplace_back(topology_variable.putAtt("face_coordinates", ss.str()));
+            }
+        }
+    }
+
+    // Optionally required if layers are present (1D or 2D layered mesh topology)
+    if (mesh2d.num_layers > 0)
+    {
+        ss.clear(); ss << mesh2d_name << "_nLayers";
+        variableAttributes.emplace_back(topology_variable.putAtt("layer_dimension", ss.str()));
+
+        ss.clear(); ss << mesh2d_name << "_nInterfaces";
+        variableAttributes.emplace_back(topology_variable.putAtt("interface_dimension", ss.str()));
+
+        ss.clear(); ss << mesh2d_name << "nLayers: " << mesh2d_name << "_nInterfaces (padding: none)";
+        variableAttributes.emplace_back(topology_variable.putAtt("vertical_dimensions", ss.str()));
+    }
 
 }
 

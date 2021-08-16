@@ -40,5 +40,11 @@ namespace ugridapi
         int add_layers = 0;
 
         int add_spherical_coordinates = 0;
+
+        int location_node = 0;
+
+        int location_edge = 0;
+
+        int location_face = 0;
     };
 }
