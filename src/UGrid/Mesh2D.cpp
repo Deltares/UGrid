@@ -53,7 +53,7 @@ void Mesh2D::Inquire(ugridapi::Mesh2D& mesh2d) const
     mesh2d.num_edges = m_ncFile->getVar(m_attribute_variable_names.at("edge_coordinates").at(0)).getDims().at(0).getSize();
     mesh2d.num_faces = m_ncFile->getVar(m_attribute_variable_names.at("face_coordinates").at(0)).getDims().at(0).getSize();
 
-    // Optional numerical values
+    // Other optional numerical values
     if (m_attribute_variable_names.find("face_node_connectivity") != m_attribute_variable_names.end())
     {
         mesh2d.num_face_nodes_max = m_ncFile->getVar(m_attribute_variable_names.at("face_node_connectivity").at(0)).getDims().at(1).getSize();
@@ -92,7 +92,6 @@ std::vector<Mesh2D> Mesh2D::Create(std::shared_ptr<netCDF::NcFile> const& ncFile
 
         int dimensionality;
         attributes["topology_dimension"].getValues(&dimensionality);
-
 
         if (dimensionality == 2)
         {
