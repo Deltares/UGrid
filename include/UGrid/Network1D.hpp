@@ -35,7 +35,7 @@ namespace ugrid
     struct Network1D
     {
 
-        Network1D(int ugrid_id) : m_file_id(ugrid_id) {};
+        Network1D(int file_id) : m_file_id(file_id) {};
 
         int m_file_id;
 

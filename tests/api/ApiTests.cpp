@@ -5,25 +5,27 @@
 #include <gtest/gtest.h>
 
 #include <TestUtils/Definitions.hpp>
+#include <UGridApi/Options.hpp>
 #include <UGridApi/UGrid.hpp>
 
 TEST(ApiTest, InquireAndGet_AFileWithOneMesh2d_ShouldReadMesh2d)
 {
-
-    std::string filePath = TEST_FOLDER + "/data/OneMesh2D.nc";
-    int ugrid_id = 0;
+    std::string const filePath = TEST_FOLDER + "/data/OneMesh2D.nc";
 
     // Open a file
-    auto error_code = ugridapi::ug_open(filePath.c_str(), 0, ugrid_id);
+    int file_id = 0;
+    auto const file_mode = ugridapi::ug_file_read_mode();
+    auto error_code = ugridapi::ug_open(filePath.c_str(), file_mode, file_id);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
     // get the number of topologies
-    auto const num_mesh2d_topologies = ugridapi::ug_get_topology_num(ugrid_id, 2);
+    auto topology_type = ugridapi::ug_topology_get_mesh2d_type();
+    auto const num_mesh2d_topologies = ugridapi::ug_topology_get_num(file_id, topology_type);
     ASSERT_EQ(num_mesh2d_topologies, 1);
 
     // Get the dimensions 
     ugridapi::Mesh2D mesh2d;
-    error_code = ug_mesh2d_inq(ugrid_id, 0, mesh2d);
+    error_code = ug_mesh2d_inq(file_id, 0, mesh2d);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
     // Allocate data variables
@@ -44,7 +46,7 @@ TEST(ApiTest, InquireAndGet_AFileWithOneMesh2d_ShouldReadMesh2d)
     mesh2d.face_nodes = face_nodes.get();
 
     // Get the data
-    error_code = ug_mesh2d_get(ugrid_id, 0, mesh2d);
+    error_code = ug_mesh2d_get(file_id, 0, mesh2d);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
     std::vector<double> node_x_vector(node_x.get(), node_x.get() + mesh2d.num_nodes);
@@ -110,12 +112,26 @@ TEST(ApiTest, InquireAndGet_AFileWithOneMesh2d_ShouldReadMesh2d)
     ASSERT_THAT(face_nodes_vector, ::testing::ContainerEq(face_nodes_vector_expected));
 
     // Close the file
-    error_code = ugridapi::ug_close(ugrid_id);
+    error_code = ugridapi::ug_close(file_id);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
-
 }
 
 TEST(ApiTest, DefineAndPut_OneMesh2D_ShouldWriteData)
 {
+    std::string const filePath = TEST_FOLDER + "/data/OneMesh2DWrite.nc";
+
+    // Open a file
+    int file_id = 0;
+    auto const file_mode = ugridapi::ug_file_write_mode();
+    auto error_code = ugridapi::ug_open(filePath.c_str(), file_mode, file_id);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+
+
+    int topology_id = -1;
+    ugridapi::Mesh2D mesh2d;
+    ugridapi::Mesh2DOptions mesh2d_options;
+    error_code = ug_mesh2d_def(file_id, mesh2d, mesh2d_options, topology_id);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+    ASSERT_EQ(0, topology_id);
 
 }

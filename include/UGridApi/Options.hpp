@@ -27,31 +27,18 @@
 
 #pragma once
 
-/// \namespace ugrid
-/// @brief Contains the logic of the C++ static library
-namespace ugrid
+namespace ugridapi
 {
-    /// @brief A class containing the variables ids for a mesh2d
-    struct Mesh1D
+    struct Mesh2DOptions
     {
+        int add_edge_face_connectivity;
 
-        Mesh1D(int file_id) : m_file_id(file_id) {};
+        int add_face_edge_connectivity;
 
-        int m_file_id;
+        int add_face_face_connectivity;
 
-        /// @brief Topology id
-        int m_topology = -1;
+        int add_layers;
 
-        /// @brief Name id
-        int m_name = -1;
-
-        /// @brief Dimension ids
-        int m_num_nodes = -1;
-        int m_num_edges = -1;
-        int m_num_faces = -1;
-        int m_num_face_nodes = -1;
-
-        /// @brief Data ids
-        // TO DO
+        int add_spherical_coordinates;
     };
-} // namespace ugrid
+}

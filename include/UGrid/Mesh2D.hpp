@@ -35,6 +35,7 @@
 #include <ncVar.h>
 #include <NcVarAtt.h>
 #include <UGridApi/Mesh2D.hpp>
+#include <UGridApi/Options.hpp>
 
 #include "UGridEntity.hpp"
 
@@ -42,48 +43,47 @@
 /// @brief Contains the logic of the C++ static library
 namespace ugrid
 {
-    class UGridFile;
+    struct Mesh2DOptions;
 
-    /// @brief A class containing the ids of UGrid netcdf file
+    /// @brief A class containing all variable names related to a mesh2d and methods to write geometrical data to file
     struct Mesh2D : UGridEntity
     {
         /// @brief The default constructor
         Mesh2D() = default;
 
-
         /// @brief 
-        /// @param ncFile 
+        /// @param nc_file 
         /// @param name 
         /// @param attribute_variable_names 
         Mesh2D(
-            std::shared_ptr<netCDF::NcFile> const& ncFile,
+            std::shared_ptr<netCDF::NcFile> const& nc_file,
             std::string const& name,
             std::map<std::string, std::vector<std::string>> const& attribute_variable_names)
-            : UGridEntity(ncFile, name, attribute_variable_names)
+            : UGridEntity(nc_file, name, attribute_variable_names)
         {
         }
 
         /// @brief Define mesh dimensions
-        /// @param mes2d The mesh2d  
+        /// @param mesh2d The mesh2d  
         /// @return A NetCDF error code
-        int Define(const ugridapi::Mesh2D& mes2d);
+        void Define(ugridapi::Mesh2D const& mesh2d, ugridapi::Mesh2DOptions const& mesh2d_options);
 
         /// @brief Put mesh2d data
-        /// @param mes2d The mesh2d
+        /// @param mesh2d The mesh2d
         /// @return A NetCDF error code
-        int Put(const ugridapi::Mesh2D& mes2d);
+        void Put(ugridapi::Mesh2D const& mesh2d);
 
         /// @brief Inquires the mesh dimensions
-        /// @param mes2d The mesh2d filled with dimension values
-        void Inquire(ugridapi::Mesh2D& mes2d) const;
+        /// @param mesh2d The mesh2d filled with dimension values
+        void Inquire(ugridapi::Mesh2D& mesh2d) const;
 
         /// @brief Inquires the mesh arrays
-        /// @param mes2d The mesh2d with pointers to mesh arrays
-        void Get(ugridapi::Mesh2D& mes2d) const;
+        /// @param mesh2d The mesh2d with pointers to mesh arrays
+        void Get(ugridapi::Mesh2D& mesh2d) const;
 
         /// @brief Factory method producing current class instances for the file variables
         /// @return The vector of produced class instances
-        static std::vector<Mesh2D> Create(std::shared_ptr<netCDF::NcFile> const& ncFile);
+        static std::vector<Mesh2D> Create(std::shared_ptr<netCDF::NcFile> const& nc_file);
 
     };
 } // namespace ugrid

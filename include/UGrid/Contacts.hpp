@@ -35,7 +35,7 @@ namespace ugrid
     struct Contacts
     {
 
-        Contacts(int ugrid_id) : m_file_id(ugrid_id) {};
+        Contacts(int file_id) : m_file_id(file_id) {};
 
         int m_file_id;
 
