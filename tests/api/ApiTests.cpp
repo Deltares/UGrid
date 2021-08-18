@@ -186,6 +186,10 @@ TEST(ApiTest, DefineAndPut_OneMesh2D_ShouldWriteData)
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
     ASSERT_EQ(0, topology_id);
 
+    error_code = ug_mesh2d_put(file_id, mesh2d, topology_id);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+    ASSERT_EQ(0, topology_id);
+
     // Close the file
     error_code = ugridapi::ug_close(file_id);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);

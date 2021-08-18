@@ -89,10 +89,19 @@ namespace ugridapi
         return netCDF::NcFile::replace;
     }
 
-    UGRID_API int ug_topology()
+    UGRID_API  int ug_file_add_coordinate_mapping(int espg)
     {
-        return netCDF::NcFile::write;
+        int exitCode = Success;
+        try
+        {
+        }
+        catch (...)
+        {
+            exitCode = HandleExceptions(std::current_exception());
+        }
+        return exitCode;
     }
+
 
 
     UGRID_API int ug_open(char const* filePath, int mode, int& file_id)
@@ -165,7 +174,7 @@ namespace ugridapi
         return exitCode;
     }
 
-    UGRID_API int ug_mesh2d_put(int file_id, int topology_id, Mesh2D mesh2d)
+    UGRID_API int ug_mesh2d_put(int file_id, Mesh2D const& mesh2d, int topology_id)
     {
         int exitCode = Success;
         try

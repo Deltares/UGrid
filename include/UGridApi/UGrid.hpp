@@ -81,6 +81,8 @@ namespace ugridapi
 
         UGRID_API  int ug_file_replace_mode();
 
+        UGRID_API  int ug_file_add_coordinate_mapping(int espg);
+
         /// @brief Opens a file and fills the state with the entities upon reading
         /// @param filePath The path of the file
         /// @param mode The netcdf opening mode
@@ -115,7 +117,7 @@ namespace ugridapi
         /// @return 
         UGRID_API int ug_mesh2d_def(int file_id, Mesh2D const& mesh2d, int& topology_id);
 
-        UGRID_API int ug_mesh2d_put(int file_id, int topology_id, Mesh2D const& mesh2d);
+        UGRID_API int ug_mesh2d_put(int file_id, Mesh2D const& mesh2d, int topology_id);
 
         UGRID_API int ug_mesh2d_inq(int file_id, int topology_id, Mesh2D& mesh2d);
 

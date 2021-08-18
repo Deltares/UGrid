@@ -26,7 +26,9 @@
 //------------------------------------------------------------------------------
 
 #pragma once
+#include <ostream>
 #include <string>
+#include <sstream>
 
 #include <boost/algorithm/string/split.hpp>
 #include <boost/algorithm/string.hpp>
@@ -35,6 +37,37 @@
 /// @brief Contains the logic of the C++ static library
 namespace ugrid
 {
+
+    class UGridVarAttributeStrBuilder
+    {
+        std::stringstream m_os;
+        std::string m_name;
+    public:
+        UGridVarAttributeStrBuilder(std::string const& name) : m_name(name)
+        {
+            m_os << m_name;
+        }
+
+        void clear()
+        {
+            m_os.str(std::string());
+            m_os << m_name;
+        }
+
+        [[nodiscard]] std::string str() const
+        {
+            return m_os.str();
+        }
+
+        template<typename T>
+        UGridVarAttributeStrBuilder& operator<<(T val)
+        {
+            m_os << val;
+            return *this;
+        }
+    };
+
+
     static bool is_mesh_topology_variable(std::map<std::string, netCDF::NcVarAtt> const& attributes)
     {
         if (attributes.find("cf_role") == attributes.end())

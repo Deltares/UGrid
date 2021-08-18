@@ -44,6 +44,14 @@ namespace ugrid
     /// @brief A class containing the ids of UGrid netcdf file
     struct UGridEntity
     {
+        enum class UGridEntityDimensions
+        {
+            two,
+            nodes,
+            edges,
+            faces,
+            layer
+        };
 
 
         UGridEntity() = default;
@@ -56,10 +64,12 @@ namespace ugrid
         UGridEntity(
             std::shared_ptr<netCDF::NcFile> const& nc_file,
             std::string const& entity_name,
+            std::map<std::string, std::vector<netCDF::NcVar>>& const attribute_variables,
             std::map<std::string, std::vector<std::string>> const& attribute_variable_names)
             :
             m_nc_file(nc_file),
             m_entity_name(entity_name),
+            m_attribute_variables(attribute_variables),
             m_attribute_variable_names(attribute_variable_names)
         {
         }
@@ -67,7 +77,7 @@ namespace ugrid
         std::shared_ptr<netCDF::NcFile> m_nc_file;                                              /// a reference to the nc file
         std::string m_entity_name;                                                              /// the name of the entity
         std::map<std::string, std::vector<std::string>>  m_attribute_variable_names;            /// for each UGridEntity attribute, get the corresponding names
-        std::map<std::string, std::vector<netCDF::NcVarAtt>>  m_attribute_variables;                  /// for each UGridEntity attribute, get the corresponding attribute
-
+        std::map<std::string, std::vector<netCDF::NcVar>>  m_attribute_variables;                  /// for each UGridEntity attribute, get the corresponding attribute
+        std::map<UGridEntityDimensions, netCDF::NcDim>  m_dimensions;
     };
 } // namespace ugrid
