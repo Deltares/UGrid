@@ -84,6 +84,11 @@ namespace ugridapi
         return netCDF::NcFile::write;
     }
 
+    UGRID_API int ug_file_replace_mode()
+    {
+        return netCDF::NcFile::replace;
+    }
+
     UGRID_API int ug_topology()
     {
         return netCDF::NcFile::write;
@@ -97,12 +102,19 @@ namespace ugridapi
         {
             if (mode == netCDF::NcFile::read)
             {
-                auto ncFile = std::make_shared< netCDF::NcFile>(filePath, netCDF::NcFile::read, netCDF::NcFile::classic);
+                auto const ncFile = std::make_shared< netCDF::NcFile>(filePath, netCDF::NcFile::read, netCDF::NcFile::classic);
                 file_id = ncFile->getId();
                 ugrid_states.insert({ ncFile->getId(), UGridState(ncFile) });
 
                 auto const meshes = ugrid::Mesh2D::Create(ncFile);
                 ugrid_states[file_id].m_mesh2d = meshes;
+            }
+            if (mode == netCDF::NcFile::replace)
+            {
+                auto const ncFile = std::make_shared< netCDF::NcFile>(filePath, netCDF::NcFile::replace, netCDF::NcFile::classic);
+                file_id = ncFile->getId();
+
+                ugrid_states.insert({ ncFile->getId(), UGridState(ncFile) });
             }
         }
         catch (...)
@@ -136,10 +148,15 @@ namespace ugridapi
         int exitCode = Success;
         try
         {
+            if (ugrid_states.count(file_id) == 0)
+            {
+                throw std::invalid_argument("UGrid: The selected file_id does not exist.");
+            }
 
-            ugrid::Mesh2D mesh2d;
+            ugrid::Mesh2D mesh2d(ugrid_states[file_id].m_ncFile);
             mesh2d.Define(mesh2dapi);
             ugrid_states[file_id].m_mesh2d.emplace_back(mesh2d);
+            topology_id = ugrid_states[file_id].m_mesh2d.size() - 1;
         }
         catch (...)
         {
@@ -153,6 +170,15 @@ namespace ugridapi
         int exitCode = Success;
         try
         {
+            if (ugrid_states.count(file_id) == 0)
+            {
+                throw std::invalid_argument("UGrid: The selected file_id does not exist.");
+            }
+            if (topology_id >= ugrid_states[file_id].m_mesh2d.size())
+            {
+                throw std::invalid_argument("UGrid: The selected topology id is larger than the number of available 2d meshes");
+            }
+
             ugrid_states[file_id].m_mesh2d[topology_id].Put(mesh2d);
         }
         catch (...)

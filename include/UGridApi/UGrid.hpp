@@ -79,6 +79,8 @@ namespace ugridapi
 
         UGRID_API int ug_file_write_mode();
 
+        UGRID_API  int ug_file_replace_mode();
+
         /// @brief Opens a file and fills the state with the entities upon reading
         /// @param filePath The path of the file
         /// @param mode The netcdf opening mode

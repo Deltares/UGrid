@@ -50,11 +50,12 @@ namespace ugrid
 
     }
 
-    static std::map < std::string, std::vector<std::string>> GetAttributesNames(
+    static std::tuple<std::map<std::string, std::vector<netCDF::NcVar>>, std::map < std::string, std::vector<std::string>>> GetAttributesNames(
         std::map<std::string, netCDF::NcVarAtt> const& topology_variable,
         std::multimap<std::string, netCDF::NcVar> const& variables)
     {
-        std::map<std::string, std::vector<std::string>> attribute_names;
+        std::map<std::string, std::vector<netCDF::NcVar>> attribute_variables;
+        std::map<std::string, std::vector<std::string>> attribute_variable_names;
         for (const auto& attribute : topology_variable)
         {
             if (attribute.second.getType() != netCDF::NcType::nc_CHAR)
@@ -63,29 +64,29 @@ namespace ugrid
             }
             std::string name;
             attribute.second.getValues(name);
-            std::vector<std::string> variable_names;
-            split(variable_names, name, boost::is_any_of(" "));
+            std::vector<std::string> tokens;
+            split(tokens, name, boost::is_any_of(" "));
             std::vector<std::string> valid_variable_names;
-            for (auto const& variable_name : variable_names)
+            std::vector<netCDF::NcVar> valid_attribute_variables;
+            for (auto const& token : tokens)
             {
-                const auto variable_iterator = variables.find(variable_name);
+                // a name of a valid attribute has been found
+                const auto variable_iterator = variables.find(token);
                 if (variable_iterator != variables.end())
                 {
-                    valid_variable_names.emplace_back(variable_name);
+                    valid_attribute_variables.emplace_back(variable_iterator->second);
                 }
             }
-            // It is a variable
+            // valid variables have been found
             if (!valid_variable_names.empty())
             {
-                attribute_names.insert({ attribute.first, valid_variable_names });
+                attribute_variables.insert({ attribute.first, valid_attribute_variables });
             }
-            // it is not a variable name
-            if (valid_variable_names.empty())
-            {
-                attribute_names.insert({ attribute.first, variable_names });
-            }
+
+            attribute_variable_names.insert({ attribute.first, tokens });
+
         }
-        return attribute_names;
+        return { attribute_variables , attribute_variable_names };
     }
 
 } // namespace ugrid

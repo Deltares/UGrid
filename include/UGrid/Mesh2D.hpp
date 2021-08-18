@@ -35,7 +35,6 @@
 #include <ncVar.h>
 #include <NcVarAtt.h>
 #include <UGridApi/Mesh2D.hpp>
-#include <UGridApi/TopologyOptions.hpp>
 
 #include "UGridEntity.hpp"
 
@@ -50,6 +49,14 @@ namespace ugrid
     {
         /// @brief The default constructor
         Mesh2D() = default;
+
+
+        /// @brief Constructor setting the nc_file 
+        /// @param nc_file 
+        Mesh2D(
+            std::shared_ptr<netCDF::NcFile> const& nc_file) : UGridEntity(nc_file)
+        {
+        }
 
         /// @brief 
         /// @param nc_file 
