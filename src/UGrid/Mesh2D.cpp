@@ -44,47 +44,68 @@ void Mesh2D::Define(ugridapi::Mesh2D const& mesh2d)
 
     m_entity_name = std::string(mesh2d.name);
     m_spherical_coordinates = mesh2d.is_spherical == 0 ? false : true;
+    m_start_index = mesh2d.start_index;
+
     m_topology_variable = m_nc_file->addVar(m_entity_name, netCDF::NcType::nc_CHAR);
 
     // define topology variable
     m_topology_attributes.insert({ "cf_role", m_topology_variable.putAtt("cf_role", "mesh_topology") });
     m_topology_attributes.insert({ "long_name",m_topology_variable.putAtt("long_name", "Topology data of " + m_entity_name) });
     m_topology_attributes.insert({ "topology_dimension", m_topology_variable.putAtt("topology_dimension", netCDF::NcType::nc_INT, 2) });
-    m_nc_file->addDim("Two", 2);
+    m_dimensions.insert({ UGridDimensions::Two, m_nc_file->addDim("Two", 2) });
 
     UGridVarAttributeStringBuilder string_builder(m_entity_name);
     // node variables
     if (mesh2d.num_nodes > 0)
     {
-        bool add_coordinate_variable = mesh2d.node_x != nullptr && mesh2d.node_y != nullptr;
-        // define the node variable
-        define_locations(UGridEntityLocations::nodes, mesh2d.num_nodes, add_coordinate_variable);
+        bool const add_coordinate_variable = mesh2d.node_x != nullptr && mesh2d.node_y != nullptr;
+
+        define_topological_locations(UGridEntityLocations::nodes, mesh2d.num_nodes, add_coordinate_variable);
 
         string_builder.clear(); string_builder << "_nMax_face_nodes";
         m_topology_attributes.insert({ "max_face_nodes_dimension", m_topology_variable.putAtt("max_face_nodes_dimension", string_builder.str()) });
 
-        // optional location nodes
-        m_related_variables.insert({ "node_z", UGridVariable::define_node_variables("node_z", *this, netCDF::NcType::nc_DOUBLE, "altitude", "z-coordinate of mesh nodes", "m", double_missing_value) });
+        // optional variables located on nodes
+        m_related_variables.insert({ "node_z", UGridVariable::define_node_variables("node_z", *this, UGridEntityLocations::nodes, "altitude", "z-coordinate of mesh nodes", "m", double_missing_value) });
     }
 
     // edge variables
     if (mesh2d.num_edges)
     {
-        bool add_coordinate_variable = mesh2d.edge_x != nullptr && mesh2d.edge_y != nullptr;
+        bool const add_coordinate_variable = mesh2d.edge_x != nullptr && mesh2d.edge_y != nullptr;
 
-        define_locations(UGridEntityLocations::edges, mesh2d.num_edges, add_coordinate_variable);
+        define_topological_locations(UGridEntityLocations::edges, mesh2d.num_edges, add_coordinate_variable);
 
-        // optional location edges
-        // define related variables eventually required
-        m_related_variables.insert({ "node_z", UGridVariable::define_node_variables("node_z", *this, netCDF::NcType::nc_DOUBLE, "altitude", "z-coordinate of mesh nodes", "m", double_missing_value) });
+        // add edge nodes (required)
+        string_builder.clear(); string_builder << m_entity_name << "_edge_nodes";
+        auto variable = m_nc_file->addVar(string_builder.str(), netCDF::NcType::nc_DOUBLE, { m_dimensions[UGridDimensions::edges], m_dimensions[UGridDimensions::Two] });
+        variable.putAtt("cf_role", "edge_node_connectivity");
+        variable.putAtt("long_name", "Start and end nodes of mesh edges");
+        if (m_start_index != 0)
+        {
+            variable.putAtt("start_index", netCDF::NcType::nc_INT, m_start_index);
+        }
+        m_topology_attribute_variables.insert({ string_builder.str(), {variable} });
     }
 
     // faces variables
     if (mesh2d.num_faces > 0)
     {
-        bool add_coordinate_variable = mesh2d.face_x != nullptr && mesh2d.face_y != nullptr;
+        bool const add_coordinate_variable = mesh2d.face_x != nullptr && mesh2d.face_y != nullptr;
 
-        define_locations(UGridEntityLocations::faces, mesh2d.num_faces, add_coordinate_variable);
+        define_topological_locations(UGridEntityLocations::faces, mesh2d.num_faces, add_coordinate_variable);
+
+        string_builder.clear(); string_builder << m_entity_name << "_face_nodes";
+        auto variable = m_nc_file->addVar(string_builder.str(), netCDF::NcType::nc_DOUBLE, { m_dimensions[UGridDimensions::faces], m_dimensions[UGridDimensions::max_face_nodes] });
+        variable.putAtt("cf_role", "edge_node_connectivity");
+        variable.putAtt("long_name", "Start and end nodes of mesh edges");
+        if (m_start_index != 0)
+        {
+            variable.putAtt("start_index", netCDF::NcType::nc_INT, m_start_index);
+        }
+        m_topology_attribute_variables.insert({ string_builder.str(), {variable} });
+
+
 
         if (mesh2d.face_edges != nullptr)
         {
@@ -106,9 +127,9 @@ void Mesh2D::Define(ugridapi::Mesh2D const& mesh2d)
     // Layers, optionally required if layers are present (1D or 2D layered mesh topology)
     if (mesh2d.num_layers > 0)
     {
-        define_locations(UGridEntityLocations::layer, mesh2d.num_layers, false);
-        define_locations(UGridEntityLocations::layer_interface, mesh2d.num_layers + 1, false);
-        define_locations(UGridEntityLocations::vertical, mesh2d.num_layers + 1, false);
+        define_topological_locations(UGridEntityLocations::layer, mesh2d.num_layers, false);
+        define_topological_locations(UGridEntityLocations::layer_interface, mesh2d.num_layers + 1, false);
+        define_topological_locations(UGridEntityLocations::vertical, mesh2d.num_layers + 1, false);
     }
 
 }
