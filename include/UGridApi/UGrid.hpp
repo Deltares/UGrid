@@ -66,10 +66,14 @@ namespace ugridapi
             Exception = 1,
         };
 
-        /// @brief Get the last library error message
-        /// @param error_message 
-        /// @return 
-        UGRID_API int ug_get_error(const char*& error_message);
+        /*----------------------------------------------------------------------------------------------------
+         * File
+         *---------------------------------------------------------------------------------------------------*/
+
+         /// @brief Get the last library error message
+         /// @param error_message 
+         /// @return 
+        UGRID_API int ug_error_get(const char*& error_message);
 
         UGRID_API int ug_name_get_length();
 
@@ -94,6 +98,10 @@ namespace ugridapi
         /// @return 
         UGRID_API int ug_close(int file_id);
 
+        /*----------------------------------------------------------------------------------------------------
+         * Network 1d
+         *---------------------------------------------------------------------------------------------------*/
+
         UGRID_API int ug_network1d_def(int file_id, Network1D const& network, int& topology_id);
 
         UGRID_API int ug_network1d_put(int file_id, int topology_id, Network1D const& network);
@@ -101,6 +109,10 @@ namespace ugridapi
         UGRID_API int ug_network1d_inq(int file_id, int topology_id, Network1D& network);
 
         UGRID_API int ug_network1d_get(int file_id, int topology_id, Network1D& network);
+
+        /*----------------------------------------------------------------------------------------------------
+         * Mesh 1d
+         *---------------------------------------------------------------------------------------------------*/
 
         UGRID_API int ug_mesh1d_def(int file_id, Mesh1D const& mesh1d, int& topology_id);
 
@@ -110,18 +122,26 @@ namespace ugridapi
 
         UGRID_API int ug_mesh1d_get(int file_id, int topology_id, Mesh1D& mesh1d);
 
-        /// @brief Defines a new 2d mesh
-        /// @param file_id 
-        /// @param mesh2d 
-        /// @param topology_id 
-        /// @return 
+        /*----------------------------------------------------------------------------------------------------
+         * Mesh 2d
+         *---------------------------------------------------------------------------------------------------*/
+
+         /// @brief Defines a new 2d mesh
+         /// @param file_id 
+         /// @param mesh2d 
+         /// @param topology_id 
+         /// @return 
         UGRID_API int ug_mesh2d_def(int file_id, Mesh2D const& mesh2d, int& topology_id);
 
-        UGRID_API int ug_mesh2d_put(int file_id, Mesh2D const& mesh2d, int topology_id);
+        UGRID_API int ug_mesh2d_put(int file_id, int topology_id, Mesh2D const& mesh2d);
 
         UGRID_API int ug_mesh2d_inq(int file_id, int topology_id, Mesh2D& mesh2d);
 
         UGRID_API int ug_mesh2d_get(int file_id, int topology_id, Mesh2D& mesh2d);
+
+        /*----------------------------------------------------------------------------------------------------
+         * Contacts
+        *---------------------------------------------------------------------------------------------------*/
 
         UGRID_API int ug_contacts_def(int file_id, Contacts  const& contacts, int& topology_id);
 
@@ -131,19 +151,31 @@ namespace ugridapi
 
         UGRID_API int ug_contacts_get(int file_id, int topology_id, Contacts& contacts);
 
-        UGRID_API int ug_topology_get_network1d_type();
+        /*----------------------------------------------------------------------------------------------------
+         * Topologies
+         *---------------------------------------------------------------------------------------------------*/
 
-        UGRID_API int ug_topology_get_mesh1d_type();
+         /// @brief Gets the network topology type
+         /// @return The topology type as integer
+        UGRID_API int ug_topology_get_network1d_type_enum();
 
-        UGRID_API int ug_topology_get_mesh2d_type();
+        /// @brief Gets the mesh1d topology type
+         /// @return The topology type as integer
+        UGRID_API int ug_topology_get_mesh1d_type_enum();
 
-        UGRID_API int ug_topology_get_contacts_type();
+        /// @brief Gets the mesh2d topology type
+        /// @return The topology type as integer
+        UGRID_API int ug_topology_get_mesh2d_type_enum();
+
+        /// @brief Gets the contacts topology type
+        /// @return The topology type as integer
+        UGRID_API int ug_topology_get_contacts_type_enum();
 
         /// @brief Get the number of topologies of a specific type
         /// @param file_id The UGrid file id
         /// @param topology_type The topology type (0 network1d, 1 mesh1d, 2 mesh2d, 3 contacts)
         /// @return The number of topologies
-        UGRID_API int ug_topology_get_num(int file_id, int topology_type);
+        UGRID_API int ug_topology_get_count(int file_id, int topology_type);
 
         /// @brief Get the number of topology attributes associated to a specific topology (Huite request)
         /// @param file_id The UGrid file id
@@ -151,7 +183,7 @@ namespace ugridapi
         /// @param topology_id The topology id (multiple instances are supported)
         /// @param attributes_num The number of topology attributes
         //// @return Error code
-        UGRID_API int ug_topology_get_attributes_num(int file_id, int topology_type, int topology_id, int& attributes_num);
+        UGRID_API int ug_topology_get_attributes_count(int file_id, int topology_type, int topology_id, int& attributes_num);
 
         /// @brief Get the attribute names (UGRID standard names) associated to a specific topology (Huite request)
         /// @param file_id The UGrid file id
@@ -178,12 +210,17 @@ namespace ugridapi
         /// @return Error code
         UGRID_API int ug_topology_varid_inq(int file_id, int topology_type, int topology_id, char* var_name, int& varid);
 
-        /// @brief Get the number of data variables associated to a specific topology (Huite request)
-        /// @param file_id The UGrid file id
-        /// @param topology_type The topology type (0 network1d, 1 mesh1d, 2 mesh2d, 3 contacts) 
-        /// @param topology_id The topology id (multiple instances are supported)
-        /// @param var_num The number of data variable associated with the specific topology
-        /// @return Error code
+
+        /*----------------------------------------------------------------------------------------------------
+         * Variables
+         *---------------------------------------------------------------------------------------------------*/
+
+         /// @brief Get the number of data variables associated to a specific topology (Huite request)
+         /// @param file_id The UGrid file id
+         /// @param topology_type The topology type (0 network1d, 1 mesh1d, 2 mesh2d, 3 contacts) 
+         /// @param topology_id The topology id (multiple instances are supported)
+         /// @param var_num The number of data variable associated with the specific topology
+         /// @return Error code
         UGRID_API int ug_var_get_num_attributes(int file_id, int topology_type, int topology_id, int& var_num);
 
         /// @brief Get the data variables names associated to a specific topology (Huite request)
@@ -211,18 +248,19 @@ namespace ugridapi
             int topology_id,
             char* data_variable_name,
             int type,
+            int crs,
             int location,
             char* standard_name,
             char* long_name,
             char* units,
             char* cell_method);
 
-        // Put data variable
-        UGRID_API int ug_var_put_double(int file_id, int topology_type, int topology_id, char* data_variable_name, double* data);
+        // Put data variable (not required?)
+        //UGRID_API int ug_var_put_double(int file_id, int topology_type, int topology_id, char* data_variable_name, double* data);
 
-        UGRID_API int ug_var_put_int(int file_id, int topology_type, int topology_id, char* data_variable_name, int* data);
+        //UGRID_API int ug_var_put_int(int file_id, int topology_type, int topology_id, char* data_variable_name, int* data);
 
-        UGRID_API int ug_var_put_char(int file_id, int topology_type, int topology_id, char* data_variable_name, char* data);
+        //UGRID_API int ug_var_put_char(int file_id, int topology_type, int topology_id, char* data_variable_name, char* data);
 
         // Get a data variable (DFX, QGIS UGrid drivers)
         UGRID_API int ug_var_get_double(int file_id, int topology_type, int topology_id, char* data_variable_name, double* data);

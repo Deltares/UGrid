@@ -25,14 +25,13 @@
 //
 //------------------------------------------------------------------------------
 
-#include <sstream>
-
 #include <ncFile.h>
 #include <ncVar.h>
 #include <ncDim.h>
 
 #include <UGrid/Mesh2D.hpp>
 #include <UGrid/Operations.hpp>
+#include <UGrid/UGridVariable.hpp>
 
 using ugrid::Mesh2D;
 
@@ -43,103 +42,73 @@ void Mesh2D::Define(ugridapi::Mesh2D const& mesh2d)
         throw std::invalid_argument("Mesh2D::Define invalid mesh name");
     }
 
-    std::string const mesh2d_name(mesh2d.name);
-    auto topology_variable = m_nc_file->addVar(mesh2d_name, netCDF::NcType::nc_CHAR);
+    m_entity_name = std::string(mesh2d.name);
+    m_spherical_coordinates = mesh2d.is_spherical == 0 ? false : true;
+    m_topology_variable = m_nc_file->addVar(m_entity_name, netCDF::NcType::nc_CHAR);
 
-    std::vector<netCDF::NcVarAtt> variableAttributes;
-    UGridVarAttributeStrBuilder string_builder(mesh2d_name);
+    // define topology variable
+    m_topology_attributes.insert({ "cf_role", m_topology_variable.putAtt("cf_role", "mesh_topology") });
+    m_topology_attributes.insert({ "long_name",m_topology_variable.putAtt("long_name", "Topology data of " + m_entity_name) });
+    m_topology_attributes.insert({ "topology_dimension", m_topology_variable.putAtt("topology_dimension", netCDF::NcType::nc_INT, 2) });
+    m_nc_file->addDim("Two", 2);
 
-    variableAttributes.emplace_back(topology_variable.putAtt("cf_role", "mesh_topology"));
-    variableAttributes.emplace_back(topology_variable.putAtt("long_name", "Topology data of " + mesh2d_name));
-
-    variableAttributes.emplace_back(topology_variable.putAtt("topology_dimension", netCDF::NcType::nc_INT, 2));
-
-    if (mesh2d.add_spherical_coordinates == 1)
+    UGridVarAttributeStringBuilder string_builder(m_entity_name);
+    // node variables
+    if (mesh2d.num_nodes > 0)
     {
-        string_builder.clear(); string_builder << "_node_x " << mesh2d_name << "_node_y " << mesh2d_name << "_node_lon " << mesh2d_name << "_node_lat";
-        variableAttributes.emplace_back(topology_variable.putAtt("node_coordinates", string_builder.str()));
-    }
-    else
-    {
-        string_builder.clear(); string_builder << "_node_x " << mesh2d_name << "_node_y";
-        variableAttributes.emplace_back(topology_variable.putAtt("node_coordinates", string_builder.str()));
-    }
+        bool add_coordinate_variable = mesh2d.node_x != nullptr && mesh2d.node_y != nullptr;
+        // define the node variable
+        define_locations(UGridEntityLocations::nodes, mesh2d.num_nodes, add_coordinate_variable);
 
-    string_builder.clear(); string_builder << "_nNodes";
-    variableAttributes.emplace_back(topology_variable.putAtt("node_dimension", string_builder.str()));
+        string_builder.clear(); string_builder << "_nMax_face_nodes";
+        m_topology_attributes.insert({ "max_face_nodes_dimension", m_topology_variable.putAtt("max_face_nodes_dimension", string_builder.str()) });
 
-    string_builder.clear(); string_builder << "_nMax_face_nodes";
-    variableAttributes.emplace_back(topology_variable.putAtt("max_face_nodes_dimension", string_builder.str()));
-
-    if (mesh2d.num_edges > 0)
-    {
-        string_builder.clear(); string_builder << "_edge_nodes";
-        variableAttributes.emplace_back(topology_variable.putAtt("edge_node_connectivity", string_builder.str()));
-
-        string_builder.clear(); string_builder << "_nEdges";
-        variableAttributes.emplace_back(topology_variable.putAtt("edge_dimension", string_builder.str()));
-
-        if (mesh2d.add_spherical_coordinates == 1)
-        {
-            string_builder.clear(); string_builder << "_edge_x " << mesh2d_name << "_edge_y " << mesh2d_name << "_edge_lon " << mesh2d_name << "_edge_lat";
-            variableAttributes.emplace_back(topology_variable.putAtt("edge_coordinates", string_builder.str()));
-        }
-        else
-        {
-            string_builder.clear(); string_builder << mesh2d_name << "_edge_x " << mesh2d_name << "_edge_y";
-            variableAttributes.emplace_back(topology_variable.putAtt("edge_coordinates", string_builder.str()));
-        }
+        // optional location nodes
+        m_related_variables.insert({ "node_z", UGridVariable::define_node_variables("node_z", *this, netCDF::NcType::nc_DOUBLE, "altitude", "z-coordinate of mesh nodes", "m", double_missing_value) });
     }
 
+    // edge variables
+    if (mesh2d.num_edges)
+    {
+        bool add_coordinate_variable = mesh2d.edge_x != nullptr && mesh2d.edge_y != nullptr;
+
+        define_locations(UGridEntityLocations::edges, mesh2d.num_edges, add_coordinate_variable);
+
+        // optional location edges
+        // define related variables eventually required
+        m_related_variables.insert({ "node_z", UGridVariable::define_node_variables("node_z", *this, netCDF::NcType::nc_DOUBLE, "altitude", "z-coordinate of mesh nodes", "m", double_missing_value) });
+    }
+
+    // faces variables
     if (mesh2d.num_faces > 0)
     {
-        string_builder.clear(); string_builder << mesh2d_name << "_face_nodes";
-        variableAttributes.emplace_back(topology_variable.putAtt("face_node_connectivity", string_builder.str()));
+        bool add_coordinate_variable = mesh2d.face_x != nullptr && mesh2d.face_y != nullptr;
 
-        string_builder.clear(); string_builder << mesh2d_name << "_nFaces";
-        variableAttributes.emplace_back(topology_variable.putAtt("face_dimension", string_builder.str()));
+        define_locations(UGridEntityLocations::faces, mesh2d.num_faces, add_coordinate_variable);
 
         if (mesh2d.face_edges != nullptr)
         {
-            string_builder.clear(); string_builder << mesh2d_name << "_face_edges";
-            variableAttributes.emplace_back(topology_variable.putAtt("face_edge_connectivity", string_builder.str()));
+            string_builder.clear(); string_builder << m_entity_name << "_face_edges";
+            m_topology_attributes.insert({ "face_edge_connectivity", m_topology_variable.putAtt("face_edge_connectivity", string_builder.str()) });
         }
         if (mesh2d.face_face != nullptr)
         {
-            string_builder.clear(); string_builder << mesh2d_name << "_face_links";
-            variableAttributes.emplace_back(topology_variable.putAtt("face_face_connectivity", string_builder.str()));
+            string_builder.clear(); string_builder << m_entity_name << "_face_links";
+            m_topology_attributes.insert({ "face_face_connectivity", m_topology_variable.putAtt("face_face_connectivity", string_builder.str()) });
         }
         if (mesh2d.edge_faces != nullptr)
         {
-            string_builder.clear(); string_builder << mesh2d_name << "_edge_faces";
-            variableAttributes.emplace_back(topology_variable.putAtt("edge_face_connectivity", string_builder.str()));
-        }
-        if (mesh2d.face_x != nullptr && mesh2d.face_y != nullptr)
-        {
-            if (mesh2d.add_spherical_coordinates == 1)
-            {
-                string_builder.clear(); string_builder << mesh2d_name << "_face_x " << mesh2d_name << "_face_y " << mesh2d_name << "_face_lon " << mesh2d_name << "_face_lat";
-                variableAttributes.emplace_back(topology_variable.putAtt("face_coordinates", string_builder.str()));
-            }
-            else
-            {
-                string_builder.clear(); string_builder << mesh2d_name << "_face_x " << mesh2d_name << "_face_y";
-                variableAttributes.emplace_back(topology_variable.putAtt("face_coordinates", string_builder.str()));
-            }
+            string_builder.clear(); string_builder << m_entity_name << "_edge_faces";
+            m_topology_attributes.insert({ "edge_face_connectivity", m_topology_variable.putAtt("edge_face_connectivity", string_builder.str()) });
         }
     }
 
-    // Optionally required if layers are present (1D or 2D layered mesh topology)
+    // Layers, optionally required if layers are present (1D or 2D layered mesh topology)
     if (mesh2d.num_layers > 0)
     {
-        string_builder.clear(); string_builder << mesh2d_name << "_nLayers";
-        variableAttributes.emplace_back(topology_variable.putAtt("layer_dimension", string_builder.str()));
-
-        string_builder.clear(); string_builder << mesh2d_name << "_nInterfaces";
-        variableAttributes.emplace_back(topology_variable.putAtt("interface_dimension", string_builder.str()));
-
-        string_builder.clear(); string_builder << mesh2d_name << "nLayers: " << mesh2d_name << "_nInterfaces (padding: none)";
-        variableAttributes.emplace_back(topology_variable.putAtt("vertical_dimensions", string_builder.str()));
+        define_locations(UGridEntityLocations::layer, mesh2d.num_layers, false);
+        define_locations(UGridEntityLocations::layer_interface, mesh2d.num_layers + 1, false);
+        define_locations(UGridEntityLocations::vertical, mesh2d.num_layers + 1, false);
     }
 
 }
@@ -150,63 +119,25 @@ void Mesh2D::Put(ugridapi::Mesh2D const& mesh2d)
     {
         throw std::invalid_argument("Mesh2D::Define invalid mesh name");
     }
-    std::string const mesh2d_name(mesh2d.name);
-    UGridVarAttributeStrBuilder string_builder(mesh2d_name);
+    m_entity_name = std::string(mesh2d.name);
+    m_spherical_coordinates = mesh2d.is_spherical == 0 ? false : true;
 
-    std::vector<netCDF::NcDim> dimensions;
-
-    m_dimensions.insert({ UGridEntityDimensions::two ,m_nc_file->addDim("Two", 2) });
+    UGridVarAttributeStringBuilder string_builder(m_entity_name);
 
     if (mesh2d.num_nodes > 0)
     {
-        string_builder.clear();  string_builder << "_nNodes";
-        m_dimensions.insert({ UGridEntityDimensions::nodes, m_nc_file->addDim(string_builder.str(), mesh2d.num_nodes) });
-
-        string_builder.clear();  string_builder << "_node_x";
-        m_attribute_variables["node_coordinates"].emplace_back(m_nc_file->addVar(string_builder.str(), netCDF::NcType::nc_DOUBLE, m_dimensions[UGridEntityDimensions::nodes]));
-        m_attribute_variables["node_coordinates"].back().putAtt("units", "m");
-        m_attribute_variables["node_coordinates"].back().putAtt("standard_name", "projection_x_coordinate");
-        m_attribute_variables["node_coordinates"].back().putAtt("long_name", "x-coordinate of mesh nodes");
-
-        string_builder.clear();  string_builder << "_node_y";
-        m_attribute_variables["node_coordinates"].emplace_back(m_nc_file->addVar(string_builder.str(), netCDF::NcType::nc_DOUBLE, m_dimensions[UGridEntityDimensions::nodes]));
-        m_attribute_variables["node_coordinates"].back().putAtt("units", "m");
-        m_attribute_variables["node_coordinates"].back().putAtt("standard_name", "projection_y_coordinate");
-        m_attribute_variables["node_coordinates"].back().putAtt("long_name", "y-coordinate of mesh nodes");
-
-        if (mesh2d.add_spherical_coordinates == 1)
-        {
-            string_builder.clear();  string_builder << "_node_lon";
-            m_attribute_variables["node_coordinates"].emplace_back(m_nc_file->addVar(string_builder.str(), netCDF::NcType::nc_DOUBLE, m_dimensions[UGridEntityDimensions::nodes]));
-            m_attribute_variables["node_coordinates"].back().putAtt("units", "degrees_east");
-            m_attribute_variables["node_coordinates"].back().putAtt("standard_name", "longitude");
-            m_attribute_variables["node_coordinates"].back().putAtt("long_name", "longitude coordinate of mesh nodes");
-
-            string_builder.clear();  string_builder << "_node_lat";
-            m_attribute_variables["node_coordinates"].emplace_back(m_nc_file->addVar(string_builder.str(), netCDF::NcType::nc_DOUBLE, m_dimensions[UGridEntityDimensions::nodes]));
-            m_attribute_variables["node_coordinates"].back().putAtt("units", "degrees_north");
-            m_attribute_variables["node_coordinates"].back().putAtt("standard_name", "latitude");
-            m_attribute_variables["node_coordinates"].back().putAtt("long_name", "latitude coordinate of mesh nodes");
-        }
-
-
     }
+
     if (mesh2d.num_edges > 0)
     {
-        string_builder.clear();  string_builder << "_nEdges";
-        dimensions.emplace_back(m_nc_file->addDim(string_builder.str(), mesh2d.num_edges));
+
     }
     if (mesh2d.num_faces > 0)
     {
-        string_builder.clear();  string_builder << "_nFaces";
-        dimensions.emplace_back(m_nc_file->addDim(string_builder.str(), mesh2d.num_faces));
+
     }
     if (mesh2d.num_layers > 0)
     {
-        string_builder.clear();  string_builder << "_nLayers";
-        dimensions.emplace_back(m_nc_file->addDim(string_builder.str(), mesh2d.num_layers));
-        string_builder.clear();  string_builder << "_nInterfaces";
-        dimensions.emplace_back(m_nc_file->addDim(string_builder.str(), mesh2d.num_layers + 1));
     }
 
 
@@ -214,31 +145,52 @@ void Mesh2D::Put(ugridapi::Mesh2D const& mesh2d)
 
 void Mesh2D::Inquire(ugridapi::Mesh2D& mesh2d) const
 {
-    mesh2d.num_nodes = m_nc_file->getVar(m_attribute_variable_names.at("node_coordinates").at(0)).getDims().at(0).getSize();
-    mesh2d.num_edges = m_nc_file->getVar(m_attribute_variable_names.at("edge_coordinates").at(0)).getDims().at(0).getSize();
-    mesh2d.num_faces = m_nc_file->getVar(m_attribute_variable_names.at("face_coordinates").at(0)).getDims().at(0).getSize();
+    mesh2d.num_nodes = m_topology_attribute_variables.at("node_coordinates").at(0).getDims().at(0).getSize();
+    mesh2d.num_edges = m_topology_attribute_variables.at("edge_coordinates").at(0).getDims().at(0).getSize();
+    mesh2d.num_faces = m_topology_attribute_variables.at("face_coordinates").at(0).getDims().at(0).getSize();
 
     // Other optional numerical values
-    if (m_attribute_variable_names.find("face_node_connectivity") != m_attribute_variable_names.end())
+    if (m_topology_attributes_names.find("face_node_connectivity") != m_topology_attributes_names.end())
     {
-        mesh2d.num_face_nodes_max = m_nc_file->getVar(m_attribute_variable_names.at("face_node_connectivity").at(0)).getDims().at(1).getSize();
+        mesh2d.num_face_nodes_max = m_topology_attribute_variables.at("face_node_connectivity").at(0).getDims().at(1).getSize();
     }
 }
 
+
+
 void Mesh2D::Get(ugridapi::Mesh2D& mesh2d) const
 {
-    Inquire(mesh2d);
     mesh2d.name = m_entity_name.c_str();
 
-    m_nc_file->getVar(m_attribute_variable_names.at("node_coordinates").at(0)).getVar(mesh2d.node_x);
-    m_nc_file->getVar(m_attribute_variable_names.at("node_coordinates").at(1)).getVar(mesh2d.node_y);
+    if (mesh2d.node_x != nullptr)
+    {
+        m_topology_attribute_variables.at("node_coordinates").at(0).getVar(mesh2d.node_x);
+    }
 
-    m_nc_file->getVar(m_attribute_variable_names.at("edge_node_connectivity").at(0)).getVar(mesh2d.edge_nodes);
+    if (mesh2d.node_y != nullptr)
+    {
+        m_topology_attribute_variables.at("node_coordinates").at(1).getVar(mesh2d.node_x);
+    }
 
-    m_nc_file->getVar(m_attribute_variable_names.at("face_coordinates").at(0)).getVar(mesh2d.face_x);
-    m_nc_file->getVar(m_attribute_variable_names.at("face_coordinates").at(1)).getVar(mesh2d.face_y);
+    if (mesh2d.edge_nodes != nullptr)
+    {
+        m_topology_attribute_variables.at("edge_node_connectivity").at(0).getVar(mesh2d.edge_nodes);
+    }
 
-    m_nc_file->getVar(m_attribute_variable_names.at("face_node_connectivity").at(0)).getVar(mesh2d.face_nodes);
+    if (mesh2d.face_x != nullptr)
+    {
+        m_topology_attribute_variables.at("face_coordinates").at(0).getVar(mesh2d.face_x);
+    }
+
+    if (mesh2d.face_y != nullptr)
+    {
+        m_topology_attribute_variables.at("face_coordinates").at(1).getVar(mesh2d.face_y);
+    }
+
+    if (mesh2d.face_nodes != nullptr)
+    {
+        m_topology_attribute_variables.at("face_node_connectivity").at(0).getVar(mesh2d.face_nodes);
+    }
 }
 
 std::vector<Mesh2D> Mesh2D::Create(std::shared_ptr<netCDF::NcFile> const& nc_file)

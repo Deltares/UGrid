@@ -98,6 +98,6 @@ namespace ugridapi
 
         int num_face_nodes_max;
 
-        int add_spherical_coordinates = 0;
+        int is_spherical = 0;
     };
 }

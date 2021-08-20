@@ -18,8 +18,8 @@ TEST(ApiTest, InquireAndGet_AFileWithOneMesh2d_ShouldReadMesh2d)
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
     // get the number of topologies
-    auto topology_type = ugridapi::ug_topology_get_mesh2d_type();
-    auto const num_mesh2d_topologies = ugridapi::ug_topology_get_num(file_id, topology_type);
+    auto topology_type = ugridapi::ug_topology_get_mesh2d_type_enum();
+    auto const num_mesh2d_topologies = ugridapi::ug_topology_get_count(file_id, topology_type);
     ASSERT_EQ(num_mesh2d_topologies, 1);
 
     // Get the dimensions 
@@ -186,7 +186,7 @@ TEST(ApiTest, DefineAndPut_OneMesh2D_ShouldWriteData)
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
     ASSERT_EQ(0, topology_id);
 
-    error_code = ug_mesh2d_put(file_id, mesh2d, topology_id);
+    error_code = ug_mesh2d_put(file_id, topology_id, mesh2d);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
     ASSERT_EQ(0, topology_id);
 

@@ -174,7 +174,7 @@ namespace ugridapi
         return exitCode;
     }
 
-    UGRID_API int ug_mesh2d_put(int file_id, Mesh2D const& mesh2d, int topology_id)
+    UGRID_API int ug_mesh2d_put(int file_id, int topology_id, Mesh2D const& mesh2d)
     {
         int exitCode = Success;
         try
@@ -297,27 +297,27 @@ namespace ugridapi
         return exitCode;
     }
 
-    UGRID_API int ug_topology_get_network1d_type()
+    UGRID_API int ug_topology_get_network1d_type_enum()
     {
         return Network1dTopology;
     }
 
-    UGRID_API int ug_topology_get_mesh1d_type()
+    UGRID_API int ug_topology_get_mesh1d_type_enum()
     {
         return Mesh1dTopology;
     }
 
-    UGRID_API int ug_topology_get_mesh2d_type()
+    UGRID_API int ug_topology_get_mesh2d_type_enum()
     {
         return Mesh2dTopology;
     }
 
-    UGRID_API int ug_topology_get_contacts_type()
+    UGRID_API int ug_topology_get_contacts_type_enum()
     {
         return ContactsTopology;
     }
 
-    UGRID_API int ug_topology_get_num(int file_id, int topology_type)
+    UGRID_API int ug_topology_get_count(int file_id, int topology_type)
     {
 
         if (topology_type == Network1dTopology)

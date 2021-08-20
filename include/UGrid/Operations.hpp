@@ -26,7 +26,6 @@
 //------------------------------------------------------------------------------
 
 #pragma once
-#include <ostream>
 #include <string>
 #include <sstream>
 
@@ -37,13 +36,22 @@
 /// @brief Contains the logic of the C++ static library
 namespace ugrid
 {
+    /// @brief Generic function determining if two values are equal
+    ///
+    /// This is especially useful for floating point values.
+    template <typename T>
+    static bool IsEqual(T value, T referenceValue)
+    {
+        return std::abs(value - referenceValue) < std::numeric_limits<T>::epsilon();
+    }
 
-    class UGridVarAttributeStrBuilder
+
+    class UGridVarAttributeStringBuilder
     {
         std::stringstream m_os;
         std::string m_name;
     public:
-        UGridVarAttributeStrBuilder(std::string const& name) : m_name(name)
+        UGridVarAttributeStringBuilder(std::string const& name) : m_name(name)
         {
             m_os << m_name;
         }
@@ -60,13 +68,12 @@ namespace ugrid
         }
 
         template<typename T>
-        UGridVarAttributeStrBuilder& operator<<(T val)
+        UGridVarAttributeStringBuilder& operator<<(T val)
         {
             m_os << val;
             return *this;
         }
     };
-
 
     static bool is_mesh_topology_variable(std::map<std::string, netCDF::NcVarAtt> const& attributes)
     {
@@ -111,7 +118,7 @@ namespace ugrid
                 }
             }
             // valid variables have been found
-            if (!valid_variable_names.empty())
+            if (!valid_attribute_variables.empty())
             {
                 attribute_variables.insert({ attribute.first, valid_attribute_variables });
             }

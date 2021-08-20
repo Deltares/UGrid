@@ -34,6 +34,10 @@ namespace ugrid
 {
     const int name_lengths = 40;
     const int name_long_lengths = 80;
+    const int int_invalid_value = std::numeric_limits<int>::max();
+    const double double_invalid_value = std::numeric_limits<double>::max();
+
+    const double double_missing_value = -999.0;
 
     const std::string two_string = "Two";
 
