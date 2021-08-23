@@ -78,7 +78,6 @@ namespace ugrid
 
         void define_topological_variable_attributes(netCDF::NcVar& variable,
             std::string const& variable_name,
-            std::string const& cf_role_attribute,
             std::string const& long_name);
 
         netCDF::NcVar define_variable_on_location(std::string const& variable_name,
@@ -102,6 +101,10 @@ namespace ugrid
         std::map<std::string, netCDF::NcVarAtt>            m_topology_attributes;               /// topology attributes
         std::map<std::string, std::vector<std::string>>    m_topology_attributes_names;         /// For each UGridEntity attribute, the corresponding names
         std::map<std::string, std::vector<netCDF::NcVar>>  m_topology_attribute_variables;      /// For each UGridEntity attribute, the corresponding attributes
+
+
+
+
         std::map<std::string, netCDF::NcVar>               m_related_variables;                 /// Variables defined on the entity (foe example on nodes, edges or faces)
         std::map<UGridDimensions, netCDF::NcDim>           m_dimensions;                        /// The entity dimensions
         bool m_spherical_coordinates = false;                                                   /// If it is a spherical entity

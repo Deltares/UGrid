@@ -71,7 +71,10 @@ void Mesh2D::Define(ugridapi::Mesh2D const& mesh2d)
         define_topological_variable_with_coordinates(UGridEntityLocations::nodes, UGridDimensions::nodes, add_coordinate_variable, long_name_pattern);
 
         // Add optional related variables
-        m_related_variables.insert({ "node_z", define_variable_on_location("node_z", UGridDimensions::nodes, "altitude", "z-coordinate of mesh nodes", "m", mesh2d.double_fill_value) });
+        if (mesh2d.node_z != nullptr)
+        {
+            m_related_variables.insert({ "node_z", define_variable_on_location("node_z", UGridDimensions::nodes, "altitude", "z-coordinate of mesh nodes", "m", mesh2d.double_fill_value) });
+        }
     }
 
     // edge variables
@@ -87,7 +90,7 @@ void Mesh2D::Define(ugridapi::Mesh2D const& mesh2d)
 
         // Add connectivity
         auto variable = m_nc_file->addVar(string_builder.str(), netCDF::NcType::nc_DOUBLE, { m_dimensions[UGridDimensions::edges], m_dimensions[UGridDimensions::Two] });
-        define_topological_variable_attributes(variable, string_builder.str(), "edge_node_connectivity", "Start and end nodes of mesh edges");
+        define_topological_variable_attributes(variable, "edge_node_connectivity", "Start and end nodes of mesh edges");
 
         // Add coordinates
         std::string long_name_pattern = "characteristic % of the mesh edge (e.g. midpoint)";
@@ -112,7 +115,7 @@ void Mesh2D::Define(ugridapi::Mesh2D const& mesh2d)
 
         // add the required variable face nodes
         auto variable = m_nc_file->addVar(string_builder.str(), netCDF::NcType::nc_INT, { m_dimensions[UGridDimensions::faces], m_dimensions[UGridDimensions::max_face_nodes] });
-        define_topological_variable_attributes(variable, string_builder.str(), "face_node_connectivity", "Vertex nodes of mesh faces (counterclockwise)");
+        define_topological_variable_attributes(variable, "face_node_connectivity", "Vertex nodes of mesh faces (counterclockwise)");
 
         // add coordinates 
         bool add_coordinate_variable = mesh2d.face_x != nullptr && mesh2d.face_y != nullptr;
@@ -133,7 +136,7 @@ void Mesh2D::Define(ugridapi::Mesh2D const& mesh2d)
 
             std::string variable_name(string_builder.str());
             auto variable = m_nc_file->addVar(string_builder.str(), netCDF::NcType::nc_INT, { m_dimensions[UGridDimensions::faces], m_dimensions[UGridDimensions::max_face_nodes] });
-            define_topological_variable_attributes(variable, variable_name, "face_edge_connectivity", "Side edges of mesh faces (counterclockwise)");
+            define_topological_variable_attributes(variable, "face_edge_connectivity", "Side edges of mesh faces (counterclockwise)");
         }
         if (mesh2d.face_face != nullptr)
         {
@@ -142,7 +145,7 @@ void Mesh2D::Define(ugridapi::Mesh2D const& mesh2d)
 
             std::string variable_name(string_builder.str());
             auto variable = m_nc_file->addVar(string_builder.str(), netCDF::NcType::nc_INT, { m_dimensions[UGridDimensions::faces], m_dimensions[UGridDimensions::max_face_nodes] });
-            define_topological_variable_attributes(variable, variable_name, "face_face_connectivity", "Neighboring faces of mesh faces (counterclockwise)");
+            define_topological_variable_attributes(variable, "face_face_connectivity", "Neighboring faces of mesh faces (counterclockwise)");
         }
         if (mesh2d.edge_faces != nullptr)
         {
@@ -151,49 +154,84 @@ void Mesh2D::Define(ugridapi::Mesh2D const& mesh2d)
 
             std::string variable_name(string_builder.str());
             auto variable = m_nc_file->addVar(string_builder.str(), netCDF::NcType::nc_INT, { m_dimensions[UGridDimensions::faces], m_dimensions[UGridDimensions::max_face_nodes] });
-            define_topological_variable_attributes(variable, variable_name, "edge_face_connectivity", "Neighboring faces of mesh edges");
+            define_topological_variable_attributes(variable, "edge_face_connectivity", "Neighboring faces of mesh edges");
         }
     }
 
     // Layers, optionally required if layers are present (1D or 2D layered mesh topology)
     if (mesh2d.num_layers > 0)
     {
-        std::string long_name_patter;
-        define_topological_variable_with_coordinates(UGridEntityLocations::layer, UGridDimensions::layer, mesh2d.num_layers, false, long_name_patter);
-        define_topological_variable_with_coordinates(UGridEntityLocations::layer_interface, UGridDimensions::layer_interface, mesh2d.num_layers + 1, false, long_name_patter);
-        define_topological_variable_with_coordinates(UGridEntityLocations::vertical, UGridDimensions::layer, mesh2d.num_layers + 1, false, long_name_patter);
+        // Part to complete
+        //std::string long_name_patter;
+        //define_topological_variable_with_coordinates(UGridEntityLocations::layer, UGridDimensions::layer, mesh2d.num_layers, false, long_name_patter);
+        //define_topological_variable_with_coordinates(UGridEntityLocations::layer_interface, UGridDimensions::layer_interface, mesh2d.num_layers + 1, false, long_name_patter);
+        //define_topological_variable_with_coordinates(UGridEntityLocations::vertical, UGridDimensions::layer, mesh2d.num_layers + 1, false, long_name_patter);
     }
 
+    m_nc_file->enddef();
 }
 
 void Mesh2D::Put(ugridapi::Mesh2D const& mesh2d)
 {
     if (mesh2d.name == nullptr)
     {
-        throw std::invalid_argument("Mesh2D::Define invalid mesh name");
+        throw std::invalid_argument("Mesh2D::Put invalid mesh name");
     }
-    m_entity_name = std::string(mesh2d.name);
-    m_spherical_coordinates = mesh2d.is_spherical == 0 ? false : true;
 
-    UGridVarAttributeStringBuilder string_builder(m_entity_name);
-
-    if (mesh2d.num_nodes > 0)
+    // Nodes
+    if (mesh2d.node_x != nullptr)
     {
+        m_topology_attribute_variables["node_coordinates"].at(0).putVar(mesh2d.node_x);
     }
-
-    if (mesh2d.num_edges > 0)
+    if (mesh2d.node_y != nullptr)
     {
-
+        m_topology_attribute_variables["node_coordinates"].at(1).putVar(mesh2d.node_y);
     }
-    if (mesh2d.num_faces > 0)
+    if (mesh2d.node_z != nullptr)
     {
-
+        m_related_variables["node_z"].putVar(mesh2d.node_z);
     }
+
+    // Edges
+    if (mesh2d.edge_nodes != nullptr)
+    {
+        m_topology_attribute_variables["edge_node_connectivity"].at(0).putVar(mesh2d.edge_nodes);
+    }
+    if (mesh2d.edge_x != nullptr)
+    {
+        m_topology_attribute_variables["node_coordinates"].at(0).putVar(mesh2d.edge_x);
+    }
+    if (mesh2d.edge_y != nullptr)
+    {
+        m_topology_attribute_variables["node_coordinates"].at(1).putVar(mesh2d.edge_y);
+    }
+
+    // Faces
+    if (mesh2d.face_nodes != nullptr)
+    {
+        m_topology_attribute_variables["face_node_connectivity"].at(0).putVar(mesh2d.face_nodes);
+    }
+    if (mesh2d.face_face != nullptr)
+    {
+        m_topology_attribute_variables["face_edge_connectivity"].at(0).putVar(mesh2d.face_face);
+    }
+    if (mesh2d.edge_faces != nullptr)
+    {
+        m_topology_attribute_variables["edge_face_connectivity"].at(0).putVar(mesh2d.edge_faces);
+    }
+    if (mesh2d.face_x != nullptr)
+    {
+        m_topology_attribute_variables["face_coordinates"].at(0).putVar(mesh2d.face_nodes);
+    }
+    if (mesh2d.face_y != nullptr)
+    {
+        m_topology_attribute_variables["face_coordinates"].at(1).putVar(mesh2d.face_nodes);
+    }
+
     if (mesh2d.num_layers > 0)
     {
+        // to complete
     }
-
-
 }
 
 void Mesh2D::Inquire(ugridapi::Mesh2D& mesh2d) const

@@ -55,7 +55,7 @@ namespace ugridapi
         /// @brief The x-coordinates of the mesh faces mass centers
         double* face_x = nullptr;
 
-        /// @brief The y-coordinates of the mesh faces mass centers
+        /// @brief The x-coordinates of the mesh faces mass centers
         double* face_y = nullptr;
 
         /// @brief The number of mesh nodes
