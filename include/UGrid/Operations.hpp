@@ -32,6 +32,8 @@
 #include <boost/algorithm/string/split.hpp>
 #include <boost/algorithm/string.hpp>
 
+#include "Constants.hpp"
+
 /// \namespace ugrid
 /// @brief Contains the logic of the C++ static library
 namespace ugrid
@@ -128,5 +130,30 @@ namespace ugrid
         }
         return { attribute_variables , attribute_variable_names };
     }
+
+    static void AddStartIndex(int const& start_index, netCDF::NcVar& variable)
+    {
+        if (start_index != 0)
+        {
+            variable.putAtt("start_index", netCDF::NcType::nc_INT, start_index);
+        }
+    }
+
+    static void AddFillValue(double const& fill_value, netCDF::NcVar& variable)
+    {
+        if (fill_value != double_invalid_value)
+        {
+            variable.putAtt("_FillValue", netCDF::NcType::nc_DOUBLE, fill_value);
+        }
+    }
+
+    static void AddFillValue(int const& fill_value, netCDF::NcVar& variable)
+    {
+        if (fill_value != int_invalid_value)
+        {
+            variable.putAtt("_FillValue", netCDF::NcType::nc_INT, fill_value);
+        }
+    }
+
 
 } // namespace ugrid

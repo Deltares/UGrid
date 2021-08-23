@@ -37,33 +37,13 @@
 #include <NcVarAtt.h>
 #include <UGridApi/Mesh2D.hpp>
 #include <UGrid/Operations.hpp>
+#include <UGrid/Constants.hpp>
 
 /// \namespace ugrid
 /// @brief Contains the logic of the C++ static library
 namespace ugrid
 {
-    enum class UGridEntityLocations
-    {
-        nodes,
-        edges,
-        faces,
-        layer,
-        layer_interface,
-        vertical,
-        contact
-    };
 
-
-    enum class UGridDimensions
-    {
-        Two,
-        nodes,
-        edges,
-        faces,
-        layer,
-        layer_interface,
-        max_face_nodes
-    };
 
     /// @brief A class containing the ids of UGrid netcdf file
     struct UGridEntity
@@ -71,129 +51,50 @@ namespace ugrid
 
         UGridEntity() = default;
 
-        explicit UGridEntity(const std::shared_ptr<netCDF::NcFile>& m_nc_file)
-            : m_nc_file(m_nc_file)
-        {
-        }
+        explicit UGridEntity(const std::shared_ptr<netCDF::NcFile>& m_nc_file);
 
         UGridEntity(
             std::shared_ptr<netCDF::NcFile> const& nc_file,
             std::string const& entity_name,
             std::map<std::string, std::vector<netCDF::NcVar>>& const attribute_variables,
-            std::map<std::string, std::vector<std::string>> const& attribute_variable_names)
-            :
-            m_nc_file(nc_file),
-            m_entity_name(entity_name),
-            m_topology_attribute_variables(attribute_variables),
-            m_topology_attributes_names(attribute_variable_names)
-        {
-        }
+            std::map<std::string, std::vector<std::string>> const& attribute_variable_names);
 
 
-        //ug_addcoordvars
-        void define_topological_locations(UGridEntityLocations const& entity_location, int dimension, bool add_coordinate_variables)
-        {
-            UGridVarAttributeStringBuilder string_builder(m_entity_name);
+        /// @brief Defines the topology attributes for each location variable (name, dimension and coordinate variable)
+        /// @param entity_location
+        /// @param dimension
+        /// @param add_coordinate_variables 
+        void define_topological_variable_with_coordinates(UGridEntityLocations const& location,
+            UGridDimensions const& dimension,
+            bool add_coordinate_variables,
+            std::string const& long_name_pattern,
+            std::string const& name_pattern = "%");
 
-            std::string location;
-            std::string locationCapitalized;
-            UGridDimensions ug_dimension;
-            if (entity_location == UGridEntityLocations::nodes)
-            {
-                location = "node";
-                locationCapitalized = "Node";
-                string_builder.clear(); string_builder << "_" << location << "_lon " << m_entity_name << "_" << location << "_lat";
-                m_topology_attributes.insert({ location + "_coordinates", m_topology_variable.putAtt(location + "_coordinates", string_builder.str()) });
-                ug_dimension = UGridDimensions::nodes;
-            }
-            else if (entity_location == UGridEntityLocations::edges)
-            {
-                location = "edge";
-                locationCapitalized = "Edge";
-                string_builder.clear(); string_builder << "_" << "_edge_nodes";
-                m_topology_attributes.insert({ location + "_node_connectivity", m_topology_variable.putAtt(location + "_node_connectivity", string_builder.str()) });
-                ug_dimension = UGridDimensions::edges;
-            }
-            else if (entity_location == UGridEntityLocations::faces)
-            {
-                location = "face";
-                locationCapitalized = "Face";
-                string_builder.clear(); string_builder << "_" << "_face_nodes";
-                m_topology_attributes.insert({ location + "_node_connectivity", m_topology_variable.putAtt(location + "_node_connectivity", string_builder.str()) });
-                ug_dimension = UGridDimensions::faces;
-            }
-            else if (entity_location == UGridEntityLocations::layer)
-            {
-                location = "layer";
-                locationCapitalized = "Layers";
-                ug_dimension = UGridDimensions::layer;
-            }
-            else if (entity_location == UGridEntityLocations::vertical)
-            {
-                location = "layer";
-                locationCapitalized = "Layers";
-                ug_dimension = UGridDimensions::layer;
-            }
-            else if (entity_location == UGridEntityLocations::layer_interface)
-            {
-                location = "interfaces";
-                locationCapitalized = "nLayers: " + m_entity_name + "_nInterfaces (padding: none)";
-                ug_dimension = UGridDimensions::layer_interface;
-            }
-            else
-            {
-                throw std::invalid_argument("UGridEntity::define_topological_locations invalid entity_location");
-            }
+        void define_variable_with_coordinate(
+            std::string const& variable_name_in_topology,
+            UGridDimensions const& ugrid_entity_dimension,
+            UGridCoordinates const& coordinate,
+            std::string const& long_name_pattern);
 
-            string_builder.clear(); string_builder << "_n" << locationCapitalized;
-            m_dimensions.insert({ ug_dimension, m_nc_file->addDim(string_builder.str(),dimension) });
-            m_topology_attributes.insert({ location + "_dimension", m_topology_variable.putAtt(location + "_dimension", string_builder.str()) });
+        void define_topological_variable_attributes(netCDF::NcVar& variable,
+            std::string const& variable_name,
+            std::string const& cf_role_attribute,
+            std::string const& long_name);
 
-            if (!add_coordinate_variables)
-            {
-                return;
-            }
-            std::string const coordinate_name(location + "_coordinates");
-            if (!m_spherical_coordinates)
-            {
-                string_builder.clear(); string_builder << "_" << location << "_x " << m_entity_name << "_" << location << "_y";
-                m_topology_attributes.insert({ location + "_coordinates",m_topology_variable.putAtt(location + "_coordinates", string_builder.str()) });
+        netCDF::NcVar define_variable_on_location(std::string const& variable_name,
+            UGridDimensions const& ugrid_entity_dimension,
+            std::string const& standard_name,
+            std::string const& long_name,
+            std::string const& units,
+            double const& double_fill_value = double_invalid_value);
 
-                string_builder.clear();  string_builder << "_" << location << "_x";
-                m_topology_attribute_variables[coordinate_name].emplace_back(m_nc_file->addVar(string_builder.str(), netCDF::NcType::nc_DOUBLE, m_dimensions[ug_dimension]));
-                m_topology_attribute_variables[coordinate_name].back().putAtt("mesh", m_entity_name);
+        netCDF::NcVar define_variable_on_location(std::string const& variable_name,
+            UGridDimensions const& ugrid_entity_dimension,
+            std::string const& standard_name,
+            std::string const& long_name,
+            std::string const& units,
+            int const& int_fill_value = int_invalid_value);
 
-                m_topology_attribute_variables[coordinate_name].back().putAtt("units", "m");
-                m_topology_attribute_variables[coordinate_name].back().putAtt("standard_name", "projection_x_coordinate");
-                m_topology_attribute_variables[coordinate_name].back().putAtt("long_name", "x-coordinate of mesh " + location);
-
-                string_builder.clear();  string_builder << "_" << location << "_y";
-                m_topology_attribute_variables[coordinate_name].emplace_back(m_nc_file->addVar(string_builder.str(), netCDF::NcType::nc_DOUBLE, m_dimensions[ug_dimension]));
-                m_topology_attribute_variables[coordinate_name].back().putAtt("units", "m");
-                m_topology_attribute_variables[coordinate_name].back().putAtt("standard_name", "projection_y_coordinate");
-                m_topology_attribute_variables[coordinate_name].back().putAtt("long_name", "y-coordinate of mesh " + location);
-            }
-
-            if (m_spherical_coordinates)
-            {
-                string_builder.clear(); string_builder << "_" << location << "_lon " << m_entity_name << "_" << location << "_lat";
-                m_topology_attributes.insert({ location + "_coordinates", m_topology_variable.putAtt(location + "_coordinates", string_builder.str()) });
-
-                string_builder.clear();  string_builder << "_" << location << "_lon";
-                m_topology_attribute_variables[coordinate_name].emplace_back(m_nc_file->addVar(string_builder.str(), netCDF::NcType::nc_DOUBLE, m_dimensions[entity_location]));
-                m_topology_attribute_variables[coordinate_name].back().putAtt("mesh", m_entity_name);
-
-                m_topology_attribute_variables[coordinate_name].back().putAtt("units", "degrees_east");
-                m_topology_attribute_variables[coordinate_name].back().putAtt("standard_name", "longitude");
-                m_topology_attribute_variables[coordinate_name].back().putAtt("long_name", "longitude coordinate of mesh " + location);
-
-                string_builder.clear();  string_builder << "_" << location << "_lat";
-                m_topology_attribute_variables[coordinate_name].emplace_back(m_nc_file->addVar(string_builder.str(), netCDF::NcType::nc_DOUBLE, m_dimensions[entity_location]));
-                m_topology_attribute_variables[coordinate_name].back().putAtt("units", "degrees_north");
-                m_topology_attribute_variables[coordinate_name].back().putAtt("standard_name", "latitude");
-                m_topology_attribute_variables[coordinate_name].back().putAtt("long_name", "latitude coordinate of mesh " + location);
-            }
-        }
 
         std::shared_ptr<netCDF::NcFile>                    m_nc_file;                           /// A pointer to the opened file
         std::string                                        m_entity_name;                       /// The name of the entity
@@ -205,6 +106,29 @@ namespace ugrid
         std::map<UGridDimensions, netCDF::NcDim>           m_dimensions;                        /// The entity dimensions
         bool m_spherical_coordinates = false;                                                   /// If it is a spherical entity
         int m_start_index = 0;
+        int m_int_fill_value = int_missing_value;
+        int m_double_fill_value = double_missing_value;
         int m_epsg;                                                                             /// The epsg code
+
+    private:
+
+        netCDF::NcVar define_variable_on_location(std::string const& variable_name,
+            UGridDimensions const& ugrid_entity_dimension,
+            netCDF::NcType const& nc_type,
+            std::string const& standard_name,
+            std::string const& long_name,
+            std::string const& units,
+            int const& int_fill_value = int_invalid_value,
+            double const& double_fill_value = double_invalid_value);
+
+        void define_additional_attributes(netCDF::NcVar& variable,
+            std::string const& standard_name,
+            std::string const& long_name,
+            std::string const& units,
+            int const& int_fill_value = int_invalid_value,
+            double const& double_fill_value = double_invalid_value);
+
+
+
     };
 } // namespace ugrid

@@ -99,5 +99,9 @@ namespace ugridapi
         int num_face_nodes_max;
 
         int is_spherical = 0;
+
+        double double_fill_value;
+
+        int int_fill_value;
     };
 }
