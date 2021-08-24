@@ -69,8 +69,10 @@ namespace ugrid
     const int int_invalid_value = std::numeric_limits<int>::max();
     const double double_invalid_value = std::numeric_limits<double>::max();
 
+    const int int_missing_value = -999;
     const double double_missing_value = -999.0;
-    const double int_missing_value = 999;
+
+    const int num_face_nodes_max = 6;
 
     const std::string two_string = "Two";
 

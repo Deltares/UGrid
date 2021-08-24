@@ -68,10 +68,11 @@ namespace ugrid
             UGridDimensions const& dimension,
             bool add_coordinate_variables,
             std::string const& long_name_pattern,
-            std::string const& name_pattern = "%");
+            std::string const& name_pattern = "%s%s");
 
         void define_variable_with_coordinate(
-            std::string const& variable_name_in_topology,
+            std::string const& attribute_name,
+            std::string const& attribute_variable,
             UGridDimensions const& ugrid_entity_dimension,
             UGridCoordinates const& coordinate,
             std::string const& long_name_pattern);

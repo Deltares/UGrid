@@ -27,6 +27,8 @@
 
 #pragma once
 
+#include <UGrid/Constants.hpp>
+
 namespace ugridapi
 {
     struct Mesh2D
@@ -58,18 +60,6 @@ namespace ugridapi
         /// @brief The x-coordinates of the mesh faces mass centers
         double* face_y = nullptr;
 
-        /// @brief The number of mesh nodes
-        int num_nodes = 0;
-
-        /// @brief The number of edges
-        int num_edges = 0;
-
-        /// @brief The number of faces
-        int num_faces = 0;
-
-        /// @brief The total number of nodes composing the mesh 2d faces
-        int num_face_nodes = 0;
-
         int* edge_faces = nullptr;
 
         int* face_edges = nullptr;
@@ -92,16 +82,29 @@ namespace ugridapi
 
         const char* name = nullptr;
 
-        int num_layers;
+        /// @brief The number of mesh nodes
+        int num_nodes = 0;
 
-        int start_index;
+        /// @brief The number of edges
+        int num_edges = 0;
 
-        int num_face_nodes_max;
+        /// @brief The number of faces
+        int num_faces = 0;
+
+        /// @brief The total number of nodes composing the mesh 2d faces
+        int num_face_nodes = 0;
+
+        int num_layers = 0;
+
+        int start_index = 0;
+
+        int num_face_nodes_max = ugrid::num_face_nodes_max;
 
         int is_spherical = 0;
 
-        double double_fill_value;
+        double double_fill_value = ugrid::double_missing_value;
 
-        int int_fill_value;
+        int int_fill_value = ugrid::int_missing_value;
+
     };
 }

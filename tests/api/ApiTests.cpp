@@ -165,7 +165,7 @@ TEST(ApiTest, DefineAndPut_OneMesh2D_ShouldWriteData)
     mesh2d.face_x = face_x.get();
     std::unique_ptr<double> const face_y(new double[] { 0, 0, 1, 1, 2, 2, 3, 3, 0, 1, 2, 3, 0, 1, 2, 3 });
     mesh2d.face_y = face_y.get();
-    mesh2d.num_faces = 16;
+    mesh2d.num_faces = 9;
     std::unique_ptr<int> const face_nodes(new int[] {
         1, 2, 4, 3,
             3, 4, 6, 5,
