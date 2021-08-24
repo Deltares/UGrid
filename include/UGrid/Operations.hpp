@@ -139,21 +139,5 @@ namespace ugrid
         }
     }
 
-    static void AddFillValue(double const& fill_value, netCDF::NcVar& variable)
-    {
-        if (fill_value != double_invalid_value)
-        {
-            variable.putAtt("_FillValue", netCDF::NcType::nc_DOUBLE, fill_value);
-        }
-    }
-
-    static void AddFillValue(int const& fill_value, netCDF::NcVar& variable)
-    {
-        if (fill_value != int_invalid_value)
-        {
-            variable.putAtt("_FillValue", netCDF::NcType::nc_INT, fill_value);
-        }
-    }
-
 
 } // namespace ugrid

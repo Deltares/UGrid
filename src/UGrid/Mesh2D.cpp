@@ -92,9 +92,8 @@ void Mesh2D::Define(ugridapi::Mesh2D const& mesh2d)
         define_topological_variable_attributes("edge_node_connectivity", topological_variable, "Start and end nodes of mesh edges");
 
         // Add coordinates
-        std::string long_name_pattern = "characteristic %s of the mesh edge (e.g. midpoint)";
         bool const add_coordinate_variable = mesh2d.edge_x != nullptr && mesh2d.edge_y != nullptr;
-        define_topological_variable_with_coordinates(UGridEntityLocations::edges, UGridDimensions::edges, add_coordinate_variable, long_name_pattern);
+        define_topological_variable_with_coordinates(UGridEntityLocations::edges, UGridDimensions::edges, add_coordinate_variable, "characteristic %s of the mesh edge (e.g. midpoint)");
     }
 
     // faces variables
@@ -252,7 +251,7 @@ void Mesh2D::Get(ugridapi::Mesh2D& mesh2d) const
 
     if (mesh2d.node_y != nullptr)
     {
-        m_topology_attribute_variables.at("node_coordinates").at(1).getVar(mesh2d.node_x);
+        m_topology_attribute_variables.at("node_coordinates").at(1).getVar(mesh2d.node_y);
     }
 
     if (mesh2d.edge_nodes != nullptr)

@@ -107,7 +107,7 @@ void UGridEntity::define_variable_with_coordinate(
     m_topology_attribute_variables[attribute_name].back().putAtt("standard_name", standard_name);
     m_topology_attribute_variables[attribute_name].back().putAtt("long_name", long_name);
 
-    //AddFillValue(m_double_fill_value, m_topology_attribute_variables[attribute_name].back());
+    m_topology_attribute_variables[attribute_name].back().setFill(false, m_double_fill_value);
 }
 
 void UGridEntity::define_topological_variable_with_coordinates(
@@ -176,7 +176,7 @@ void UGridEntity::define_topological_variable_attributes(std::string const& vari
     variable.putAtt("cf_role", variable_name);
     variable.putAtt("long_name", long_name);
 
-    //AddFillValue(m_int_fill_value, variable);
+    variable.getType() == netCDF::NcType::nc_DOUBLE ? variable.setFill(true, m_double_fill_value) : variable.setFill(true, m_int_fill_value);
     AddStartIndex(m_start_index, variable);
 
     // find if an attribute variable is there already
