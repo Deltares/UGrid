@@ -33,6 +33,8 @@ namespace ugridapi
 {
     struct Mesh2D
     {
+        const char* name = nullptr;
+
         /// @brief The nodes composing each mesh 2d edge
         int* edge_nodes = nullptr;
 
@@ -79,8 +81,6 @@ namespace ugridapi
         double* boundary_node_connectivity = nullptr;
 
         double* volume_coordinates = nullptr;
-
-        const char* name = nullptr;
 
         /// @brief The number of mesh nodes
         int num_nodes = 0;

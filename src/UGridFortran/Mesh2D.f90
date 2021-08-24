@@ -6,6 +6,7 @@
 
     type, bind(C) :: mesh2d_c
 
+        type(c_ptr)            :: name
         type(c_ptr)            :: edge_nodes
         type(c_ptr)            :: face_nodes
         type(c_ptr)            :: nodes_per_face
@@ -15,11 +16,6 @@
         type(c_ptr)            :: edge_y
         type(c_ptr)            :: face_x
         type(c_ptr)            :: face_y
-
-        integer(kind=c_int)    :: num_nodes
-        integer(kind=c_int)    :: num_edges
-        integer(kind=c_int)    :: num_faces
-        integer(kind=c_int)    :: num_face_nodes
 
         type(c_ptr)            :: edge_faces
         type(c_ptr)            :: face_edges
@@ -31,10 +27,18 @@
         type(c_ptr)            :: interface_zs
         type(c_ptr)            :: boundary_node_connectivity
         type(c_ptr)            :: volume_coordinates
-        character(len=255)     :: name
 
+
+        integer(c_int)         :: num_nodes
+        integer(c_int)         :: num_edges
+        integer(c_int)         :: num_faces
+        integer(c_int)         :: num_face_nodes
         integer(c_int)         :: num_layers
         integer(c_int)         :: start_index
+        integer(c_int)         :: num_face_nodes_max
+        integer(c_int)         :: is_spherical
+        integer(c_double)      :: double_fill_value
+        integer(c_int)         :: int_fill_value
 
     end type mesh2d_c
 

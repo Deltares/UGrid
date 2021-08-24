@@ -183,10 +183,6 @@ namespace ugridapi
             {
                 throw std::invalid_argument("UGrid: The selected file_id does not exist.");
             }
-            if (topology_id >= ugrid_states[file_id].m_mesh2d.size())
-            {
-                throw std::invalid_argument("UGrid: The selected topology id is larger than the number of available 2d meshes");
-            }
 
             ugrid_states[file_id].m_mesh2d[topology_id].Put(mesh2d);
         }
