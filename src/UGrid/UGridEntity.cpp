@@ -169,8 +169,8 @@ void UGridEntity::define_topological_variable_with_coordinates(
     m_topology_attributes.insert({ topology_attribute_name,m_topology_variable.putAtt(topology_attribute_name, attribute_value) });
 }
 
-void UGridEntity::define_topological_variable_attributes(netCDF::NcVar& variable,
-    std::string const& variable_name,
+void UGridEntity::define_topological_variable_attributes(std::string const& variable_name,
+    netCDF::NcVar& variable,
     std::string const& long_name)
 {
     variable.putAtt("cf_role", variable_name);

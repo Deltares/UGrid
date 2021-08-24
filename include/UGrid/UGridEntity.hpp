@@ -77,8 +77,9 @@ namespace ugrid
             UGridCoordinates const& coordinate,
             std::string const& long_name_pattern);
 
-        void define_topological_variable_attributes(netCDF::NcVar& variable,
+        void define_topological_variable_attributes(
             std::string const& variable_name,
+            netCDF::NcVar& variable,
             std::string const& long_name);
 
         netCDF::NcVar define_variable_on_location(std::string const& variable_name,
