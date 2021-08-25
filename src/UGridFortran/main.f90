@@ -1,8 +1,8 @@
     program fortran_client
 
     use iso_c_binding, only : C_NULL_CHAR
-
     use UGridInterfaces
+    use UGridSingleFunctions
     use Mesh2D
 
     implicit none
@@ -85,6 +85,9 @@
     topology_id = mesh2d_count - 1
     err = ug_mesh2d_inq(file_id, topology_id, mesh2d_get)
 
+    ! read with a single function
+    err = ug_mesh2d_get_node_coordinates( file_id, topology_id, node_x_get, node_y_get)
+
     ! Step 4a. Get a single array: node_x_get needs to be allocated and assigned to the correct pointer in mes2d api structure
     allocate(node_x_get(mesh2d_get%num_nodes))
     mesh2d_get%node_x = c_loc(node_x_get(1))
@@ -97,7 +100,7 @@
     mesh2d_get%edge_nodes = c_loc(edge_nodes_get(1))
     err = ug_mesh2d_get(file_id, topology_id, mesh2d_get)
 
-    ! Step 4b. Get multiple arrays: each array needs to be allocated into the correct pointer in mes2d api structure
+    ! Step 4c. Get a name
     allocate(name_get(max_path_len))
     mesh2d_get%name = c_loc(name_get(1))
     err = ug_mesh2d_get(file_id, topology_id, mesh2d_get)
