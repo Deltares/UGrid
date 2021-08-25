@@ -16,6 +16,9 @@
     integer function ug_topology_get_mesh2d_type_enum() bind ( C, name = "ug_topology_get_mesh2d_type_enum" )
     end function ug_topology_get_mesh2d_type_enum
 
+    integer function ug_name_get_length() bind ( C, name = "ug_name_get_length" )
+    end function ug_name_get_length
+
     integer function ug_open ( filePath, mode, file_id ) bind ( C, name = "ug_open" )
     use iso_c_binding, only : C_CHAR, C_INT
     integer ( kind = C_INT ) :: file_id
@@ -33,7 +36,6 @@
     integer ( kind = C_INT ), value :: file_id
     integer ( kind = C_INT ), value :: topology_type
     end function ug_topology_get_count
-
 
     integer function ug_mesh2d_def(file_id, mesh2dapi, topology_id) bind ( C, name = "ug_mesh2d_def" )
     use iso_c_binding, only :  C_INT
@@ -66,9 +68,6 @@
     integer ( kind = C_INT ), value :: topology_id
     type(mesh2d_c) :: mesh2dapi
     end function ug_mesh2d_get
-
-
-
 
     end interface
 
