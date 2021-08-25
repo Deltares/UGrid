@@ -115,8 +115,8 @@ namespace ugridapi
                 file_id = ncFile->getId();
                 ugrid_states.insert({ ncFile->getId(), UGridState(ncFile) });
 
-                auto const meshes = ugrid::Mesh2D::Create(ncFile);
-                ugrid_states[file_id].m_mesh2d = meshes;
+                ugrid_states[file_id].m_mesh2d = ugrid::Mesh2D::Create(ncFile);
+                ugrid_states[file_id].m_network1d = ugrid::Network1D::Create(ncFile);
             }
             if (mode == netCDF::NcFile::replace)
             {

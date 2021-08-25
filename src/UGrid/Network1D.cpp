@@ -106,7 +106,7 @@ std::vector<Network1D> Network1D::Create(std::shared_ptr<netCDF::NcFile> const& 
         int dimensionality;
         attributes["topology_dimension"].getValues(&dimensionality);
 
-        if (dimensionality == 2)
+        if (dimensionality == 1)
         {
             // entity_attribute_keys, entity_attribute_values, entity_dimensions
             auto const entity_name = variable.first;
