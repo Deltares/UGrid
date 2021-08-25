@@ -32,7 +32,10 @@
 #include <boost/algorithm/string/split.hpp>
 #include <boost/algorithm/string.hpp>
 
-#include "Constants.hpp"
+#include <UGrid/Constants.hpp>
+
+// required header
+#include <ncDim.h>
 
 /// \namespace ugrid
 /// @brief Contains the logic of the C++ static library
@@ -89,46 +92,89 @@ namespace ugrid
             return false;
         }
         return true;
-
     }
 
-    static std::tuple<std::map<std::string, std::vector<netCDF::NcVar>>, std::map < std::string, std::vector<std::string>>> GetAttributesNames(
-        std::map<std::string, netCDF::NcVarAtt> const& topology_variable,
-        std::multimap<std::string, netCDF::NcVar> const& variables)
+    static bool FillUGridEntityDimensions(std::multimap<std::string, netCDF::NcDim> const& dimensions,
+        std::string const& attribute_key_string,
+        std::string const& attribute_value_string,
+        std::map<UGridDimensions, netCDF::NcDim>& entity_dimensions)
     {
-        std::map<std::string, std::vector<netCDF::NcVar>> attribute_variables;
-        std::map<std::string, std::vector<std::string>> attribute_variable_names;
+        auto const substring_dimension_pos = attribute_value_string.find("_dimension");
+        bool isDimensionVariable = false;
+        if (attribute_value_string.find("_dimension") != std::string::npos)
+        {
+            isDimensionVariable = true;
+            std::string location_name = attribute_value_string.substr(0, substring_dimension_pos);
+            auto const it = dimensions.find(attribute_key_string);
+            if (location_name == "node")
+            {
+                entity_dimensions.insert({ UGridDimensions::nodes, it->second });
+            }
+            if (location_name == "edge")
+            {
+                entity_dimensions.insert({ UGridDimensions::edges, it->second });
+            }
+            if (location_name == "face")
+            {
+                entity_dimensions.insert({ UGridDimensions::faces, it->second });
+            }
+        }
+        return isDimensionVariable;
+    }
+
+    static std::tuple<std::map<std::string, std::vector<netCDF::NcVar>>,
+        std::map < std::string, std::vector<std::string>>,
+        std::map<UGridDimensions, netCDF::NcDim>> GetUGridEntity
+        (
+            std::multimap<std::string, netCDF::NcDim> const& dimensions,
+            std::map<std::string, netCDF::NcVarAtt> const& topology_variable,
+            std::multimap<std::string, netCDF::NcVar> const& variables
+        )
+    {
+        std::map<std::string, std::vector<netCDF::NcVar>> entity_attribute_keys;
+        std::map<std::string, std::vector<std::string>> entity_attribute_values;
+        std::map<UGridDimensions, netCDF::NcDim> entity_dimensions;
         for (const auto& attribute : topology_variable)
         {
             if (attribute.second.getType() != netCDF::NcType::nc_CHAR)
             {
                 continue;
             }
-            std::string name;
-            attribute.second.getValues(name);
-            std::vector<std::string> tokens;
-            split(tokens, name, boost::is_any_of(" "));
+
+            std::string attribute_key_string = attribute.first;
+            std::string attribute_value_string;
+            attribute.second.getValues(attribute_value_string);
+
+            // check if it is a dimension variable
+            auto const isDimensionVariable = FillUGridEntityDimensions(dimensions, attribute_value_string, attribute_key_string, entity_dimensions);
+            if (isDimensionVariable)
+            {
+                continue;
+            }
+
+            std::vector<std::string> attribute_value_string_tokens;
+            split(attribute_value_string_tokens, attribute_value_string, boost::is_any_of(" "));
             std::vector<std::string> valid_variable_names;
             std::vector<netCDF::NcVar> valid_attribute_variables;
-            for (auto const& token : tokens)
+            for (auto const& token : attribute_value_string_tokens)
             {
                 // a name of a valid attribute has been found
-                const auto variable_iterator = variables.find(token);
-                if (variable_iterator != variables.end())
+                const auto it = variables.find(token);
+                if (it != variables.end())
                 {
-                    valid_attribute_variables.emplace_back(variable_iterator->second);
+                    valid_attribute_variables.emplace_back(it->second);
                 }
             }
             // valid variables have been found
             if (!valid_attribute_variables.empty())
             {
-                attribute_variables.insert({ attribute.first, valid_attribute_variables });
+                entity_attribute_keys.insert({ attribute_key_string, valid_attribute_variables });
             }
 
-            attribute_variable_names.insert({ attribute.first, tokens });
+            entity_attribute_values.insert({ attribute_key_string, attribute_value_string_tokens });
 
         }
-        return { attribute_variables , attribute_variable_names };
+        return { entity_attribute_keys, entity_attribute_values, entity_dimensions };
     }
 
     static void AddStartIndex(int const& start_index, netCDF::NcVar& variable)

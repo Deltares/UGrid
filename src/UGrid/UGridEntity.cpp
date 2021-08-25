@@ -49,15 +49,17 @@ UGridEntity::UGridEntity(const std::shared_ptr<netCDF::NcFile>& m_nc_file)
 }
 
 UGridEntity::UGridEntity(
-    std::shared_ptr<netCDF::NcFile> const& nc_file,
+    std::shared_ptr<netCDF::NcFile> nc_file,
     std::string const& entity_name,
-    std::map<std::string, std::vector<netCDF::NcVar>>& const attribute_variables,
-    std::map<std::string, std::vector<std::string>> const& attribute_variable_names)
+    std::map<std::string, std::vector<netCDF::NcVar>> const& attribute_variables,
+    std::map<std::string, std::vector<std::string>> const& attribute_variable_names,
+    std::map<UGridDimensions, netCDF::NcDim> const& dimensions)
     :
     m_nc_file(nc_file),
     m_entity_name(entity_name),
     m_topology_attribute_variables(attribute_variables),
-    m_topology_attributes_names(attribute_variable_names)
+    m_topology_attributes_names(attribute_variable_names),
+    m_dimensions(dimensions)
 {
 }
 void UGridEntity::define_variable_with_coordinate(

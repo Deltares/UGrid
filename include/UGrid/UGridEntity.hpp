@@ -32,7 +32,6 @@
 #include <map>
 
 #include <ncFile.h>
-#include <NcDim.h>
 #include <ncVar.h>
 #include <NcVarAtt.h>
 #include <UGridApi/Mesh2D.hpp>
@@ -54,10 +53,11 @@ namespace ugrid
         explicit UGridEntity(const std::shared_ptr<netCDF::NcFile>& m_nc_file);
 
         UGridEntity(
-            std::shared_ptr<netCDF::NcFile> const& nc_file,
+            std::shared_ptr<netCDF::NcFile> nc_file,
             std::string const& entity_name,
-            std::map<std::string, std::vector<netCDF::NcVar>>& const attribute_variables,
-            std::map<std::string, std::vector<std::string>> const& attribute_variable_names);
+            std::map<std::string, std::vector<netCDF::NcVar>> const& attribute_variables,
+            std::map<std::string, std::vector<std::string>> const& attribute_variable_names,
+            std::map<UGridDimensions, netCDF::NcDim> const& dimensions);
 
 
         /// @brief Defines the topology attributes for each location variable (name, dimension and coordinate variable)

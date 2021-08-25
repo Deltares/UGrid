@@ -33,7 +33,7 @@ namespace ugridapi
 {
     struct Mesh2D
     {
-        const char* name = nullptr;
+        char* name = nullptr;
 
         /// @brief The nodes composing each mesh 2d edge
         int* edge_nodes = nullptr;

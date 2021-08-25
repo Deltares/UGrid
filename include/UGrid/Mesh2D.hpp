@@ -31,18 +31,17 @@
 #include <unordered_map>
 #include <vector>
 
-#include <ncFile.h>
 #include <ncVar.h>
-#include <NcVarAtt.h>
+
 #include <UGridApi/Mesh2D.hpp>
 
-#include "UGridEntity.hpp"
+#include <UGrid/UGridEntity.hpp>
+
 
 /// \namespace ugrid
 /// @brief Contains the logic of the C++ static library
 namespace ugrid
 {
-    struct Mesh2DOptions;
 
     /// @brief A class containing all variable names related to a mesh2d and methods to write geometrical data to file
     struct Mesh2D : UGridEntity
@@ -61,13 +60,16 @@ namespace ugrid
         /// @brief 
         /// @param nc_file 
         /// @param name 
-        /// @param attribute_variable_names 
+        /// @param attribute_variable_names
+        ///
         Mesh2D(
-            std::shared_ptr<netCDF::NcFile> const& nc_file,
-            std::string const& name,
-            std::map<std::string, std::vector<netCDF::NcVar>>  attribute_variables,
-            std::map<std::string, std::vector<std::string>> const& attribute_variable_names)
-            : UGridEntity(nc_file, name, attribute_variables, attribute_variable_names)
+            std::shared_ptr<netCDF::NcFile> nc_file,
+            std::string const& entity_name,
+            std::map<std::string, std::vector<netCDF::NcVar>> const& entity_attributes,
+            std::map<std::string, std::vector<std::string>> const& entity_attribute_names,
+            std::map<UGridDimensions, netCDF::NcDim> const& entity_dimensions
+        )
+            : UGridEntity(nc_file, entity_name, entity_attributes, entity_attribute_names, entity_dimensions)
         {
         }
 

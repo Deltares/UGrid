@@ -16,6 +16,7 @@
     ! variables
     double precision, dimension(:), allocatable :: node_x_put, node_y_put,node_x_get,node_y_get
     integer, dimension(:), allocatable          :: edge_nodes_put, edge_nodes_get
+    character, dimension(:), allocatable        :: name_get
 
     filePath = "D:/ENGINES/io_netcdf_investigation/UGrid/UGrid/tests/data/test_file.nc" // C_NULL_CHAR
 
@@ -95,5 +96,12 @@
     mesh2d_get%node_y = c_loc(node_y_get(1))
     mesh2d_get%edge_nodes = c_loc(edge_nodes_get(1))
     err = ug_mesh2d_get(file_id, topology_id, mesh2d_get)
+
+    ! Step 4b. Get multiple arrays: each array needs to be allocated into the correct pointer in mes2d api structure
+    allocate(name_get(max_path_len))
+    mesh2d_get%name = c_loc(name_get(1))
+    err = ug_mesh2d_get(file_id, topology_id, mesh2d_get)
+
+    err = ug_close(file_id)
 
     end program fortran_client

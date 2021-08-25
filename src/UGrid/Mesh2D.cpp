@@ -227,14 +227,22 @@ void Mesh2D::Put(ugridapi::Mesh2D const& mesh2d)
 
 void Mesh2D::Inquire(ugridapi::Mesh2D& mesh2d) const
 {
-    mesh2d.num_nodes = m_topology_attribute_variables.at("node_coordinates").at(0).getDims().at(0).getSize();
-    mesh2d.num_edges = m_topology_attribute_variables.at("edge_coordinates").at(0).getDims().at(0).getSize();
-    mesh2d.num_faces = m_topology_attribute_variables.at("face_coordinates").at(0).getDims().at(0).getSize();
 
-    // Other optional numerical values
-    if (m_topology_attributes_names.find("face_node_connectivity") != m_topology_attributes_names.end())
+    if (m_dimensions.find(UGridDimensions::nodes) != m_dimensions.end())
     {
-        mesh2d.num_face_nodes_max = m_topology_attribute_variables.at("face_node_connectivity").at(0).getDims().at(1).getSize();
+        mesh2d.num_nodes = m_dimensions.at(UGridDimensions::nodes).getSize();
+    }
+    if (m_dimensions.find(UGridDimensions::edges) != m_dimensions.end())
+    {
+        mesh2d.num_edges = m_dimensions.at(UGridDimensions::edges).getSize();
+    }
+    if (m_dimensions.find(UGridDimensions::faces) != m_dimensions.end())
+    {
+        mesh2d.num_faces = m_dimensions.at(UGridDimensions::faces).getSize();
+    }
+    if (m_dimensions.find(UGridDimensions::max_face_nodes) != m_dimensions.end())
+    {
+        mesh2d.num_face_nodes_max = m_dimensions.at(UGridDimensions::max_face_nodes).getSize();
     }
 }
 
@@ -242,7 +250,14 @@ void Mesh2D::Inquire(ugridapi::Mesh2D& mesh2d) const
 
 void Mesh2D::Get(ugridapi::Mesh2D& mesh2d) const
 {
-    mesh2d.name = m_entity_name.c_str();
+    if (mesh2d.name != nullptr)
+    {
+        for (auto i = 0; i < m_entity_name.size(); ++i)
+        {
+            mesh2d.name[i] = m_entity_name[i];
+        }
+        mesh2d.name[m_entity_name.size()] = '\n';
+    }
 
     if (mesh2d.node_x != nullptr)
     {
@@ -279,6 +294,8 @@ std::vector<Mesh2D> Mesh2D::Create(std::shared_ptr<netCDF::NcFile> const& nc_fil
 {
     // Get all vars in this file
     const auto variables = nc_file->getVars();
+    const auto dimensions = nc_file->getDims();
+
     std::vector<Mesh2D> result;
     for (auto const& variable : variables)
     {
@@ -294,8 +311,10 @@ std::vector<Mesh2D> Mesh2D::Create(std::shared_ptr<netCDF::NcFile> const& nc_fil
 
         if (dimensionality == 2)
         {
-            auto const [attribute_variables, attributes_variable_names] = GetAttributesNames(attributes, variables);
-            result.emplace_back(nc_file, variable.first, attribute_variables, attributes_variable_names);
+            // entity_attribute_keys, entity_attribute_values, entity_dimensions
+            auto const entity_name = variable.first;
+            auto const [entity_attribute_keys, entity_attribute_values, entity_dimensions] = GetUGridEntity(dimensions, attributes, variables);
+            result.emplace_back(nc_file, entity_name, entity_attribute_keys, entity_attribute_values, entity_dimensions);
         }
     }
 
