@@ -71,6 +71,14 @@ void Network1D::Put(ugridapi::Network1d const& network1d)
 
 void Network1D::Inquire(ugridapi::Network1d& network1d) const
 {
+    if (m_dimensions.find(UGridDimensions::nodes) != m_dimensions.end())
+    {
+        network1d.num_nodes = m_dimensions.at(UGridDimensions::nodes).getSize();
+    }
+    if (m_dimensions.find(UGridDimensions::edges) != m_dimensions.end())
+    {
+        network1d.num_edges = m_dimensions.at(UGridDimensions::edges).getSize();
+    }
 }
 
 
@@ -85,6 +93,21 @@ void Network1D::Get(ugridapi::Network1d& network1d) const
         }
         network1d.name[m_entity_name.size()] = '\0';
     }
+
+    if (network1d.node_x != nullptr)
+    {
+        m_topology_attribute_variables.at("node_coordinates").at(0).getVar(network1d.node_x);
+    }
+
+    if (network1d.node_y != nullptr)
+    {
+        m_topology_attribute_variables.at("node_coordinates").at(1).getVar(network1d.node_y);
+    }
+
+    if (network1d.edge_nodes != nullptr)
+    {
+        m_topology_attribute_variables.at("edge_node_connectivity").at(0).getVar(network1d.edge_nodes);
+    }
 }
 
 std::vector<Network1D> Network1D::Create(std::shared_ptr<netCDF::NcFile> const& nc_file)
@@ -98,7 +121,7 @@ std::vector<Network1D> Network1D::Create(std::shared_ptr<netCDF::NcFile> const& 
     {
         auto attributes = variable.second.getAtts();
 
-        if (!is_mesh_topology_variable(attributes))
+        if (!is_network1d_topology_variable(attributes))
         {
             continue;
         }

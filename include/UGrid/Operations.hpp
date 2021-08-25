@@ -94,6 +94,21 @@ namespace ugrid
         return true;
     }
 
+    static bool is_network1d_topology_variable(std::map<std::string, netCDF::NcVarAtt> const& attributes)
+    {
+        if (attributes.find("cf_role") == attributes.end())
+        {
+            return false;
+        }
+
+        if (attributes.find("edge_geometry") == attributes.end())
+        {
+            return false;
+        }
+        return true;
+    }
+
+
     static bool FillUGridEntityDimensions(std::multimap<std::string, netCDF::NcDim> const& dimensions,
         std::string const& attribute_key_string,
         std::string const& attribute_value_string,

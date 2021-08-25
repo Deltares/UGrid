@@ -198,6 +198,11 @@ namespace ugridapi
         int exitCode = Success;
         try
         {
+            if (ugrid_states.count(file_id) == 0)
+            {
+                throw std::invalid_argument("UGrid: The selected file_id does not exist.");
+            }
+
             ugrid_states[file_id].m_mesh2d[topology_id].Inquire(mesh2d);
         }
         catch (...)
@@ -236,12 +241,33 @@ namespace ugridapi
     UGRID_API int ug_network1d_inq(int file_id, int topology_id, Network1d& network)
     {
         int exitCode = Success;
+        try
+        {
+            if (ugrid_states.count(file_id) == 0)
+            {
+                throw std::invalid_argument("UGrid: The selected file_id does not exist.");
+            }
+
+            ugrid_states[file_id].m_network1d[topology_id].Inquire(network);
+        }
+        catch (...)
+        {
+            exitCode = HandleExceptions(std::current_exception());
+        }
         return exitCode;
     }
 
     UGRID_API int ug_network1d_get(int file_id, int topology_id, Network1d& network)
     {
         int exitCode = Success;
+        try
+        {
+            ugrid_states[file_id].m_network1d[topology_id].Get(network);
+        }
+        catch (...)
+        {
+            exitCode = HandleExceptions(std::current_exception());
+        }
         return exitCode;
     }
 

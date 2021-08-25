@@ -193,5 +193,50 @@ TEST(ApiTest, DefineAndPut_OneMesh2D_ShouldWriteData)
     // Close the file
     error_code = ugridapi::ug_close(file_id);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+}
 
+
+TEST(ApiTest, InquireAndGet_AFileWithOneNetwork1D_ShouldReadNetwork1D)
+{
+    std::string const filePath = TEST_FOLDER + "/data/AllEntities.nc";
+
+    // Open a file
+    int file_id = 0;
+    auto const file_mode = ugridapi::ug_file_read_mode();
+    auto error_code = ugridapi::ug_open(filePath.c_str(), file_mode, file_id);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+
+    // get the number of topologies
+    auto topology_type = ugridapi::ug_topology_get_network1d_type_enum();
+    auto const num_topologies = ugridapi::ug_topology_get_count(file_id, topology_type);
+    ASSERT_EQ(num_topologies, 1);
+
+    // Get the dimensions 
+    ugridapi::Network1d network1d;
+    error_code = ug_network1d_inq(file_id, 0, network1d);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+
+    // Allocate data variables
+    std::unique_ptr<double> const node_x(new double[network1d.num_nodes]);
+    network1d.node_x = node_x.get();
+    std::unique_ptr<double> const node_y(new double[network1d.num_nodes]);
+    network1d.node_y = node_y.get();
+    std::unique_ptr<int> const edge_nodes(new int[network1d.num_edges * 2]);
+    network1d.edge_nodes = edge_nodes.get();
+
+    //// Get the data
+    error_code = ug_network1d_get(file_id, 0, network1d);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+
+    //// Assert
+    std::vector<double> node_x_vector(node_x.get(), node_x.get() + network1d.num_nodes);
+    std::vector<double> node_y_vector(node_y.get(), node_y.get() + network1d.num_nodes);
+    std::vector<int> edge_nodes_vector(edge_nodes.get(), edge_nodes.get() + network1d.num_edges * 2);
+
+    std::vector<double> node_x_expected{ 293.78, 538.89 };
+    ASSERT_THAT(node_x_vector, ::testing::ContainerEq(node_x_expected));
+    std::vector<double> node_y_vector_expected{ 27.48, 956.75 };
+    ASSERT_THAT(node_y_vector, ::testing::ContainerEq(node_y_vector_expected));
+    std::vector<int> edge_nodes_vector_expected{ 0,1 };
+    ASSERT_THAT(edge_nodes_vector, ::testing::ContainerEq(edge_nodes_vector_expected));
 }
