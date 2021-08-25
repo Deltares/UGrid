@@ -221,25 +221,25 @@ namespace ugridapi
         return exitCode;
     }
 
-    UGRID_API int ug_network1d_def(int file_id, Network1D const& network, int& topology_id)
+    UGRID_API int ug_network1d_def(int file_id, Network1d const& network, int& topology_id)
     {
         int exitCode = Success;
         return exitCode;
     }
 
-    UGRID_API int ug_network1d_put(int file_id, int topology_id, Network1D const& network)
+    UGRID_API int ug_network1d_put(int file_id, int topology_id, Network1d const& network)
     {
         int exitCode = Success;
         return exitCode;
     }
 
-    UGRID_API int ug_network1d_inq(int file_id, int topology_id, Network1D& network)
+    UGRID_API int ug_network1d_inq(int file_id, int topology_id, Network1d& network)
     {
         int exitCode = Success;
         return exitCode;
     }
 
-    UGRID_API int ug_network1d_get(int file_id, int topology_id, Network1D& network)
+    UGRID_API int ug_network1d_get(int file_id, int topology_id, Network1d& network)
     {
         int exitCode = Success;
         return exitCode;

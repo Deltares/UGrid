@@ -98,7 +98,7 @@ namespace ugridapi
 
         int start_index = 0;
 
-        int num_face_nodes_max = ugrid::num_face_nodes_max;
+        int num_face_nodes_max = 4;
 
         int is_spherical = 0;
 

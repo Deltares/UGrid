@@ -29,8 +29,10 @@
 
 namespace ugridapi
 {
-    struct Network1D
+    struct Network1d
     {
+        char* name = nullptr;
+
         double* node_x = nullptr;
 
         double* node_y = nullptr;
@@ -55,6 +57,8 @@ namespace ugridapi
 
         int* num_geometry_nodes = nullptr;
 
-        int startindex;
+        int start_index = 0;
+
+        int is_spherical = 0;
     };
 }

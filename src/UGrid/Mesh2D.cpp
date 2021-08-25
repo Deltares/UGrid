@@ -38,7 +38,7 @@ void Mesh2D::Define(ugridapi::Mesh2D const& mesh2d)
 {
     if (mesh2d.name == nullptr)
     {
-        throw std::invalid_argument("Mesh2D::Define invalid mesh name");
+        throw std::invalid_argument("Mesh2D::Define mesh name field is empty");
     }
 
     m_entity_name = std::string(mesh2d.name);
@@ -51,7 +51,7 @@ void Mesh2D::Define(ugridapi::Mesh2D const& mesh2d)
     m_topology_attributes.insert({ "long_name",m_topology_variable.putAtt("long_name", "Topology data of 2D mesh") });
     m_topology_attributes.insert({ "topology_dimension", m_topology_variable.putAtt("topology_dimension", netCDF::NcType::nc_INT, 2) });
 
-    // add dimension two 
+    // add dimension Two 
     m_dimensions.insert({ UGridDimensions::Two, m_nc_file->addDim("Two", 2) });
 
     // string builder with the entity name as first part of the string
@@ -227,7 +227,6 @@ void Mesh2D::Put(ugridapi::Mesh2D const& mesh2d)
 
 void Mesh2D::Inquire(ugridapi::Mesh2D& mesh2d) const
 {
-
     if (m_dimensions.find(UGridDimensions::nodes) != m_dimensions.end())
     {
         mesh2d.num_nodes = m_dimensions.at(UGridDimensions::nodes).getSize();
@@ -256,7 +255,7 @@ void Mesh2D::Get(ugridapi::Mesh2D& mesh2d) const
         {
             mesh2d.name[i] = m_entity_name[i];
         }
-        mesh2d.name[m_entity_name.size()] = '\n';
+        mesh2d.name[m_entity_name.size()] = '\0';
     }
 
     if (mesh2d.node_x != nullptr)

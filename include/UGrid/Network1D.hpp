@@ -26,29 +26,59 @@
 //------------------------------------------------------------------------------
 
 #pragma once
+#include <UGrid/UGridEntity.hpp>
+#include <UGridApi/Network1D.hpp>
 
 /// \namespace ugrid
 /// @brief Contains the logic of the C++ static library
 namespace ugrid
 {
-    /// @brief A class containing the variables ids for a mesh2d
-    struct Network1D
+    /// @brief A class implementing the methods for reading/writing a mesh2d in UGrid format
+    struct Network1D : UGridEntity
     {
+        /// @brief Constructor setting the NetCDF file
+        /// @param nc_file The NetCDF file pointer
+        explicit Network1D(
+            std::shared_ptr<netCDF::NcFile> nc_file) : UGridEntity(nc_file)
+        {
+        }
 
-        Network1D(int file_id) : m_file_id(file_id) {};
+        /// @brief Constructor setting nc_file and all internal state
+        /// @param nc_file The nc file pointer
+        /// @param entity_name The network1d name
+        /// @param entity_attributes The topological attributes (key value pair with key the topological attribute name and value the associated vector of variables)
+        /// @param entity_attribute_names The topological attributes names (key value pair with key the topological attribute name and value the associated vector of variables names)
+        /// @param entity_dimensions The dimensions associated with the mesh2d (key value pair with key the dimension enumeration and value the associated NetCDF dimension)
+        explicit Network1D(
+            std::shared_ptr<netCDF::NcFile> nc_file,
+            std::string const& entity_name,
+            std::map<std::string, std::vector<netCDF::NcVar>> const& entity_attributes,
+            std::map<std::string, std::vector<std::string>> const& entity_attribute_names,
+            std::map<UGridDimensions, netCDF::NcDim> const& entity_dimensions
+        )
+            : UGridEntity(nc_file, entity_name, entity_attributes, entity_attribute_names, entity_dimensions)
+        {
+        }
 
-        int m_file_id;
+        /// @brief Defines the network1d header
+        /// @param mesh2d The network1d api structure with the fields to write and all optional flags  
+        void Define(ugridapi::Network1d const& mesh2d);
 
-        /// @brief Topology id
-        int m_topology = -1;
+        /// @brief Writes a network1d to file
+        /// @param mesh2d network1d The mesh2d api structure with the fields to write and all optional flags  
+        void Put(ugridapi::Network1d const& mesh2d);
 
-        /// @brief Name id
-        int m_name = -1;
+        /// @brief Inquires the network1d dimensions
+        /// @param mesh2d The network1d api structure with the fields where to assign the dimensions
+        void Inquire(ugridapi::Network1d& mesh2d) const;
 
-        /// @brief Dimension ids
-        // TO DO
+        /// @brief Inquires the network1d arrays
+        /// @param mesh2d The network1d api structure with the fields where to assign the data
+        void Get(ugridapi::Network1d& mesh2d) const;
 
-        /// @brief Data ids
-        // TO DO
+        /// @brief Factory method producing a vector of instances of the current class (as many network1d are found in the file)
+        /// @return The vector of produced class instances
+        static std::vector<Network1D> Create(std::shared_ptr<netCDF::NcFile> const& nc_file);
+
     };
 } // namespace ugrid

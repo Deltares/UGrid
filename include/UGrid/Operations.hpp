@@ -118,6 +118,10 @@ namespace ugrid
             {
                 entity_dimensions.insert({ UGridDimensions::faces, it->second });
             }
+            if (location_name == "max_face_nodes")
+            {
+                entity_dimensions.insert({ UGridDimensions::max_face_nodes, it->second });
+            }
         }
         return isDimensionVariable;
     }

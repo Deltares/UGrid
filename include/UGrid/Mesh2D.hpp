@@ -43,26 +43,23 @@
 namespace ugrid
 {
 
-    /// @brief A class containing all variable names related to a mesh2d and methods to write geometrical data to file
+    /// @brief A class implementing the methods for reading/writing a mesh2d in UGrid format
     struct Mesh2D : UGridEntity
     {
-        /// @brief The default constructor
-        Mesh2D() = default;
-
-
-        /// @brief Constructor setting the nc_file 
-        /// @param nc_file 
-        Mesh2D(
-            std::shared_ptr<netCDF::NcFile> const& nc_file) : UGridEntity(nc_file)
+        /// @brief Constructor setting the NetCDF file
+        /// @param nc_file The NetCDF file pointer
+        explicit Mesh2D(
+            std::shared_ptr<netCDF::NcFile> nc_file) : UGridEntity(nc_file)
         {
         }
 
-        /// @brief 
-        /// @param nc_file 
-        /// @param name 
-        /// @param attribute_variable_names
-        ///
-        Mesh2D(
+        /// @brief Constructor setting nc_file and all internal state
+        /// @param nc_file The nc file pointer
+        /// @param entity_name The mesh2d name
+        /// @param entity_attributes The topological attributes (key value pair with key the topological attribute name and value the associated vector of variables)
+        /// @param entity_attribute_names The topological attributes names (key value pair with key the topological attribute name and value the associated vector of variables names)
+        /// @param entity_dimensions The dimensions associated with the mesh2d (key value pair with key the dimension enumeration and value the associated NetCDF dimension)
+        explicit Mesh2D(
             std::shared_ptr<netCDF::NcFile> nc_file,
             std::string const& entity_name,
             std::map<std::string, std::vector<netCDF::NcVar>> const& entity_attributes,
@@ -73,25 +70,23 @@ namespace ugrid
         {
         }
 
-        /// @brief Define mesh dimensions
-        /// @param mesh2d The mesh2d  
-        /// @return A NetCDF error code
+        /// @brief Defines the mesh2d header
+        /// @param mesh2d The mesh2d api structure with the fields to write and all optional flags  
         void Define(ugridapi::Mesh2D const& mesh2d);
 
-        /// @brief Put mesh2d data
-        /// @param mesh2d The mesh2d
-        /// @return A NetCDF error code
+        /// @brief Writes a mesh2d to file
+        /// @param mesh2d mesh2d The mesh2d api structure with the fields to write and all optional flags  
         void Put(ugridapi::Mesh2D const& mesh2d);
 
-        /// @brief Inquires the mesh dimensions
-        /// @param mesh2d The mesh2d filled with dimension values
+        /// @brief Inquires the mesh2d dimensions
+        /// @param mesh2d The mesh2d api structure with the fields where to assign the dimensions
         void Inquire(ugridapi::Mesh2D& mesh2d) const;
 
-        /// @brief Inquires the mesh arrays
-        /// @param mesh2d The mesh2d with pointers to mesh arrays
+        /// @brief Inquires the mesh2d arrays
+        /// @param mesh2d The mesh2d api structure with the fields where to assign the data
         void Get(ugridapi::Mesh2D& mesh2d) const;
 
-        /// @brief Factory method producing current class instances for the file variables
+        /// @brief Factory method producing a vector of instances of the current class (as many mesh2d are found in the file)
         /// @return The vector of produced class instances
         static std::vector<Mesh2D> Create(std::shared_ptr<netCDF::NcFile> const& nc_file);
 
