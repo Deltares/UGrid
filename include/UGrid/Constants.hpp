@@ -54,7 +54,9 @@ namespace ugrid
         layer,
         layer_interface,
         max_face_nodes,
-        contacts
+        contacts,
+        ids,
+        long_names
     };
 
     enum class UGridCoordinates

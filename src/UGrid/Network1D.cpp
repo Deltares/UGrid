@@ -40,20 +40,56 @@ void Network1D::Define(ugridapi::Network1d const& network1d)
     {
         throw std::invalid_argument("Network1D::Define mesh name field is empty");
     }
-    m_spherical_coordinates = network1d.is_spherical == 0 ? false : true;
     m_start_index = network1d.start_index;
+    m_entity_name = std::string(network1d.name);
 
-    // add and define the topology variable
-    m_topology_variable = m_nc_file->addVar(m_entity_name, netCDF::NcType::nc_CHAR);
-    m_topology_attributes.insert({ "cf_role", m_topology_variable.putAtt("cf_role", "mesh_topology") });
-    m_topology_attributes.insert({ "long_name",m_topology_variable.putAtt("long_name", "Topology data of 2D mesh") });
-    m_topology_attributes.insert({ "topology_dimension", m_topology_variable.putAtt("topology_dimension", netCDF::NcType::nc_INT, 2) });
+    UGridVarAttributeStringBuilder string_builder(m_entity_name);
 
-    // add dimension Two 
+    // add all required dimensions
+    string_builder.clear(); string_builder << "_nEdges";
+    m_dimensions.insert({ UGridDimensions::edges, m_nc_file->addDim(string_builder.str(), network1d.num_edges) });
+    string_builder.clear(); string_builder << "_nNodes";
+    m_dimensions.insert({ UGridDimensions::nodes, m_nc_file->addDim(string_builder.str(), network1d.num_nodes) });
+    string_builder.clear(); string_builder << "_nGeometryNodes";
+    m_dimensions.insert({ UGridDimensions::nodes_geometry, m_nc_file->addDim(string_builder.str(), network1d.num_geometry_nodes) });
+    m_dimensions.insert({ UGridDimensions::ids, m_nc_file->addDim("strLengthIds", network1d.num_geometry_nodes) });
+    m_dimensions.insert({ UGridDimensions::long_names, m_nc_file->addDim("strLengthLongNames", network1d.num_geometry_nodes) });
     m_dimensions.insert({ UGridDimensions::Two, m_nc_file->addDim("Two", 2) });
 
-    // string builder with the entity name as first part of the string
-    UGridVarAttributeStringBuilder string_builder(m_entity_name);
+    // Now define the variables
+    m_topology_variable = m_nc_file->addVar(m_entity_name, netCDF::NcType::nc_CHAR);
+    m_topology_attributes.insert({ "cf_role", m_topology_variable.putAtt("cf_role", "mesh_topology") });
+    m_topology_attributes.insert({ "long_name",m_topology_variable.putAtt("long_name", "Topology data of 1D network") });
+
+    // Network1D topology attributes
+    string_builder.clear(); string_builder << "_nEdges";
+    m_topology_attributes.insert({ "edge_dimension", m_topology_variable.putAtt("edge_dimension", string_builder.str()) });
+    string_builder.clear(); string_builder << "_geometry";
+    m_topology_attributes.insert({ "edge_geometry", m_topology_variable.putAtt("edge_geometry", string_builder.str()) });
+    string_builder.clear(); string_builder << "_edge_nodes";
+    m_topology_attributes.insert({ "edge_node_connectivity", m_topology_variable.putAtt("edge_node_connectivity", string_builder.str()) });
+    string_builder.clear(); string_builder << "_node_x " << m_entity_name << "_node_y";
+    m_topology_attributes.insert({ "node_coordinates", m_topology_variable.putAtt("node_coordinates", string_builder.str()) });
+    string_builder.clear(); string_builder << "_nNodes";
+    m_topology_attributes.insert({ "node_dimension", m_topology_variable.putAtt("node_dimension", string_builder.str()) });
+    m_topology_attributes.insert({ "topology_dimension", m_topology_variable.putAtt("topology_dimension", netCDF::NcType::nc_INT, 1) });
+
+    // Node attributes
+    string_builder.clear(); string_builder << "_node_id";
+    m_topology_attributes.insert({ "node_id", m_topology_variable.putAtt("node_id", string_builder.str()) });
+    string_builder.clear(); string_builder << "_node_long_name";
+    m_topology_attributes.insert({ "node_long_name", m_topology_variable.putAtt("node_long_name", string_builder.str()) });
+
+    // Branches attributes
+    string_builder.clear(); string_builder << "_branch_id";
+    m_topology_attributes.insert({ "branch_id", m_topology_variable.putAtt("branch_id", string_builder.str()) });
+    string_builder.clear(); string_builder << "_branch_long_name";
+    m_topology_attributes.insert({ "branch_long_name", m_topology_variable.putAtt("branch_long_name", string_builder.str()) });
+    string_builder.clear(); string_builder << "_edge_length";
+    m_topology_attributes.insert({ "edge_length", m_topology_variable.putAtt("edge_length", string_builder.str()) });
+
+    // Branch variable
+
 
     m_nc_file->enddef();
 }
@@ -90,18 +126,10 @@ void Network1D::Inquire(ugridapi::Network1d& network1d) const
     }
 }
 
-
-
 void Network1D::Get(ugridapi::Network1d& network1d) const
 {
-    if (network1d.name != nullptr)
-    {
-        for (auto i = 0; i < m_entity_name.size(); ++i)
-        {
-            network1d.name[i] = m_entity_name[i];
-        }
-        network1d.name[m_entity_name.size()] = '\0';
-    }
+
+    FillCharArrayWithStringValues(network1d.name, m_entity_name);
 
     if (network1d.node_x != nullptr)
     {

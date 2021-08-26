@@ -64,7 +64,5 @@ namespace ugridapi
         int num_edges;
 
         int start_index = 0;
-
-        int is_spherical = 0;
     };
 }

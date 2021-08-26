@@ -249,14 +249,7 @@ void Mesh2D::Inquire(ugridapi::Mesh2D& mesh2d) const
 
 void Mesh2D::Get(ugridapi::Mesh2D& mesh2d) const
 {
-    if (mesh2d.name != nullptr)
-    {
-        for (auto i = 0; i < m_entity_name.size(); ++i)
-        {
-            mesh2d.name[i] = m_entity_name[i];
-        }
-        mesh2d.name[m_entity_name.size()] = '\0';
-    }
+    FillCharArrayWithStringValues(mesh2d.name, m_entity_name);
 
     if (mesh2d.node_x != nullptr)
     {

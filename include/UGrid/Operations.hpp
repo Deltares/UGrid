@@ -206,5 +206,17 @@ namespace ugrid
         }
     }
 
+    static void FillCharArrayWithStringValues(char* char_array, std::string const& value)
+    {
+        if (char_array != nullptr && !value.empty())
+        {
+            for (auto i = 0; i < value.size(); ++i)
+            {
+                char_array[i] = value[i];
+            }
+            char_array[value.size()] = '\0';
+        }
+    }
+
 
 } // namespace ugrid
