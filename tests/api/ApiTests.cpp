@@ -7,6 +7,9 @@
 #include <TestUtils/Definitions.hpp>
 #include <UGridApi/UGrid.hpp>
 
+#include <boost/algorithm/string/split.hpp>
+#include <boost/algorithm/string.hpp>
+
 TEST(ApiTest, InquireAndGet_AFileWithOneMesh2d_ShouldReadMesh2d)
 {
     std::string const filePath = TEST_FOLDER + "/data/OneMesh2D.nc";
@@ -242,7 +245,7 @@ TEST(ApiTest, InquireAndGet_AFileWithOneNetwork1D_ShouldReadNetwork1D)
     network1d.node_long_names = node_long_names.get();
 
     std::unique_ptr<char> const branch_ids(new char[name_length * network1d.num_nodes]);
-    network1d.branch_ids = node_ids.get();
+    network1d.branch_ids = branch_ids.get();
 
     std::unique_ptr<char> const branch_long_names(new char[long_names_length * network1d.num_nodes]);
     network1d.branch_long_names = branch_long_names.get();
@@ -257,6 +260,26 @@ TEST(ApiTest, InquireAndGet_AFileWithOneNetwork1D_ShouldReadNetwork1D)
     std::vector<int> edge_nodes_vector(edge_nodes.get(), edge_nodes.get() + network1d.num_edges * 2);
     std::vector<double> geometry_nodes_x_vector(geometry_nodes_x.get(), geometry_nodes_x.get() + network1d.num_geometry_nodes);
     std::vector<double> geometry_nodes_y_vector(geometry_nodes_y.get(), geometry_nodes_y.get() + network1d.num_geometry_nodes);
+    std::string node_ids_string(node_ids.get(), node_ids.get() + name_length * network1d.num_nodes);
+    std::string node_long_names_string(node_long_names.get(), node_long_names.get() + long_names_length * network1d.num_nodes);
+
+    std::string branch_ids_string(branch_ids.get(), branch_ids.get() + name_length * network1d.num_edges);
+    std::string branch_long_names_string(branch_long_names.get(), branch_long_names.get() + long_names_length * network1d.num_edges);
+    for (auto i = 0; i < network1d.num_nodes; ++i)
+    {
+        std::string node_id = node_ids_string.substr(i * name_length, (i + 1) * name_length);
+        std::string node_long_name = node_long_names_string.substr(i * long_names_length, (i + 1) * long_names_length);
+        ASSERT_EQ("nodesids                                ", node_id);
+        ASSERT_EQ("nodeslongNames                                                                  ", node_long_name);
+
+    }
+    for (auto i = 0; i < network1d.num_edges; ++i)
+    {
+        std::string branch_id = branch_ids_string.substr(i * name_length, (i + 1) * name_length);
+        std::string branch_long_name = branch_long_names_string.substr(i * long_names_length, (i + 1) * long_names_length);
+        ASSERT_EQ("branchids                               ", branch_id);
+        ASSERT_EQ("branchlongNames                                                                 ", branch_long_name);
+    }
 
     std::vector<double> node_x_expected{ 293.78, 538.89 };
     ASSERT_THAT(node_x_vector, ::testing::ContainerEq(node_x_expected));
@@ -273,6 +296,4 @@ TEST(ApiTest, InquireAndGet_AFileWithOneNetwork1D_ShouldReadNetwork1D)
     361.93, 399.39, 428.84, 450.76, 469.28, 488.89, 514.78, 550.83, 594.93,
     643.09, 692.6, 742.02, 790.79, 838.83, 886.28, 933.33, 980.17, 956.75 };
     ASSERT_THAT(geometry_nodes_y_vector, ::testing::ContainerEq(geometry_nodes_y_expected_vector));
-
-
 }
