@@ -48,6 +48,7 @@ namespace ugrid
     {
         Two,
         nodes,
+        nodes_geometry,
         edges,
         faces,
         layer,

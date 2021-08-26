@@ -28,7 +28,7 @@ TEST(ApiTest, InquireAndGet_AFileWithOneMesh2d_ShouldReadMesh2d)
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
     // Allocate data variables
-    int name_length = ugridapi::ug_name_get_length();
+    auto const name_length = ugridapi::ug_name_get_length();
     std::unique_ptr<char> const name(new char[name_length]);
     mesh2d.name = name.get();
     std::unique_ptr<double> const node_x(new double[mesh2d.num_nodes]);
@@ -217,14 +217,37 @@ TEST(ApiTest, InquireAndGet_AFileWithOneNetwork1D_ShouldReadNetwork1D)
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
     // Allocate data variables
+    auto const name_length = ugridapi::ug_name_get_length();
+    auto const long_names_length = ugridapi::ug_name_get_long_length();
+
     std::unique_ptr<double> const node_x(new double[network1d.num_nodes]);
     network1d.node_x = node_x.get();
+
     std::unique_ptr<double> const node_y(new double[network1d.num_nodes]);
     network1d.node_y = node_y.get();
+
     std::unique_ptr<int> const edge_nodes(new int[network1d.num_edges * 2]);
     network1d.edge_nodes = edge_nodes.get();
 
-    //// Get the data
+    std::unique_ptr<double> const geometry_nodes_x(new double[network1d.num_geometry_nodes]);
+    network1d.geometry_nodes_x = geometry_nodes_x.get();
+
+    std::unique_ptr<double> const geometry_nodes_y(new double[network1d.num_geometry_nodes]);
+    network1d.geometry_nodes_y = geometry_nodes_y.get();
+
+    std::unique_ptr<char> const node_ids(new char[name_length * network1d.num_nodes]);
+    network1d.node_ids = node_ids.get();
+
+    std::unique_ptr<char> const node_long_names(new char[long_names_length * network1d.num_nodes]);
+    network1d.node_long_names = node_long_names.get();
+
+    std::unique_ptr<char> const branch_ids(new char[name_length * network1d.num_nodes]);
+    network1d.branch_ids = node_ids.get();
+
+    std::unique_ptr<char> const branch_long_names(new char[long_names_length * network1d.num_nodes]);
+    network1d.branch_long_names = branch_long_names.get();
+
+    // Get the data
     error_code = ug_network1d_get(file_id, 0, network1d);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
@@ -232,6 +255,8 @@ TEST(ApiTest, InquireAndGet_AFileWithOneNetwork1D_ShouldReadNetwork1D)
     std::vector<double> node_x_vector(node_x.get(), node_x.get() + network1d.num_nodes);
     std::vector<double> node_y_vector(node_y.get(), node_y.get() + network1d.num_nodes);
     std::vector<int> edge_nodes_vector(edge_nodes.get(), edge_nodes.get() + network1d.num_edges * 2);
+    std::vector<double> geometry_nodes_x_vector(geometry_nodes_x.get(), geometry_nodes_x.get() + network1d.num_geometry_nodes);
+    std::vector<double> geometry_nodes_y_vector(geometry_nodes_y.get(), geometry_nodes_y.get() + network1d.num_geometry_nodes);
 
     std::vector<double> node_x_expected{ 293.78, 538.89 };
     ASSERT_THAT(node_x_vector, ::testing::ContainerEq(node_x_expected));
@@ -239,4 +264,15 @@ TEST(ApiTest, InquireAndGet_AFileWithOneNetwork1D_ShouldReadNetwork1D)
     ASSERT_THAT(node_y_vector, ::testing::ContainerEq(node_y_vector_expected));
     std::vector<int> edge_nodes_vector_expected{ 0,1 };
     ASSERT_THAT(edge_nodes_vector, ::testing::ContainerEq(edge_nodes_vector_expected));
+
+    std::vector<double> geometry_nodes_x_expected_vector{ 293.78, 278.97, 265.31, 254.17, 247.44, 248.3, 259.58,
+    282.24, 314.61, 354.44, 398.94, 445, 490.6, 532.84, 566.64, 589.08,
+    600.72, 603.53, 599.27, 590.05, 577.56, 562.97, 547.12, 530.67, 538.89 };
+    ASSERT_THAT(geometry_nodes_x_vector, ::testing::ContainerEq(geometry_nodes_x_expected_vector));
+    std::vector<double> geometry_nodes_y_expected_vector{ 27.48, 74.87, 122.59, 170.96, 220.12, 269.67, 317.89,
+    361.93, 399.39, 428.84, 450.76, 469.28, 488.89, 514.78, 550.83, 594.93,
+    643.09, 692.6, 742.02, 790.79, 838.83, 886.28, 933.33, 980.17, 956.75 };
+    ASSERT_THAT(geometry_nodes_y_vector, ::testing::ContainerEq(geometry_nodes_y_expected_vector));
+
+
 }

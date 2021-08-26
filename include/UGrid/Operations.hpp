@@ -137,6 +137,7 @@ namespace ugrid
             {
                 entity_dimensions.insert({ UGridDimensions::max_face_nodes, it->second });
             }
+
         }
         return isDimensionVariable;
     }
@@ -145,15 +146,16 @@ namespace ugrid
         std::map < std::string, std::vector<std::string>>,
         std::map<UGridDimensions, netCDF::NcDim>> GetUGridEntity
         (
-            std::multimap<std::string, netCDF::NcDim> const& dimensions,
-            std::map<std::string, netCDF::NcVarAtt> const& topology_variable,
-            std::multimap<std::string, netCDF::NcVar> const& variables
+            netCDF::NcVar const& variable,
+            std::multimap<std::string, netCDF::NcDim> const& file_dimensions,
+            std::multimap<std::string, netCDF::NcVar> const& file_variables
         )
     {
-        std::map<std::string, std::vector<netCDF::NcVar>> entity_attribute_keys;
-        std::map<std::string, std::vector<std::string>> entity_attribute_values;
+        std::map<std::string, std::vector<netCDF::NcVar>> entity_attribute_variables;
+        std::map<std::string, std::vector<std::string>> entity_attribute_names;
         std::map<UGridDimensions, netCDF::NcDim> entity_dimensions;
-        for (const auto& attribute : topology_variable)
+        const auto variable_attributes = variable.getAtts();
+        for (const auto& attribute : variable_attributes)
         {
             if (attribute.second.getType() != netCDF::NcType::nc_CHAR)
             {
@@ -165,7 +167,7 @@ namespace ugrid
             attribute.second.getValues(attribute_value_string);
 
             // check if it is a dimension variable
-            auto const isDimensionVariable = FillUGridEntityDimensions(dimensions, attribute_value_string, attribute_key_string, entity_dimensions);
+            auto const isDimensionVariable = FillUGridEntityDimensions(file_dimensions, attribute_value_string, attribute_key_string, entity_dimensions);
             if (isDimensionVariable)
             {
                 continue;
@@ -178,22 +180,22 @@ namespace ugrid
             for (auto const& token : attribute_value_string_tokens)
             {
                 // a name of a valid attribute has been found
-                const auto it = variables.find(token);
-                if (it != variables.end())
+                const auto it = file_variables.find(token);
+                if (it != file_variables.end())
                 {
                     valid_attribute_variables.emplace_back(it->second);
                 }
             }
-            // valid variables have been found
+            // valid file_variables have been found
             if (!valid_attribute_variables.empty())
             {
-                entity_attribute_keys.insert({ attribute_key_string, valid_attribute_variables });
+                entity_attribute_variables.insert({ attribute_key_string, valid_attribute_variables });
             }
 
-            entity_attribute_values.insert({ attribute_key_string, attribute_value_string_tokens });
+            entity_attribute_names.insert({ attribute_key_string, attribute_value_string_tokens });
 
         }
-        return { entity_attribute_keys, entity_attribute_values, entity_dimensions };
+        return { entity_attribute_variables, entity_attribute_names, entity_dimensions };
     }
 
     static void AddStartIndex(int const& start_index, netCDF::NcVar& variable)

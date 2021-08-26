@@ -102,8 +102,6 @@ namespace ugridapi
         return exitCode;
     }
 
-
-
     UGRID_API int ug_open(char const* filePath, int mode, int& file_id)
     {
         int exitCode = Success;

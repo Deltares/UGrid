@@ -61,12 +61,12 @@ namespace ugrid
         /// @param entity_dimensions The dimensions associated with the mesh2d (key value pair with key the dimension enumeration and value the associated NetCDF dimension)
         explicit Mesh2D(
             std::shared_ptr<netCDF::NcFile> nc_file,
-            std::string const& entity_name,
+            netCDF::NcVar const& topology_variable,
             std::map<std::string, std::vector<netCDF::NcVar>> const& entity_attributes,
             std::map<std::string, std::vector<std::string>> const& entity_attribute_names,
             std::map<UGridDimensions, netCDF::NcDim> const& entity_dimensions
         )
-            : UGridEntity(nc_file, entity_name, entity_attributes, entity_attribute_names, entity_dimensions)
+            : UGridEntity(nc_file, topology_variable, entity_attributes, entity_attribute_names, entity_dimensions)
         {
         }
 
@@ -89,6 +89,10 @@ namespace ugrid
         /// @brief Factory method producing a vector of instances of the current class (as many mesh2d are found in the file)
         /// @return The vector of produced class instances
         static std::vector<Mesh2D> Create(std::shared_ptr<netCDF::NcFile> const& nc_file);
+
+    private:
+
+        inline static int m_dimensionality = 2;
 
     };
 } // namespace ugrid

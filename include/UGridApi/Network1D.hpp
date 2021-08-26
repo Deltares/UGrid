@@ -39,23 +39,25 @@ namespace ugridapi
 
         char* node_id = nullptr;
 
-        char* node_long_name = nullptr;
-
         int* edge_nodes = nullptr;
 
-        double* branch_length = nullptr;
+        double* branch_lengths = nullptr;
 
         int* branch_order = nullptr;
 
-        char* branch_id = nullptr;
+        char* node_ids = nullptr;
 
-        char* branch_long_name = nullptr;
+        char* node_long_names = nullptr;
+
+        char* branch_ids = nullptr;
+
+        char* branch_long_names = nullptr;
 
         double* geometry_nodes_x = nullptr;
 
         double* geometry_nodes_y = nullptr;
 
-        int* num_geometry_nodes = nullptr;
+        int num_geometry_nodes;
 
         int num_nodes;
 

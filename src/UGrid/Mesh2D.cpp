@@ -292,28 +292,28 @@ void Mesh2D::Get(ugridapi::Mesh2D& mesh2d) const
 std::vector<Mesh2D> Mesh2D::Create(std::shared_ptr<netCDF::NcFile> const& nc_file)
 {
     // Get all vars in this file
-    const auto variables = nc_file->getVars();
-    const auto dimensions = nc_file->getDims();
+    auto const  file_variables = nc_file->getVars();
+    auto const  file_dimensions = nc_file->getDims();
 
     std::vector<Mesh2D> result;
-    for (auto const& variable : variables)
+    for (auto const& variable : file_variables)
     {
-        auto attributes = variable.second.getAtts();
+        auto variable_attributes = variable.second.getAtts();
 
-        if (!is_mesh_topology_variable(attributes))
+        if (!is_mesh_topology_variable(variable_attributes))
         {
             continue;
         }
 
         int dimensionality;
-        attributes["topology_dimension"].getValues(&dimensionality);
+        variable_attributes["topology_dimension"].getValues(&dimensionality);
 
-        if (dimensionality == 2)
+        if (dimensionality == m_dimensionality)
         {
             // entity_attribute_keys, entity_attribute_values, entity_dimensions
-            auto const entity_name = variable.first;
-            auto const [entity_attribute_keys, entity_attribute_values, entity_dimensions] = GetUGridEntity(dimensions, attributes, variables);
-            result.emplace_back(nc_file, entity_name, entity_attribute_keys, entity_attribute_values, entity_dimensions);
+            auto const [entity_attribute_variables, entity_attribute_strings, entity_dimensions] = GetUGridEntity(variable.second, file_dimensions, file_variables);
+            result.emplace_back(nc_file, variable.second, entity_attribute_variables, entity_attribute_strings, entity_dimensions);
+
         }
     }
 

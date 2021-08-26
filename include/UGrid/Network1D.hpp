@@ -51,12 +51,21 @@ namespace ugrid
         /// @param entity_dimensions The dimensions associated with the mesh2d (key value pair with key the dimension enumeration and value the associated NetCDF dimension)
         explicit Network1D(
             std::shared_ptr<netCDF::NcFile> nc_file,
-            std::string const& entity_name,
+            netCDF::NcVar const& topology_variable,
             std::map<std::string, std::vector<netCDF::NcVar>> const& entity_attributes,
             std::map<std::string, std::vector<std::string>> const& entity_attribute_names,
-            std::map<UGridDimensions, netCDF::NcDim> const& entity_dimensions
+            std::map<UGridDimensions, netCDF::NcDim> const& entity_dimensions,
+            netCDF::NcVar const& network_geometry_variable,
+            std::map<std::string, std::vector<netCDF::NcVar>> const& network_geometry_attributes,
+            std::map<std::string, std::vector<std::string>> const& network_geometry_attributes_names,
+            std::map<UGridDimensions, netCDF::NcDim> const& network_geometry_dimensions
         )
-            : UGridEntity(nc_file, entity_name, entity_attributes, entity_attribute_names, entity_dimensions)
+            : UGridEntity(nc_file, topology_variable, entity_attributes, entity_attribute_names, entity_dimensions),
+            m_network_geometry_variable(network_geometry_variable),
+            m_network_geometry_attribute_variables(network_geometry_attributes),
+            m_network_geometry_attributes_names(network_geometry_attributes_names),
+            m_network_geometry_dimensions(network_geometry_dimensions)
+
         {
         }
 
@@ -79,6 +88,15 @@ namespace ugrid
         /// @brief Factory method producing a vector of instances of the current class (as many network1d are found in the file)
         /// @return The vector of produced class instances
         static std::vector<Network1D> Create(std::shared_ptr<netCDF::NcFile> const& nc_file);
+
+    private:
+
+        inline static int m_dimensionality = 1;
+
+        netCDF::NcVar                                      m_network_geometry_variable;                 /// The topology variable
+        std::map<std::string, std::vector<netCDF::NcVar>>  m_network_geometry_attribute_variables;      /// For each attribute, the corresponding attributes
+        std::map<std::string, std::vector<std::string>>    m_network_geometry_attributes_names;         /// For each attribute, the corresponding names
+        std::map<UGridDimensions, netCDF::NcDim>           m_network_geometry_dimensions;               /// The entity dimensions
 
     };
 } // namespace ugrid

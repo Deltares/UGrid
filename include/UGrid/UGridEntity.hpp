@@ -54,11 +54,12 @@ namespace ugrid
 
         UGridEntity(
             std::shared_ptr<netCDF::NcFile> nc_file,
-            std::string const& entity_name,
+            netCDF::NcVar const& topology_variable,
             std::map<std::string, std::vector<netCDF::NcVar>> const& attribute_variables,
             std::map<std::string, std::vector<std::string>> const& attribute_variable_names,
             std::map<UGridDimensions, netCDF::NcDim> const& dimensions);
 
+    protected:
 
         /// @brief Defines the topology attributes for each location variable (name, dimension and coordinate variable)
         /// @param entity_location
@@ -98,22 +99,20 @@ namespace ugrid
 
 
         std::shared_ptr<netCDF::NcFile>                    m_nc_file;                           /// A pointer to the opened file
-        std::string                                        m_entity_name;                       /// The name of the entity
         netCDF::NcVar                                      m_topology_variable;                 /// The topology variable
-        std::map<std::string, netCDF::NcVarAtt>            m_topology_attributes;               /// topology attributes
-        std::map<std::string, std::vector<std::string>>    m_topology_attributes_names;         /// For each UGridEntity attribute, the corresponding names
-        std::map<std::string, std::vector<netCDF::NcVar>>  m_topology_attribute_variables;      /// For each UGridEntity attribute, the corresponding attributes
-
-
-
-
-        std::map<std::string, netCDF::NcVar>               m_related_variables;                 /// Variables defined on the entity (foe example on nodes, edges or faces)
+        std::map<std::string, std::vector<netCDF::NcVar>>  m_topology_attribute_variables;      /// For each attribute, the corresponding attributes
+        std::map<std::string, std::vector<std::string>>    m_topology_attributes_names;         /// For each attribute, the corresponding names
         std::map<UGridDimensions, netCDF::NcDim>           m_dimensions;                        /// The entity dimensions
+
+        std::map<std::string, netCDF::NcVarAtt>            m_topology_attributes;               /// The topology attributes
+        std::map<std::string, netCDF::NcVar>               m_related_variables;                 /// Variables defined on the entity (foe example on nodes, edges or faces)
+        std::string                                        m_entity_name;                       /// The entity name
+
         bool m_spherical_coordinates = false;                                                   /// If it is a spherical entity
         int m_start_index = 0;
         int m_int_fill_value = int_missing_value;
         int m_double_fill_value = double_missing_value;
-        int m_epsg;                                                                             /// The epsg code
+        int m_epsg_code;                                                                        /// The epsg code
 
     private:
 
