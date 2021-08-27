@@ -238,17 +238,17 @@ TEST(ApiTest, InquireAndGet_AFileWithOneNetwork1D_ShouldReadNetwork1D)
     std::unique_ptr<double> const geometry_nodes_y(new double[network1d.num_geometry_nodes]);
     network1d.geometry_nodes_y = geometry_nodes_y.get();
 
-    std::unique_ptr<char> const node_ids(new char[name_length * network1d.num_nodes]);
-    network1d.node_ids = node_ids.get();
+    std::unique_ptr<char> const node_id(new char[name_length * network1d.num_nodes]);
+    network1d.node_id = node_id.get();
 
-    std::unique_ptr<char> const node_long_names(new char[long_names_length * network1d.num_nodes]);
-    network1d.node_long_names = node_long_names.get();
+    std::unique_ptr<char> const node_long_name(new char[long_names_length * network1d.num_nodes]);
+    network1d.node_long_name = node_long_name.get();
 
-    std::unique_ptr<char> const branch_ids(new char[name_length * network1d.num_nodes]);
-    network1d.branch_ids = branch_ids.get();
+    std::unique_ptr<char> const branch_id(new char[name_length * network1d.num_nodes]);
+    network1d.branch_id = branch_id.get();
 
-    std::unique_ptr<char> const branch_long_names(new char[long_names_length * network1d.num_nodes]);
-    network1d.branch_long_names = branch_long_names.get();
+    std::unique_ptr<char> const branch_long_name(new char[long_names_length * network1d.num_nodes]);
+    network1d.branch_long_name = branch_long_name.get();
 
     // Get the data
     error_code = ug_network1d_get(file_id, 0, network1d);
@@ -260,15 +260,15 @@ TEST(ApiTest, InquireAndGet_AFileWithOneNetwork1D_ShouldReadNetwork1D)
     std::vector<int> edge_nodes_vector(edge_nodes.get(), edge_nodes.get() + network1d.num_edges * 2);
     std::vector<double> geometry_nodes_x_vector(geometry_nodes_x.get(), geometry_nodes_x.get() + network1d.num_geometry_nodes);
     std::vector<double> geometry_nodes_y_vector(geometry_nodes_y.get(), geometry_nodes_y.get() + network1d.num_geometry_nodes);
-    std::string node_ids_string(node_ids.get(), node_ids.get() + name_length * network1d.num_nodes);
-    std::string node_long_names_string(node_long_names.get(), node_long_names.get() + long_names_length * network1d.num_nodes);
+    std::string node_id_string(node_id.get(), node_id.get() + name_length * network1d.num_nodes);
+    std::string node_long_name_string(node_long_name.get(), node_long_name.get() + long_names_length * network1d.num_nodes);
 
-    std::string branch_ids_string(branch_ids.get(), branch_ids.get() + name_length * network1d.num_edges);
-    std::string branch_long_names_string(branch_long_names.get(), branch_long_names.get() + long_names_length * network1d.num_edges);
+    std::string branch_ids_string(branch_id.get(), branch_id.get() + name_length * network1d.num_edges);
+    std::string branch_long_names_string(branch_long_name.get(), branch_long_name.get() + long_names_length * network1d.num_edges);
     for (auto i = 0; i < network1d.num_nodes; ++i)
     {
-        std::string node_id = node_ids_string.substr(i * name_length, (i + 1) * name_length);
-        std::string node_long_name = node_long_names_string.substr(i * long_names_length, (i + 1) * long_names_length);
+        std::string node_id = node_id_string.substr(i * name_length, (i + 1) * name_length);
+        std::string node_long_name = node_long_name_string.substr(i * long_names_length, (i + 1) * long_names_length);
         ASSERT_EQ("nodesids                                ", node_id);
         ASSERT_EQ("nodeslongNames                                                                  ", node_long_name);
 
@@ -332,10 +332,10 @@ TEST(ApiTest, DefineAndPut_OneNetwork1D_ShouldWriteData)
     auto const name_length = ugridapi::ug_name_get_length();
     auto const long_names_length = ugridapi::ug_name_get_long_length();
     std::unique_ptr<char> const node_ids(new char[name_length * network1d.num_nodes]);
-    network1d.node_ids = node_ids.get();
+    network1d.node_id = node_ids.get();
 
     std::unique_ptr<char> const node_long_names(new char[long_names_length * network1d.num_nodes]);
-    network1d.node_long_names = node_long_names.get();
+    network1d.node_long_name = node_long_names.get();
 
     int topology_id = -1;
     error_code = ug_network1d_def(file_id, network1d, topology_id);
