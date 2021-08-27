@@ -310,7 +310,7 @@ TEST(ApiTest, DefineAndPut_OneNetwork1D_ShouldWriteData)
 
     // Fill all data 
     ugridapi::Network1d network1d;
-    std::unique_ptr<char> const name(new char[] {"network"});
+    std::unique_ptr<char> const name(new char[] {"network1d"});
     network1d.name = name.get();
     std::unique_ptr<double> const node_x(new double[] { 293.78, 538.89 });
     network1d.node_x = node_x.get();
@@ -319,7 +319,23 @@ TEST(ApiTest, DefineAndPut_OneNetwork1D_ShouldWriteData)
     network1d.num_nodes = 2;
     std::unique_ptr<int> const edge_nodes(new int[] { 0, 1});
     network1d.edge_nodes = edge_nodes.get();
-    network1d.num_edges = 1;
+    network1d.num_edges = 2;
+    std::unique_ptr<double> const geometry_nodes_x(new double[] { 293.78, 278.97, 265.31, 254.17, 247.44, 248.3, 259.58,
+        282.24, 314.61, 354.44, 398.94, 445, 490.6, 532.84, 566.64, 589.08,
+        600.72, 603.53, 599.27, 590.05, 577.56, 562.97, 547.12, 530.67, 538.89 });
+    network1d.geometry_nodes_x = geometry_nodes_x.get();
+    std::unique_ptr<double> const geometry_nodes_y(new double[] { 27.48, 74.87, 122.59, 170.96, 220.12, 269.67, 317.89,
+        361.93, 399.39, 428.84, 450.76, 469.28, 488.89, 514.78, 550.83, 594.93,
+        643.09, 692.6, 742.02, 790.79, 838.83, 886.28, 933.33, 980.17, 956.75 });
+    network1d.geometry_nodes_y = geometry_nodes_y.get();
+    network1d.num_geometry_nodes = 25;
+    auto const name_length = ugridapi::ug_name_get_length();
+    auto const long_names_length = ugridapi::ug_name_get_long_length();
+    std::unique_ptr<char> const node_ids(new char[name_length * network1d.num_nodes]);
+    network1d.node_ids = node_ids.get();
+
+    std::unique_ptr<char> const node_long_names(new char[long_names_length * network1d.num_nodes]);
+    network1d.node_long_names = node_long_names.get();
 
     int topology_id = -1;
     error_code = ug_network1d_def(file_id, network1d, topology_id);
