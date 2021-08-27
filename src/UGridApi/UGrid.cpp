@@ -227,12 +227,41 @@ namespace ugridapi
     UGRID_API int ug_network1d_def(int file_id, Network1d const& network, int& topology_id)
     {
         int exitCode = Success;
+        try
+        {
+            if (ugrid_states.count(file_id) == 0)
+            {
+                throw std::invalid_argument("UGrid: The selected file_id does not exist.");
+            }
+
+            ugrid::Network1D network_1d(ugrid_states[file_id].m_ncFile);
+            network_1d.Define(network);
+            ugrid_states[file_id].m_network1d.emplace_back(network_1d);
+            topology_id = ugrid_states[file_id].m_network1d.size() - 1;
+        }
+        catch (...)
+        {
+            exitCode = HandleExceptions(std::current_exception());
+        }
         return exitCode;
     }
 
     UGRID_API int ug_network1d_put(int file_id, int topology_id, Network1d const& network)
     {
         int exitCode = Success;
+        try
+        {
+            if (ugrid_states.count(file_id) == 0)
+            {
+                throw std::invalid_argument("UGrid: The selected file_id does not exist.");
+            }
+
+            ugrid_states[file_id].m_network1d[topology_id].Put(network);
+        }
+        catch (...)
+        {
+            exitCode = HandleExceptions(std::current_exception());
+        }
         return exitCode;
     }
 

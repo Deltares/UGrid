@@ -297,3 +297,40 @@ TEST(ApiTest, InquireAndGet_AFileWithOneNetwork1D_ShouldReadNetwork1D)
     643.09, 692.6, 742.02, 790.79, 838.83, 886.28, 933.33, 980.17, 956.75 };
     ASSERT_THAT(geometry_nodes_y_vector, ::testing::ContainerEq(geometry_nodes_y_expected_vector));
 }
+
+TEST(ApiTest, DefineAndPut_OneNetwork1D_ShouldWriteData)
+{
+    std::string const filePath = TEST_FOLDER + "/data/OneNetwork1DWrite.nc";
+
+    // Open a file
+    int file_id = 0;
+    auto const file_mode = ugridapi::ug_file_replace_mode();
+    auto error_code = ugridapi::ug_open(filePath.c_str(), file_mode, file_id);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+
+    // Fill all data 
+    ugridapi::Network1d network1d;
+    std::unique_ptr<char> const name(new char[] {"network"});
+    network1d.name = name.get();
+    std::unique_ptr<double> const node_x(new double[] { 293.78, 538.89 });
+    network1d.node_x = node_x.get();
+    std::unique_ptr<double> const node_y(new double[] { 27.48, 956.75 });
+    network1d.node_y = node_y.get();
+    network1d.num_nodes = 2;
+    std::unique_ptr<int> const edge_nodes(new int[] { 0, 1});
+    network1d.edge_nodes = edge_nodes.get();
+    network1d.num_edges = 1;
+
+    int topology_id = -1;
+    error_code = ug_network1d_def(file_id, network1d, topology_id);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+    ASSERT_EQ(0, topology_id);
+
+    error_code = ug_network1d_put(file_id, topology_id, network1d);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+    ASSERT_EQ(0, topology_id);
+
+    // Close the file
+    error_code = ugridapi::ug_close(file_id);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+}

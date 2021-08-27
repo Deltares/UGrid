@@ -69,7 +69,7 @@ namespace ugrid
         {
         }
 
-        /// @brief Defines the network1d header
+        /// @brief Defines the network1d header (ug_create_1d_network_v1)
         /// @param mesh2d The network1d api structure with the fields to write and all optional flags  
         void Define(ugridapi::Network1d const& mesh2d);
 
