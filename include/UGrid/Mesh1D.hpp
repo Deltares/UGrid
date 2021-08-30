@@ -27,31 +27,66 @@
 
 #pragma once
 
+#include <UGridApi/Mesh1D.hpp>
+
+#include <UGrid/UGridEntity.hpp>
+
+
 /// \namespace ugrid
 /// @brief Contains the logic of the C++ static library
 namespace ugrid
 {
-    /// @brief A class containing the variables ids for a mesh2d
-    struct Mesh1D
+
+    /// @brief A class implementing the methods for reading/writing a mesh1d in UGrid format
+    struct Mesh1D : UGridEntity
     {
+        /// @brief Constructor setting the NetCDF file
+        /// @param nc_file The NetCDF file pointer
+        explicit Mesh1D(
+            std::shared_ptr<netCDF::NcFile> nc_file) : UGridEntity(nc_file)
+        {
+        }
 
-        Mesh1D(int file_id) : m_file_id(file_id) {};
+        /// @brief Constructor setting nc_file and all internal state
+        /// @param nc_file The nc file pointer
+        /// @param entity_name The mesh1d name
+        /// @param entity_attributes The topological attributes (key value pair with key the topological attribute name and value the associated vector of variables)
+        /// @param entity_attribute_names The topological attributes names (key value pair with key the topological attribute name and value the associated vector of variables names)
+        /// @param entity_dimensions The dimensions associated with the mesh1d (key value pair with key the dimension enumeration and value the associated NetCDF dimension)
+        explicit Mesh1D(
+            std::shared_ptr<netCDF::NcFile> nc_file,
+            netCDF::NcVar const& topology_variable,
+            std::map<std::string, std::vector<netCDF::NcVar>> const& entity_attributes,
+            std::map<std::string, std::vector<std::string>> const& entity_attribute_names,
+            std::map<UGridDimensions, netCDF::NcDim> const& entity_dimensions
+        )
+            : UGridEntity(nc_file, topology_variable, entity_attributes, entity_attribute_names, entity_dimensions)
+        {
+        }
 
-        int m_file_id;
+        /// @brief Defines the mesh1d header
+        /// @param mesh1d The mesh1d api structure with the fields to write and all optional flags  
+        void Define(ugridapi::Mesh1D const& mesh1d);
 
-        /// @brief Topology id
-        int m_topology = -1;
+        /// @brief Writes a mesh1d to file
+        /// @param mesh1d mesh1d The mesh1d api structure with the fields to write and all optional flags  
+        void Put(ugridapi::Mesh1D const& mesh1d);
 
-        /// @brief Name id
-        int m_name = -1;
+        /// @brief Inquires the mesh1d dimensions
+        /// @param mesh1d The mesh1d api structure with the fields where to assign the dimensions
+        void Inquire(ugridapi::Mesh1D& mesh1d) const;
 
-        /// @brief Dimension ids
-        int m_num_nodes = -1;
-        int m_num_edges = -1;
-        int m_num_faces = -1;
-        int m_num_face_nodes = -1;
+        /// @brief Inquires the mesh1d arrays
+        /// @param mesh1d The mesh1d api structure with the fields where to assign the data
+        void Get(ugridapi::Mesh1D& mesh1d) const;
 
-        /// @brief Data ids
-        // TO DO
+        /// @brief Factory method producing a vector of instances of the current class (as many mesh1d are found in the file)
+        /// @return The vector of produced class instances
+        static std::vector<Mesh1D> Create(std::shared_ptr<netCDF::NcFile> const& nc_file);
+
+    private:
+
+        inline static int m_dimensionality = 1;
+
     };
 } // namespace ugrid

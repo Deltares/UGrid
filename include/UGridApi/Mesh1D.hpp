@@ -27,19 +27,17 @@
 
 #pragma once
 
+#include <UGrid/Constants.hpp>
+
 namespace ugridapi
 {
     struct Mesh1D
     {
-        int* edge_nodes = nullptr;
-
         double* node_x = nullptr;
 
         double* node_y = nullptr;
 
-        int num_nodes;
-
-        int num_edges;
+        int* edge_nodes = nullptr;
 
         int* branchid = nullptr;
 
@@ -53,14 +51,24 @@ namespace ugridapi
 
         double* edge_offset = nullptr;
 
-        char* nodeids = nullptr;
+        char* node_id = nullptr;
 
-        char* nodelongnames = nullptr;
+        char* node_long_name = nullptr;
 
         char* name = nullptr;
 
         char* networkname = nullptr;
 
-        int startindex;
+        int num_nodes = 0;
+
+        int num_edges = 0;
+
+        int start_index = 0;
+
+        int is_spherical = 0;
+
+        double double_fill_value = ugrid::double_missing_value;
+
+        int int_fill_value = ugrid::int_missing_value;
     };
 }

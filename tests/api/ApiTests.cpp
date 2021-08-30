@@ -351,3 +351,86 @@ TEST(ApiTest, DefineAndPut_OneNetwork1D_ShouldWriteData)
     error_code = ugridapi::ug_close(file_id);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 }
+
+
+TEST(ApiTest, InquireAndGet_AFileWithOneMesh1D_ShouldReadMesh1D)
+{
+    std::string const filePath = TEST_FOLDER + "/data/AllEntities.nc";
+
+    // Open a file
+    int file_id = 0;
+    auto const file_mode = ugridapi::ug_file_read_mode();
+    auto error_code = ugridapi::ug_open(filePath.c_str(), file_mode, file_id);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+
+    // get the number of topologies
+    auto topology_type = ugridapi::ug_topology_get_mesh1d_type_enum();
+    auto const num_topologies = ugridapi::ug_topology_get_count(file_id, topology_type);
+    ASSERT_EQ(num_topologies, 1);
+
+    // Get the dimensions 
+    ugridapi::Mesh1D mesh1d;
+    error_code = ug_mesh1d_inq(file_id, 0, mesh1d);
+    ASSERT_EQ(25, mesh1d.num_nodes);
+    ASSERT_EQ(24, mesh1d.num_edges);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+
+    // Allocate data variables
+    auto const name_length = ugridapi::ug_name_get_length();
+    auto const long_names_length = ugridapi::ug_name_get_long_length();
+
+    std::unique_ptr<double> const node_x(new double[mesh1d.num_nodes]);
+    mesh1d.node_x = node_x.get();
+
+    std::unique_ptr<double> const node_y(new double[mesh1d.num_nodes]);
+    mesh1d.node_y = node_y.get();
+
+    std::unique_ptr<int> const edge_nodes(new int[mesh1d.num_edges * 2]);
+    mesh1d.edge_nodes = edge_nodes.get();
+
+
+    std::unique_ptr<char> const node_id(new char[name_length * mesh1d.num_nodes]);
+    mesh1d.node_id = node_id.get();
+
+    std::unique_ptr<char> const node_long_name(new char[long_names_length * mesh1d.num_nodes]);
+    mesh1d.node_long_name = node_long_name.get();
+
+
+    // Get the data
+    error_code = ug_mesh1d_get(file_id, 0, mesh1d);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+
+    //// Assert
+    std::vector<double> node_x_vector(node_x.get(), node_x.get() + mesh1d.num_nodes);
+    std::vector<double> node_y_vector(node_y.get(), node_y.get() + mesh1d.num_nodes);
+    std::vector<int> edge_nodes_vector(edge_nodes.get(), edge_nodes.get() + mesh1d.num_edges * 2);
+    std::string node_id_string(node_id.get(), node_id.get() + name_length * mesh1d.num_nodes);
+    std::string node_long_name_string(node_long_name.get(), node_long_name.get() + long_names_length * mesh1d.num_nodes);
+
+    //std::string branch_ids_string(branch_id.get(), branch_id.get() + name_length * mesh1d.num_edges);
+    //std::string branch_long_names_string(branch_long_name.get(), branch_long_name.get() + long_names_length * mesh1d.num_edges);
+    //for (auto i = 0; i < mesh1d.num_nodes; ++i)
+    //{
+    //    std::string node_id = node_id_string.substr(i * name_length, (i + 1) * name_length);
+    //    std::string node_long_name = node_long_name_string.substr(i * long_names_length, (i + 1) * long_names_length);
+    //    ASSERT_EQ("nodesids                                ", node_id);
+    //    ASSERT_EQ("nodeslongNames                                                                  ", node_long_name);
+
+    //}
+
+    //std::vector<double> node_x_expected{ 293.78, 538.89 };
+    //ASSERT_THAT(node_x_vector, ::testing::ContainerEq(node_x_expected));
+    //std::vector<double> node_y_vector_expected{ 27.48, 956.75 };
+    //ASSERT_THAT(node_y_vector, ::testing::ContainerEq(node_y_vector_expected));
+    //std::vector<int> edge_nodes_vector_expected{ 0,1 };
+    //ASSERT_THAT(edge_nodes_vector, ::testing::ContainerEq(edge_nodes_vector_expected));
+
+    //std::vector<double> geometry_nodes_x_expected_vector{ 293.78, 278.97, 265.31, 254.17, 247.44, 248.3, 259.58,
+    //282.24, 314.61, 354.44, 398.94, 445, 490.6, 532.84, 566.64, 589.08,
+    //600.72, 603.53, 599.27, 590.05, 577.56, 562.97, 547.12, 530.67, 538.89 };
+    //ASSERT_THAT(geometry_nodes_x_vector, ::testing::ContainerEq(geometry_nodes_x_expected_vector));
+    //std::vector<double> geometry_nodes_y_expected_vector{ 27.48, 74.87, 122.59, 170.96, 220.12, 269.67, 317.89,
+    //361.93, 399.39, 428.84, 450.76, 469.28, 488.89, 514.78, 550.83, 594.93,
+    //643.09, 692.6, 742.02, 790.79, 838.83, 886.28, 933.33, 980.17, 956.75 };
+    //ASSERT_THAT(geometry_nodes_y_vector, ::testing::ContainerEq(geometry_nodes_y_expected_vector));
+}

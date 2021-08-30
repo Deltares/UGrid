@@ -97,7 +97,7 @@ void Network1D::Define(ugridapi::Network1d const& network1d)
         topology_attribute = m_topology_variable.putAtt("edge_node_connectivity", string_builder.str());
         add_topology_attribute(topology_attribute);
         auto topology_attribute_variable = m_nc_file->addVar(string_builder.str(), netCDF::NcType::nc_INT, { m_dimensions[UGridDimensions::edges], m_dimensions[UGridDimensions::Two] });
-        auto topology_attribute_variable_attribute = topology_attribute_variable.putAtt("cf_role", "edge_node_connectivity");
+        auto topology_attribute_variable_attribute = topology_attribute_variable.putAtt("cf_role", topology_attribute.getName());
         topology_attribute_variable_attribute = topology_attribute_variable.putAtt("long_name", "Start and end nodes of network edges");
         add_topology_attribute_variable(topology_attribute, topology_attribute_variable);
 
@@ -253,11 +253,6 @@ void Network1D::Inquire(ugridapi::Network1d& network1d) const
     {
         network1d.num_edges = m_dimensions.at(UGridDimensions::edges).getSize();
     }
-    if (m_dimensions.find(UGridDimensions::edges) != m_dimensions.end())
-    {
-        network1d.num_edges = m_dimensions.at(UGridDimensions::edges).getSize();
-    }
-
     // get network dimensions
     auto const it = m_network_geometry_attribute_variables.find("node_coordinates");
     if (it != m_network_geometry_attribute_variables.end())

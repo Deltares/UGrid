@@ -92,28 +92,6 @@ namespace ugrid
 
     private:
 
-        [[nodiscard]] auto FindVariableWithAliases(std::string const& variable_name) const
-        {
-            // define topology variable aliases
-            static std::map<std::string, std::vector<std::string>> aliases
-            {
-                {"node_id",{"node_id", "node_ids"}},
-                {"node_long_name",{"node_long_name", "node_long_names"}},
-                {"branch_id",{"branch_id", "branch_ids"}},
-                {"branch_long_name",{"branch_long_name", "branch_long_names"}},
-            };
-
-            for (auto const& alias : aliases.at(variable_name))
-            {
-                auto const iterator = m_topology_attribute_variables.find(alias);
-                if (iterator != m_topology_attribute_variables.end())
-                {
-                    return iterator;
-                }
-            }
-        }
-
-
         inline static int m_dimensionality = 1;
 
         netCDF::NcVar                                      m_network_geometry_variable;                 /// The topology variable

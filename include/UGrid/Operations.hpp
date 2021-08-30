@@ -91,6 +91,12 @@ namespace ugrid
         {
             return false;
         }
+
+        // Only network1d has edge_geometry
+        if (attributes.find("edge_geometry") != attributes.end())
+        {
+            return false;
+        }
         return true;
     }
 
