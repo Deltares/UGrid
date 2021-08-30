@@ -92,10 +92,9 @@ namespace ugrid
 
     private:
 
-
-
         [[nodiscard]] auto FindVariableWithAliases(std::string const& variable_name) const
         {
+            // define topology variable aliases
             static std::map<std::string, std::vector<std::string>> aliases
             {
                 {"node_id",{"node_id", "node_ids"}},

@@ -78,11 +78,6 @@ namespace ugrid
             UGridCoordinates const& coordinate,
             std::string const& long_name_pattern);
 
-        void define_topological_variable_attributes(
-            std::string const& variable_name,
-            netCDF::NcVar& variable,
-            std::string const& long_name);
-
         netCDF::NcVar define_variable_on_location(std::string const& variable_name,
             UGridDimensions const& ugrid_entity_dimension,
             std::string const& standard_name,
@@ -98,9 +93,34 @@ namespace ugrid
             int const& int_fill_value = int_invalid_value);
 
 
+        void add_topology_attribute(netCDF::NcVarAtt const& nc_var_attribute)
+        {
+            m_topology_attributes.insert({ nc_var_attribute.getName(), nc_var_attribute });
+        }
+
+        void add_topology_attribute_variable(netCDF::NcVarAtt const& nc_var_attribute, netCDF::NcVar const& nc_var)
+        {
+            // find if an attribute variable is there already
+            auto it = m_topology_attribute_variables.find(nc_var_attribute.getName());
+            if (it != m_topology_attribute_variables.end())
+            {
+                it->second.emplace_back(nc_var);
+            }
+            else
+            {
+                m_topology_attribute_variables.insert({ nc_var_attribute.getName(), {nc_var} });
+            }
+        }
+
+        void AddTopologyRelatedVariables(netCDF::NcVar const& nc_var)
+        {
+            m_related_variables.insert({ nc_var.getName(), {nc_var} });
+        }
+
+
         std::shared_ptr<netCDF::NcFile>                    m_nc_file;                           /// A pointer to the opened file
         netCDF::NcVar                                      m_topology_variable;                 /// The topology variable
-        std::map<std::string, std::vector<netCDF::NcVar>>  m_topology_attribute_variables;      /// For each attribute, the corresponding attributes
+        std::map<std::string, std::vector<netCDF::NcVar>>  m_topology_attribute_variables;      /// For each topology attribute, the corresponding variables
         std::map<std::string, std::vector<std::string>>    m_topology_attributes_names;         /// For each attribute, the corresponding names
         std::map<UGridDimensions, netCDF::NcDim>           m_dimensions;                        /// The entity dimensions
 

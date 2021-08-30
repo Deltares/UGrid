@@ -169,29 +169,8 @@ void UGridEntity::define_topological_variable_with_coordinates(
 
 
     std::string attribute_value = first_coordinate_variable + " " + second_coordinate_variable;
-    m_topology_attributes.insert({ topology_attribute_name,m_topology_variable.putAtt(topology_attribute_name, attribute_value) });
-}
-
-void UGridEntity::define_topological_variable_attributes(std::string const& variable_name,
-    netCDF::NcVar& variable,
-    std::string const& long_name)
-{
-    variable.putAtt("cf_role", variable_name);
-    variable.putAtt("long_name", long_name);
-
-    variable.getType() == netCDF::NcType::nc_DOUBLE ? variable.setFill(true, m_double_fill_value) : variable.setFill(true, m_int_fill_value);
-    AddStartIndex(m_start_index, variable);
-
-    // find if an attribute variable is there already
-    auto it = m_topology_attribute_variables.find(variable_name);
-    if (it != m_topology_attribute_variables.end())
-    {
-        it->second.emplace_back(variable);
-    }
-    else
-    {
-        m_topology_attribute_variables.insert({ variable_name, {variable} });
-    }
+    auto topological_attribute = m_topology_variable.putAtt(topology_attribute_name, attribute_value);
+    add_topology_attribute(topological_attribute);
 }
 
 netCDF::NcVar UGridEntity::define_variable_on_location(std::string const& variable_name,
@@ -245,8 +224,8 @@ netCDF::NcVar UGridEntity::define_variable_on_location(std::string const& variab
     {
         location = "contact";
         string_builder.clear(); string_builder << "_" << location;
-        variable.putAtt("location", string_builder.str());
-        variable.putAtt("coordinates", location);
+        auto variable_attribute = variable.putAtt("location", string_builder.str());
+        variable_attribute = variable.putAtt("coordinates", location);
         define_additional_attributes(variable, standard_name, long_name, units, int_fill_value, double_fill_value);
         return variable;
     }
