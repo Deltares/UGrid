@@ -59,6 +59,44 @@ namespace ugrid
             std::map<std::string, std::vector<std::string>> const& attribute_variable_names,
             std::map<UGridDimensions, netCDF::NcDim> const& dimensions);
 
+        /// @brief Factory method producing a vector of instances of the current class (as many mesh2d are found in the file)
+        /// @return The vector of produced class instances
+        template<typename T>
+        static std::vector<T> Create(std::shared_ptr<netCDF::NcFile> const& nc_file, int entity_dimensionality)
+        {
+            // Get all vars in this file
+            const auto file_variables = nc_file->getVars();
+            const auto file_dimensions = nc_file->getDims();
+
+            std::vector<T> result;
+            for (auto const& variable : file_variables)
+            {
+                auto variable_attributes = variable.second.getAtts();
+
+                if (!is_mesh_topology_variable(variable_attributes))
+                {
+                    continue;
+                }
+
+                int dimensionality;
+                variable_attributes["topology_dimension"].getValues(&dimensionality);
+
+                if (dimensionality == entity_dimensionality)
+                {
+                    // entity_attribute_keys, entity_attribute_values, entity_dimensions
+                    auto const [entity_attribute_variables, entity_attribute_names, entity_dimensions] = GetUGridEntity(variable.second, file_dimensions, file_variables);
+                    result.emplace_back(nc_file,
+                        variable.second,
+                        entity_attribute_variables,
+                        entity_attribute_names,
+                        entity_dimensions);
+
+                }
+            }
+
+            return result;
+        };
+
     protected:
 
         /// @brief Defines the topology attributes for each location variable (name, dimension and coordinate variable)
@@ -91,6 +129,7 @@ namespace ugrid
             std::string const& long_name,
             std::string const& units,
             int const& int_fill_value = int_invalid_value);
+
 
         [[nodiscard]] auto FindVariableWithAliases(std::string const& variable_name) const
         {

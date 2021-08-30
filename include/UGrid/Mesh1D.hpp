@@ -80,13 +80,5 @@ namespace ugrid
         /// @param mesh1d The mesh1d api structure with the fields where to assign the data
         void Get(ugridapi::Mesh1D& mesh1d) const;
 
-        /// @brief Factory method producing a vector of instances of the current class (as many mesh1d are found in the file)
-        /// @return The vector of produced class instances
-        static std::vector<Mesh1D> Create(std::shared_ptr<netCDF::NcFile> const& nc_file);
-
-    private:
-
-        inline static int m_dimensionality = 1;
-
     };
 } // namespace ugrid

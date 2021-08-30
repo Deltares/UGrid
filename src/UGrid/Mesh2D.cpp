@@ -311,34 +311,3 @@ void Mesh2D::Get(ugridapi::Mesh2D& mesh2d) const
         m_topology_attribute_variables.at("face_node_connectivity").at(0).getVar(mesh2d.face_nodes);
     }
 }
-
-std::vector<Mesh2D> Mesh2D::Create(std::shared_ptr<netCDF::NcFile> const& nc_file)
-{
-    // Get all vars in this file
-    auto const  file_variables = nc_file->getVars();
-    auto const  file_dimensions = nc_file->getDims();
-
-    std::vector<Mesh2D> result;
-    for (auto const& variable : file_variables)
-    {
-        auto variable_attributes = variable.second.getAtts();
-
-        if (!is_mesh_topology_variable(variable_attributes))
-        {
-            continue;
-        }
-
-        int dimensionality;
-        variable_attributes["topology_dimension"].getValues(&dimensionality);
-
-        if (dimensionality == m_dimensionality)
-        {
-            // entity_attribute_keys, entity_attribute_values, entity_dimensions
-            auto const [entity_attribute_variables, entity_attribute_strings, entity_dimensions] = GetUGridEntity(variable.second, file_dimensions, file_variables);
-            result.emplace_back(nc_file, variable.second, entity_attribute_variables, entity_attribute_strings, entity_dimensions);
-
-        }
-    }
-
-    return result;
-};

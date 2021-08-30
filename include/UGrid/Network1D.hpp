@@ -87,12 +87,10 @@ namespace ugrid
 
         /// @brief Factory method producing a vector of instances of the current class (as many network1d are found in the file)
         /// @return The vector of produced class instances
-        static std::vector<Network1D> Create(std::shared_ptr<netCDF::NcFile> const& nc_file);
+        static std::vector<Network1D> Create(std::shared_ptr<netCDF::NcFile> const& nc_file, int entity_dimensionality);
 
 
     private:
-
-        inline static int m_dimensionality = 1;
 
         netCDF::NcVar                                      m_network_geometry_variable;                 /// The topology variable
         std::map<std::string, std::vector<netCDF::NcVar>>  m_network_geometry_attribute_variables;      /// For each attribute, the corresponding attributes

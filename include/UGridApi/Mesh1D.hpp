@@ -39,7 +39,7 @@ namespace ugridapi
 
         int* edge_nodes = nullptr;
 
-        int* branchid = nullptr;
+        int* branch_id = nullptr;
 
         double* branch_offset = nullptr;
 
@@ -57,7 +57,7 @@ namespace ugridapi
 
         char* name = nullptr;
 
-        char* networkname = nullptr;
+        char* network_name = nullptr;
 
         int num_nodes = 0;
 

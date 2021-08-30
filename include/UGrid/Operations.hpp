@@ -115,7 +115,7 @@ namespace ugrid
     }
 
 
-    static bool FillUGridEntityDimensions(std::multimap<std::string, netCDF::NcDim> const& dimensions,
+    static bool FillUGridEntityDimension(std::multimap<std::string, netCDF::NcDim> const& dimensions,
         std::string const& attribute_key_string,
         std::string const& attribute_value_string,
         std::map<UGridDimensions, netCDF::NcDim>& entity_dimensions)
@@ -173,7 +173,7 @@ namespace ugrid
             attribute.second.getValues(attribute_value_string);
 
             // check if it is a dimension variable
-            auto const isDimensionVariable = FillUGridEntityDimensions(file_dimensions, attribute_value_string, attribute_key_string, entity_dimensions);
+            auto const isDimensionVariable = FillUGridEntityDimension(file_dimensions, attribute_value_string, attribute_key_string, entity_dimensions);
             if (isDimensionVariable)
             {
                 continue;

@@ -85,14 +85,5 @@ namespace ugrid
         /// @brief Inquires the mesh2d arrays
         /// @param mesh2d The mesh2d api structure with the fields where to assign the data
         void Get(ugridapi::Mesh2D& mesh2d) const;
-
-        /// @brief Factory method producing a vector of instances of the current class (as many mesh2d are found in the file)
-        /// @return The vector of produced class instances
-        static std::vector<Mesh2D> Create(std::shared_ptr<netCDF::NcFile> const& nc_file);
-
-    private:
-
-        inline static int m_dimensionality = 2;
-
     };
 } // namespace ugrid

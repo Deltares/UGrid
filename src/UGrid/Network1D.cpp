@@ -317,7 +317,7 @@ void Network1D::Get(ugridapi::Network1d& network1d) const
     }
 }
 
-std::vector<Network1D> Network1D::Create(std::shared_ptr<netCDF::NcFile> const& nc_file)
+std::vector<Network1D> Network1D::Create(std::shared_ptr<netCDF::NcFile> const& nc_file, int entity_dimensionality)
 {
     // Get all vars in this file
     const auto file_variables = nc_file->getVars();
@@ -336,7 +336,7 @@ std::vector<Network1D> Network1D::Create(std::shared_ptr<netCDF::NcFile> const& 
         int dimensionality;
         variable_attributes["topology_dimension"].getValues(&dimensionality);
 
-        if (dimensionality == m_dimensionality)
+        if (dimensionality == entity_dimensionality)
         {
             // entity_attribute_keys, entity_attribute_values, entity_dimensions
             auto const [entity_attribute_variables, entity_attribute_names, entity_dimensions] = GetUGridEntity(variable.second, file_dimensions, file_variables);
