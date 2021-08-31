@@ -263,6 +263,8 @@ namespace ugridapi
         //UGRID_API int ug_var_put_char(int file_id, int topology_type, int topology_id, char* data_variable_name, char* data);
 
         // Get a data variable (DFX, QGIS UGrid drivers)
+        UGRID_API int ug_var_get_float(int file_id, int topology_type, int topology_id, char* data_variable_name, float* data);
+
         UGRID_API int ug_var_get_double(int file_id, int topology_type, int topology_id, char* data_variable_name, double* data);
 
         UGRID_API int ug_var_get_int(int file_id, int topology_type, int topology_id, char* data_variable_name, int* data);

@@ -143,14 +143,21 @@ namespace ugrid
                 {"branch_long_name",{"branch_long_name", "branch_long_names"}},
             };
 
+            auto iterator = m_topology_attribute_variables.end();
             for (auto const& alias : aliases.at(variable_name))
             {
-                auto const iterator = m_topology_attribute_variables.find(alias);
+                iterator = m_topology_attribute_variables.find(alias);
                 if (iterator != m_topology_attribute_variables.end())
                 {
-                    return iterator;
+                    break;
                 }
             }
+            if (iterator == m_topology_attribute_variables.end())
+            {
+                throw std::invalid_argument("FindVariableWithAliases: No Matching found");
+            }
+
+            return iterator;
         }
 
         void add_topology_attribute(netCDF::NcVarAtt const& nc_var_attribute)

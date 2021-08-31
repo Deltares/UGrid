@@ -120,16 +120,16 @@ void Network1D::Define(ugridapi::Network1d const& network1d)
         m_related_variables.insert({ "branch_type", {topology_related_variable} });
 
         string_builder.clear(); string_builder << "_branch_id";
-        topology_attribute = m_topology_variable.putAtt("node_branch_id", string_builder.str());
+        topology_attribute = m_topology_variable.putAtt("branch_id", string_builder.str());
         add_topology_attribute(topology_attribute);
         topology_attribute_variable = m_nc_file->addVar(string_builder.str(), netCDF::NcType::nc_CHAR, { m_dimensions[UGridDimensions::edges],m_dimensions[UGridDimensions::ids] });
-        topology_attribute_variable_attribute = topology_attribute_variable.putAtt("long_name", "ID of branch geometries");
+        topology_attribute_variable_attribute = topology_attribute_variable.putAtt("long_name", "Long name of branch geometries");
         add_topology_attribute_variable(topology_attribute, topology_attribute_variable);
 
         string_builder.clear(); string_builder << "_branch_long_name";
         topology_attribute = m_topology_variable.putAtt("branch_long_name", string_builder.str());
         add_topology_attribute(topology_attribute);
-        topology_attribute_variable = m_nc_file->addVar(string_builder.str(), netCDF::NcType::nc_CHAR, { m_dimensions[UGridDimensions::edges],m_dimensions[UGridDimensions::ids] });
+        topology_attribute_variable = m_nc_file->addVar(string_builder.str(), netCDF::NcType::nc_CHAR, { m_dimensions[UGridDimensions::edges],m_dimensions[UGridDimensions::long_names] });
         topology_attribute_variable_attribute = topology_attribute_variable.putAtt("long_name", "Long name of branch geometries");
         add_topology_attribute_variable(topology_attribute, topology_attribute_variable);
     }
@@ -190,15 +190,15 @@ void Network1D::Put(ugridapi::Network1d const& network1d)
     {
         m_topology_attribute_variables.at("node_coordinates").at(0).putVar(network1d.node_y);
     }
-    if (network1d.node_id != nullptr)
+    if (network1d.node_name_id != nullptr)
     {
         auto const map_iterator = FindVariableWithAliases("node_id");
-        map_iterator->second.at(0).putVar(network1d.node_id);
+        map_iterator->second.at(0).putVar(network1d.node_name_id);
     }
-    if (network1d.node_long_name != nullptr)
+    if (network1d.node_name_long != nullptr)
     {
         auto const map_iterator = FindVariableWithAliases("node_long_name");
-        map_iterator->second.at(0).putVar(network1d.node_long_name);
+        map_iterator->second.at(0).putVar(network1d.node_name_long);
     }
 
     if (network1d.edge_nodes != nullptr)
@@ -215,16 +215,16 @@ void Network1D::Put(ugridapi::Network1d const& network1d)
     {
         m_related_variables.at("branch_order").putVar(network1d.branch_order);
     }
-    if (network1d.branch_id != nullptr)
+    if (network1d.branch_name_id != nullptr)
     {
-        auto const map_iterator = FindVariableWithAliases("node_branch_id");
-        map_iterator->second.at(0).putVar(network1d.node_long_name);
+        auto const map_iterator = FindVariableWithAliases("branch_id");
+        map_iterator->second.at(0).putVar(network1d.branch_name_id);
     }
 
-    if (network1d.branch_long_name != nullptr)
+    if (network1d.branch_name_long != nullptr)
     {
         auto const map_iterator = FindVariableWithAliases("branch_long_name");
-        map_iterator->second.at(0).putVar(network1d.node_long_name);
+        map_iterator->second.at(0).putVar(network1d.branch_name_long);
     }
 
     if (network1d.geometry_nodes_x != nullptr)
@@ -276,28 +276,33 @@ void Network1D::Get(ugridapi::Network1d& network1d) const
         m_topology_attribute_variables.at("edge_node_connectivity").at(0).getVar(network1d.edge_nodes);
     }
 
-    if (network1d.node_id != nullptr)
+    if (network1d.node_name_id != nullptr)
     {
         auto const map_iterator = FindVariableWithAliases("node_id");
-        map_iterator->second.at(0).getVar(network1d.node_id);
+        map_iterator->second.at(0).getVar(network1d.node_name_id);
     }
 
-    if (network1d.node_long_name != nullptr)
+    if (network1d.node_name_long != nullptr)
     {
         auto const map_iterator = FindVariableWithAliases("node_long_name");
-        map_iterator->second.at(0).getVar(network1d.node_long_name);
+        map_iterator->second.at(0).getVar(network1d.node_name_long);
     }
 
-    if (network1d.branch_id != nullptr)
+    if (network1d.branch_name_id != nullptr)
     {
-        auto const map_iterator = FindVariableWithAliases("node_branch_id");
-        map_iterator->second.at(0).getVar(network1d.branch_id);
+        auto const map_iterator = FindVariableWithAliases("branch_id");
+        map_iterator->second.at(0).getVar(network1d.branch_name_id);
     }
 
-    if (network1d.branch_long_name != nullptr)
+    if (network1d.branch_name_long != nullptr)
     {
         auto const map_iterator = FindVariableWithAliases("branch_long_name");
-        map_iterator->second.at(0).getVar(network1d.branch_long_name);
+        map_iterator->second.at(0).getVar(network1d.branch_name_long);
+    }
+
+    if (network1d.branch_lengths != nullptr)
+    {
+        m_topology_attribute_variables.at("branch_lengths").at(0).getVar(network1d.branch_lengths);
     }
 
     // Network geometry
