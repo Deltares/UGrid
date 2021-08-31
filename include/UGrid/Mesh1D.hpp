@@ -64,7 +64,7 @@ namespace ugrid
         {
         }
 
-        /// @brief Defines the mesh1d header
+        /// @brief Defines the mesh1d header (ug_write_mesh_arrays)
         /// @param mesh1d The mesh1d api structure with the fields to write and all optional flags  
         void Define(ugridapi::Mesh1D const& mesh1d);
 

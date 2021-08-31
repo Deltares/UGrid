@@ -56,7 +56,8 @@ namespace ugrid
         std::stringstream m_os;
         std::string m_name;
     public:
-        UGridVarAttributeStringBuilder(std::string const& name) : m_name(name)
+
+        explicit UGridVarAttributeStringBuilder(std::string const& name) : m_name(name)
         {
             m_os << m_name;
         }

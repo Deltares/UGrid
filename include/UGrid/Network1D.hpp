@@ -89,7 +89,6 @@ namespace ugrid
         /// @return The vector of produced class instances
         static std::vector<Network1D> Create(std::shared_ptr<netCDF::NcFile> const& nc_file, int entity_dimensionality);
 
-
     private:
 
         netCDF::NcVar                                      m_network_geometry_variable;                 /// The topology variable

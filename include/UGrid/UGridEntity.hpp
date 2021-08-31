@@ -45,8 +45,9 @@ namespace ugrid
 
 
     /// @brief A class containing the ids of UGrid netcdf file
-    struct UGridEntity
+    class UGridEntity
     {
+    public:
 
         UGridEntity() = default;
 
@@ -176,22 +177,47 @@ namespace ugrid
             m_related_variables.insert({ nc_var.getName(), {nc_var} });
         }
 
+        void Define(char* entity_name, int start_index, std::string const& long_name, int dimensionality, int is_spherical)
+        {
+            m_start_index = start_index;
+            m_entity_name = std::string(entity_name);
+            m_spherical_coordinates = is_spherical == 0 ? false : true;
+
+            // Topology with some standard attributes
+            m_topology_variable = m_nc_file->addVar(m_entity_name, netCDF::NcType::nc_CHAR);
+
+            auto topology_attribute = m_topology_variable.putAtt("cf_role", "mesh_topology");
+            add_topology_attribute(topology_attribute);
+
+            topology_attribute = m_topology_variable.putAtt("long_name", long_name);
+            add_topology_attribute(topology_attribute);
+
+            topology_attribute = m_topology_variable.putAtt("topology_dimension", netCDF::NcType::nc_INT, dimensionality);
+            add_topology_attribute(topology_attribute);
+
+            // Add additional dimensions, maybe required
+            m_dimensions.insert({ UGridDimensions::ids, m_nc_file->addDim("strLengthIds", name_lengths) });
+            m_dimensions.insert({ UGridDimensions::long_names, m_nc_file->addDim("strLengthLongNames", name_long_lengths) });
+            m_dimensions.insert({ UGridDimensions::Two, m_nc_file->addDim("Two", 2) });
+        }
+
 
         std::shared_ptr<netCDF::NcFile>                    m_nc_file;                           /// A pointer to the opened file
         netCDF::NcVar                                      m_topology_variable;                 /// The topology variable
         std::map<std::string, std::vector<netCDF::NcVar>>  m_topology_attribute_variables;      /// For each topology attribute, the corresponding variables
-        std::map<std::string, std::vector<std::string>>    m_topology_attributes_names;         /// For each attribute, the corresponding names
-        std::map<UGridDimensions, netCDF::NcDim>           m_dimensions;                        /// The entity dimensions
+        std::map<std::string, std::vector<std::string>>    m_topology_attributes_names;         /// For each attribute, the corresponding attribute names (can be more than one separated by white spaces)
+        std::map<UGridDimensions, netCDF::NcDim>           m_dimensions;                        /// All entity dimensions
 
-        std::map<std::string, netCDF::NcVarAtt>            m_topology_attributes;               /// The topology attributes
-        std::map<std::string, netCDF::NcVar>               m_related_variables;                 /// Variables defined on the entity (foe example on nodes, edges or faces)
+        std::map<std::string, netCDF::NcVarAtt>            m_topology_attributes;               /// The attributes of the topology variable
+        std::map<std::string, netCDF::NcVar>               m_related_variables;                 /// Additional variables related to the entity (foe example defined on nodes, edges or faces)
         std::string                                        m_entity_name;                       /// The entity name
 
         bool m_spherical_coordinates = false;                                                   /// If it is a spherical entity
-        int m_start_index = 0;
-        int m_int_fill_value = int_missing_value;
-        int m_double_fill_value = double_missing_value;
+        int m_start_index = 0;                                                                  /// The start index
+        int m_int_fill_value = int_missing_value;                                               /// The fill value for arrays of int
+        int m_double_fill_value = double_missing_value;                                         /// The fill value for arrays of double
         int m_epsg_code;                                                                        /// The epsg code
+
 
     private:
 

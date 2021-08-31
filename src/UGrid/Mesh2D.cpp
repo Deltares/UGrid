@@ -41,27 +41,8 @@ void Mesh2D::Define(ugridapi::Mesh2D const& mesh2d)
         throw std::invalid_argument("Mesh2D::Define mesh name field is empty");
     }
 
-    m_entity_name = std::string(mesh2d.name);
-    m_spherical_coordinates = mesh2d.is_spherical == 0 ? false : true;
-    m_start_index = mesh2d.start_index;
-
-    // add and define the topology variable
-    m_topology_variable = m_nc_file->addVar(m_entity_name, netCDF::NcType::nc_CHAR);
-
-    auto topology_attribute = m_topology_variable.putAtt("cf_role", "mesh_topology");
-    add_topology_attribute(topology_attribute);
-
-    topology_attribute = m_topology_variable.putAtt("long_name", "Topology data of 2D mesh");
-    add_topology_attribute(topology_attribute);
-
-    topology_attribute = m_topology_variable.putAtt("topology_dimension", netCDF::NcType::nc_INT, 2);
-    add_topology_attribute(topology_attribute);
-
-    // add dimension Two 
-    m_dimensions.insert({ UGridDimensions::Two, m_nc_file->addDim("Two", 2) });
-
-    // string builder with the entity name as first part of the string
-    UGridVarAttributeStringBuilder string_builder(m_entity_name);
+    UGridEntity::Define(mesh2d.name, mesh2d.start_index, "Topology data of 2D mesh", 2, mesh2d.is_spherical);
+    auto string_builder = UGridVarAttributeStringBuilder(m_entity_name);
 
     // node variables
     if (mesh2d.num_nodes > 0)

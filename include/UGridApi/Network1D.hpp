@@ -55,11 +55,13 @@ namespace ugridapi
 
         double* geometry_nodes_y = nullptr;
 
-        int num_geometry_nodes;
+        int num_geometry_nodes = 0;
 
-        int num_nodes;
+        int num_nodes = 0;
 
-        int num_edges;
+        int num_edges = 0;
+
+        int is_spherical = 0;
 
         int start_index = 0;
     };
