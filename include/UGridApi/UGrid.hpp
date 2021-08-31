@@ -102,7 +102,7 @@ namespace ugridapi
          * Network 1d
          *---------------------------------------------------------------------------------------------------*/
 
-        UGRID_API int ug_network1d_def(int file_id, Network1d const& network, int& topology_id);
+        UGRID_API int ug_network1d_def(int file_id, Network1d const& network1dapi, int& topology_id);
 
         UGRID_API int ug_network1d_put(int file_id, int topology_id, Network1d const& network);
 
@@ -114,9 +114,9 @@ namespace ugridapi
          * Mesh 1d
          *---------------------------------------------------------------------------------------------------*/
 
-        UGRID_API int ug_mesh1d_def(int file_id, Mesh1D const& mesh1d, int& topology_id);
+        UGRID_API int ug_mesh1d_def(int file_id, Mesh1D const& mesh1dapi, int& topology_id);
 
-        UGRID_API int ug_mesh1d_put(int file_id, int topology_id, Mesh1D const& mesh1d);
+        UGRID_API int ug_mesh1d_put(int file_id, int topology_id, Mesh1D const& mesh1dapi);
 
         UGRID_API int ug_mesh1d_inq(int file_id, int topology_id, Mesh1D& mesh1d);
 

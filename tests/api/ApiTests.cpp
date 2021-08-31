@@ -365,8 +365,6 @@ TEST(ApiTest, DefineAndPut_OneNetwork1D_ShouldWriteData)
     error_code = ugridapi::ug_close(file_id);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 }
-
-
 TEST(ApiTest, InquireAndGet_AFileWithOneMesh1D_ShouldReadMesh1D)
 {
     std::string const filePath = TEST_FOLDER + "/data/AllEntities.nc";
@@ -438,5 +436,82 @@ TEST(ApiTest, InquireAndGet_AFileWithOneMesh1D_ShouldReadMesh1D)
 
     std::string mesh1d_name_string(mesh1d.name);
     ASSERT_EQ("1dmesh", mesh1d_name_string);
+}
 
+TEST(ApiTest, DefineAndPut_OneMesh1D_ShouldWriteData)
+{
+    std::string const filePath = TEST_FOLDER + "/data/OneMesh1DWrite.nc";
+
+    // Open a file
+    int file_id = 0;
+    auto const file_mode = ugridapi::ug_file_replace_mode();
+    auto error_code = ugridapi::ug_open(filePath.c_str(), file_mode, file_id);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+
+    // Fill all data 
+    ugridapi::Mesh1D mesh1d;
+    std::unique_ptr<char> const name(new char[] {"mesh1d"});
+    mesh1d.name = name.get();
+
+    std::unique_ptr<char> const network_name(new char[] {"network1d"});
+    mesh1d.network_name = network_name.get();
+
+    std::unique_ptr<int> const node_branch_id(new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+    mesh1d.node_branch_id = node_branch_id.get();
+    std::unique_ptr<double> const node_branch_offset(new double[] {
+        0, 49.65, 99.29, 148.92, 198.54, 248.09,
+            297.62, 347.15, 396.66, 446.19, 495.8, 545.44, 595.08, 644.63, 694.04,
+            743.52, 793.07, 842.65, 892.26, 941.89, 991.53, 1041.17, 1090.82,
+            1140.46, 1165.29 });
+    mesh1d.node_branch_offset = node_branch_offset.get();
+    mesh1d.num_nodes = 25;
+    mesh1d.num_edges = 24;
+    std::unique_ptr<int> const edges_nodes(new int[] { 0, 1,
+        1, 2,
+        2, 3,
+        3, 4,
+        4, 5,
+        5, 6,
+        6, 7,
+        7, 8,
+        8, 9,
+        9, 10,
+        10, 11,
+        11, 12,
+        12, 13,
+        13, 14,
+        14, 15,
+        15, 16,
+        16, 17,
+        17, 18,
+        18, 19,
+        19, 20,
+        20, 21,
+        21, 22,
+        22, 23,
+        23, 24});
+    mesh1d.edge_nodes = edges_nodes.get();
+
+    std::stringstream meshnodesids;
+    std::stringstream meshnodelongnames;
+    for (auto i = 0; i < mesh1d.num_nodes; ++i)
+    {
+        meshnodesids << "meshnodeids                             ";
+        meshnodelongnames << "meshnodelongnames                                                               ";
+    }
+    mesh1d.node_name_id = const_cast<char*>(meshnodesids.str().c_str());
+    mesh1d.node_name_long = const_cast<char*>(meshnodelongnames.str().c_str());
+
+    int topology_id = -1;
+    error_code = ugridapi::ug_mesh1d_def(file_id, mesh1d, topology_id);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+    ASSERT_EQ(0, topology_id);
+
+    error_code = ug_mesh1d_put(file_id, topology_id, mesh1d);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+    ASSERT_EQ(0, topology_id);
+
+    // Close the file
+    error_code = ugridapi::ug_close(file_id);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 }
