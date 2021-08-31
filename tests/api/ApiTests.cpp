@@ -387,10 +387,10 @@ TEST(ApiTest, InquireAndGet_AFileWithOneMesh1D_ShouldReadMesh1D)
     mesh1d.network_name = network_name.get();
 
     std::unique_ptr<int> const branch_id(new int[mesh1d.num_nodes]);
-    mesh1d.branch_id = branch_id.get();
+    mesh1d.node_branch_id = branch_id.get();
 
     std::unique_ptr<double> const branch_offset(new double[mesh1d.num_nodes]);
-    mesh1d.branch_offset = branch_offset.get();
+    mesh1d.node_branch_offset = branch_offset.get();
 
     std::unique_ptr<int> const edge_nodes(new int[mesh1d.num_edges * 2]);
     mesh1d.edge_nodes = edge_nodes.get();

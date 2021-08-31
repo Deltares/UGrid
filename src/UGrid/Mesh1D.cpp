@@ -43,10 +43,22 @@ void Mesh1D::Define(ugridapi::Mesh1D const& mesh1d)
 {
     if (mesh1d.name == nullptr)
     {
-        throw std::invalid_argument("Mesh1D::Define mesh name field is empty");
+        throw std::invalid_argument("Mesh1D::Define mesh1d name field is empty");
+    }
+    if (mesh1d.network_name == nullptr)
+    {
+        throw std::invalid_argument("Mesh1D::Define mesh1d network name is empty");
+    }
+    if (mesh1d.node_branch_id == nullptr)
+    {
+        throw std::invalid_argument("Mesh1D::Define mesh1d branch id vector is empty");
+    }
+    if (mesh1d.node_branch_offset == nullptr)
+    {
+        throw std::invalid_argument("Mesh1D::Define mesh1d branch offset vector is empty");
     }
 
-    UGridEntity::Define(mesh1d.name, mesh1d.start_index, "Topology data of 1D mesh", 2, mesh1d.is_spherical);
+    UGridEntity::Define(mesh1d.name, mesh1d.start_index, "Topology data of 1D mesh", 1, mesh1d.is_spherical);
     auto string_builder = UGridVarAttributeStringBuilder(m_entity_name);
 
     std::string network_name(mesh1d.network_name);
@@ -56,80 +68,61 @@ void Mesh1D::Define(ugridapi::Mesh1D const& mesh1d)
     {
         string_builder.clear(); string_builder << "_nNodes";
         m_dimensions.insert({ UGridDimensions::nodes, m_nc_file->addDim(string_builder.str(), mesh1d.num_nodes) });
-        auto topology_attribute = m_topology_variable.putAtt("node_dimension", string_builder.str());
+        topology_attribute = m_topology_variable.putAtt("node_dimension", string_builder.str());
         add_topology_attribute(topology_attribute);
 
-        define_topological_variable_with_coordinates(UGridEntityLocations::nodes, UGridDimensions::nodes, true, "%s of mesh nodes");
-
-        string_builder.clear(); string_builder << "_node_id";
-        topology_attribute = m_topology_variable.putAtt("node_id", string_builder.str());
+        string_builder.clear(); string_builder << "_node_branch " << m_entity_name << "_node_offset";
+        topology_attribute = m_topology_variable.putAtt("node_coordinates", string_builder.str());
         add_topology_attribute(topology_attribute);
-        auto topology_attribute_variable = m_nc_file->addVar(string_builder.str(), netCDF::NcType::nc_CHAR, { m_dimensions[UGridDimensions::nodes], m_dimensions[UGridDimensions::ids] });
-        auto topology_attribute_variable_attribute = topology_attribute_variable.putAtt("long_name", "ID of network nodes");
+
+        string_builder.clear(); string_builder << "_node_branch";
+        auto topology_attribute_variable = m_nc_file->addVar(string_builder.str(), netCDF::NcType::nc_INT, m_dimensions[UGridDimensions::nodes]);
+        auto topology_attribute_variable_attribute = topology_attribute_variable.putAtt("long_name", "Index of branch on which mesh nodes are located");
         add_topology_attribute_variable(topology_attribute, topology_attribute_variable);
 
-
-        string_builder.clear(); string_builder << "_node_long_name";
-        topology_attribute = m_topology_variable.putAtt("node_long_name", string_builder.str());
-        add_topology_attribute(topology_attribute);
-        topology_attribute_variable = m_nc_file->addVar(string_builder.str(), netCDF::NcType::nc_CHAR, { m_dimensions[UGridDimensions::nodes], m_dimensions[UGridDimensions::long_names] });
-        topology_attribute_variable_attribute = topology_attribute_variable.putAtt("long_name", "Long name of network nodes");
+        string_builder.clear(); string_builder << "_node_offset";
+        topology_attribute_variable = m_nc_file->addVar(string_builder.str(), netCDF::NcType::nc_DOUBLE, m_dimensions[UGridDimensions::nodes]);
+        topology_attribute_variable_attribute = topology_attribute_variable.putAtt("long_name", "Offset along branch of mesh nodes");
         add_topology_attribute_variable(topology_attribute, topology_attribute_variable);
+
+        // add node x an y if present, TODO: consider lat/lon 
+        bool const add_coordinate_variables = mesh1d.node_x != nullptr && mesh1d.node_y != nullptr;
+        if (add_coordinate_variables)
+        {
+            define_topological_variable_with_coordinates(UGridEntityLocations::nodes, UGridDimensions::nodes, "%s of mesh nodes");
+        }
     }
 
     if (mesh1d.num_edges > 0)
     {
         string_builder.clear(); string_builder << "_nEdges";
         m_dimensions.insert({ UGridDimensions::edges, m_nc_file->addDim(string_builder.str(), mesh1d.num_edges) });
-        auto topology_attribute = m_topology_variable.putAtt("edge_dimension", string_builder.str());
+        topology_attribute = m_topology_variable.putAtt("edge_dimension", string_builder.str());
         add_topology_attribute(topology_attribute);
         m_topology_attributes.insert({ topology_attribute.getName(), topology_attribute });
 
+        if (mesh1d.edge_branch_offset != nullptr && mesh1d.edge_branch_id)
+        {
+            string_builder.clear(); string_builder << "_edge_branch " << m_entity_name << "_edge_offset";
+            topology_attribute = m_topology_variable.putAtt("edge_coordinates", string_builder.str());
+            add_topology_attribute(topology_attribute);
 
-        string_builder.clear(); string_builder << "_edge_nodes";
-        topology_attribute = m_topology_variable.putAtt("edge_node_connectivity", string_builder.str());
-        add_topology_attribute(topology_attribute);
-        auto topology_attribute_variable = m_nc_file->addVar(string_builder.str(), netCDF::NcType::nc_INT, { m_dimensions[UGridDimensions::edges], m_dimensions[UGridDimensions::Two] });
-        auto topology_attribute_variable_attribute = topology_attribute_variable.putAtt("cf_role", topology_attribute.getName());
-        topology_attribute_variable_attribute = topology_attribute_variable.putAtt("long_name", "Start and end nodes of network edges");
-        add_topology_attribute_variable(topology_attribute, topology_attribute_variable);
+            string_builder.clear(); string_builder << "_edge_branch";
+            auto topology_attribute_variable = m_nc_file->addVar(string_builder.str(), netCDF::NcType::nc_INT, m_dimensions[UGridDimensions::edges]);
+            auto topology_attribute_variable_attribute = topology_attribute_variable.putAtt("long_name", "Index of branch on which mesh edges are located");
+            add_topology_attribute_variable(topology_attribute, topology_attribute_variable);
 
-        string_builder.clear(); string_builder << "_edge_length";
-        topology_attribute = m_topology_variable.putAtt("edge_length", string_builder.str());
-        add_topology_attribute(topology_attribute);
-        topology_attribute_variable = m_nc_file->addVar(string_builder.str(), netCDF::NcType::nc_DOUBLE, { m_dimensions[UGridDimensions::edges] });
-        topology_attribute_variable_attribute = topology_attribute_variable.putAtt("long_name", "Real length of branch geometries");
-        topology_attribute_variable_attribute = topology_attribute_variable.putAtt("units", "m");
-        add_topology_attribute_variable(topology_attribute, topology_attribute_variable);
+            string_builder.clear(); string_builder << "_edge_offset";
+            topology_attribute_variable = m_nc_file->addVar(string_builder.str(), netCDF::NcType::nc_DOUBLE, m_dimensions[UGridDimensions::edges]);
+            topology_attribute_variable_attribute = topology_attribute_variable.putAtt("long_name", "Offset along branch of mesh edges");
+            add_topology_attribute_variable(topology_attribute, topology_attribute_variable);
+        }
 
-        // Other branch variables
-        string_builder.clear(); string_builder << "_branch_order";
-        auto topology_related_variable = m_nc_file->addVar(string_builder.str(), netCDF::NcType::nc_INT, { m_dimensions[UGridDimensions::edges] });
-        auto topology_related_variable_attribute = topology_related_variable.putAtt("long_name", "Order of branches for interpolation");
-        topology_related_variable_attribute = topology_related_variable.putAtt("mesh", m_entity_name);
-        topology_related_variable_attribute = topology_related_variable.putAtt("location", "edge");
-        m_related_variables.insert({ "branch_order", {topology_related_variable} });
-
-        string_builder.clear(); string_builder << "_branch_type";
-        topology_related_variable = m_nc_file->addVar(string_builder.str(), netCDF::NcType::nc_INT, { m_dimensions[UGridDimensions::edges] });
-        topology_related_variable_attribute = topology_related_variable.putAtt("long_name", "Type of branches");
-        topology_related_variable_attribute = topology_related_variable.putAtt("mesh", m_entity_name);
-        topology_related_variable_attribute = topology_related_variable.putAtt("location", "edge");
-        m_related_variables.insert({ "branch_type", {topology_related_variable} });
-
-        string_builder.clear(); string_builder << "_branch_id";
-        topology_attribute = m_topology_variable.putAtt("branch_id", string_builder.str());
-        add_topology_attribute(topology_attribute);
-        topology_attribute_variable = m_nc_file->addVar(string_builder.str(), netCDF::NcType::nc_CHAR, { m_dimensions[UGridDimensions::edges],m_dimensions[UGridDimensions::ids] });
-        topology_attribute_variable_attribute = topology_attribute_variable.putAtt("long_name", "ID of branch geometries");
-        add_topology_attribute_variable(topology_attribute, topology_attribute_variable);
-
-        string_builder.clear(); string_builder << "_branch_long_name";
-        topology_attribute = m_topology_variable.putAtt("branch_long_name", string_builder.str());
-        add_topology_attribute(topology_attribute);
-        topology_attribute_variable = m_nc_file->addVar(string_builder.str(), netCDF::NcType::nc_CHAR, { m_dimensions[UGridDimensions::edges],m_dimensions[UGridDimensions::ids] });
-        topology_attribute_variable_attribute = topology_attribute_variable.putAtt("long_name", "Long name of branch geometries");
-        add_topology_attribute_variable(topology_attribute, topology_attribute_variable);
+        bool const add_coordinate_variables = mesh1d.edge_x != nullptr && mesh1d.edge_y != nullptr;
+        if (add_coordinate_variables)
+        {
+            define_topological_variable_with_coordinates(UGridEntityLocations::edges, UGridDimensions::edges, "%s of mesh edges");
+        }
     }
 
     m_nc_file->enddef();
@@ -142,13 +135,13 @@ void Mesh1D::Put(ugridapi::Mesh1D const& mesh1d)
         throw std::invalid_argument("Mesh1D::Put invalid mesh name");
     }
 
-    if (mesh1d.node_x != nullptr)
+    if (mesh1d.node_branch_id != nullptr)
     {
-        m_topology_attribute_variables.at("node_coordinates").at(0).putVar(mesh1d.node_x);
+        m_topology_attribute_variables.at("node_coordinates").at(0).putVar(mesh1d.node_branch_id);
     }
-    if (mesh1d.node_y != nullptr)
+    if (mesh1d.node_branch_offset != nullptr)
     {
-        m_topology_attribute_variables.at("node_coordinates").at(0).putVar(mesh1d.node_y);
+        m_topology_attribute_variables.at("node_coordinates").at(0).putVar(mesh1d.node_branch_offset);
     }
     if (mesh1d.node_id != nullptr)
     {
@@ -184,13 +177,13 @@ void Mesh1D::Get(ugridapi::Mesh1D& mesh1d) const
     auto const network_name = m_topology_attributes_names.at("coordinate_space").at(0);
     FillCharArrayWithStringValues(mesh1d.network_name, network_name);
 
-    if (mesh1d.branch_id != nullptr)
+    if (mesh1d.node_branch_id != nullptr)
     {
-        m_topology_attribute_variables.at("node_coordinates").at(0).getVar(mesh1d.branch_id);
+        m_topology_attribute_variables.at("node_coordinates").at(0).getVar(mesh1d.node_branch_id);
     }
-    if (mesh1d.branch_offset != nullptr)
+    if (mesh1d.node_branch_offset != nullptr)
     {
-        m_topology_attribute_variables.at("node_coordinates").at(1).getVar(mesh1d.branch_offset);
+        m_topology_attribute_variables.at("node_coordinates").at(1).getVar(mesh1d.node_branch_offset);
     }
     if (mesh1d.edge_nodes != nullptr)
     {

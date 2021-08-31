@@ -116,16 +116,9 @@ void UGridEntity::define_variable_with_coordinate(
 void UGridEntity::define_topological_variable_with_coordinates(
     UGridEntityLocations const& location,
     UGridDimensions const& dimension,
-    bool add_coordinate_variables,
     std::string const& long_name_pattern,
     std::string const& name_pattern)
 {
-    UGridVarAttributeStringBuilder string_builder(m_entity_name);
-
-    if (!add_coordinate_variables)
-    {
-        return;
-    }
     std::string location_string;
     if (location == UGridEntityLocations::nodes)
     {
@@ -143,6 +136,7 @@ void UGridEntity::define_topological_variable_with_coordinates(
     std::string first_coordinate_variable;
     std::string second_coordinate_variable;
     std::string topology_attribute_name = location_string + "_coordinates";
+    UGridVarAttributeStringBuilder string_builder(m_entity_name);
     if (!m_spherical_coordinates)
     {
         string_builder.clear(); string_builder << "_" << boost::format(name_pattern) % location_string % "_x";
@@ -167,8 +161,17 @@ void UGridEntity::define_topological_variable_with_coordinates(
         define_variable_with_coordinate(topology_attribute_name, second_coordinate_variable, dimension, UGridCoordinates::lat, long_name_pattern);
     }
 
-
-    std::string attribute_value = first_coordinate_variable + " " + second_coordinate_variable;
+    // If some coordinates have been already added, append the newly defined ones
+    auto const it = m_topology_attributes.find(first_coordinate_variable);
+    std::string attribute_value;
+    if (it != m_topology_attributes.end())
+    {
+        attribute_value = it->second.getName() + first_coordinate_variable + " " + second_coordinate_variable;
+    }
+    else
+    {
+        attribute_value = first_coordinate_variable + " " + second_coordinate_variable;
+    }
     auto topological_attribute = m_topology_variable.putAtt(topology_attribute_name, attribute_value);
     add_topology_attribute(topological_attribute);
 }

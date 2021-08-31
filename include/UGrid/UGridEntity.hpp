@@ -101,12 +101,12 @@ namespace ugrid
     protected:
 
         /// @brief Defines the topology attributes for each location variable (name, dimension and coordinate variable)
-        /// @param entity_location
-        /// @param dimension
-        /// @param add_coordinate_variables 
+        /// @param location 
+        /// @param dimension 
+        /// @param long_name_pattern 
+        /// @param name_pattern 
         void define_topological_variable_with_coordinates(UGridEntityLocations const& location,
             UGridDimensions const& dimension,
-            bool add_coordinate_variables,
             std::string const& long_name_pattern,
             std::string const& name_pattern = "%s%s");
 

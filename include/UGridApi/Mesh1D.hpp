@@ -39,21 +39,21 @@ namespace ugridapi
 
         int* edge_nodes = nullptr;
 
-        int* branch_id = nullptr;
+        int* node_branch_id = nullptr;
 
-        double* branch_offset = nullptr;
-
-        double* edge_x = nullptr;
-
-        double* edge_y = nullptr;
-
-        int* edge_index = nullptr;
-
-        double* edge_offset = nullptr;
+        double* node_branch_offset = nullptr;
 
         char* node_id = nullptr;
 
         char* node_long_name = nullptr;
+
+        int* edge_branch_id = nullptr;
+
+        double* edge_branch_offset = nullptr;
+
+        double* edge_x = nullptr;
+
+        double* edge_y = nullptr;
 
         char* name = nullptr;
 
