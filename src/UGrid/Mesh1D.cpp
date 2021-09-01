@@ -116,6 +116,15 @@ void Mesh1D::Define(ugridapi::Mesh1D const& mesh1d)
         add_topology_attribute(topology_attribute);
         m_topology_attributes.insert({ topology_attribute.getName(), topology_attribute });
 
+
+        string_builder.clear(); string_builder << "_edge_nodes";
+        topology_attribute = m_topology_variable.putAtt("edge_node_connectivity", string_builder.str());
+        add_topology_attribute(topology_attribute);
+        auto topology_attribute_variable = m_nc_file->addVar(string_builder.str(), netCDF::NcType::nc_INT, { m_dimensions[UGridDimensions::edges], m_dimensions[UGridDimensions::Two] });
+        auto topology_attribute_variable_attribute = topology_attribute_variable.putAtt("cf_role", topology_attribute.getName());
+        topology_attribute_variable_attribute = topology_attribute_variable.putAtt("long_name", "Maps every edge to the two nodes that it connects");
+        add_topology_attribute_variable(topology_attribute, topology_attribute_variable);
+
         if (mesh1d.edge_branch_offset != nullptr && mesh1d.edge_branch_id)
         {
             string_builder.clear(); string_builder << "_edge_branch " << m_entity_name << "_edge_offset";
@@ -123,8 +132,8 @@ void Mesh1D::Define(ugridapi::Mesh1D const& mesh1d)
             add_topology_attribute(topology_attribute);
 
             string_builder.clear(); string_builder << "_edge_branch";
-            auto topology_attribute_variable = m_nc_file->addVar(string_builder.str(), netCDF::NcType::nc_INT, m_dimensions[UGridDimensions::edges]);
-            auto topology_attribute_variable_attribute = topology_attribute_variable.putAtt("long_name", "Index of branch on which mesh edges are located");
+            topology_attribute_variable = m_nc_file->addVar(string_builder.str(), netCDF::NcType::nc_INT, m_dimensions[UGridDimensions::edges]);
+            topology_attribute_variable_attribute = topology_attribute_variable.putAtt("long_name", "Index of branch on which mesh edges are located");
             add_topology_attribute_variable(topology_attribute, topology_attribute_variable);
 
             string_builder.clear(); string_builder << "_edge_offset";
@@ -156,7 +165,7 @@ void Mesh1D::Put(ugridapi::Mesh1D const& mesh1d)
     }
     if (mesh1d.node_branch_offset != nullptr)
     {
-        m_topology_attribute_variables.at("node_coordinates").at(0).putVar(mesh1d.node_branch_offset);
+        m_topology_attribute_variables.at("node_coordinates").at(1).putVar(mesh1d.node_branch_offset);
     }
     if (mesh1d.node_name_id != nullptr)
     {

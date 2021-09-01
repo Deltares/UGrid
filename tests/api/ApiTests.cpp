@@ -1,5 +1,6 @@
 #include <exception>
 #include <memory>
+#include <string.h>
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
@@ -458,12 +459,14 @@ TEST(ApiTest, DefineAndPut_OneMesh1D_ShouldWriteData)
 
     std::unique_ptr<int> const node_branch_id(new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
     mesh1d.node_branch_id = node_branch_id.get();
+
     std::unique_ptr<double> const node_branch_offset(new double[] {
         0, 49.65, 99.29, 148.92, 198.54, 248.09,
             297.62, 347.15, 396.66, 446.19, 495.8, 545.44, 595.08, 644.63, 694.04,
             743.52, 793.07, 842.65, 892.26, 941.89, 991.53, 1041.17, 1090.82,
             1140.46, 1165.29 });
     mesh1d.node_branch_offset = node_branch_offset.get();
+
     mesh1d.num_nodes = 25;
     mesh1d.num_edges = 24;
     std::unique_ptr<int> const edges_nodes(new int[] { 0, 1,
@@ -499,11 +502,15 @@ TEST(ApiTest, DefineAndPut_OneMesh1D_ShouldWriteData)
         meshnodesids << "meshnodeids                             ";
         meshnodelongnames << "meshnodelongnames                                                               ";
     }
-    mesh1d.node_name_id = const_cast<char*>(meshnodesids.str().c_str());
-    mesh1d.node_name_long = const_cast<char*>(meshnodelongnames.str().c_str());
+
+    std::unique_ptr<char> const node_name_id(strdup(meshnodesids.str().c_str()));
+    mesh1d.node_name_id = node_name_id.get();
+
+    std::unique_ptr<char> const node_name_long(strdup(meshnodelongnames.str().c_str()));
+    mesh1d.node_name_long = node_name_long.get();
 
     int topology_id = -1;
-    error_code = ugridapi::ug_mesh1d_def(file_id, mesh1d, topology_id);
+    error_code = ug_mesh1d_def(file_id, mesh1d, topology_id);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
     ASSERT_EQ(0, topology_id);
 
