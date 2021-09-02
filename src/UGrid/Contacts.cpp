@@ -36,26 +36,26 @@ using ugrid::Contacts;
 
 // ug_create_1d_mesh_v2
 // ug_def_mesh_ids
-void Contacts::Define(ugridapi::Contacts const& contacts)
+void Contacts::define(ugridapi::Contacts const& contacts)
 {
     if (contacts.name == nullptr)
     {
-        throw std::invalid_argument("Contacts::Define contacts name field is empty");
+        throw std::invalid_argument("Contacts::define contacts name field is empty");
     }
     if (contacts.mesh_from_name == nullptr)
     {
-        throw std::invalid_argument("Contacts::Define contacts mesh from name is empty");
+        throw std::invalid_argument("Contacts::define contacts mesh from name is empty");
     }
     if (contacts.mesh_to_name == nullptr)
     {
-        throw std::invalid_argument("Contacts::Define contacts mesh to name is empty");
+        throw std::invalid_argument("Contacts::define contacts mesh to name is empty");
     }
     if (contacts.num_contacts == 0)
     {
-        throw std::invalid_argument("Contacts::Define no contacts available");
+        throw std::invalid_argument("Contacts::define no contacts available");
     }
 
-    UGridEntity::Define(contacts.name, contacts.start_index, "mesh_topology_contact", 1, contacts.is_spherical);
+    UGridEntity::define(contacts.name, contacts.start_index, "mesh_topology_contact", 1, contacts.is_spherical);
     auto string_builder = UGridVarAttributeStringBuilder(m_entity_name);
 
     if (contacts.num_contacts > 0)
@@ -105,11 +105,11 @@ void Contacts::Define(ugridapi::Contacts const& contacts)
     m_nc_file->enddef();
 }
 
-void Contacts::Put(ugridapi::Contacts const& contacts)
+void Contacts::put(ugridapi::Contacts const& contacts)
 {
     if (contacts.name == nullptr)
     {
-        throw std::invalid_argument("Contacts::Put invalid mesh name");
+        throw std::invalid_argument("Contacts::put invalid mesh name");
     }
 
     //if (contacts.node_branch_id != nullptr)
@@ -134,22 +134,22 @@ void Contacts::Put(ugridapi::Contacts const& contacts)
     //}
 }
 
-void Contacts::Inquire(ugridapi::Contacts& contacts) const
+void Contacts::inquire(ugridapi::Contacts& contacts) const
 {
-    if (m_dimensions.find(UGridDimensions::nodes) != m_dimensions.end())
+    if (m_topology_attribute_variables.find("contact_type") != m_topology_attribute_variables.end())
     {
-        contacts.num_nodes = m_dimensions.at(UGridDimensions::nodes).getSize();
-    }
-    if (m_dimensions.find(UGridDimensions::edges) != m_dimensions.end())
-    {
-        contacts.num_edges = m_dimensions.at(UGridDimensions::edges).getSize();
+        contacts.num_contacts = m_topology_attribute_variables.at("contact_type").at(0).getDim(0).getSize();
     }
 }
 
-void Contacts::Get(ugridapi::Contacts& contacts) const
+void Contacts::get(ugridapi::Contacts& contacts) const
 {
 
-    FillCharArrayWithStringValues(contacts.name, m_entity_name);
+    fill_char_array_with_string_values(contacts.name, m_entity_name);
+
+    fill_char_array_with_string_values(contacts.mesh_from_name, m_mesh_from_name);
+
+    fill_char_array_with_string_values(contacts.mesh_to_name, m_mesh_to_name);
 
     //if (contacts.contact != nullptr)
     //{
@@ -165,12 +165,12 @@ void Contacts::Get(ugridapi::Contacts& contacts) const
     //}
     //if (contacts.node_name_id != nullptr)
     //{
-    //    auto const map_iterator = FindVariableWithAliases("node_id");
+    //    auto const map_iterator = find_variable_with_aliases("node_id");
     //    map_iterator->second.at(0).getVar(contacts.node_name_id);
     //}
     //if (contacts.node_name_long != nullptr)
     //{
-    //    auto const map_iterator = FindVariableWithAliases("node_long_name");
+    //    auto const map_iterator = find_variable_with_aliases("node_long_name");
     //    map_iterator->second.at(0).getVar(contacts.node_name_long);
     //}
 }

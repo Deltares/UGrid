@@ -45,7 +45,7 @@ namespace ugrid
     ///
     /// This is especially useful for floating point values.
     template <typename T>
-    static bool IsEqual(T value, T referenceValue)
+    static bool is_equal(T value, T referenceValue)
     {
         return std::abs(value - referenceValue) < std::numeric_limits<T>::epsilon();
     }
@@ -81,7 +81,43 @@ namespace ugrid
         }
     };
 
-    static bool FillUGridEntityDimension(std::multimap<std::string, netCDF::NcDim> const& dimensions,
+    static UGridDimensions from_location_string_to_dimension(std::string const& location_string)
+    {
+        if (location_string == "node")
+        {
+            return UGridDimensions::nodes;
+        }
+        if (location_string == "edge")
+        {
+            return UGridDimensions::edges;
+        }
+        if (location_string == "face")
+        {
+            return UGridDimensions::faces;
+        }
+        if (location_string == "max_face_nodes")
+        {
+            return UGridDimensions::max_face_nodes;
+        }
+    }
+
+    static UGridEntityLocations from_location_string_to_location(std::string const& location_string)
+    {
+        if (location_string == "node")
+        {
+            return UGridEntityLocations::nodes;
+        }
+        if (location_string == "edge")
+        {
+            return UGridEntityLocations::edges;
+        }
+        if (location_string == "face")
+        {
+            return UGridEntityLocations::faces;
+        }
+    }
+
+    static bool fill_ugrid_entity_dimension(std::multimap<std::string, netCDF::NcDim> const& dimensions,
         std::string const& attribute_key_string,
         std::string const& attribute_value_string,
         std::map<UGridDimensions, netCDF::NcDim>& entity_dimensions)
@@ -93,30 +129,15 @@ namespace ugrid
             isDimensionVariable = true;
             std::string location_name = attribute_value_string.substr(0, substring_dimension_pos);
             auto const it = dimensions.find(attribute_key_string);
-            if (location_name == "node")
-            {
-                entity_dimensions.insert({ UGridDimensions::nodes, it->second });
-            }
-            if (location_name == "edge")
-            {
-                entity_dimensions.insert({ UGridDimensions::edges, it->second });
-            }
-            if (location_name == "face")
-            {
-                entity_dimensions.insert({ UGridDimensions::faces, it->second });
-            }
-            if (location_name == "max_face_nodes")
-            {
-                entity_dimensions.insert({ UGridDimensions::max_face_nodes, it->second });
-            }
-
+            auto const dimension_enum = from_location_string_to_dimension(location_name);
+            entity_dimensions.insert({ dimension_enum, it->second });
         }
         return isDimensionVariable;
     }
 
     static std::tuple<std::map<std::string, std::vector<netCDF::NcVar>>,
         std::map < std::string, std::vector<std::string>>,
-        std::map<UGridDimensions, netCDF::NcDim>> GetUGridEntity
+        std::map<UGridDimensions, netCDF::NcDim>> get_ugrid_entity
         (
             netCDF::NcVar const& variable,
             std::multimap<std::string, netCDF::NcDim> const& file_dimensions,
@@ -139,7 +160,7 @@ namespace ugrid
             attribute.second.getValues(attribute_value_string);
 
             // check if it is a dimension variable
-            auto const isDimensionVariable = FillUGridEntityDimension(file_dimensions, attribute_value_string, attribute_key_string, entity_dimensions);
+            auto const isDimensionVariable = fill_ugrid_entity_dimension(file_dimensions, attribute_value_string, attribute_key_string, entity_dimensions);
             if (isDimensionVariable)
             {
                 continue;
@@ -179,7 +200,7 @@ namespace ugrid
         }
     }
 
-    static void FillCharArrayWithStringValues(char* char_array, std::string const& value)
+    static void fill_char_array_with_string_values(char* char_array, std::string const& value)
     {
         if (char_array != nullptr && !value.empty())
         {

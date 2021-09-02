@@ -34,14 +34,14 @@
 
 using ugrid::Mesh2D;
 
-void Mesh2D::Define(ugridapi::Mesh2D const& mesh2d)
+void Mesh2D::define(ugridapi::Mesh2D const& mesh2d)
 {
     if (mesh2d.name == nullptr)
     {
-        throw std::invalid_argument("Mesh2D::Define mesh name field is empty");
+        throw std::invalid_argument("Mesh2D::define mesh name field is empty");
     }
 
-    UGridEntity::Define(mesh2d.name, mesh2d.start_index, "Topology data of 2D mesh", 2, mesh2d.is_spherical);
+    UGridEntity::define(mesh2d.name, mesh2d.start_index, "Topology data of 2D mesh", 2, mesh2d.is_spherical);
     auto string_builder = UGridVarAttributeStringBuilder(m_entity_name);
 
     // node variables
@@ -63,7 +63,7 @@ void Mesh2D::Define(ugridapi::Mesh2D const& mesh2d)
         if (mesh2d.node_z != nullptr)
         {
             auto const variable = define_variable_on_location("node_z", UGridDimensions::nodes, "altitude", "z-coordinate of mesh nodes", "m", mesh2d.double_fill_value);
-            AddTopologyRelatedVariables(variable);
+            add_topology_related_variables(variable);
         }
     }
 
@@ -182,11 +182,11 @@ void Mesh2D::Define(ugridapi::Mesh2D const& mesh2d)
     m_nc_file->enddef();
 }
 
-void Mesh2D::Put(ugridapi::Mesh2D const& mesh2d)
+void Mesh2D::put(ugridapi::Mesh2D const& mesh2d)
 {
     if (mesh2d.name == nullptr)
     {
-        throw std::invalid_argument("Mesh2D::Put invalid mesh name");
+        throw std::invalid_argument("Mesh2D::put invalid mesh name");
     }
 
     // Nodes
@@ -245,7 +245,7 @@ void Mesh2D::Put(ugridapi::Mesh2D const& mesh2d)
     }
 }
 
-void Mesh2D::Inquire(ugridapi::Mesh2D& mesh2d) const
+void Mesh2D::inquire(ugridapi::Mesh2D& mesh2d) const
 {
     if (m_dimensions.find(UGridDimensions::nodes) != m_dimensions.end())
     {
@@ -267,9 +267,9 @@ void Mesh2D::Inquire(ugridapi::Mesh2D& mesh2d) const
 
 
 
-void Mesh2D::Get(ugridapi::Mesh2D& mesh2d) const
+void Mesh2D::get(ugridapi::Mesh2D& mesh2d) const
 {
-    FillCharArrayWithStringValues(mesh2d.name, m_entity_name);
+    fill_char_array_with_string_values(mesh2d.name, m_entity_name);
 
     if (mesh2d.node_x != nullptr)
     {

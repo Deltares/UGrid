@@ -59,27 +59,43 @@ namespace ugrid
         )
             : UGridEntity(nc_file, topology_variable, entity_attributes, entity_attribute_names, entity_dimensions)
         {
+            // Get the name from the tokens, remove colon at the end
+            m_mesh_from_name = m_topology_attributes_names.at("contact").at(0);
+            if (m_mesh_from_name.back() == ':')
+            {
+                m_mesh_from_name.pop_back();
+            }
+            m_mesh_to_name = m_topology_attributes_names.at("contact").at(2);
+
+            if (m_mesh_to_name.back() == ':')
+            {
+                m_mesh_to_name.pop_back();
+            }
+
+            m_mesh_from_location = from_location_string_to_location(m_topology_attributes_names.at("contact").at(1));
+            m_mesh_to_location = from_location_string_to_location(m_topology_attributes_names.at("contact").at(3));
         }
 
         /// @brief Defines the contacts header (ug_write_mesh_arrays)
         /// @param contacts The contacts api structure with the fields to write and all optional flags  
-        void Define(ugridapi::Contacts const& contacts);
+        void define(ugridapi::Contacts const& contacts);
 
         /// @brief Writes a contacts to file
         /// @param contacts contacts The contacts api structure with the fields to write and all optional flags  
-        void Put(ugridapi::Contacts const& contacts);
+        void put(ugridapi::Contacts const& contacts);
 
         /// @brief Inquires the contacts dimensions
         /// @param contacts The contacts api structure with the fields where to assign the dimensions
-        void Inquire(ugridapi::Contacts& contacts) const;
+        void inquire(ugridapi::Contacts& contacts) const;
 
         /// @brief Inquires the contacts arrays
         /// @param contacts The contacts api structure with the fields where to assign the data
-        void Get(ugridapi::Contacts& contacts) const;
+        void get(ugridapi::Contacts& contacts) const;
+
 
         /// @brief Function containing the criteria to determine if a variable is a mesh topology contact
-        /// @param attributes The file attributes
-        /// @return True if is a mesh topology contact, false otherwise
+/// @param attributes The file attributes
+/// @return True if is a mesh topology contact, false otherwise
         static bool is_topology_variable(std::map<std::string, netCDF::NcVarAtt> const& attributes)
         {
             if (attributes.find("cf_role") == attributes.end())
@@ -102,6 +118,13 @@ namespace ugrid
         {
             return true;
         }
+
+    private:
+
+        std::string m_mesh_from_name;
+        std::string m_mesh_to_name;
+        UGridEntityLocations m_mesh_from_location;
+        UGridEntityLocations m_mesh_to_location;
 
     };
 } // namespace ugrid

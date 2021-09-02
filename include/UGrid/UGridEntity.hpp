@@ -63,9 +63,9 @@ namespace ugrid
         /// @brief Factory method producing a vector of instances of the current class (as many mesh2d are found in the file)
         /// @return The vector of produced class instances
         template<typename T>
-        static std::vector<T> Create(std::shared_ptr<netCDF::NcFile> const& nc_file, int entity_dimensionality)
+        static std::vector<T> create(std::shared_ptr<netCDF::NcFile> const& nc_file, int entity_dimensionality)
         {
-            // Get all vars in this file
+            // get all vars in this file
             const auto file_variables = nc_file->getVars();
             const auto file_dimensions = nc_file->getDims();
 
@@ -85,14 +85,12 @@ namespace ugrid
                 }
 
                 // entity_attribute_keys, entity_attribute_values, entity_dimensions
-                auto const [entity_attribute_variables, entity_attribute_names, entity_dimensions] = GetUGridEntity(variable.second, file_dimensions, file_variables);
+                auto const [entity_attribute_variables, entity_attribute_names, entity_dimensions] = get_ugrid_entity(variable.second, file_dimensions, file_variables);
                 result.emplace_back(nc_file,
                     variable.second,
                     entity_attribute_variables,
                     entity_attribute_names,
                     entity_dimensions);
-
-
             }
 
             return result;
@@ -132,7 +130,7 @@ namespace ugrid
             int const& int_fill_value = int_invalid_value);
 
 
-        [[nodiscard]] auto FindVariableWithAliases(std::string const& variable_name) const
+        [[nodiscard]] auto find_variable_with_aliases(std::string const& variable_name) const
         {
             // define topology variable aliases
             static std::map<std::string, std::vector<std::string>> aliases
@@ -156,7 +154,7 @@ namespace ugrid
             }
             if (iterator == m_topology_attribute_variables.end())
             {
-                throw std::invalid_argument("FindVariableWithAliases: No Matching found");
+                throw std::invalid_argument("find_variable_with_aliases: No Matching found");
             }
 
             return iterator;
@@ -181,12 +179,12 @@ namespace ugrid
             }
         }
 
-        void AddTopologyRelatedVariables(netCDF::NcVar const& nc_var)
+        void add_topology_related_variables(netCDF::NcVar const& nc_var)
         {
             m_related_variables.insert({ nc_var.getName(), {nc_var} });
         }
 
-        void Define(char* entity_name, int start_index, std::string const& long_name, int dimensionality, int is_spherical)
+        void define(char* entity_name, int start_index, std::string const& long_name, int dimensionality, int is_spherical)
         {
             m_start_index = start_index;
             m_entity_name = std::string(entity_name);
@@ -209,41 +207,6 @@ namespace ugrid
             m_dimensions.insert({ UGridDimensions::long_names, m_nc_file->addDim("strLengthLongNames", name_long_lengths) });
             m_dimensions.insert({ UGridDimensions::Two, m_nc_file->addDim("Two", 2) });
         }
-
-        std::shared_ptr<netCDF::NcFile>                    m_nc_file;                           /// A pointer to the opened file
-        netCDF::NcVar                                      m_topology_variable;                 /// The topology variable
-        std::map<std::string, std::vector<netCDF::NcVar>>  m_topology_attribute_variables;      /// For each topology attribute, the corresponding variables
-        std::map<std::string, std::vector<std::string>>    m_topology_attributes_names;         /// For each attribute, the corresponding attribute names (can be more than one separated by white spaces)
-        std::map<UGridDimensions, netCDF::NcDim>           m_dimensions;                        /// All entity dimensions
-
-        std::map<std::string, netCDF::NcVarAtt>            m_topology_attributes;               /// The attributes of the topology variable
-        std::map<std::string, netCDF::NcVar>               m_related_variables;                 /// Additional variables related to the entity (foe example defined on nodes, edges or faces)
-        std::string                                        m_entity_name;                       /// The entity name
-
-        bool m_spherical_coordinates = false;                                                   /// If it is a spherical entity
-        int m_start_index = 0;                                                                  /// The start index
-        int m_int_fill_value = int_missing_value;                                               /// The fill value for arrays of int
-        int m_double_fill_value = double_missing_value;                                         /// The fill value for arrays of double
-        int m_epsg_code;                                                                        /// The epsg code
-
-
-    private:
-
-        netCDF::NcVar define_variable_on_location(std::string const& variable_name,
-            UGridDimensions const& ugrid_entity_dimension,
-            netCDF::NcType const& nc_type,
-            std::string const& standard_name,
-            std::string const& long_name,
-            std::string const& units,
-            int const& int_fill_value = int_invalid_value,
-            double const& double_fill_value = double_invalid_value);
-
-        void define_additional_attributes(netCDF::NcVar& variable,
-            std::string const& standard_name,
-            std::string const& long_name,
-            std::string const& units,
-            int const& int_fill_value = int_invalid_value,
-            double const& double_fill_value = double_invalid_value);
 
         static bool is_topology_variable(std::map<std::string, netCDF::NcVarAtt> const& attributes)
         {
@@ -280,6 +243,41 @@ namespace ugrid
             }
             return false;
         }
+
+        std::shared_ptr<netCDF::NcFile>                    m_nc_file;                           /// A pointer to the opened file
+        netCDF::NcVar                                      m_topology_variable;                 /// The topology variable
+        std::map<std::string, std::vector<netCDF::NcVar>>  m_topology_attribute_variables;      /// For each topology attribute, the corresponding variables
+        std::map<std::string, std::vector<std::string>>    m_topology_attributes_names;         /// For each attribute, the corresponding attribute names (can be more than one separated by white spaces)
+        std::map<UGridDimensions, netCDF::NcDim>           m_dimensions;                        /// All entity dimensions
+
+        std::map<std::string, netCDF::NcVarAtt>            m_topology_attributes;               /// The attributes of the topology variable
+        std::map<std::string, netCDF::NcVar>               m_related_variables;                 /// Additional variables related to the entity (foe example defined on nodes, edges or faces)
+        std::string                                        m_entity_name;                       /// The entity name
+
+        bool m_spherical_coordinates = false;                                                   /// If it is a spherical entity
+        int m_start_index = 0;                                                                  /// The start index
+        int m_int_fill_value = int_missing_value;                                               /// The fill value for arrays of int
+        int m_double_fill_value = double_missing_value;                                         /// The fill value for arrays of double
+        int m_epsg_code;                                                                        /// The epsg code
+
+
+    private:
+
+        netCDF::NcVar define_variable_on_location(std::string const& variable_name,
+            UGridDimensions const& ugrid_entity_dimension,
+            netCDF::NcType const& nc_type,
+            std::string const& standard_name,
+            std::string const& long_name,
+            std::string const& units,
+            int const& int_fill_value = int_invalid_value,
+            double const& double_fill_value = double_invalid_value);
+
+        void define_additional_attributes(netCDF::NcVar& variable,
+            std::string const& standard_name,
+            std::string const& long_name,
+            std::string const& units,
+            int const& int_fill_value = int_invalid_value,
+            double const& double_fill_value = double_invalid_value);
 
     };
 } // namespace ugrid

@@ -71,23 +71,23 @@ namespace ugrid
 
         /// @brief Defines the network1d header (ug_create_1d_network_v1)
         /// @param mesh2d The network1d api structure with the fields to write and all optional flags  
-        void Define(ugridapi::Network1d const& mesh2d);
+        void define(ugridapi::Network1d const& mesh2d);
 
         /// @brief Writes a network1d to file
         /// @param mesh2d network1d The mesh2d api structure with the fields to write and all optional flags  
-        void Put(ugridapi::Network1d const& mesh2d);
+        void put(ugridapi::Network1d const& mesh2d);
 
         /// @brief Inquires the network1d dimensions
         /// @param mesh2d The network1d api structure with the fields where to assign the dimensions
-        void Inquire(ugridapi::Network1d& mesh2d) const;
+        void inquire(ugridapi::Network1d& mesh2d) const;
 
         /// @brief Inquires the network1d arrays
         /// @param mesh2d The network1d api structure with the fields where to assign the data
-        void Get(ugridapi::Network1d& mesh2d) const;
+        void get(ugridapi::Network1d& mesh2d) const;
 
         /// @brief Factory method producing a vector of instances of the current class (as many network1d are found in the file)
         /// @return The vector of produced class instances
-        static std::vector<Network1D> Create(std::shared_ptr<netCDF::NcFile> const& nc_file, int entity_dimensionality);
+        static std::vector<Network1D> create(std::shared_ptr<netCDF::NcFile> const& nc_file, int entity_dimensionality);
 
 
     private:

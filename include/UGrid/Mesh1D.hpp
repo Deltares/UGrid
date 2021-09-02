@@ -66,19 +66,19 @@ namespace ugrid
 
         /// @brief Defines the mesh1d header (ug_write_mesh_arrays)
         /// @param mesh1d The mesh1d api structure with the fields to write and all optional flags  
-        void Define(ugridapi::Mesh1D const& mesh1d);
+        void define(ugridapi::Mesh1D const& mesh1d);
 
         /// @brief Writes a mesh1d to file
         /// @param mesh1d mesh1d The mesh1d api structure with the fields to write and all optional flags  
-        void Put(ugridapi::Mesh1D const& mesh1d);
+        void put(ugridapi::Mesh1D const& mesh1d);
 
         /// @brief Inquires the mesh1d dimensions
         /// @param mesh1d The mesh1d api structure with the fields where to assign the dimensions
-        void Inquire(ugridapi::Mesh1D& mesh1d) const;
+        void inquire(ugridapi::Mesh1D& mesh1d) const;
 
         /// @brief Inquires the mesh1d arrays
         /// @param mesh1d The mesh1d api structure with the fields where to assign the data
-        void Get(ugridapi::Mesh1D& mesh1d) const;
+        void get(ugridapi::Mesh1D& mesh1d) const;
 
     };
 } // namespace ugrid

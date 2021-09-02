@@ -275,12 +275,12 @@ void UGridEntity::define_additional_attributes(netCDF::NcVar& variable,
         variable.putAtt("units", units);
     }
 
-    if (!IsEqual(int_fill_value, int_invalid_value))
+    if (!is_equal(int_fill_value, int_invalid_value))
     {
         variable.putAtt("_FillValue", netCDF::NcType::nc_INT, int_fill_value);
     }
 
-    if (!IsEqual(double_fill_value, double_invalid_value))
+    if (!is_equal(double_fill_value, double_invalid_value))
     {
         variable.putAtt("_FillValue", netCDF::NcType::nc_DOUBLE, double_fill_value);
     }

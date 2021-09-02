@@ -34,26 +34,26 @@
 
 using ugrid::Network1D;
 
-void Network1D::Define(ugridapi::Network1d const& network1d)
+void Network1D::define(ugridapi::Network1d const& network1d)
 {
     if (network1d.name == nullptr)
     {
-        throw std::invalid_argument("Network1D::Define mesh name field is empty");
+        throw std::invalid_argument("Network1D::define mesh name field is empty");
     }
     if (network1d.node_x == nullptr || network1d.node_y == nullptr)
     {
-        throw std::invalid_argument("Network1D::Define network node coordinates missing");
+        throw std::invalid_argument("Network1D::define network node coordinates missing");
     }
     if (network1d.edge_nodes == nullptr)
     {
-        throw std::invalid_argument("Network1D::Define network edges (branches) missing");
+        throw std::invalid_argument("Network1D::define network edges (branches) missing");
     }
     if (network1d.geometry_nodes_x == nullptr || network1d.geometry_nodes_y == nullptr)
     {
-        throw std::invalid_argument("Network1D::Define network geometry coordinates missing");
+        throw std::invalid_argument("Network1D::define network geometry coordinates missing");
     }
 
-    UGridEntity::Define(network1d.name, network1d.start_index, "Topology data of 1D network", 1, network1d.is_spherical);
+    UGridEntity::define(network1d.name, network1d.start_index, "Topology data of 1D network", 1, network1d.is_spherical);
     auto string_builder = UGridVarAttributeStringBuilder(m_entity_name);
 
     if (network1d.num_nodes > 0)
@@ -174,11 +174,11 @@ void Network1D::Define(ugridapi::Network1d const& network1d)
     m_nc_file->enddef();
 }
 
-void Network1D::Put(ugridapi::Network1d const& network1d)
+void Network1D::put(ugridapi::Network1d const& network1d)
 {
     if (network1d.name == nullptr)
     {
-        throw std::invalid_argument("Network1D::Put invalid mesh name");
+        throw std::invalid_argument("Network1D::put invalid mesh name");
     }
 
     // Nodes
@@ -192,12 +192,12 @@ void Network1D::Put(ugridapi::Network1d const& network1d)
     }
     if (network1d.node_name_id != nullptr)
     {
-        auto const map_iterator = FindVariableWithAliases("node_id");
+        auto const map_iterator = find_variable_with_aliases("node_id");
         map_iterator->second.at(0).putVar(network1d.node_name_id);
     }
     if (network1d.node_name_long != nullptr)
     {
-        auto const map_iterator = FindVariableWithAliases("node_long_name");
+        auto const map_iterator = find_variable_with_aliases("node_long_name");
         map_iterator->second.at(0).putVar(network1d.node_name_long);
     }
 
@@ -217,13 +217,13 @@ void Network1D::Put(ugridapi::Network1d const& network1d)
     }
     if (network1d.branch_name_id != nullptr)
     {
-        auto const map_iterator = FindVariableWithAliases("branch_id");
+        auto const map_iterator = find_variable_with_aliases("branch_id");
         map_iterator->second.at(0).putVar(network1d.branch_name_id);
     }
 
     if (network1d.branch_name_long != nullptr)
     {
-        auto const map_iterator = FindVariableWithAliases("branch_long_name");
+        auto const map_iterator = find_variable_with_aliases("branch_long_name");
         map_iterator->second.at(0).putVar(network1d.branch_name_long);
     }
 
@@ -238,7 +238,7 @@ void Network1D::Put(ugridapi::Network1d const& network1d)
     }
 }
 
-void Network1D::Inquire(ugridapi::Network1d& network1d) const
+void Network1D::inquire(ugridapi::Network1d& network1d) const
 {
     if (m_dimensions.find(UGridDimensions::nodes) != m_dimensions.end())
     {
@@ -256,10 +256,10 @@ void Network1D::Inquire(ugridapi::Network1d& network1d) const
     }
 }
 
-void Network1D::Get(ugridapi::Network1d& network1d) const
+void Network1D::get(ugridapi::Network1d& network1d) const
 {
 
-    FillCharArrayWithStringValues(network1d.name, m_entity_name);
+    fill_char_array_with_string_values(network1d.name, m_entity_name);
 
     if (network1d.node_x != nullptr)
     {
@@ -278,25 +278,25 @@ void Network1D::Get(ugridapi::Network1d& network1d) const
 
     if (network1d.node_name_id != nullptr)
     {
-        auto const map_iterator = FindVariableWithAliases("node_id");
+        auto const map_iterator = find_variable_with_aliases("node_id");
         map_iterator->second.at(0).getVar(network1d.node_name_id);
     }
 
     if (network1d.node_name_long != nullptr)
     {
-        auto const map_iterator = FindVariableWithAliases("node_long_name");
+        auto const map_iterator = find_variable_with_aliases("node_long_name");
         map_iterator->second.at(0).getVar(network1d.node_name_long);
     }
 
     if (network1d.branch_name_id != nullptr)
     {
-        auto const map_iterator = FindVariableWithAliases("branch_id");
+        auto const map_iterator = find_variable_with_aliases("branch_id");
         map_iterator->second.at(0).getVar(network1d.branch_name_id);
     }
 
     if (network1d.branch_name_long != nullptr)
     {
-        auto const map_iterator = FindVariableWithAliases("branch_long_name");
+        auto const map_iterator = find_variable_with_aliases("branch_long_name");
         map_iterator->second.at(0).getVar(network1d.branch_name_long);
     }
 
@@ -317,9 +317,9 @@ void Network1D::Get(ugridapi::Network1d& network1d) const
     }
 }
 
-std::vector<Network1D> Network1D::Create(std::shared_ptr<netCDF::NcFile> const& nc_file, int entity_dimensionality)
+std::vector<Network1D> Network1D::create(std::shared_ptr<netCDF::NcFile> const& nc_file, int entity_dimensionality)
 {
-    // Get all vars in this file
+    // get all vars in this file
     const auto file_variables = nc_file->getVars();
     const auto file_dimensions = nc_file->getDims();
 
@@ -333,29 +333,34 @@ std::vector<Network1D> Network1D::Create(std::shared_ptr<netCDF::NcFile> const& 
             continue;
         }
 
+        if (!has_matching_dimensionality(variable_attributes, entity_dimensionality))
+        {
+            continue;
+        }
+
         int dimensionality;
         variable_attributes["topology_dimension"].getValues(&dimensionality);
 
         if (dimensionality == entity_dimensionality)
         {
             // entity_attribute_keys, entity_attribute_values, entity_dimensions
-            auto const [entity_attribute_variables, entity_attribute_names, entity_dimensions] = GetUGridEntity(variable.second, file_dimensions, file_variables);
+            auto const [entity_attribute_variables, entity_attribute_names, entity_dimensions] = get_ugrid_entity(variable.second, file_dimensions, file_variables);
             // find the network geometry
             auto const entity_attribute_strings_iterator = entity_attribute_names.find("edge_geometry");
             if (entity_attribute_strings_iterator == entity_attribute_names.end())
             {
-                throw std::invalid_argument("Network1D::Create " + entity_attribute_strings_iterator->first + " attribute in" + variable.first + " can not be found");
+                throw std::invalid_argument("Network1D::create " + entity_attribute_strings_iterator->first + " attribute in" + variable.first + " can not be found");
             }
             auto const edge_geometry_variable_name = entity_attribute_strings_iterator->second.front();
             auto const edge_geometry_variable_iterator = file_variables.find(edge_geometry_variable_name);
             if (edge_geometry_variable_iterator == file_variables.end())
             {
-                throw std::invalid_argument("Network1D::Create " + edge_geometry_variable_name + " variable can not be found");
+                throw std::invalid_argument("Network1D::create " + edge_geometry_variable_name + " variable can not be found");
             }
 
             auto const network_geometry_variable = edge_geometry_variable_iterator->second;
             auto const [edge_geometry_attribute_variables, edge_geometry_attribute_names, edge_geometry_entity_dimensions] =
-                GetUGridEntity(network_geometry_variable, file_dimensions, file_variables);
+                get_ugrid_entity(network_geometry_variable, file_dimensions, file_variables);
 
             result.emplace_back(nc_file,
                 variable.second,

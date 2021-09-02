@@ -39,26 +39,26 @@ using ugrid::Mesh1D;
 
 // ug_create_1d_mesh_v2
 // ug_def_mesh_ids
-void Mesh1D::Define(ugridapi::Mesh1D const& mesh1d)
+void Mesh1D::define(ugridapi::Mesh1D const& mesh1d)
 {
     if (mesh1d.name == nullptr)
     {
-        throw std::invalid_argument("Mesh1D::Define mesh1d name field is empty");
+        throw std::invalid_argument("Mesh1D::define mesh1d name field is empty");
     }
     if (mesh1d.network_name == nullptr)
     {
-        throw std::invalid_argument("Mesh1D::Define mesh1d network name is empty");
+        throw std::invalid_argument("Mesh1D::define mesh1d network name is empty");
     }
     if (mesh1d.node_branch_id == nullptr)
     {
-        throw std::invalid_argument("Mesh1D::Define mesh1d branch id vector is empty");
+        throw std::invalid_argument("Mesh1D::define mesh1d branch id vector is empty");
     }
     if (mesh1d.node_branch_offset == nullptr)
     {
-        throw std::invalid_argument("Mesh1D::Define mesh1d branch offset vector is empty");
+        throw std::invalid_argument("Mesh1D::define mesh1d branch offset vector is empty");
     }
 
-    UGridEntity::Define(mesh1d.name, mesh1d.start_index, "Topology data of 1D mesh", 1, mesh1d.is_spherical);
+    UGridEntity::define(mesh1d.name, mesh1d.start_index, "Topology data of 1D mesh", 1, mesh1d.is_spherical);
     auto string_builder = UGridVarAttributeStringBuilder(m_entity_name);
 
     std::string network_name(mesh1d.network_name);
@@ -152,11 +152,11 @@ void Mesh1D::Define(ugridapi::Mesh1D const& mesh1d)
     m_nc_file->enddef();
 }
 
-void Mesh1D::Put(ugridapi::Mesh1D const& mesh1d)
+void Mesh1D::put(ugridapi::Mesh1D const& mesh1d)
 {
     if (mesh1d.name == nullptr)
     {
-        throw std::invalid_argument("Mesh1D::Put invalid mesh name");
+        throw std::invalid_argument("Mesh1D::put invalid mesh name");
     }
 
     if (mesh1d.node_branch_id != nullptr)
@@ -181,7 +181,7 @@ void Mesh1D::Put(ugridapi::Mesh1D const& mesh1d)
     }
 }
 
-void Mesh1D::Inquire(ugridapi::Mesh1D& mesh1d) const
+void Mesh1D::inquire(ugridapi::Mesh1D& mesh1d) const
 {
     if (m_dimensions.find(UGridDimensions::nodes) != m_dimensions.end())
     {
@@ -193,13 +193,13 @@ void Mesh1D::Inquire(ugridapi::Mesh1D& mesh1d) const
     }
 }
 
-void Mesh1D::Get(ugridapi::Mesh1D& mesh1d) const
+void Mesh1D::get(ugridapi::Mesh1D& mesh1d) const
 {
 
-    FillCharArrayWithStringValues(mesh1d.name, m_entity_name);
+    fill_char_array_with_string_values(mesh1d.name, m_entity_name);
 
     auto const network_name = m_topology_attributes_names.at("coordinate_space").at(0);
-    FillCharArrayWithStringValues(mesh1d.network_name, network_name);
+    fill_char_array_with_string_values(mesh1d.network_name, network_name);
 
     if (mesh1d.node_branch_id != nullptr)
     {
@@ -215,12 +215,12 @@ void Mesh1D::Get(ugridapi::Mesh1D& mesh1d) const
     }
     if (mesh1d.node_name_id != nullptr)
     {
-        auto const map_iterator = FindVariableWithAliases("node_id");
+        auto const map_iterator = find_variable_with_aliases("node_id");
         map_iterator->second.at(0).getVar(mesh1d.node_name_id);
     }
     if (mesh1d.node_name_long != nullptr)
     {
-        auto const map_iterator = FindVariableWithAliases("node_long_name");
+        auto const map_iterator = find_variable_with_aliases("node_long_name");
         map_iterator->second.at(0).getVar(mesh1d.node_name_long);
     }
 }

@@ -72,18 +72,18 @@ namespace ugrid
 
         /// @brief Defines the mesh2d header
         /// @param mesh2d The mesh2d api structure with the fields to write and all optional flags  
-        void Define(ugridapi::Mesh2D const& mesh2d);
+        void define(ugridapi::Mesh2D const& mesh2d);
 
         /// @brief Writes a mesh2d to file
         /// @param mesh2d mesh2d The mesh2d api structure with the fields to write and all optional flags  
-        void Put(ugridapi::Mesh2D const& mesh2d);
+        void put(ugridapi::Mesh2D const& mesh2d);
 
         /// @brief Inquires the mesh2d dimensions
         /// @param mesh2d The mesh2d api structure with the fields where to assign the dimensions
-        void Inquire(ugridapi::Mesh2D& mesh2d) const;
+        void inquire(ugridapi::Mesh2D& mesh2d) const;
 
         /// @brief Inquires the mesh2d arrays
         /// @param mesh2d The mesh2d api structure with the fields where to assign the data
-        void Get(ugridapi::Mesh2D& mesh2d) const;
+        void get(ugridapi::Mesh2D& mesh2d) const;
     };
 } // namespace ugrid

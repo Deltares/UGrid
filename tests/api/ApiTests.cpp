@@ -26,7 +26,7 @@ TEST(ApiTest, InquireAndGet_AFileWithOneMesh2d_ShouldReadMesh2d)
     auto const num_mesh2d_topologies = ugridapi::ug_topology_get_count(file_id, topology_type);
     ASSERT_EQ(num_mesh2d_topologies, 1);
 
-    // Get the dimensions 
+    // get the dimensions 
     ugridapi::Mesh2D mesh2d;
     error_code = ug_mesh2d_inq(file_id, 0, mesh2d);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
@@ -48,7 +48,7 @@ TEST(ApiTest, InquireAndGet_AFileWithOneMesh2d_ShouldReadMesh2d)
     std::unique_ptr<int> const face_nodes(new int[mesh2d.num_faces * mesh2d.num_face_nodes_max]);
     mesh2d.face_nodes = face_nodes.get();
 
-    // Get the data
+    // get the data
     error_code = ug_mesh2d_get(file_id, 0, mesh2d);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
@@ -215,7 +215,7 @@ TEST(ApiTest, InquireAndGet_AFileWithOneNetwork1D_ShouldReadNetwork1D)
     auto const num_topologies = ugridapi::ug_topology_get_count(file_id, topology_type);
     ASSERT_EQ(num_topologies, 1);
 
-    // Get the dimensions 
+    // get the dimensions 
     ugridapi::Network1d network1d;
     error_code = ug_network1d_inq(file_id, 0, network1d);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
@@ -254,7 +254,7 @@ TEST(ApiTest, InquireAndGet_AFileWithOneNetwork1D_ShouldReadNetwork1D)
     std::unique_ptr<double> const branch_lengths(new double[network1d.num_edges]);
     network1d.branch_lengths = branch_lengths.get();
 
-    // Get the data
+    // get the data
     error_code = ug_network1d_get(file_id, 0, network1d);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
@@ -381,7 +381,7 @@ TEST(ApiTest, InquireAndGet_AFileWithOneMesh1D_ShouldReadMesh1D)
     auto const num_topologies = ugridapi::ug_topology_get_count(file_id, topology_type);
     ASSERT_EQ(num_topologies, 1);
 
-    // Get the dimensions 
+    // get the dimensions 
     ugridapi::Mesh1D mesh1d;
     error_code = ug_mesh1d_inq(file_id, 0, mesh1d);
     ASSERT_EQ(25, mesh1d.num_nodes);
@@ -413,7 +413,7 @@ TEST(ApiTest, InquireAndGet_AFileWithOneMesh1D_ShouldReadMesh1D)
     std::unique_ptr<char> const node_long_name(new char[long_names_length * mesh1d.num_nodes]);
     mesh1d.node_name_long = node_long_name.get();
 
-    // Get the data
+    // get the data
     error_code = ug_mesh1d_get(file_id, 0, mesh1d);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
@@ -538,7 +538,7 @@ TEST(ApiTest, InquireAndGet_AFileWithOneContact_ShouldReadContact)
     auto const num_topologies = ugridapi::ug_topology_get_count(file_id, topology_type);
     ASSERT_EQ(num_topologies, 1);
 
-    // Get the dimensions 
+    // get the dimensions 
     ugridapi::Contacts contacts;
     error_code = ug_contacts_inq(file_id, 0, contacts);
     ASSERT_EQ(23, contacts.num_contacts);
@@ -566,7 +566,7 @@ TEST(ApiTest, InquireAndGet_AFileWithOneContact_ShouldReadContact)
     std::unique_ptr<int> const contact_type(new int[contacts.num_contacts]);
     contacts.contact_type = contact_type.get();
 
-    // Get the data
+    // get the data
     error_code = ug_contacts_get(file_id, 0, contacts);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 

@@ -113,10 +113,10 @@ namespace ugridapi
                 file_id = ncFile->getId();
                 ugrid_states.insert({ ncFile->getId(), UGridState(ncFile) });
 
-                ugrid_states[file_id].m_mesh2d = ugrid::UGridEntity::Create<ugrid::Mesh2D>(ncFile, 2);
-                ugrid_states[file_id].m_network1d = ugrid::Network1D::Create(ncFile, 1);
-                ugrid_states[file_id].m_mesh1d = ugrid::UGridEntity::Create<ugrid::Mesh1D>(ncFile, 1);
-                ugrid_states[file_id].m_contacts = ugrid::UGridEntity::Create<ugrid::Contacts>(ncFile, 1);
+                ugrid_states[file_id].m_mesh2d = ugrid::UGridEntity::create<ugrid::Mesh2D>(ncFile, 2);
+                ugrid_states[file_id].m_network1d = ugrid::Network1D::create(ncFile, 1);
+                ugrid_states[file_id].m_mesh1d = ugrid::UGridEntity::create<ugrid::Mesh1D>(ncFile, 1);
+                ugrid_states[file_id].m_contacts = ugrid::UGridEntity::create<ugrid::Contacts>(ncFile, 1);
             }
             if (mode == netCDF::NcFile::replace)
             {
@@ -163,7 +163,7 @@ namespace ugridapi
             }
 
             ugrid::Mesh2D mesh2d(ugrid_states[file_id].m_ncFile);
-            mesh2d.Define(mesh2dapi);
+            mesh2d.define(mesh2dapi);
             ugrid_states[file_id].m_mesh2d.emplace_back(mesh2d);
             topology_id = ugrid_states[file_id].m_mesh2d.size() - 1;
         }
@@ -184,7 +184,7 @@ namespace ugridapi
                 throw std::invalid_argument("UGrid: The selected file_id does not exist.");
             }
 
-            ugrid_states[file_id].m_mesh2d[topology_id].Put(mesh2d);
+            ugrid_states[file_id].m_mesh2d[topology_id].put(mesh2d);
         }
         catch (...)
         {
@@ -203,7 +203,7 @@ namespace ugridapi
                 throw std::invalid_argument("UGrid: The selected file_id does not exist.");
             }
 
-            ugrid_states[file_id].m_mesh2d[topology_id].Inquire(mesh2d);
+            ugrid_states[file_id].m_mesh2d[topology_id].inquire(mesh2d);
         }
         catch (...)
         {
@@ -217,7 +217,7 @@ namespace ugridapi
         int exitCode = Success;
         try
         {
-            ugrid_states[file_id].m_mesh2d[topology_id].Get(mesh2d);
+            ugrid_states[file_id].m_mesh2d[topology_id].get(mesh2d);
         }
         catch (...)
         {
@@ -237,7 +237,7 @@ namespace ugridapi
             }
 
             ugrid::Network1D network1d(ugrid_states[file_id].m_ncFile);
-            network1d.Define(network1dapi);
+            network1d.define(network1dapi);
             ugrid_states[file_id].m_network1d.emplace_back(network1d);
             topology_id = ugrid_states[file_id].m_network1d.size() - 1;
         }
@@ -258,7 +258,7 @@ namespace ugridapi
                 throw std::invalid_argument("UGrid: The selected file_id does not exist.");
             }
 
-            ugrid_states[file_id].m_network1d[topology_id].Put(network);
+            ugrid_states[file_id].m_network1d[topology_id].put(network);
         }
         catch (...)
         {
@@ -277,7 +277,7 @@ namespace ugridapi
                 throw std::invalid_argument("UGrid: The selected file_id does not exist.");
             }
 
-            ugrid_states[file_id].m_network1d[topology_id].Inquire(network);
+            ugrid_states[file_id].m_network1d[topology_id].inquire(network);
         }
         catch (...)
         {
@@ -291,7 +291,7 @@ namespace ugridapi
         int exitCode = Success;
         try
         {
-            ugrid_states[file_id].m_network1d[topology_id].Get(network);
+            ugrid_states[file_id].m_network1d[topology_id].get(network);
         }
         catch (...)
         {
@@ -311,7 +311,7 @@ namespace ugridapi
             }
 
             ugrid::Mesh1D mesh1d(ugrid_states[file_id].m_ncFile);
-            mesh1d.Define(mesh1dapi);
+            mesh1d.define(mesh1dapi);
             ugrid_states[file_id].m_mesh1d.emplace_back(mesh1d);
             topology_id = ugrid_states[file_id].m_mesh1d.size() - 1;
         }
@@ -332,7 +332,7 @@ namespace ugridapi
                 throw std::invalid_argument("UGrid: The selected file_id does not exist.");
             }
 
-            ugrid_states[file_id].m_mesh1d[topology_id].Put(mesh1dapi);
+            ugrid_states[file_id].m_mesh1d[topology_id].put(mesh1dapi);
         }
         catch (...)
         {
@@ -351,7 +351,7 @@ namespace ugridapi
                 throw std::invalid_argument("UGrid: The selected file_id does not exist.");
             }
 
-            ugrid_states[file_id].m_mesh1d[topology_id].Inquire(mesh1d);
+            ugrid_states[file_id].m_mesh1d[topology_id].inquire(mesh1d);
         }
         catch (...)
         {
@@ -370,7 +370,7 @@ namespace ugridapi
                 throw std::invalid_argument("UGrid: The selected file_id does not exist.");
             }
 
-            ugrid_states[file_id].m_mesh1d[topology_id].Get(mesh1d);
+            ugrid_states[file_id].m_mesh1d[topology_id].get(mesh1d);
         }
         catch (...)
         {
@@ -401,7 +401,7 @@ namespace ugridapi
                 throw std::invalid_argument("UGrid: The selected file_id does not exist.");
             }
 
-            ugrid_states[file_id].m_contacts[topology_id].Inquire(contacts);
+            ugrid_states[file_id].m_contacts[topology_id].inquire(contacts);
         }
         catch (...)
         {
@@ -420,7 +420,7 @@ namespace ugridapi
                 throw std::invalid_argument("UGrid: The selected file_id does not exist.");
             }
 
-            ugrid_states[file_id].m_contacts[topology_id].Get(contacts);
+            ugrid_states[file_id].m_contacts[topology_id].get(contacts);
         }
         catch (...)
         {
