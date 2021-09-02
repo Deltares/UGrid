@@ -54,9 +54,5 @@ namespace ugridapi
         int mesh_from_type = -1;
 
         int mesh_to_type = -1;
-
-        int start_index = 0;
-
-        int is_spherical = 0;
     };
 }

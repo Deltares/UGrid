@@ -117,6 +117,24 @@ namespace ugrid
         }
     }
 
+    static std::string from_location_integer_to_location_string(int location)
+    {
+        auto const ug_entity_location = static_cast<UGridEntityLocations>(location);
+
+        if (ug_entity_location == UGridEntityLocations::nodes)
+        {
+            return "node";
+        }
+        if (ug_entity_location == UGridEntityLocations::edges)
+        {
+            return "edge";
+        }
+        if (ug_entity_location == UGridEntityLocations::faces)
+        {
+            return "face";
+        }
+    }
+
     static bool fill_ugrid_entity_dimension(std::multimap<std::string, netCDF::NcDim> const& dimensions,
         std::string const& attribute_key_string,
         std::string const& attribute_value_string,

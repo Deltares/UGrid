@@ -252,7 +252,7 @@ namespace ugrid
 
         std::map<std::string, netCDF::NcVarAtt>            m_topology_attributes;               /// The attributes of the topology variable
         std::map<std::string, netCDF::NcVar>               m_related_variables;                 /// Additional variables related to the entity (foe example defined on nodes, edges or faces)
-        std::string                                        m_entity_name;                       /// The entity name
+        std::string                                        m_entity_name = "";                   /// The name of the entity
 
         bool m_spherical_coordinates = false;                                                   /// If it is a spherical entity
         int m_start_index = 0;                                                                  /// The start index
