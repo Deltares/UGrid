@@ -80,5 +80,7 @@ namespace ugrid
         /// @param mesh1d The mesh1d api structure with the fields where to assign the data
         void get(ugridapi::Mesh1D& mesh1d) const;
 
+        static int get_dimensionality() { return 1; };
+
     };
 } // namespace ugrid

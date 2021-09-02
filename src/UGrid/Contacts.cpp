@@ -82,7 +82,7 @@ void Contacts::define(ugridapi::Contacts const& contacts)
     auto const mesh_from_location_string = from_location_integer_to_location_string(contacts.mesh_from_location);
     auto const mesh_to_location_string = from_location_integer_to_location_string(contacts.mesh_to_location);
     std::stringstream os;
-    os << std::string(contacts.mesh_from_name) << ": " << mesh_from_location_string << std::string(contacts.mesh_to_name) << ": " << mesh_to_location_string;
+    os << std::string(contacts.mesh_from_name) << ": " << mesh_from_location_string << " " << std::string(contacts.mesh_to_name) << ": " << mesh_to_location_string;
     topology_attribute = m_topology_variable.putAtt("contact", os.str());
     add_topology_attribute(topology_attribute);
 

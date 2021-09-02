@@ -63,7 +63,7 @@ namespace ugrid
         /// @brief Factory method producing a vector of instances of the current class (as many mesh2d are found in the file)
         /// @return The vector of produced class instances
         template<typename T>
-        static std::vector<T> create(std::shared_ptr<netCDF::NcFile> const& nc_file, int entity_dimensionality)
+        static std::vector<T> create(std::shared_ptr<netCDF::NcFile> const& nc_file)
         {
             // get all vars in this file
             const auto file_variables = nc_file->getVars();
@@ -79,7 +79,7 @@ namespace ugrid
                     continue;
                 }
 
-                if (!T::has_matching_dimensionality(variable_attributes, entity_dimensionality))
+                if (!T::has_matching_dimensionality(variable_attributes, T::get_dimensionality()))
                 {
                     continue;
                 }

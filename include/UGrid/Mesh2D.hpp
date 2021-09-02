@@ -85,5 +85,9 @@ namespace ugrid
         /// @brief Inquires the mesh2d arrays
         /// @param mesh2d The mesh2d api structure with the fields where to assign the data
         void get(ugridapi::Mesh2D& mesh2d) const;
+
+        /// @brief The dimensionality of the entity
+        /// @return 
+        static int get_dimensionality() { return 2; };
     };
 } // namespace ugrid

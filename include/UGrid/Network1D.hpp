@@ -117,6 +117,7 @@ namespace ugrid
             return true;
         };
 
+        static int get_dimensionality() { return 1; };
 
     private:
 

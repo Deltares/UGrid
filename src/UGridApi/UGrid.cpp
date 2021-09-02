@@ -89,6 +89,21 @@ namespace ugridapi
         return netCDF::NcFile::replace;
     }
 
+    UGRID_API  int ug_entity_get_node_location()
+    {
+        return static_cast<int>(ugrid::UGridEntityLocations::nodes);
+    }
+
+    UGRID_API  int ug_entity_get_edge_location()
+    {
+        return static_cast<int>(ugrid::UGridEntityLocations::edges);
+    }
+
+    UGRID_API  int ug_entity_get_face_location()
+    {
+        return static_cast<int>(ugrid::UGridEntityLocations::faces);
+    }
+
     UGRID_API  int ug_file_add_coordinate_mapping(int espg)
     {
         int exitCode = Success;
@@ -113,10 +128,10 @@ namespace ugridapi
                 file_id = ncFile->getId();
                 ugrid_states.insert({ ncFile->getId(), UGridState(ncFile) });
 
-                ugrid_states[file_id].m_mesh2d = ugrid::UGridEntity::create<ugrid::Mesh2D>(ncFile, 2);
-                ugrid_states[file_id].m_network1d = ugrid::Network1D::create<ugrid::Network1D>(ncFile, 1);
-                ugrid_states[file_id].m_mesh1d = ugrid::UGridEntity::create<ugrid::Mesh1D>(ncFile, 1);
-                ugrid_states[file_id].m_contacts = ugrid::UGridEntity::create<ugrid::Contacts>(ncFile, 1);
+                ugrid_states[file_id].m_mesh2d = ugrid::UGridEntity::create<ugrid::Mesh2D>(ncFile);
+                ugrid_states[file_id].m_network1d = ugrid::Network1D::create<ugrid::Network1D>(ncFile);
+                ugrid_states[file_id].m_mesh1d = ugrid::UGridEntity::create<ugrid::Mesh1D>(ncFile);
+                ugrid_states[file_id].m_contacts = ugrid::UGridEntity::create<ugrid::Contacts>(ncFile);
             }
             if (mode == netCDF::NcFile::replace)
             {
@@ -341,7 +356,7 @@ namespace ugridapi
         return exitCode;
     }
 
-    UGRID_API int ug_mesh1d_inq(int file_id, int topology_id, Mesh1D& mesh1d)
+    UGRID_API int ug_mesh1d_inq(int file_id, int topology_id, Mesh1D& mesh1dapi)
     {
         int exitCode = Success;
         try
@@ -351,7 +366,7 @@ namespace ugridapi
                 throw std::invalid_argument("UGrid: The selected file_id does not exist.");
             }
 
-            ugrid_states[file_id].m_mesh1d[topology_id].inquire(mesh1d);
+            ugrid_states[file_id].m_mesh1d[topology_id].inquire(mesh1dapi);
         }
         catch (...)
         {
@@ -360,7 +375,7 @@ namespace ugridapi
         return exitCode;
     }
 
-    UGRID_API int ug_mesh1d_get(int file_id, int topology_id, Mesh1D& mesh1d)
+    UGRID_API int ug_mesh1d_get(int file_id, int topology_id, Mesh1D& mesh1dapi)
     {
         int exitCode = Success;
         try
@@ -370,7 +385,7 @@ namespace ugridapi
                 throw std::invalid_argument("UGrid: The selected file_id does not exist.");
             }
 
-            ugrid_states[file_id].m_mesh1d[topology_id].get(mesh1d);
+            ugrid_states[file_id].m_mesh1d[topology_id].get(mesh1dapi);
         }
         catch (...)
         {
@@ -379,19 +394,7 @@ namespace ugridapi
         return exitCode;
     }
 
-    UGRID_API int ug_contacts_def(int file_id, Contacts const& contacts, int& topology_id)
-    {
-        int exitCode = Success;
-        return exitCode;
-    }
-
-    UGRID_API int ug_contacts_put(int file_id, int topology_id, Contacts  const& contacts)
-    {
-        int exitCode = Success;
-        return exitCode;
-    }
-
-    UGRID_API int ug_contacts_inq(int file_id, int topology_id, Contacts& contacts)
+    UGRID_API int ug_contacts_def(int file_id, Contacts const& contactsapi, int& topology_id)
     {
         int exitCode = Success;
         try
@@ -401,7 +404,10 @@ namespace ugridapi
                 throw std::invalid_argument("UGrid: The selected file_id does not exist.");
             }
 
-            ugrid_states[file_id].m_contacts[topology_id].inquire(contacts);
+            ugrid::Contacts contacts(ugrid_states[file_id].m_ncFile);
+            contacts.define(contactsapi);
+            ugrid_states[file_id].m_contacts.emplace_back(contacts);
+            topology_id = ugrid_states[file_id].m_contacts.size() - 1;
         }
         catch (...)
         {
@@ -410,7 +416,7 @@ namespace ugridapi
         return exitCode;
     }
 
-    UGRID_API int ug_contacts_get(int file_id, int topology_id, Contacts& contacts)
+    UGRID_API int ug_contacts_put(int file_id, int topology_id, Contacts const& contactsapi)
     {
         int exitCode = Success;
         try
@@ -420,7 +426,45 @@ namespace ugridapi
                 throw std::invalid_argument("UGrid: The selected file_id does not exist.");
             }
 
-            ugrid_states[file_id].m_contacts[topology_id].get(contacts);
+            ugrid_states[file_id].m_contacts[topology_id].put(contactsapi);
+        }
+        catch (...)
+        {
+            exitCode = HandleExceptions(std::current_exception());
+        }
+        return exitCode;
+    }
+
+    UGRID_API int ug_contacts_inq(int file_id, int topology_id, Contacts& contactsapi)
+    {
+        int exitCode = Success;
+        try
+        {
+            if (ugrid_states.count(file_id) == 0)
+            {
+                throw std::invalid_argument("UGrid: The selected file_id does not exist.");
+            }
+
+            ugrid_states[file_id].m_contacts[topology_id].inquire(contactsapi);
+        }
+        catch (...)
+        {
+            exitCode = HandleExceptions(std::current_exception());
+        }
+        return exitCode;
+    }
+
+    UGRID_API int ug_contacts_get(int file_id, int topology_id, Contacts& contactsapi)
+    {
+        int exitCode = Success;
+        try
+        {
+            if (ugrid_states.count(file_id) == 0)
+            {
+                throw std::invalid_argument("UGrid: The selected file_id does not exist.");
+            }
+
+            ugrid_states[file_id].m_contacts[topology_id].get(contactsapi);
         }
         catch (...)
         {

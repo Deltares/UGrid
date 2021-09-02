@@ -81,6 +81,13 @@ namespace ugridapi
 
         UGRID_API  int ug_file_replace_mode();
 
+        UGRID_API  int ug_entity_get_node_location();
+
+        UGRID_API  int ug_entity_get_edge_location();
+
+        UGRID_API  int ug_entity_get_face_location();
+
+
         UGRID_API  int ug_file_add_coordinate_mapping(int espg);
 
         /// @brief Opens a file and fills the state with the entities upon reading
@@ -114,9 +121,9 @@ namespace ugridapi
 
         UGRID_API int ug_mesh1d_put(int file_id, int topology_id, Mesh1D const& mesh1dapi);
 
-        UGRID_API int ug_mesh1d_inq(int file_id, int topology_id, Mesh1D& mesh1d);
+        UGRID_API int ug_mesh1d_inq(int file_id, int topology_id, Mesh1D& mesh1dapi);
 
-        UGRID_API int ug_mesh1d_get(int file_id, int topology_id, Mesh1D& mesh1d);
+        UGRID_API int ug_mesh1d_get(int file_id, int topology_id, Mesh1D& mesh1dapi);
 
         /*----------------------------------------------------------------------------------------------------
          * Mesh 2d
@@ -141,11 +148,11 @@ namespace ugridapi
 
         UGRID_API int ug_contacts_def(int file_id, Contacts  const& contacts, int& topology_id);
 
-        UGRID_API int ug_contacts_put(int file_id, int topology_id, Contacts  const& contacts);
+        UGRID_API int ug_contacts_put(int file_id, int topology_id, Contacts  const& contactsapi);
 
-        UGRID_API int ug_contacts_inq(int file_id, int topology_id, Contacts& contacts);
+        UGRID_API int ug_contacts_inq(int file_id, int topology_id, Contacts& contactsapi);
 
-        UGRID_API int ug_contacts_get(int file_id, int topology_id, Contacts& contacts);
+        UGRID_API int ug_contacts_get(int file_id, int topology_id, Contacts& contactsapi);
 
         /*----------------------------------------------------------------------------------------------------
          * Topologies

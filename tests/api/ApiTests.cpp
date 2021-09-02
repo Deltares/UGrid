@@ -516,7 +516,6 @@ TEST(ApiTest, DefineAndPut_OneMesh1D_ShouldWriteData)
 
     error_code = ug_mesh1d_put(file_id, topology_id, mesh1d);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
-    ASSERT_EQ(0, topology_id);
 
     // Close the file
     error_code = ugridapi::ug_close(file_id);
@@ -619,6 +618,89 @@ TEST(ApiTest, InquireAndGet_AFileWithOneContact_ShouldReadContact)
     std::vector<int> contact_type_vector(contact_type.get(), contact_type.get() + contacts.num_contacts);
     std::vector<int> contact_type_vector_expected{ 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3 };
     ASSERT_THAT(contact_type_vector, ::testing::ContainerEq(contact_type_vector_expected));
+
+    // Close the file
+    error_code = ugridapi::ug_close(file_id);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+}
+
+TEST(ApiTest, DefineAndPut_AFileWithOneContact_ShouldWriteAContact)
+{
+    std::string const filePath = TEST_FOLDER + "/data/OneMesh1DWrite.nc";
+
+    // Open a file
+    int file_id = 0;
+    auto const file_mode = ugridapi::ug_file_replace_mode();
+    auto error_code = ugridapi::ug_open(filePath.c_str(), file_mode, file_id);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+
+    // Fill all data 
+    ugridapi::Contacts contacts;
+    std::unique_ptr<char> const name(new char[] {"2d1dlinks"});
+    contacts.name = name.get();
+
+    std::unique_ptr<char> const mesh_from_name(new char[] {"mesh2d"});
+    contacts.mesh_from_name = mesh_from_name.get();
+
+    std::unique_ptr<char> const mesh_to_name(new char[] {"1dmesh"});
+    contacts.mesh_to_name = mesh_to_name.get();
+
+    contacts.mesh_from_location = ugridapi::ug_entity_get_face_location();
+
+    contacts.mesh_to_location = ugridapi::ug_entity_get_face_location();
+
+    std::unique_ptr<int> const contact_type(new int[] {3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3 });
+    contacts.contact_type = contact_type.get();
+
+
+    std::unique_ptr<int> const edges(new int[] { 13, 1,
+        13, 2,
+        13, 3,
+        13, 4,
+        70, 5,
+        76, 6,
+        91, 7,
+        13, 8,
+        13, 9,
+        13, 10,
+        13, 11,
+        13, 12,
+        178, 13,
+        200, 14,
+        228, 15,
+        255, 16,
+        277, 17,
+        293, 18,
+        304, 19,
+        315, 20,
+        326, 21,
+        337, 22,
+        353, 23 });
+    contacts.edges = edges.get();
+
+    contacts.num_contacts = 23;
+
+    std::stringstream ids;
+    std::stringstream long_names;
+    for (auto i = 0; i < contacts.num_contacts; ++i)
+    {
+        ids << "linkid                                  ";
+        long_names << "linklongname                                                                    ";
+    }
+
+    std::unique_ptr<char> const contact_name_id(strdup(ids.str().c_str()));
+    contacts.contact_name_id = contact_name_id.get();
+
+    std::unique_ptr<char> const contact_name_long(strdup(long_names.str().c_str()));
+    contacts.contact_name_long = contact_name_long.get();
+
+    int topology_id = -1;
+    error_code = ug_contacts_def(file_id, contacts, topology_id);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+    ASSERT_EQ(0, topology_id);
+
+    error_code = ug_contacts_put(file_id, topology_id, contacts);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
     // Close the file
     error_code = ugridapi::ug_close(file_id);
