@@ -31,9 +31,7 @@ namespace ugridapi
 {
     struct Contacts
     {
-        int* mesh1d_indices = nullptr;
-
-        int* mesh2d_indices = nullptr;
+        int* edges = nullptr;
 
         int* contact_type = nullptr;
 

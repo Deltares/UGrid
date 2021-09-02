@@ -92,10 +92,9 @@ namespace ugrid
         /// @param contacts The contacts api structure with the fields where to assign the data
         void get(ugridapi::Contacts& contacts) const;
 
-
         /// @brief Function containing the criteria to determine if a variable is a mesh topology contact
-/// @param attributes The file attributes
-/// @return True if is a mesh topology contact, false otherwise
+        /// @param attributes The file attributes
+        /// @return True if is a mesh topology contact, false otherwise
         static bool is_topology_variable(std::map<std::string, netCDF::NcVarAtt> const& attributes)
         {
             if (attributes.find("cf_role") == attributes.end())

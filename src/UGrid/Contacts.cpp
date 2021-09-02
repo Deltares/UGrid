@@ -144,33 +144,31 @@ void Contacts::inquire(ugridapi::Contacts& contacts) const
 
 void Contacts::get(ugridapi::Contacts& contacts) const
 {
-
     fill_char_array_with_string_values(contacts.name, m_entity_name);
 
     fill_char_array_with_string_values(contacts.mesh_from_name, m_mesh_from_name);
 
     fill_char_array_with_string_values(contacts.mesh_to_name, m_mesh_to_name);
 
-    //if (contacts.contact != nullptr)
-    //{
-    //    m_topology_attribute_variables.at("node_coordinates").at(0).getVar(contacts.node_branch_id);
-    //}
-    //if (contacts.node_branch_offset != nullptr)
-    //{
-    //    m_topology_attribute_variables.at("node_coordinates").at(1).getVar(contacts.node_branch_offset);
-    //}
-    //if (contacts.edge_nodes != nullptr)
-    //{
-    //    m_topology_attribute_variables.at("edge_node_connectivity").at(0).getVar(contacts.edge_nodes);
-    //}
-    //if (contacts.node_name_id != nullptr)
-    //{
-    //    auto const map_iterator = find_variable_with_aliases("node_id");
-    //    map_iterator->second.at(0).getVar(contacts.node_name_id);
-    //}
-    //if (contacts.node_name_long != nullptr)
-    //{
-    //    auto const map_iterator = find_variable_with_aliases("node_long_name");
-    //    map_iterator->second.at(0).getVar(contacts.node_name_long);
-    //}
+    if (contacts.edges != nullptr)
+    {
+        m_topology_variable.getVar(contacts.edges);
+    }
+
+    if (contacts.contact_name_id != nullptr)
+    {
+        auto const map_iterator = find_variable_with_aliases("contact_id");
+        map_iterator->second.at(0).getVar(contacts.contact_name_id);
+    }
+
+    if (contacts.contact_name_long != nullptr)
+    {
+        auto const map_iterator = find_variable_with_aliases("contact_long_name");
+        map_iterator->second.at(0).getVar(contacts.contact_name_long);
+    }
+
+    if (contacts.contact_type != nullptr)
+    {
+        m_topology_attribute_variables.at("contact_type").at(0).getVar(contacts.contact_type);
+    }
 }

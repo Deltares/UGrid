@@ -566,28 +566,61 @@ TEST(ApiTest, InquireAndGet_AFileWithOneContact_ShouldReadContact)
     std::unique_ptr<int> const contact_type(new int[contacts.num_contacts]);
     contacts.contact_type = contact_type.get();
 
+    std::unique_ptr<int> const edges(new int[contacts.num_contacts * 2]);
+    contacts.edges = edges.get();
+
     // get the data
     error_code = ug_contacts_get(file_id, 0, contacts);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
-    ////// Assert
-    //std::vector<int> branch_id_vector(branch_id.get(), branch_id.get() + mesh1d.num_nodes);
-    //std::vector<double> branch_offset_vector(branch_offset.get(), branch_offset.get() + mesh1d.num_nodes);
-    //std::vector<int> edge_nodes_vector(edge_nodes.get(), edge_nodes.get() + mesh1d.num_edges * 2);
+    // Asserts
+    std::string mesh_from_name_string(contacts.mesh_from_name);
+    ASSERT_EQ("mesh2d", mesh_from_name_string);
 
-    //std::string node_ids_string(node_id.get(), node_id.get() + name_length * mesh1d.num_nodes);
-    //std::string node_long_names_string(node_long_name.get(), node_long_name.get() + long_names_length * mesh1d.num_nodes);
-    //for (auto i = 0; i < mesh1d.num_nodes; ++i)
-    //{
-    //    std::string node_id_string = node_ids_string.substr(i * name_length, name_length);
-    //    std::string node_long_name_string = node_long_names_string.substr(i * long_names_length, long_names_length);
-    //    ASSERT_EQ("meshnodeids                             ", node_id_string);
-    //    ASSERT_EQ("meshnodelongnames                                                               ", node_long_name_string);
-    //}
+    std::string mesh_to_name_string(contacts.mesh_to_name);
+    ASSERT_EQ("1dmesh", mesh_to_name_string);
 
-    //std::string network_name_string(mesh1d.network_name);
-    //ASSERT_EQ("network", network_name_string);
+    std::string contacts_ids_string(contact_name_id.get(), contact_name_id.get() + name_length * contacts.num_contacts);
+    std::string contacts_long_names_string(contact_name_long.get(), contact_name_long.get() + long_names_length * contacts.num_contacts);
+    for (auto i = 0; i < contacts.num_contacts; ++i)
+    {
+        std::string contact_id_string = contacts_ids_string.substr(i * name_length, name_length);
+        std::string contact_long_name_string = contacts_long_names_string.substr(i * long_names_length, long_names_length);
+        ASSERT_EQ("linkid                                  ", contact_id_string);
+        ASSERT_EQ("linklongname                                                                    ", contact_long_name_string);
+    }
 
-    //std::string mesh1d_name_string(mesh1d.name);
-    //ASSERT_EQ("1dmesh", mesh1d_name_string);
+    std::vector<int> edge_vector(edges.get(), edges.get() + contacts.num_contacts * 2);
+    std::vector<int> edge_vector_expected{ 13, 1,
+        13, 2,
+        13, 3,
+        13, 4,
+        70, 5,
+        76, 6,
+        91, 7,
+        13, 8,
+        13, 9,
+        13, 10,
+        13, 11,
+        13, 12,
+        178, 13,
+        200, 14,
+        228, 15,
+        255, 16,
+        277, 17,
+        293, 18,
+        304, 19,
+        315, 20,
+        326, 21,
+        337, 22,
+        353, 23 };
+    ASSERT_THAT(edge_vector, ::testing::ContainerEq(edge_vector_expected));
+
+    std::vector<int> contact_type_vector(contact_type.get(), contact_type.get() + contacts.num_contacts);
+    std::vector<int> contact_type_vector_expected{ 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3 };
+    ASSERT_THAT(contact_type_vector, ::testing::ContainerEq(contact_type_vector_expected));
+
+    // Close the file
+    error_code = ugridapi::ug_close(file_id);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 }

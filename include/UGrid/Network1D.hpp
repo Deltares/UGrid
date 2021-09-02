@@ -54,19 +54,37 @@ namespace ugrid
             netCDF::NcVar const& topology_variable,
             std::map<std::string, std::vector<netCDF::NcVar>> const& entity_attributes,
             std::map<std::string, std::vector<std::string>> const& entity_attribute_names,
-            std::map<UGridDimensions, netCDF::NcDim> const& entity_dimensions,
-            netCDF::NcVar const& network_geometry_variable,
-            std::map<std::string, std::vector<netCDF::NcVar>> const& network_geometry_attributes,
-            std::map<std::string, std::vector<std::string>> const& network_geometry_attributes_names,
-            std::map<UGridDimensions, netCDF::NcDim> const& network_geometry_dimensions
+            std::map<UGridDimensions, netCDF::NcDim> const& entity_dimensions
         )
-            : UGridEntity(nc_file, topology_variable, entity_attributes, entity_attribute_names, entity_dimensions),
-            m_network_geometry_variable(network_geometry_variable),
-            m_network_geometry_attribute_variables(network_geometry_attributes),
-            m_network_geometry_attributes_names(network_geometry_attributes_names),
-            m_network_geometry_dimensions(network_geometry_dimensions)
+            : UGridEntity(nc_file, topology_variable, entity_attributes, entity_attribute_names, entity_dimensions)
 
         {
+            // file variables and file dimensions
+            auto const file_variables = nc_file->getVars();
+            auto const file_dimensions = nc_file->getDims();
+
+            // find the network geometry
+            auto const entity_attribute_strings_iterator = entity_attribute_names.find("edge_geometry");
+            if (entity_attribute_strings_iterator == entity_attribute_names.end())
+            {
+                throw std::invalid_argument("Network1D::create " + entity_attribute_strings_iterator->first + " attribute in" + m_topology_variable.getName() + " can not be found");
+            }
+            auto const edge_geometry_variable_name = entity_attribute_strings_iterator->second.front();
+            auto const edge_geometry_variable_iterator = file_variables.find(edge_geometry_variable_name);
+            if (edge_geometry_variable_iterator == file_variables.end())
+            {
+                throw std::invalid_argument("Network1D::create " + edge_geometry_variable_name + " variable can not be found");
+            }
+
+            auto const network_geometry_variable = edge_geometry_variable_iterator->second;
+            auto const [edge_geometry_attribute_variables, edge_geometry_attribute_names, edge_geometry_entity_dimensions] =
+                get_ugrid_entity(network_geometry_variable, file_dimensions, file_variables);
+
+            m_network_geometry_variable = network_geometry_variable;
+            m_network_geometry_attribute_variables = edge_geometry_attribute_variables;
+            m_network_geometry_attributes_names = edge_geometry_attribute_names;
+            m_network_geometry_dimensions = edge_geometry_entity_dimensions;
+
         }
 
         /// @brief Defines the network1d header (ug_create_1d_network_v1)
@@ -85,13 +103,6 @@ namespace ugrid
         /// @param mesh2d The network1d api structure with the fields where to assign the data
         void get(ugridapi::Network1d& mesh2d) const;
 
-        /// @brief Factory method producing a vector of instances of the current class (as many network1d are found in the file)
-        /// @return The vector of produced class instances
-        static std::vector<Network1D> create(std::shared_ptr<netCDF::NcFile> const& nc_file, int entity_dimensionality);
-
-
-    private:
-
         static bool is_topology_variable(std::map<std::string, netCDF::NcVarAtt> const& attributes)
         {
             if (attributes.find("cf_role") == attributes.end())
@@ -105,6 +116,9 @@ namespace ugrid
             }
             return true;
         };
+
+
+    private:
 
         netCDF::NcVar                                      m_network_geometry_variable;                 /// The network topology variable
         std::map<std::string, std::vector<netCDF::NcVar>>  m_network_geometry_attribute_variables;      /// For each network attribute, the corresponding attributes

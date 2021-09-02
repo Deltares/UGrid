@@ -114,7 +114,7 @@ namespace ugridapi
                 ugrid_states.insert({ ncFile->getId(), UGridState(ncFile) });
 
                 ugrid_states[file_id].m_mesh2d = ugrid::UGridEntity::create<ugrid::Mesh2D>(ncFile, 2);
-                ugrid_states[file_id].m_network1d = ugrid::Network1D::create(ncFile, 1);
+                ugrid_states[file_id].m_network1d = ugrid::Network1D::create<ugrid::Network1D>(ncFile, 1);
                 ugrid_states[file_id].m_mesh1d = ugrid::UGridEntity::create<ugrid::Mesh1D>(ncFile, 1);
                 ugrid_states[file_id].m_contacts = ugrid::UGridEntity::create<ugrid::Contacts>(ncFile, 1);
             }
