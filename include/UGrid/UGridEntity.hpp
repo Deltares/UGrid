@@ -74,25 +74,25 @@ namespace ugrid
             {
                 auto variable_attributes = variable.second.getAtts();
 
-                if (!is_mesh_topology_variable(variable_attributes))
+                if (!T::is_topology_variable(variable_attributes))
                 {
                     continue;
                 }
 
-                int dimensionality;
-                variable_attributes["topology_dimension"].getValues(&dimensionality);
-
-                if (dimensionality == entity_dimensionality)
+                if (!T::has_matching_dimensionality(variable_attributes, entity_dimensionality))
                 {
-                    // entity_attribute_keys, entity_attribute_values, entity_dimensions
-                    auto const [entity_attribute_variables, entity_attribute_names, entity_dimensions] = GetUGridEntity(variable.second, file_dimensions, file_variables);
-                    result.emplace_back(nc_file,
-                        variable.second,
-                        entity_attribute_variables,
-                        entity_attribute_names,
-                        entity_dimensions);
-
+                    continue;
                 }
+
+                // entity_attribute_keys, entity_attribute_values, entity_dimensions
+                auto const [entity_attribute_variables, entity_attribute_names, entity_dimensions] = GetUGridEntity(variable.second, file_dimensions, file_variables);
+                result.emplace_back(nc_file,
+                    variable.second,
+                    entity_attribute_variables,
+                    entity_attribute_names,
+                    entity_dimensions);
+
+
             }
 
             return result;
@@ -141,6 +141,8 @@ namespace ugrid
                 {"node_long_name",{"node_long_name", "node_long_names"}},
                 {"branch_id",{"branch_id", "branch_ids"}},
                 {"branch_long_name",{"branch_long_name", "branch_long_names"}},
+                {"contact_id",{"contact_id", "contact_ids"}},
+                {"contact_long_name",{"contact_long_name", "contact_long_names"}}
             };
 
             auto iterator = m_topology_attribute_variables.end();
@@ -208,7 +210,6 @@ namespace ugrid
             m_dimensions.insert({ UGridDimensions::Two, m_nc_file->addDim("Two", 2) });
         }
 
-
         std::shared_ptr<netCDF::NcFile>                    m_nc_file;                           /// A pointer to the opened file
         netCDF::NcVar                                      m_topology_variable;                 /// The topology variable
         std::map<std::string, std::vector<netCDF::NcVar>>  m_topology_attribute_variables;      /// For each topology attribute, the corresponding variables
@@ -244,7 +245,41 @@ namespace ugrid
             int const& int_fill_value = int_invalid_value,
             double const& double_fill_value = double_invalid_value);
 
+        static bool is_topology_variable(std::map<std::string, netCDF::NcVarAtt> const& attributes)
+        {
+            if (attributes.find("cf_role") == attributes.end())
+            {
+                return false;
+            }
 
+            if (attributes.find("topology_dimension") == attributes.end())
+            {
+                return false;
+            }
+
+            // Only network1d has edge_geometry
+            if (attributes.find("edge_geometry") != attributes.end())
+            {
+                return false;
+            }
+            return true;
+        };
+
+        static bool has_matching_dimensionality(std::map<std::string, netCDF::NcVarAtt> const& attributes, int entity_dimensionality)
+        {
+            auto const it = attributes.find("topology_dimension");
+            if (it == attributes.end())
+            {
+                return false;
+            }
+            int dimensionality;
+            attributes.at("topology_dimension").getValues(&dimensionality);
+            if (dimensionality == entity_dimensionality)
+            {
+                return true;
+            }
+            return false;
+        }
 
     };
 } // namespace ugrid

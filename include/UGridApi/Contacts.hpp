@@ -35,13 +35,11 @@ namespace ugridapi
 
         int* mesh2d_indices = nullptr;
 
-        int num_contacts;
-
         int* contact_type = nullptr;
 
-        char* contact_id = nullptr;
+        char* contact_name_id = nullptr;
 
-        char* contact_long_name = nullptr;
+        char* contact_name_long = nullptr;
 
         char* name = nullptr;
 
@@ -49,10 +47,14 @@ namespace ugridapi
 
         char* mesh_to_name = nullptr;
 
+        int num_contacts = 0;
+
         int mesh_from_type = -1;
 
         int mesh_to_type = -1;
 
-        int startindex;
+        int start_index = 0;
+
+        int is_spherical = 0;
     };
 }

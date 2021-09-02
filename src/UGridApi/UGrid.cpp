@@ -116,6 +116,7 @@ namespace ugridapi
                 ugrid_states[file_id].m_mesh2d = ugrid::UGridEntity::Create<ugrid::Mesh2D>(ncFile, 2);
                 ugrid_states[file_id].m_network1d = ugrid::Network1D::Create(ncFile, 1);
                 ugrid_states[file_id].m_mesh1d = ugrid::UGridEntity::Create<ugrid::Mesh1D>(ncFile, 1);
+                ugrid_states[file_id].m_contacts = ugrid::UGridEntity::Create<ugrid::Contacts>(ncFile, 1);
             }
             if (mode == netCDF::NcFile::replace)
             {
@@ -393,12 +394,38 @@ namespace ugridapi
     UGRID_API int ug_contacts_inq(int file_id, int topology_id, Contacts& contacts)
     {
         int exitCode = Success;
+        try
+        {
+            if (ugrid_states.count(file_id) == 0)
+            {
+                throw std::invalid_argument("UGrid: The selected file_id does not exist.");
+            }
+
+            ugrid_states[file_id].m_contacts[topology_id].Inquire(contacts);
+        }
+        catch (...)
+        {
+            exitCode = HandleExceptions(std::current_exception());
+        }
         return exitCode;
     }
 
     UGRID_API int ug_contacts_get(int file_id, int topology_id, Contacts& contacts)
     {
         int exitCode = Success;
+        try
+        {
+            if (ugrid_states.count(file_id) == 0)
+            {
+                throw std::invalid_argument("UGrid: The selected file_id does not exist.");
+            }
+
+            ugrid_states[file_id].m_contacts[topology_id].Get(contacts);
+        }
+        catch (...)
+        {
+            exitCode = HandleExceptions(std::current_exception());
+        }
         return exitCode;
     }
 

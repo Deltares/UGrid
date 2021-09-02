@@ -89,12 +89,27 @@ namespace ugrid
         /// @return The vector of produced class instances
         static std::vector<Network1D> Create(std::shared_ptr<netCDF::NcFile> const& nc_file, int entity_dimensionality);
 
+
     private:
 
-        netCDF::NcVar                                      m_network_geometry_variable;                 /// The topology variable
-        std::map<std::string, std::vector<netCDF::NcVar>>  m_network_geometry_attribute_variables;      /// For each attribute, the corresponding attributes
-        std::map<std::string, std::vector<std::string>>    m_network_geometry_attributes_names;         /// For each attribute, the corresponding names
-        std::map<UGridDimensions, netCDF::NcDim>           m_network_geometry_dimensions;               /// The entity dimensions
+        static bool is_topology_variable(std::map<std::string, netCDF::NcVarAtt> const& attributes)
+        {
+            if (attributes.find("cf_role") == attributes.end())
+            {
+                return false;
+            }
+
+            if (attributes.find("edge_geometry") == attributes.end())
+            {
+                return false;
+            }
+            return true;
+        };
+
+        netCDF::NcVar                                      m_network_geometry_variable;                 /// The network topology variable
+        std::map<std::string, std::vector<netCDF::NcVar>>  m_network_geometry_attribute_variables;      /// For each network attribute, the corresponding attributes
+        std::map<std::string, std::vector<std::string>>    m_network_geometry_attributes_names;         /// For each network attribute, the corresponding names
+        std::map<UGridDimensions, netCDF::NcDim>           m_network_geometry_dimensions;               /// The network entity dimensions
 
     };
 } // namespace ugrid

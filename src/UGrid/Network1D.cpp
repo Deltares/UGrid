@@ -328,7 +328,7 @@ std::vector<Network1D> Network1D::Create(std::shared_ptr<netCDF::NcFile> const& 
     {
         auto variable_attributes = variable.second.getAtts();
 
-        if (!is_network1d_topology_variable(variable_attributes))
+        if (!is_topology_variable(variable_attributes))
         {
             continue;
         }
@@ -366,7 +366,6 @@ std::vector<Network1D> Network1D::Create(std::shared_ptr<netCDF::NcFile> const& 
                 edge_geometry_attribute_variables,
                 edge_geometry_attribute_names,
                 edge_geometry_entity_dimensions);
-
         }
     }
 
