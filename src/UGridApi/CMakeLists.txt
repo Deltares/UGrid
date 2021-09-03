@@ -28,7 +28,7 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
 endif()
 
 # Link shared lib to static lib, but don't expose it
-target_link_libraries(UGridApi PRIVATE UGrid "${NETCDF_PATH}/lib/netcdf.lib" "${NETCDFCXX_PATH}/lib/netcdf-cxx4.lib")
+target_link_libraries(UGridApi PRIVATE UGrid netcdf-cxx "${NETCDF_PATH}/lib/netcdf.lib")
 
 # IDEs should put the headers in a nice place
 source_group(

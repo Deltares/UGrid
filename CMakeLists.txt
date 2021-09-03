@@ -54,14 +54,14 @@ include_directories(${Boost_INCLUDE_DIR})
 # Run packaging scripts
 add_subdirectory(package)
 
+# The external library
+add_subdirectory(extern)
+
 # The static library
 add_subdirectory(src/UGrid)
 
 # The dynamic library
 add_subdirectory(src/UGridApi)
-
-# The external library
-add_subdirectory(extern)
 
 # FetchContent added in CMake 3.11, downloads during the configure step
 include(FetchContent)

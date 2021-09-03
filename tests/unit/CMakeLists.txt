@@ -10,7 +10,7 @@ set(NETCDFCXX_PATH "${PROJECT_SOURCE_DIR}/extern/netcdf/netcdf-cxx/netcdf-cxx4-4
 message("NETCDFCXX_PATH is ${NETCDFCXX_PATH}")
 
 # Should be linked to the main library, as well as the google test library
-target_link_libraries(UGridUnitTests PRIVATE UGrid UtilsStatic gtest_main gmock "${NETCDF_PATH}/lib/netcdf.lib" "${NETCDFCXX_PATH}/lib/netcdf-cxx4.lib")
+target_link_libraries(UGridUnitTests PRIVATE UGrid netcdf-cxx UtilsStatic gtest_main gmock "${NETCDF_PATH}/lib/netcdf.lib")
 
 # Make sure that coverage information is produced when using gcc
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")

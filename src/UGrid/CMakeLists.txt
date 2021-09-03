@@ -21,8 +21,11 @@ endif()
 set(NETCDF_PATH "${PROJECT_SOURCE_DIR}/extern/netcdf/netcdf_4_8_0")
 message("NETCDF_PATH is ${NETCDF_PATH}")
 
+set(NETCDFCXX_PATH "${PROJECT_SOURCE_DIR}/extern/netcdf/netcdf-cxx")
+message("NETCDFCXX_PATH is ${NETCDF_PATH}")
+
 # NetCDF CPP wrapper
-target_include_directories(UGrid PUBLIC "${PROJECT_SOURCE_DIR}/include" "${NETCDF_PATH}/include")
+target_include_directories(UGrid PUBLIC "${PROJECT_SOURCE_DIR}/include" "${NETCDFCXX_PATH}/netcdf-cxx4-4.3.1/cxx4")
 
 # Add target link dependencies
 target_link_libraries(UGrid LINK_PUBLIC netcdf-cxx  "${NETCDF_PATH}/lib/netcdf.lib")
