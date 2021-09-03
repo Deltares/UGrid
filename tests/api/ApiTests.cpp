@@ -13,7 +13,7 @@
 
 TEST(ApiTest, InquireAndGet_AFileWithOneMesh2d_ShouldReadMesh2d)
 {
-    std::string const file_path = TEST_FOLDER + "/data/OneMesh2D.nc";
+    std::string const file_path = TEST_FOLDER + "/OneMesh2D.nc";
 
     // Open a file
     int file_id = 0;
@@ -124,7 +124,7 @@ TEST(ApiTest, InquireAndGet_AFileWithOneMesh2d_ShouldReadMesh2d)
 
 TEST(ApiTest, DefineAndPut_OneMesh2D_ShouldWriteData)
 {
-    std::string const file_path = TEST_FOLDER + "/data/OneMesh2DWrite.nc";
+    std::string const file_path = TEST_WRITE_FOLDER + "/OneMesh2DWrite.nc";
 
     // Open a file
     int file_id = 0;
@@ -208,7 +208,7 @@ TEST(ApiTest, DefineAndPut_OneMesh2D_ShouldWriteData)
 
 TEST(ApiTest, InquireAndGet_AFileWithOneNetwork1D_ShouldReadNetwork1D)
 {
-    std::string const file_path = TEST_FOLDER + "/data/AllUGridEntities.nc";
+    std::string const file_path = TEST_FOLDER + "/AllUGridEntities.nc";
 
     // Open a file
     int file_id = 0;
@@ -317,7 +317,7 @@ TEST(ApiTest, InquireAndGet_AFileWithOneNetwork1D_ShouldReadNetwork1D)
 
 TEST(ApiTest, DefineAndPut_OneNetwork1D_ShouldWriteData)
 {
-    std::string const file_path = TEST_FOLDER + "/data/OneNetwork1DWrite.nc";
+    std::string const file_path = TEST_WRITE_FOLDER + "/OneNetwork1DWrite.nc";
 
     // Open a file
     int file_id = 0;
@@ -372,7 +372,7 @@ TEST(ApiTest, DefineAndPut_OneNetwork1D_ShouldWriteData)
 }
 TEST(ApiTest, InquireAndGet_AFileWithOneMesh1D_ShouldReadMesh1D)
 {
-    std::string const file_path = TEST_FOLDER + "/data/AllUGridEntities.nc";
+    std::string const file_path = TEST_FOLDER + "/AllUGridEntities.nc";
 
     // Open a file
     int file_id = 0;
@@ -445,7 +445,7 @@ TEST(ApiTest, InquireAndGet_AFileWithOneMesh1D_ShouldReadMesh1D)
 
 TEST(ApiTest, DefineAndPut_OneMesh1D_ShouldWriteData)
 {
-    std::string const file_path = TEST_FOLDER + "/data/OneMesh1DWrite.nc";
+    std::string const file_path = TEST_WRITE_FOLDER + "/OneMesh1DWrite.nc";
 
     // Open a file
     int file_id = 0;
@@ -528,7 +528,7 @@ TEST(ApiTest, DefineAndPut_OneMesh1D_ShouldWriteData)
 
 TEST(ApiTest, InquireAndGet_AFileWithOneContact_ShouldReadContact)
 {
-    std::string const file_path = TEST_FOLDER + "/data/AllUGridEntities.nc";
+    std::string const file_path = TEST_FOLDER + "/AllUGridEntities.nc";
 
     // Open a file
     int file_id = 0;
@@ -630,7 +630,7 @@ TEST(ApiTest, InquireAndGet_AFileWithOneContact_ShouldReadContact)
 
 TEST(ApiTest, DefineAndPut_AFileWithOneContact_ShouldWriteAContact)
 {
-    std::string const file_path = TEST_FOLDER + "/data/OneMesh1DWrite.nc";
+    std::string const file_path = TEST_WRITE_FOLDER + "/OneMesh1DWrite.nc";
 
     // Open a file
     int file_id = 0;

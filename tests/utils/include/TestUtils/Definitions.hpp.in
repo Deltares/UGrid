@@ -1,3 +1,4 @@
 #pragma once
 #include <string>
-#define TEST_FOLDER std::string("@TEST_FOLDER@")
+#define TEST_FOLDER std::string("@TEST_FOLDER@/data")
+#define TEST_WRITE_FOLDER std::string("@TEST_FOLDER@/data/written_files")
