@@ -2,14 +2,14 @@
 cmake_minimum_required(VERSION 3.14...3.18)
 
 # Set compiler flags
-enable_language(Fortran C CXX) #Fortran C CXX
+enable_language(C CXX)
 
 # Project name and a few useful settings. Other commands can pick up the results
 project(
   UGrid
   VERSION 0.0.0
   DESCRIPTION "Library for reading/writing UGrid files."
-  LANGUAGES CXX C Fortran) #LANGUAGES CXX C Fortran
+  LANGUAGES CXX C)
 
 if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
   if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
