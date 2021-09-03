@@ -22,13 +22,10 @@ set(NETCDF_PATH "${PROJECT_SOURCE_DIR}/extern/netcdf/netcdf_4_8_0")
 message("NETCDF_PATH is ${NETCDF_PATH}")
 
 # NetCDF CPP wrapper
-set(NETCDFCXX_PATH "${PROJECT_SOURCE_DIR}/extern/netcdf/netcdf-cxx/netcdf-cxx4-4.3.1")
-message("NETCDFCXX_PATH is ${NETCDFCXX_PATH}")
-
-target_include_directories(UGrid PUBLIC "${PROJECT_SOURCE_DIR}/include" "${NETCDF_PATH}/include" "${NETCDFCXX_PATH}/cxx4")
+target_include_directories(UGrid PUBLIC "${PROJECT_SOURCE_DIR}/include" "${NETCDF_PATH}/include")
 
 # Add target link dependencies
-target_link_libraries(UGrid LINK_PUBLIC netcdf-cxx "${NETCDF_PATH}/lib/netcdf.lib")
+target_link_libraries(UGrid LINK_PUBLIC netcdf-cxx  "${NETCDF_PATH}/lib/netcdf.lib")
 
 # IDEs should put the headers in a nice place
 source_group(
