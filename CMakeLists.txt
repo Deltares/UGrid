@@ -60,9 +60,6 @@ add_subdirectory(src/UGrid)
 # The dynamic library
 add_subdirectory(src/UGridApi)
 
-# Add the fortran client
-add_subdirectory(src/UGridFortran)
-
 # FetchContent added in CMake 3.11, downloads during the configure step
 include(FetchContent)
 
