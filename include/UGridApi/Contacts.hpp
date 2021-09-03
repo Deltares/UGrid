@@ -50,9 +50,5 @@ namespace ugridapi
         int mesh_to_location = 0;
 
         int num_contacts = 0;
-
-        int mesh_from_type = -1;
-
-        int mesh_to_type = -1;
     };
 }

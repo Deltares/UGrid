@@ -13,12 +13,12 @@
 
 TEST(ApiTest, InquireAndGet_AFileWithOneMesh2d_ShouldReadMesh2d)
 {
-    std::string const filePath = TEST_FOLDER + "/data/OneMesh2D.nc";
+    std::string const file_path = TEST_FOLDER + "/data/OneMesh2D.nc";
 
     // Open a file
     int file_id = 0;
     auto const file_mode = ugridapi::ug_file_read_mode();
-    auto error_code = ugridapi::ug_open(filePath.c_str(), file_mode, file_id);
+    auto error_code = ugridapi::ug_open(file_path.c_str(), file_mode, file_id);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
     // get the number of topologies
@@ -52,20 +52,18 @@ TEST(ApiTest, InquireAndGet_AFileWithOneMesh2d_ShouldReadMesh2d)
     error_code = ug_mesh2d_get(file_id, 0, mesh2d);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
-    std::vector<double> node_x_vector(node_x.get(), node_x.get() + mesh2d.num_nodes);
-    std::vector<double> node_y_vector(node_y.get(), node_y.get() + mesh2d.num_nodes);
-    std::vector<int> edge_nodes_vector(edge_nodes.get(), edge_nodes.get() + mesh2d.num_edges * 2);
-    std::vector<double> face_x_vector(face_x.get(), face_x.get() + mesh2d.num_faces);
-    std::vector<double> face_y_vector(face_y.get(), face_y.get() + mesh2d.num_faces);
-    std::vector<int> face_nodes_vector(face_nodes.get(), face_nodes.get() + mesh2d.num_faces * mesh2d.num_face_nodes_max);
-
     // Assert
     std::string mesh_name(mesh2d.name);
     ASSERT_EQ(mesh_name, "mesh2d");
+    std::vector<double> node_x_vector(node_x.get(), node_x.get() + mesh2d.num_nodes);
     std::vector<double> node_x_expected{ 0, 1, 0, 1, 0, 1, 0, 1, 2, 2, 2, 2, 3, 3, 3, 3 };
     ASSERT_THAT(node_x_vector, ::testing::ContainerEq(node_x_expected));
+
+    std::vector<double> node_y_vector(node_y.get(), node_y.get() + mesh2d.num_nodes);
     std::vector<double> node_y_vector_expected{ 0, 0, 1, 1, 2, 2, 3, 3, 0, 1, 2, 3, 0, 1, 2, 3 };
     ASSERT_THAT(node_y_vector, ::testing::ContainerEq(node_y_vector_expected));
+
+    std::vector<int> edge_nodes_vector(edge_nodes.get(), edge_nodes.get() + mesh2d.num_edges * 2);
     std::vector<int> edge_nodes_vector_expected
     {
         1, 2,
@@ -95,11 +93,16 @@ TEST(ApiTest, InquireAndGet_AFileWithOneMesh2d_ShouldReadMesh2d)
     };
     ASSERT_THAT(edge_nodes_vector, ::testing::ContainerEq(edge_nodes_vector_expected));
 
+    std::vector<double> face_x_vector(face_x.get(), face_x.get() + mesh2d.num_faces);
     std::vector<double> face_x_vector_expected{ 0.5, 0.5, 0.5, 1.5, 1.5, 1.5, 2.5, 2.5, 2.5 };
     ASSERT_THAT(face_x_vector, ::testing::ContainerEq(face_x_vector_expected));
+
+    std::vector<double> face_y_vector(face_y.get(), face_y.get() + mesh2d.num_faces);
     std::vector<double> face_y_vector_expected{ 0.5, 1.5, 2.5, 0.5, 1.5, 2.5, 0.5, 1.5, 2.5 };
     ASSERT_THAT(face_y_vector, ::testing::ContainerEq(face_y_vector_expected));
 
+
+    std::vector<int> face_nodes_vector(face_nodes.get(), face_nodes.get() + mesh2d.num_faces * mesh2d.num_face_nodes_max);
     std::vector<int> face_nodes_vector_expected
     {
         1, 2, 4, 3,
@@ -121,12 +124,12 @@ TEST(ApiTest, InquireAndGet_AFileWithOneMesh2d_ShouldReadMesh2d)
 
 TEST(ApiTest, DefineAndPut_OneMesh2D_ShouldWriteData)
 {
-    std::string const filePath = TEST_FOLDER + "/data/OneMesh2DWrite.nc";
+    std::string const file_path = TEST_FOLDER + "/data/OneMesh2DWrite.nc";
 
     // Open a file
     int file_id = 0;
     auto const file_mode = ugridapi::ug_file_replace_mode();
-    auto error_code = ugridapi::ug_open(filePath.c_str(), file_mode, file_id);
+    auto error_code = ugridapi::ug_open(file_path.c_str(), file_mode, file_id);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
     // Fill all data 
@@ -134,8 +137,10 @@ TEST(ApiTest, DefineAndPut_OneMesh2D_ShouldWriteData)
     std::unique_ptr<char> const name(new char[] {"mesh2d"});
     mesh2d.name = name.get();
     std::unique_ptr<double> const node_x(new double[] { 0, 1, 0, 1, 0, 1, 0, 1, 2, 2, 2, 2, 3, 3, 3, 3 });
+
     mesh2d.node_x = node_x.get();
     std::unique_ptr<double> const node_y(new double[] { 0, 0, 1, 1, 2, 2, 3, 3, 0, 1, 2, 3, 0, 1, 2, 3 });
+
     mesh2d.node_y = node_y.get();
     mesh2d.num_nodes = 16;
     std::unique_ptr<int> const edge_nodes(new int[] { 1, 2,
@@ -165,6 +170,7 @@ TEST(ApiTest, DefineAndPut_OneMesh2D_ShouldWriteData)
         });
     mesh2d.edge_nodes = edge_nodes.get();
     mesh2d.num_edges = 23;
+
     std::unique_ptr<double> const face_x(new double[] { 0.5, 0.5, 0.5, 1.5, 1.5, 1.5, 2.5, 2.5, 2.5 });
     mesh2d.face_x = face_x.get();
     std::unique_ptr<double> const face_y(new double[] { 0, 0, 1, 1, 2, 2, 3, 3, 0, 1, 2, 3, 0, 1, 2, 3 });
@@ -202,12 +208,12 @@ TEST(ApiTest, DefineAndPut_OneMesh2D_ShouldWriteData)
 
 TEST(ApiTest, InquireAndGet_AFileWithOneNetwork1D_ShouldReadNetwork1D)
 {
-    std::string const filePath = TEST_FOLDER + "/data/AllEntities.nc";
+    std::string const file_path = TEST_FOLDER + "/data/AllUGridEntities.nc";
 
     // Open a file
     int file_id = 0;
     auto const file_mode = ugridapi::ug_file_read_mode();
-    auto error_code = ugridapi::ug_open(filePath.c_str(), file_mode, file_id);
+    auto error_code = ugridapi::ug_open(file_path.c_str(), file_mode, file_id);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
     // get the number of topologies
@@ -284,7 +290,6 @@ TEST(ApiTest, InquireAndGet_AFileWithOneNetwork1D_ShouldReadNetwork1D)
     std::vector<double> node_x_expected{ 293.78, 538.89 };
     ASSERT_THAT(node_x_vector, ::testing::ContainerEq(node_x_expected));
 
-
     std::vector<double> node_y_vector(node_y.get(), node_y.get() + network1d.num_nodes);
     std::vector<double> node_y_vector_expected{ 27.48, 956.75 };
     ASSERT_THAT(node_y_vector, ::testing::ContainerEq(node_y_vector_expected));
@@ -297,7 +302,6 @@ TEST(ApiTest, InquireAndGet_AFileWithOneNetwork1D_ShouldReadNetwork1D)
     std::vector<double> geometry_nodes_x_expected_vector{ 293.78, 278.97, 265.31, 254.17, 247.44, 248.3, 259.58,
     282.24, 314.61, 354.44, 398.94, 445, 490.6, 532.84, 566.64, 589.08,
     600.72, 603.53, 599.27, 590.05, 577.56, 562.97, 547.12, 530.67, 538.89 };
-
 
     ASSERT_THAT(geometry_nodes_x_vector, ::testing::ContainerEq(geometry_nodes_x_expected_vector));
     std::vector<double> geometry_nodes_y_vector(geometry_nodes_y.get(), geometry_nodes_y.get() + network1d.num_geometry_nodes);
@@ -313,12 +317,12 @@ TEST(ApiTest, InquireAndGet_AFileWithOneNetwork1D_ShouldReadNetwork1D)
 
 TEST(ApiTest, DefineAndPut_OneNetwork1D_ShouldWriteData)
 {
-    std::string const filePath = TEST_FOLDER + "/data/OneNetwork1DWrite.nc";
+    std::string const file_path = TEST_FOLDER + "/data/OneNetwork1DWrite.nc";
 
     // Open a file
     int file_id = 0;
     auto const file_mode = ugridapi::ug_file_replace_mode();
-    auto error_code = ugridapi::ug_open(filePath.c_str(), file_mode, file_id);
+    auto error_code = ugridapi::ug_open(file_path.c_str(), file_mode, file_id);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
     // Fill all data 
@@ -368,12 +372,12 @@ TEST(ApiTest, DefineAndPut_OneNetwork1D_ShouldWriteData)
 }
 TEST(ApiTest, InquireAndGet_AFileWithOneMesh1D_ShouldReadMesh1D)
 {
-    std::string const filePath = TEST_FOLDER + "/data/AllEntities.nc";
+    std::string const file_path = TEST_FOLDER + "/data/AllUGridEntities.nc";
 
     // Open a file
     int file_id = 0;
     auto const file_mode = ugridapi::ug_file_read_mode();
-    auto error_code = ugridapi::ug_open(filePath.c_str(), file_mode, file_id);
+    auto error_code = ugridapi::ug_open(file_path.c_str(), file_mode, file_id);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
     // get the number of topologies
@@ -441,12 +445,12 @@ TEST(ApiTest, InquireAndGet_AFileWithOneMesh1D_ShouldReadMesh1D)
 
 TEST(ApiTest, DefineAndPut_OneMesh1D_ShouldWriteData)
 {
-    std::string const filePath = TEST_FOLDER + "/data/OneMesh1DWrite.nc";
+    std::string const file_path = TEST_FOLDER + "/data/OneMesh1DWrite.nc";
 
     // Open a file
     int file_id = 0;
     auto const file_mode = ugridapi::ug_file_replace_mode();
-    auto error_code = ugridapi::ug_open(filePath.c_str(), file_mode, file_id);
+    auto error_code = ugridapi::ug_open(file_path.c_str(), file_mode, file_id);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
     // Fill all data 
@@ -524,12 +528,12 @@ TEST(ApiTest, DefineAndPut_OneMesh1D_ShouldWriteData)
 
 TEST(ApiTest, InquireAndGet_AFileWithOneContact_ShouldReadContact)
 {
-    std::string const filePath = TEST_FOLDER + "/data/AllEntities.nc";
+    std::string const file_path = TEST_FOLDER + "/data/AllUGridEntities.nc";
 
     // Open a file
     int file_id = 0;
     auto const file_mode = ugridapi::ug_file_read_mode();
-    auto error_code = ugridapi::ug_open(filePath.c_str(), file_mode, file_id);
+    auto error_code = ugridapi::ug_open(file_path.c_str(), file_mode, file_id);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
     // get the number of topologies
@@ -626,12 +630,12 @@ TEST(ApiTest, InquireAndGet_AFileWithOneContact_ShouldReadContact)
 
 TEST(ApiTest, DefineAndPut_AFileWithOneContact_ShouldWriteAContact)
 {
-    std::string const filePath = TEST_FOLDER + "/data/OneMesh1DWrite.nc";
+    std::string const file_path = TEST_FOLDER + "/data/OneMesh1DWrite.nc";
 
     // Open a file
     int file_id = 0;
     auto const file_mode = ugridapi::ug_file_replace_mode();
-    auto error_code = ugridapi::ug_open(filePath.c_str(), file_mode, file_id);
+    auto error_code = ugridapi::ug_open(file_path.c_str(), file_mode, file_id);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
     // Fill all data 
@@ -651,7 +655,6 @@ TEST(ApiTest, DefineAndPut_AFileWithOneContact_ShouldWriteAContact)
 
     std::unique_ptr<int> const contact_type(new int[] {3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3 });
     contacts.contact_type = contact_type.get();
-
 
     std::unique_ptr<int> const edges(new int[] { 13, 1,
         13, 2,
