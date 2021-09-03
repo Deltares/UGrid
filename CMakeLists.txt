@@ -60,6 +60,9 @@ add_subdirectory(src/UGrid)
 # The dynamic library
 add_subdirectory(src/UGridApi)
 
+# The external library
+add_subdirectory(extern)
+
 # FetchContent added in CMake 3.11, downloads during the configure step
 include(FetchContent)
 

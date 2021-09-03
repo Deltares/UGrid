@@ -28,7 +28,7 @@ message("NETCDFCXX_PATH is ${NETCDFCXX_PATH}")
 target_include_directories(UGrid PUBLIC "${PROJECT_SOURCE_DIR}/include" "${NETCDF_PATH}/include" "${NETCDFCXX_PATH}/cxx4")
 
 # Add target link dependencies
-target_link_libraries(UGrid LINK_PUBLIC "${NETCDF_PATH}/lib/netcdf.lib" "${NETCDFCXX_PATH}/lib/netcdf-cxx4.lib")
+target_link_libraries(UGrid LINK_PUBLIC netcdf-cxx "${NETCDF_PATH}/lib/netcdf.lib")
 
 # IDEs should put the headers in a nice place
 source_group(
