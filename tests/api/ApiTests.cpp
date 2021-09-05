@@ -124,9 +124,9 @@ TEST(ApiTest, InquireAndGet_AFileWithOneMesh2d_ShouldReadMesh2d)
 
 TEST(ApiTest, DefineAndPut_OneMesh2D_ShouldWriteData)
 {
-    std::string const file_path = TEST_WRITE_FOLDER + "/OneMesh2DWrite.nc";
-
+    // Prepare
     // Open a file
+    std::string const file_path = TEST_WRITE_FOLDER + "/OneMesh2DWrite.nc";
     int file_id = 0;
     auto const file_mode = ugridapi::ug_file_replace_mode();
     auto error_code = ugridapi::ug_open(file_path.c_str(), file_mode, file_id);
@@ -190,7 +190,7 @@ TEST(ApiTest, DefineAndPut_OneMesh2D_ShouldWriteData)
     mesh2d.face_nodes = face_nodes.get();
     mesh2d.num_face_nodes_max = 4;
 
-
+    // Execute
     int topology_id = -1;
     error_code = ug_mesh2d_def(file_id, mesh2d, topology_id);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
