@@ -13,20 +13,20 @@
 
 TEST(ApiTest, InquireAndGet_AFileWithOneMesh2d_ShouldReadMesh2d)
 {
-    std::string const file_path = TEST_FOLDER + "/OneMesh2D.nc";
-
+    // Prepare
     // Open a file
+    std::string const file_path = TEST_FOLDER + "/OneMesh2D.nc";
     int file_id = 0;
     auto const file_mode = ugridapi::ug_file_read_mode();
     auto error_code = ugridapi::ug_open(file_path.c_str(), file_mode, file_id);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
-    // get the number of topologies
+    // Get the number of topologies
     auto topology_type = ugridapi::ug_topology_get_mesh2d_type_enum();
     auto const num_mesh2d_topologies = ugridapi::ug_topology_get_count(file_id, topology_type);
     ASSERT_EQ(num_mesh2d_topologies, 1);
 
-    // get the dimensions 
+    // Get the dimensions 
     ugridapi::Mesh2D mesh2d;
     error_code = ug_mesh2d_inq(file_id, 0, mesh2d);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
@@ -48,7 +48,7 @@ TEST(ApiTest, InquireAndGet_AFileWithOneMesh2d_ShouldReadMesh2d)
     std::unique_ptr<int> const face_nodes(new int[mesh2d.num_faces * mesh2d.num_face_nodes_max]);
     mesh2d.face_nodes = face_nodes.get();
 
-    // get the data
+    // Execute
     error_code = ug_mesh2d_get(file_id, 0, mesh2d);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
