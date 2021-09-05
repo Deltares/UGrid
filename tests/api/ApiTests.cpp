@@ -208,10 +208,10 @@ TEST(ApiTest, DefineAndPut_OneMesh2D_ShouldWriteData)
 
 TEST(ApiTest, InquireAndGet_AFileWithOneNetwork1D_ShouldReadNetwork1D)
 {
-    std::string const file_path = TEST_FOLDER + "/AllUGridEntities.nc";
-
+    // Prepare 
     // Open a file
     int file_id = 0;
+    std::string const file_path = TEST_FOLDER + "/AllUGridEntities.nc";
     auto const file_mode = ugridapi::ug_file_read_mode();
     auto error_code = ugridapi::ug_open(file_path.c_str(), file_mode, file_id);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
@@ -313,6 +313,11 @@ TEST(ApiTest, InquireAndGet_AFileWithOneNetwork1D_ShouldReadNetwork1D)
     std::vector<double> branch_lengths_vector(branch_lengths.get(), branch_lengths.get() + network1d.num_edges);
     std::vector<double> branch_lengths_expected_vector{ 1165.29 };
     ASSERT_THAT(branch_lengths_vector, ::testing::ContainerEq(branch_lengths_expected_vector));
+
+    // Close the file
+    error_code = ugridapi::ug_close(file_id);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+
 }
 
 TEST(ApiTest, DefineAndPut_OneNetwork1D_ShouldWriteData)
