@@ -31,24 +31,34 @@ namespace ugridapi
 {
     struct Contacts
     {
-        int* edges = nullptr;
-
-        int* contact_type = nullptr;
-
-        char* contact_name_id = nullptr;
-
-        char* contact_name_long = nullptr;
-
+        /// @brief The name of the contact entity
         char* name = nullptr;
 
+        /// @brief The contacts, expressed as pair of indices from a mesh index to another mesh index
+        int* edges = nullptr;
+
+        /// @brief For each contact its type
+        int* contact_type = nullptr;
+
+        /// @brief The name of each contact
+        char* contact_name_id = nullptr;
+
+        /// @brief The long name of each contact
+        char* contact_name_long = nullptr;
+
+        /// @brief The name of the mesh where the contacts start
         char* mesh_from_name = nullptr;
 
+        /// @brief The name of the mesh where the contacts ends 
         char* mesh_to_name = nullptr;
 
+        /// @brief The location type (node, edge or face) at the contact start
         int mesh_from_location = 0;
 
+        /// @brief The location type (node, edge or face) at the contact end
         int mesh_to_location = 0;
 
+        /// @brief The number of contacts
         int num_contacts = 0;
     };
 }
