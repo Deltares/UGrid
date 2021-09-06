@@ -69,12 +69,12 @@ BEGIN
 		BLOCK "080904b0"
 		BEGIN
 			VALUE "CompanyName",      "Deltares"
-			VALUE "FileDescription",  "UGridIO"
+			VALUE "FileDescription",  "UGrid"
 			VALUE "FileVersion",      VER_FILEVERSION_STR
-			VALUE "InternalName",     "UGridIO"
+			VALUE "InternalName",     "UGrid"
 			VALUE "LegalCopyright",   "Copyright (c) 2020 Deltares"
-			VALUE "OriginalFilename", "UGridIO.dll"
-			VALUE "ProductName",      "UGridIO"
+			VALUE "OriginalFilename", "UGrid.dll"
+			VALUE "ProductName",      "UGrid"
 			VALUE "ProductVersion",   VER_PRODUCTVERSION_STR
 		END
 	END

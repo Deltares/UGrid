@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package >
     <metadata>
-        <id>Deltares.UGridIO</id>
+        <id>Deltares.UGrid</id>
         <version>@PROJECT_VERSION_MAJOR@.@PROJECT_VERSION_MINOR@.@PROJECT_VERSION_PATCH@.0</version>
         <authors>Deltares</authors>
         <owners>Deltares</owners>
@@ -9,7 +9,7 @@
         <copyright>Copyright 2021</copyright>
     </metadata>
     <files>
-        <file src="..\src\UGridIOApi\Release\*" target="native\Lib" />
-        <file src="Deltares.UGridIO.targets" target="build\net461\Deltares.UGridIO.targets" />
+        <file src="..\src\UGridApi\Release\*" target="native\Lib" />
+        <file src="Deltares.UGrid.targets" target="build\net461\Deltares.UGrid.targets" />
     </files>
 </package>

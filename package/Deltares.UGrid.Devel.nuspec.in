@@ -9,7 +9,7 @@
         <copyright>Copyright 2021</copyright>
     </metadata>
     <files>
-        <file src="..\src\UGridIOApi\Release\*" target="native\Lib" />
-        <file src="Deltares.UGridIO.targets" target="build\net461\Deltares.UGridIO.targets" />
+        <file src="..\src\UGridApi\Release\*" target="native\Lib" />
+        <file src="Deltares.UGrid.targets" target="build\net461\Deltares.UGrid.targets" />
     </files>
 </package>

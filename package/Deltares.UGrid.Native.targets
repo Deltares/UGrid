@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Target Name="UGridIOLibsPostBuild" AfterTargets="Build">
+  <Target Name="UGridLibsPostBuild" AfterTargets="Build">
     <ItemGroup>
-      <_FilesToCopyUGridIOLibs Include="$(MSBuildThisFileDirectory)..\..\runtimes\**\*"/>      
+      <_FilesToCopyUGridLibs Include="$(MSBuildThisFileDirectory)..\..\runtimes\**\*"/>      
     </ItemGroup>
     
-    <Copy SourceFiles="@(_FilesToCopyUGridIOLibs)" DestinationFolder="$(OutDir)\%(RecursiveDir)" SkipUnchangedFiles="true"/>    
+    <Copy SourceFiles="@(_FilesToCopyUGridLibs)" DestinationFolder="$(OutDir)\%(RecursiveDir)" SkipUnchangedFiles="true"/>    
   </Target>
   
-  <Target Name="UGridIOLibsClean" AfterTargets="Clean">
+  <Target Name="UGridLibsClean" AfterTargets="Clean">
     <ItemGroup>
-      <_OriginalFilesUGridIO Include="$(MSBuildThisFileDirectory)..\..\runtimes\**\*"/>
-      <_FilesToCleanUGridIO Include="$(OutDir)\%(_OriginalFilesDimrLibs.RecursiveDir)%(_OriginalFilesDimrLibs.FileName)%(_OriginalFilesDimrLibs.Extension)"/>      
+      <_OriginalFilesUGrid Include="$(MSBuildThisFileDirectory)..\..\runtimes\**\*"/>
+      <_FilesToCleanUGrid Include="$(OutDir)\%(_OriginalFilesDimrLibs.RecursiveDir)%(_OriginalFilesDimrLibs.FileName)%(_OriginalFilesDimrLibs.Extension)"/>      
     </ItemGroup>
-    <Delete Files="@(_FilesToCleanUGridIO)"/>    
+    <Delete Files="@(_FilesToCleanUGrid)"/>    
   </Target>
 </Project>

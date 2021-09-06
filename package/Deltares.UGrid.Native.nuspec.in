@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package >
     <metadata>
-        <id>Deltares.UGridIO</id>
+        <id>Deltares.UGrid</id>
         <version>@PROJECT_VERSION_MAJOR@.@PROJECT_VERSION_MINOR@.@PROJECT_VERSION_PATCH@@VERSION_SUFFIX@</version>
         <authors>Deltares</authors>
         <owners>Deltares</owners>
@@ -12,6 +12,6 @@
     <files>
         <file src="winX64\*" target="runtimes/win-x64/native/" />
         <file src="linuxX64\*" target="runtimes/linux-x64/native/" />
-        <file src="Deltares.UGridIO.Native.targets" target="build\netstandard2.0\Deltares.UGridIO.targets" />
+        <file src="Deltares.UGrid.Native.targets" target="build\netstandard2.0\Deltares.UGrid.targets" />
     </files>
 </package>
