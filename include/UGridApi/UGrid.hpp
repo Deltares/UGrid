@@ -139,67 +139,121 @@ namespace ugridapi
         UGRID_API int ug_file_open(char const* file_path, int mode, int& file_id);
 
         /// @brief Closes a file
-        /// @param file_id The file id
+        /// @param file_id [in] The file id
         /// @return Error code
         UGRID_API int ug_file_close(int file_id);
 
-        /*----------------------------------------------------------------------------------------------------
-         * Network 1d
-         *---------------------------------------------------------------------------------------------------*/
+        /// @brief Defines a new network1d topology
+        /// @param file_id [in] The file id 
+        /// @param network1d_api [in] The structure containing the network data
+        /// @param topology_id [out] The id of the newly created network topology 
+        /// @return Error code
+        UGRID_API int ug_network1d_def(int file_id, Network1d const& network1d_api, int& topology_id);
 
-        UGRID_API int ug_network1d_def(int file_id, Network1d const& network1dapi, int& topology_id);
+        /// @brief Writes the network1d geometrical data to file 
+        /// @param file_id [in] The file id 
+        /// @param topology_id [in] The topology id
+        /// @param network1d_api [in] The structure containing the network data 
+        /// @return Error code
+        UGRID_API int ug_network1d_put(int file_id, int topology_id, Network1d const& network1d_api);
 
-        UGRID_API int ug_network1d_put(int file_id, int topology_id, Network1d const& network);
+        /// @brief Inquires the network1d dimensions and names
+        /// @param file_id [in] The file id 
+        /// @param topology_id [in] The topology id 
+        /// @param network1d_api [out] The structure containing the network data  
+        /// @return Error code 
+        UGRID_API int ug_network1d_inq(int file_id, int topology_id, Network1d& network1d_api);
 
-        UGRID_API int ug_network1d_inq(int file_id, int topology_id, Network1d& network);
+        /// @brief Gets the network1d geometrical data
+        /// @param file_id [in] The file id 
+        /// @param topology_id [in] The topology id 
+        /// @param network1d_api [out] The structure containing the network data   
+        /// @return Error code 
+        UGRID_API int ug_network1d_get(int file_id, int topology_id, Network1d& network1d_api);
 
-        UGRID_API int ug_network1d_get(int file_id, int topology_id, Network1d& network);
+        /// @brief Defines a new mesh1d topology
+        /// @param file_id [in] The file id 
+        /// @param mesh1d_api [in] The structure containing the mesh1d data
+        /// @param topology_id [out] The id of the newly created mesh1d topology 
+        /// @return Error code 
+        UGRID_API int ug_mesh1d_def(int file_id, Mesh1D const& mesh1d_api, int& topology_id);
 
-        /*----------------------------------------------------------------------------------------------------
-         * Mesh 1d
-         *---------------------------------------------------------------------------------------------------*/
+        /// @brief Writes mesh1d geometrical data to file 
+        /// @param file_id [in] The file id 
+        /// @param topology_id [in] The topology id
+        /// @param mesh1d_api [in] The structure containing the mesh1d data 
+        /// @return Error code
+        UGRID_API int ug_mesh1d_put(int file_id, int topology_id, Mesh1D const& mesh1d_api);
 
-        UGRID_API int ug_mesh1d_def(int file_id, Mesh1D const& mesh1dapi, int& topology_id);
+        /// @brief Inquires mesh1d dimensions and names
+        /// @param file_id [in] The file id 
+        /// @param topology_id [in] The topology id 
+        /// @param mesh1d_api [out] The structure containing the mesh1d data  
+        /// @return Error code 
+        UGRID_API int ug_mesh1d_inq(int file_id, int topology_id, Mesh1D& mesh1d_api);
 
-        UGRID_API int ug_mesh1d_put(int file_id, int topology_id, Mesh1D const& mesh1dapi);
+        /// @brief Gets mesh1d geometrical data
+        /// @param file_id [in] The file id 
+        /// @param topology_id [in] The topology id 
+        /// @param mesh1d_api [out] The structure containing the mesh1d data   
+        /// @return Error code
+        UGRID_API int ug_mesh1d_get(int file_id, int topology_id, Mesh1D& mesh1d_api);
 
-        UGRID_API int ug_mesh1d_inq(int file_id, int topology_id, Mesh1D& mesh1dapi);
+        /// @brief Defines a new mesh2d topology
+        /// @param file_id [in] The file id 
+        /// @param mesh2d_api [in] The structure containing the mesh2d data
+        /// @param topology_id [out] The id of the newly created mesh2d topology 
+        /// @return Error code
+        UGRID_API int ug_mesh2d_def(int file_id, Mesh2D const& mesh2d_api, int& topology_id);
 
-        UGRID_API int ug_mesh1d_get(int file_id, int topology_id, Mesh1D& mesh1dapi);
+        /// @brief Writes mesh2d geometrical data to file 
+        /// @param file_id [in] The file id 
+        /// @param topology_id [in] The topology id
+        /// @param mesh2d_api [in] The structure containing the mesh2d data 
+        /// @return Error code
+        UGRID_API int ug_mesh2d_put(int file_id, int topology_id, Mesh2D const& mesh2d_api);
 
-        /*----------------------------------------------------------------------------------------------------
-         * Mesh 2d
-         *---------------------------------------------------------------------------------------------------*/
+        /// @brief Inquires mesh2d dimensions and names
+        /// @param file_id [in] The file id 
+        /// @param topology_id [in] The topology id 
+        /// @param mesh2d_api [out] The structure containing the mesh2d data  
+        /// @return Error code 
+        UGRID_API int ug_mesh2d_inq(int file_id, int topology_id, Mesh2D& mesh2d_api);
 
-         /// @brief Defines a new 2d mesh
-         /// @param file_id 
-         /// @param mesh2d 
-         /// @param topology_id 
-         /// @return 
-        UGRID_API int ug_mesh2d_def(int file_id, Mesh2D const& mesh2d, int& topology_id);
+        /// @brief Gets mesh2d geometrical data
+        /// @param file_id [in] The file id 
+        /// @param topology_id [in] The topology id 
+        /// @param mesh2d_api [out] The structure containing the mesh2d data   
+        /// @return Error code
+        UGRID_API int ug_mesh2d_get(int file_id, int topology_id, Mesh2D& mesh2d_api);
 
-        UGRID_API int ug_mesh2d_put(int file_id, int topology_id, Mesh2D const& mesh2d);
+        /// @brief Defines a new contacts topology
+        /// @param file_id [in] The file id 
+        /// @param contacts_api [in] The structure containing the contacts data
+        /// @param topology_id [out] The id of the newly created contacts topology 
+        /// @return Error code
+        UGRID_API int ug_contacts_def(int file_id, Contacts const& contacts_api, int& topology_id);
 
-        UGRID_API int ug_mesh2d_inq(int file_id, int topology_id, Mesh2D& mesh2d);
+        /// @brief Writes contacts geometrical data to file 
+        /// @param file_id [in] The file id 
+        /// @param topology_id [in] The topology id
+        /// @param contacts_api [in] The structure containing the contacts data 
+        /// @return Error code 
+        UGRID_API int ug_contacts_put(int file_id, int topology_id, Contacts const& contacts_api);
 
-        UGRID_API int ug_mesh2d_get(int file_id, int topology_id, Mesh2D& mesh2d);
+        /// @brief Inquires contacts dimensions and names
+        /// @param file_id [in] The file id 
+        /// @param topology_id [in] The topology id 
+        /// @param contacts_api [out] The structure containing the contacts data  
+        /// @return Error code 
+        UGRID_API int ug_contacts_inq(int file_id, int topology_id, Contacts& contacts_api);
 
-        /*----------------------------------------------------------------------------------------------------
-         * Contacts
-        *---------------------------------------------------------------------------------------------------*/
-
-        UGRID_API int ug_contacts_def(int file_id, Contacts  const& contacts, int& topology_id);
-
-        UGRID_API int ug_contacts_put(int file_id, int topology_id, Contacts  const& contactsapi);
-
-        UGRID_API int ug_contacts_inq(int file_id, int topology_id, Contacts& contactsapi);
-
-        UGRID_API int ug_contacts_get(int file_id, int topology_id, Contacts& contactsapi);
-
-        /*----------------------------------------------------------------------------------------------------
-         * Topologies
-         *---------------------------------------------------------------------------------------------------*/
-
+        /// @brief Gets contacts geometrical data
+        /// @param file_id [in] The file id 
+        /// @param topology_id [in] The topology id 
+        /// @param contacts_api [out] The structure containing the contacts data   
+        /// @return Error code
+        UGRID_API int ug_contacts_get(int file_id, int topology_id, Contacts& contacts_api);
 
 #ifdef __cplusplus
     }

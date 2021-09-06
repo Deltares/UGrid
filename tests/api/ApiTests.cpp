@@ -22,7 +22,7 @@ TEST(ApiTest, InquireAndGet_AFileWithOneMesh2d_ShouldReadMesh2d)
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
     // Get the number of topologies
-    auto topology_type = ugridapi::ug_topology_get_mesh2d_type_enum();
+    auto topology_type = ugridapi::ug_topology_get_mesh2d_enum();
     auto const num_mesh2d_topologies = ugridapi::ug_topology_get_count(file_id, topology_type);
     ASSERT_EQ(num_mesh2d_topologies, 1);
 
@@ -217,7 +217,7 @@ TEST(ApiTest, InquireAndGet_AFileWithOneNetwork1D_ShouldReadNetwork1D)
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
     // get the number of topologies
-    auto topology_type = ugridapi::ug_topology_get_network1d_type_enum();
+    auto topology_type = ugridapi::ug_topology_get_network1d_enum();
     auto const num_topologies = ugridapi::ug_topology_get_count(file_id, topology_type);
     ASSERT_EQ(num_topologies, 1);
 
@@ -386,7 +386,7 @@ TEST(ApiTest, InquireAndGet_AFileWithOneMesh1D_ShouldReadMesh1D)
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
     // get the number of topologies
-    auto topology_type = ugridapi::ug_topology_get_mesh1d_type_enum();
+    auto topology_type = ugridapi::ug_topology_get_mesh1d_enum();
     auto const num_topologies = ugridapi::ug_topology_get_count(file_id, topology_type);
     ASSERT_EQ(num_topologies, 1);
 
@@ -542,7 +542,7 @@ TEST(ApiTest, InquireAndGet_AFileWithOneContact_ShouldReadContact)
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
     // get the number of topologies
-    auto topology_type = ugridapi::ug_topology_get_contacts_type_enum();
+    auto topology_type = ugridapi::ug_topology_get_contacts_enum();
     auto const num_topologies = ugridapi::ug_topology_get_count(file_id, topology_type);
     ASSERT_EQ(num_topologies, 1);
 
