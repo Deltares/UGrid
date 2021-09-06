@@ -40,13 +40,13 @@ TEST(ApiTest, InquireAndGet_AFileWithOneMesh2d_ShouldReadMesh2d)
     std::unique_ptr<double> const node_y(new double[mesh2d.num_nodes]);
     mesh2d.node_y = node_y.get();
     std::unique_ptr<int> const edge_nodes(new int[mesh2d.num_edges * 2]);
-    mesh2d.edge_nodes = edge_nodes.get();
+    mesh2d.edge_node = edge_nodes.get();
     std::unique_ptr<double> const face_x(new double[mesh2d.num_faces]);
     mesh2d.face_x = face_x.get();
     std::unique_ptr<double> const face_y(new double[mesh2d.num_faces]);
     mesh2d.face_y = face_y.get();
     std::unique_ptr<int> const face_nodes(new int[mesh2d.num_faces * mesh2d.num_face_nodes_max]);
-    mesh2d.face_nodes = face_nodes.get();
+    mesh2d.face_node = face_nodes.get();
 
     // Execute
     error_code = ug_mesh2d_get(file_id, 0, mesh2d);
@@ -132,7 +132,7 @@ TEST(ApiTest, DefineAndPut_OneMesh2D_ShouldWriteData)
     auto error_code = ugridapi::ug_file_open(file_path.c_str(), file_mode, file_id);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
-    // Fill all data 
+    // Fill data 
     ugridapi::Mesh2D mesh2d;
     std::unique_ptr<char> const name(new char[] {"mesh2d"});
     mesh2d.name = name.get();
@@ -168,7 +168,7 @@ TEST(ApiTest, DefineAndPut_OneMesh2D_ShouldWriteData)
         14, 15,
         15, 16,
         });
-    mesh2d.edge_nodes = edge_nodes.get();
+    mesh2d.edge_node = edge_nodes.get();
     mesh2d.num_edges = 23;
 
     std::unique_ptr<double> const face_x(new double[] { 0.5, 0.5, 0.5, 1.5, 1.5, 1.5, 2.5, 2.5, 2.5 });
@@ -187,7 +187,7 @@ TEST(ApiTest, DefineAndPut_OneMesh2D_ShouldWriteData)
             10, 14, 15, 11,
             11, 15, 16, 12
         });
-    mesh2d.face_nodes = face_nodes.get();
+    mesh2d.face_node = face_nodes.get();
     mesh2d.num_face_nodes_max = 4;
 
     // Execute
@@ -237,7 +237,7 @@ TEST(ApiTest, InquireAndGet_AFileWithOneNetwork1D_ShouldReadNetwork1D)
     network1d.node_y = node_y.get();
 
     std::unique_ptr<int> const edge_nodes(new int[network1d.num_edges * 2]);
-    network1d.edge_nodes = edge_nodes.get();
+    network1d.edge_node = edge_nodes.get();
 
     std::unique_ptr<double> const geometry_nodes_x(new double[network1d.num_geometry_nodes]);
     network1d.geometry_nodes_x = geometry_nodes_x.get();
@@ -252,13 +252,13 @@ TEST(ApiTest, InquireAndGet_AFileWithOneNetwork1D_ShouldReadNetwork1D)
     network1d.node_name_long = node_long_name.get();
 
     std::unique_ptr<char> const branch_id(new char[name_length * network1d.num_nodes]);
-    network1d.branch_name_id = branch_id.get();
+    network1d.edge_name_id = branch_id.get();
 
     std::unique_ptr<char> const branch_long_name(new char[long_names_length * network1d.num_nodes]);
-    network1d.branch_name_long = branch_long_name.get();
+    network1d.edge_name_long = branch_long_name.get();
 
     std::unique_ptr<double> const branch_lengths(new double[network1d.num_edges]);
-    network1d.branch_lengths = branch_lengths.get();
+    network1d.edge_length = branch_lengths.get();
 
     // get the data
     error_code = ug_network1d_get(file_id, 0, network1d);
@@ -330,7 +330,7 @@ TEST(ApiTest, DefineAndPut_OneNetwork1D_ShouldWriteData)
     auto error_code = ugridapi::ug_file_open(file_path.c_str(), file_mode, file_id);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
-    // Fill all data 
+    // Fill data 
     ugridapi::Network1d network1d;
     std::unique_ptr<char> const name(new char[] {"network1d"});
     network1d.name = name.get();
@@ -340,7 +340,7 @@ TEST(ApiTest, DefineAndPut_OneNetwork1D_ShouldWriteData)
     network1d.node_y = node_y.get();
     network1d.num_nodes = 2;
     std::unique_ptr<int> const edge_nodes(new int[] { 0, 1});
-    network1d.edge_nodes = edge_nodes.get();
+    network1d.edge_node = edge_nodes.get();
     network1d.num_edges = 1;
     std::unique_ptr<double> const geometry_nodes_x(new double[] { 293.78, 278.97, 265.31, 254.17, 247.44, 248.3, 259.58,
         282.24, 314.61, 354.44, 398.94, 445, 490.6, 532.84, 566.64, 589.08,
@@ -356,11 +356,11 @@ TEST(ApiTest, DefineAndPut_OneNetwork1D_ShouldWriteData)
     std::unique_ptr<char> const node_long_name(new char[] {"nodeslongNames                                                                  nodeslongNames                                                                  "});
     network1d.node_name_long = node_long_name.get();
     std::unique_ptr<char> const branch_id(new char[] {"branchids                               "});
-    network1d.branch_name_id = branch_id.get();
+    network1d.edge_name_id = branch_id.get();
     std::unique_ptr<char> const branch_long_name(new char[] {"branchlongNames                                                                 "});
-    network1d.branch_name_long = branch_long_name.get();
+    network1d.edge_name_long = branch_long_name.get();
     std::unique_ptr<double> const branch_lengths(new double[] {1165.29});
-    network1d.branch_lengths = branch_lengths.get();
+    network1d.edge_length = branch_lengths.get();
 
     int topology_id = -1;
     error_code = ug_network1d_def(file_id, network1d, topology_id);
@@ -408,13 +408,13 @@ TEST(ApiTest, InquireAndGet_AFileWithOneMesh1D_ShouldReadMesh1D)
     mesh1d.network_name = network_name.get();
 
     std::unique_ptr<int> const branch_id(new int[mesh1d.num_nodes]);
-    mesh1d.node_branch_id = branch_id.get();
+    mesh1d.node_edge_id = branch_id.get();
 
     std::unique_ptr<double> const branch_offset(new double[mesh1d.num_nodes]);
-    mesh1d.node_branch_offset = branch_offset.get();
+    mesh1d.node_edge_offset = branch_offset.get();
 
     std::unique_ptr<int> const edge_nodes(new int[mesh1d.num_edges * 2]);
-    mesh1d.edge_nodes = edge_nodes.get();
+    mesh1d.edge_node = edge_nodes.get();
 
     std::unique_ptr<char> const node_id(new char[name_length * mesh1d.num_nodes]);
     mesh1d.node_name_id = node_id.get();
@@ -458,7 +458,7 @@ TEST(ApiTest, DefineAndPut_OneMesh1D_ShouldWriteData)
     auto error_code = ugridapi::ug_file_open(file_path.c_str(), file_mode, file_id);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
-    // Fill all data 
+    // Fill data 
     ugridapi::Mesh1D mesh1d;
     std::unique_ptr<char> const name(new char[] {"mesh1d"});
     mesh1d.name = name.get();
@@ -467,14 +467,14 @@ TEST(ApiTest, DefineAndPut_OneMesh1D_ShouldWriteData)
     mesh1d.network_name = network_name.get();
 
     std::unique_ptr<int> const node_branch_id(new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
-    mesh1d.node_branch_id = node_branch_id.get();
+    mesh1d.node_edge_id = node_branch_id.get();
 
     std::unique_ptr<double> const node_branch_offset(new double[] {
         0, 49.65, 99.29, 148.92, 198.54, 248.09,
             297.62, 347.15, 396.66, 446.19, 495.8, 545.44, 595.08, 644.63, 694.04,
             743.52, 793.07, 842.65, 892.26, 941.89, 991.53, 1041.17, 1090.82,
             1140.46, 1165.29 });
-    mesh1d.node_branch_offset = node_branch_offset.get();
+    mesh1d.node_edge_offset = node_branch_offset.get();
 
     mesh1d.num_nodes = 25;
     mesh1d.num_edges = 24;
@@ -502,7 +502,7 @@ TEST(ApiTest, DefineAndPut_OneMesh1D_ShouldWriteData)
         21, 22,
         22, 23,
         23, 24});
-    mesh1d.edge_nodes = edges_nodes.get();
+    mesh1d.edge_node = edges_nodes.get();
 
     std::stringstream meshnodesids;
     std::stringstream meshnodelongnames;
@@ -643,7 +643,7 @@ TEST(ApiTest, DefineAndPut_AFileWithOneContact_ShouldWriteAContact)
     auto error_code = ugridapi::ug_file_open(file_path.c_str(), file_mode, file_id);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
-    // Fill all data 
+    // Fill data 
     ugridapi::Contacts contacts;
     std::unique_ptr<char> const name(new char[] {"2d1dlinks"});
     contacts.name = name.get();

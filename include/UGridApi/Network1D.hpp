@@ -40,10 +40,10 @@ namespace ugridapi
         /// @brief The node y coordinates
         double* node_y = nullptr;
 
-        /// @brief The node names 
+        /// @brief The node name 
         char* node_name_id = nullptr;
 
-        /// @brief The node long names
+        /// @brief The node long name
         char* node_name_long = nullptr;
 
         /// @brief The edge node connectivity (also called branches for a network) 
@@ -79,7 +79,7 @@ namespace ugridapi
         /// @brief 1 if coordinates are in a spherical system, 0 otherwise 
         int is_spherical = 0;
 
-        /// @brief The start index used in arrays using indices, such as edge_nodes
+        /// @brief The start index used in arrays using indices, such as edge_node
         int start_index = 0;
     };
 }

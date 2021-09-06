@@ -33,42 +33,61 @@ namespace ugridapi
 {
     struct Mesh1D
     {
-        double* node_x = nullptr;
-
-        double* node_y = nullptr;
-
-        int* edge_nodes = nullptr;
-
-        int* node_branch_id = nullptr;
-
-        double* node_branch_offset = nullptr;
-
-        char* node_name_id = nullptr;
-
-        char* node_name_long = nullptr;
-
-        int* edge_branch_id = nullptr;
-
-        double* edge_branch_offset = nullptr;
-
-        double* edge_x = nullptr;
-
-        double* edge_y = nullptr;
-
+        /// @brief The mesh1d name
         char* name = nullptr;
 
+        /// @brief The network name 
         char* network_name = nullptr;
 
+        /// @brief The node x coordinate
+        double* node_x = nullptr;
+
+        /// @brief The node y coordinate
+        double* node_y = nullptr;
+
+        /// @brief The edge node connectivity
+        int* edge_node = nullptr;
+
+        /// @brief The id of the network edge (branch) where every node lies
+        int* node_edge_id = nullptr;
+
+        /// @brief The offset of each node on the network edge (branch)
+        double* node_edge_offset = nullptr;
+
+        /// @brief The node name  
+        char* node_name_id = nullptr;
+
+        /// @brief The node long name
+        char* node_name_long = nullptr;
+
+        /// @brief The id of the network edge (branch) where every edge lies
+        int* edge_edge_id = nullptr;
+
+        /// @brief The offset of each edge on the network edge (branch)
+        double* edge_edge_offset = nullptr;
+
+        /// @brief The edge x coordinate
+        double* edge_x = nullptr;
+
+        /// @brief The edge y coordinate
+        double* edge_y = nullptr;
+
+        /// @brief The number of nodes
         int num_nodes = 0;
 
+        /// @brief The number of edges
         int num_edges = 0;
 
-        int start_index = 0;
-
+        /// @brief 1 if coordinates are in a spherical system, 0 otherwise 
         int is_spherical = 0;
 
+        /// @brief The start index used in arrays using indices, such as edge_node
+        int start_index = 0;
+
+        /// @brief The fill value for array of doubles 
         double double_fill_value = ugrid::double_missing_value;
 
+        /// @brief The fill value for array of integers
         int int_fill_value = ugrid::int_missing_value;
     };
 }

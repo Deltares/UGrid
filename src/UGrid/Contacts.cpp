@@ -108,13 +108,13 @@ void Contacts::put(ugridapi::Contacts const& contacts)
         throw std::invalid_argument("Contacts::put invalid mesh name");
     }
 
-    //if (contacts.node_branch_id != nullptr)
+    //if (contacts.node_edge_id != nullptr)
     //{
-    //    m_topology_attribute_variables.at("node_coordinates").at(0).putVar(contacts.node_branch_id);
+    //    m_topology_attribute_variables.at("node_coordinates").at(0).putVar(contacts.node_edge_id);
     //}
-    //if (contacts.node_branch_offset != nullptr)
+    //if (contacts.node_edge_offset != nullptr)
     //{
-    //    m_topology_attribute_variables.at("node_coordinates").at(1).putVar(contacts.node_branch_offset);
+    //    m_topology_attribute_variables.at("node_coordinates").at(1).putVar(contacts.node_edge_offset);
     //}
     //if (contacts.node_name_id != nullptr)
     //{
@@ -124,9 +124,9 @@ void Contacts::put(ugridapi::Contacts const& contacts)
     //{
     //    m_topology_attribute_variables.at("node_name_long").at(0).putVar(contacts.node_name_long);
     //}
-    //if (contacts.edge_nodes != nullptr)
+    //if (contacts.edge_node != nullptr)
     //{
-    //    m_topology_attribute_variables.at("edge_node_connectivity").at(0).putVar(contacts.edge_nodes);
+    //    m_topology_attribute_variables.at("edge_node_connectivity").at(0).putVar(contacts.edge_node);
     //}
 }
 

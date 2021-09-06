@@ -33,56 +33,67 @@ namespace ugridapi
 {
     struct Mesh2D
     {
+        /// @brief The mesh2d name
         char* name = nullptr;
 
-        /// @brief The nodes composing each mesh 2d edge
-        int* edge_nodes = nullptr;
+        /// @brief The edge node connectivity
+        int* edge_node = nullptr;
 
-        /// @brief The nodes composing each mesh 2d face
-        int* face_nodes = nullptr;
+        /// @brief The nodes composing each face
+        int* face_node = nullptr;
 
-        /// @brief The number of nodes for each mesh 2d face
+        /// @brief The number of nodes composing each face
         int* nodes_per_face = nullptr;
 
-        /// @brief The x-coordinates of network1d nodes
+        /// @brief The node x coordinates
         double* node_x = nullptr;
 
-        /// @brief The y-coordinates of network1d nodes
+        /// @brief The node y coordinates
         double* node_y = nullptr;
 
-        /// @brief The x-coordinates of the mesh edges middle points
+        /// @brief The edge x coordinate
         double* edge_x = nullptr;
 
-        /// @brief The y-coordinates of the mesh edges middle points
+        /// @brief The edge y coordinate
         double* edge_y = nullptr;
 
-        /// @brief The x-coordinates of the mesh faces mass centers
+        /// @brief The face x coordinates
         double* face_x = nullptr;
 
-        /// @brief The x-coordinates of the mesh faces mass centers
+        /// @brief The face y coordinates
         double* face_y = nullptr;
 
-        int* edge_faces = nullptr;
+        /// @brief The edges composing each face
+        int* edge_face = nullptr;
 
-        int* face_edges = nullptr;
+        /// @brief For each face, the edges composing it
+        int* face_edge = nullptr;
 
+        /// @brief For each face, the neighboring faces
         int* face_face = nullptr;
 
+        /// @brief The node z coordinates
         double* node_z = nullptr;
 
+        /// @brief The edge z coordinates
         double* edge_z = nullptr;
 
+        /// @brief The face z coordinates
         double* face_z = nullptr;
 
+        /// @brief The z coordinates of a layer
         double* layer_zs = nullptr;
 
+        /// @brief The z coordinates of a layer interface
         double* interface_zs = nullptr;
 
+        /// @brief TODO to be detailed
         double* boundary_node_connectivity = nullptr;
 
+        /// @brief TODO to be detailed
         double* volume_coordinates = nullptr;
 
-        /// @brief The number of mesh nodes
+        /// @brief The number of nodes
         int num_nodes = 0;
 
         /// @brief The number of edges
@@ -91,19 +102,22 @@ namespace ugridapi
         /// @brief The number of faces
         int num_faces = 0;
 
-        /// @brief The total number of nodes composing the mesh 2d faces
-        int num_face_nodes = 0;
-
+        /// @brief The number of layers
         int num_layers = 0;
 
+        /// @brief The start index used in arrays using indices, such as edge_node
         int start_index = 0;
 
+        /// @brief The maximum number of face nodes
         int num_face_nodes_max = 4;
 
+        /// @brief 1 if coordinates are in a spherical system, 0 otherwise  
         int is_spherical = 0;
 
+        /// @brief The fill value for array of doubles 
         double double_fill_value = ugrid::double_missing_value;
 
+        /// @brief The fill value for array of integers
         int int_fill_value = ugrid::int_missing_value;
 
     };
