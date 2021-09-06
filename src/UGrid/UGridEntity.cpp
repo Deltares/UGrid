@@ -43,8 +43,8 @@
 
 using namespace ugrid;
 
-UGridEntity::UGridEntity(const std::shared_ptr<netCDF::NcFile>& m_nc_file)
-    : m_nc_file(m_nc_file)
+UGridEntity::UGridEntity(const std::shared_ptr<netCDF::NcFile>& nc_file)
+    : m_nc_file(nc_file)
 {
 }
 
@@ -288,7 +288,7 @@ void UGridEntity::add_topology_attribute_variable(netCDF::NcVarAtt const& nc_var
     }
 }
 
-void UGridEntity::define(char* entity_name, int start_index, std::string const& long_name, int dimensionality, int is_spherical)
+void UGridEntity::define(char* entity_name, int start_index, std::string const& long_name, int topology_dimension, int is_spherical)
 {
     m_start_index = start_index;
     m_entity_name = std::string(entity_name);
@@ -303,7 +303,7 @@ void UGridEntity::define(char* entity_name, int start_index, std::string const& 
     topology_attribute = m_topology_variable.putAtt("long_name", long_name);
     add_topology_attribute(topology_attribute);
 
-    topology_attribute = m_topology_variable.putAtt("topology_dimension", netCDF::NcType::nc_INT, dimensionality);
+    topology_attribute = m_topology_variable.putAtt("topology_dimension", netCDF::NcType::nc_INT, topology_dimension);
     add_topology_attribute(topology_attribute);
 
     // Add additional dimensions, maybe required

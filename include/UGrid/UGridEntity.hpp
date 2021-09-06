@@ -45,10 +45,19 @@ namespace ugrid
     {
     public:
 
+        /// @brief Default constructor
         UGridEntity() = default;
 
-        explicit UGridEntity(const std::shared_ptr<netCDF::NcFile>& m_nc_file);
+        /// @brief Constructor using a pointer to NcFile
+        /// @param nc_file [in] A pointer to NcFile, containing the id of an opened file
+        explicit UGridEntity(const std::shared_ptr<netCDF::NcFile>& nc_file);
 
+        /// @brief Constructor with several parameters as defined below 
+        /// @param nc_file [in] A pointer to NcFile, containing the id of an opened file
+        /// @param topology_variable [in] The topology variable defining the entity 
+        /// @param attribute_variables [in] The attribute variables
+        /// @param attribute_variable_names [in] The attribute names
+        /// @param dimensions [in] The dimensions of the topology variable
         UGridEntity(
             std::shared_ptr<netCDF::NcFile> nc_file,
             netCDF::NcVar const& topology_variable,
@@ -58,14 +67,14 @@ namespace ugrid
 
         /// @brief Factory method producing a vector of instances of T class
         /// @tparam T The type that needs to be created 
-        /// @param nc_file A pointer to NcFile, containing the id of an opened file
+        /// @param nc_file [in] A pointer to NcFile, containing the id of an opened file
         /// @return A vector of T class instances
         template<typename T>
         [[nodiscard]] static std::vector<T> create(std::shared_ptr<netCDF::NcFile> const& nc_file)
         {
             // gets all variables in this file
-            const auto file_variables = nc_file->getVars();
-            const auto file_dimensions = nc_file->getDims();
+            auto const file_variables = nc_file->getVars();
+            auto const file_dimensions = nc_file->getDims();
 
             std::vector<T> result;
             for (auto const& variable : file_variables)
@@ -152,32 +161,32 @@ namespace ugrid
         /// @return An iterator to \ref m_topology_attribute_variables
         [[nodiscard]] std::map<std::string, std::vector<netCDF::NcVar>>::const_iterator find_variable_with_aliases(std::string const& variable_name) const;
 
-        /// @brief 
-        /// @param nc_var_attribute 
+        /// @brief Add topology attributes
+        /// @param nc_var_attribute [in] The topology attributes
         void add_topology_attribute(netCDF::NcVarAtt const& nc_var_attribute)
         {
             m_topology_attributes.insert({ nc_var_attribute.getName(), nc_var_attribute });
         }
 
-        /// @brief 
-        /// @param nc_var_attribute 
-        /// @param nc_var 
+        /// @brief Add topology attribute variables
+        /// @param nc_var_attribute [in] The topology attribute
+        /// @param nc_var [in] The topology attribute variable
         void add_topology_attribute_variable(netCDF::NcVarAtt const& nc_var_attribute, netCDF::NcVar const& nc_var);
 
-        /// @brief 
-        /// @param nc_var 
+        /// @brief Add variables related to a specific topology
+        /// @param nc_var [in] The related variable to add
         void add_topology_related_variables(netCDF::NcVar const& nc_var)
         {
             m_related_variables.insert({ nc_var.getName(), {nc_var} });
         }
 
-        /// @brief 
-        /// @param entity_name 
-        /// @param start_index 
-        /// @param long_name 
-        /// @param dimensionality 
-        /// @param is_spherical 
-        void define(char* entity_name, int start_index, std::string const& long_name, int dimensionality, int is_spherical);
+        /// @brief Method collecting common operations for defining a UGrid entity to file
+        /// @param entity_name [in] The entity name
+        /// @param start_index [in] The start_index of indices arrays
+        /// @param long_name [in] The entity long name
+        /// @param topology_dimension [in] The dimension of the topology
+        /// @param is_spherical [in] 1 if coordinates are in a spherical system, 0 otherwise
+        void define(char* entity_name, int start_index, std::string const& long_name, int topology_dimension, int is_spherical);
 
 
         std::shared_ptr<netCDF::NcFile>                    m_nc_file;                           ///< A pointer to the opened file
