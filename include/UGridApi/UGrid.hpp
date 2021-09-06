@@ -59,46 +59,89 @@ namespace ugridapi
             ContactsTopology = 3
         };
 
-        /// @brief Enumeration for the api error types
+        /// @brief Enumeration for the error types
         enum UGridioApiErrors
         {
             Success = 0,
             Exception = 1,
         };
 
-        /// @brief Gets the last library error message
-        /// @param error_message 
-        /// @return 
+        /// @brief Gets pointer to the exception message.
+        /// @param[out] error_message The pointer to the latest error message
+        /// @returns Error code
         UGRID_API int ug_error_get(const char*& error_message);
 
+        /// @brief Gets the length of a name
+        /// @return The length of a name
         UGRID_API int ug_name_get_length();
 
+        /// @brief Gets the length of a long name
+        /// @return The length of a long name
         UGRID_API int ug_name_get_long_length();
 
+        /// @brief Gets the integer identifying a node location
+        /// @return The integer identifying a node location
+        UGRID_API  int ug_entity_get_node_location_enum();
+
+        /// @brief Gets the integer identifying an edge location
+        /// @return The integer identifying an edge location
+        UGRID_API  int ug_entity_get_edge_location_enum();
+
+        /// @brief Gets the integer identifying an face location
+        /// @return The integer identifying the face location
+        UGRID_API  int ug_entity_get_face_location_enum();
+
+        /// @brief Gets the integer identifying the network topology type
+        /// @return The integer identifying the network topology type
+        UGRID_API int ug_topology_get_network1d_enum();
+
+        /// @brief Gets the integer identifying the mesh1d topology type
+         /// @return The integer identifying the mesh1d topology type
+        UGRID_API int ug_topology_get_mesh1d_enum();
+
+        /// @brief Gets the integer identifying the mesh2d topology type
+        /// @return The integer identifying the mesh2d topology type
+        UGRID_API int ug_topology_get_mesh2d_enum();
+
+        /// @brief Gets the integer identifying the contact topology type
+        /// @return The integer identifying the contact topology type
+        UGRID_API int ug_topology_get_contacts_enum();
+
+        /// @brief Gets the number of topologies of a specific type
+        /// @param file_id The file id
+        /// @param topology_type The topology type
+        /// @return The number of topologies of the specific type
+        UGRID_API int ug_topology_get_count(int file_id, int topology_type);
+
+        /// @brief Gets the integer identifying the file read mode
+        /// @return the integer identifying the file read mode
         UGRID_API int ug_file_read_mode();
 
+        /// @brief Gets the integer identifying the file write mode
+        /// @return The integer identifying the file write mode
         UGRID_API int ug_file_write_mode();
 
+        /// @brief Gets the integer identifying the file replace mode
+        /// @return The integer identifying the file replace mode
         UGRID_API  int ug_file_replace_mode();
 
-        UGRID_API  int ug_entity_get_node_location();
+        /// @brief Writes the metadata to file for identify a specific coordinate projection system
+        /// @param file_id [in] The file id
+        /// @param espg [in] The espg code for identify a specific coordinate projection system
+        /// @return Error code
+        UGRID_API  int ug_file_add_coordinate_mapping(int file_id, int espg);
 
-        UGRID_API  int ug_entity_get_edge_location();
+        /// @brief Opens a file and fills the library state
+        /// @param file_path [in] The path of the file
+        /// @param mode [in] The opening mode
+        /// @param file_id [out] The file id
+        /// @return Error code
+        UGRID_API int ug_file_open(char const* file_path, int mode, int& file_id);
 
-        UGRID_API  int ug_entity_get_face_location();
-
-        UGRID_API  int ug_file_add_coordinate_mapping(int espg);
-
-        /// @brief Opens a file and fills the state with the entities upon reading
-        /// @param filePath The path of the file
-        /// @param mode The netcdf opening mode
-        /// @return An error if is not able to open it or it is not  
-        UGRID_API int ug_open(char const* filePath, int mode, int& file_id);
-
-        /// @brief Close a file
-        /// @param file_id 
-        /// @return 
-        UGRID_API int ug_close(int file_id);
+        /// @brief Closes a file
+        /// @param file_id The file id
+        /// @return Error code
+        UGRID_API int ug_file_close(int file_id);
 
         /*----------------------------------------------------------------------------------------------------
          * Network 1d
@@ -156,28 +199,6 @@ namespace ugridapi
         /*----------------------------------------------------------------------------------------------------
          * Topologies
          *---------------------------------------------------------------------------------------------------*/
-
-         /// @brief Gets the network topology type
-         /// @return The topology type as integer
-        UGRID_API int ug_topology_get_network1d_type_enum();
-
-        /// @brief Gets the mesh1d topology type
-         /// @return The topology type as integer
-        UGRID_API int ug_topology_get_mesh1d_type_enum();
-
-        /// @brief Gets the mesh2d topology type
-        /// @return The topology type as integer
-        UGRID_API int ug_topology_get_mesh2d_type_enum();
-
-        /// @brief Gets the contacts topology type
-        /// @return The topology type as integer
-        UGRID_API int ug_topology_get_contacts_type_enum();
-
-        /// @brief get the number of topologies of a specific type
-        /// @param file_id The UGrid file id
-        /// @param topology_type The topology type (0 network1d, 1 mesh1d, 2 mesh2d, 3 contacts)
-        /// @return The number of topologies
-        UGRID_API int ug_topology_get_count(int file_id, int topology_type);
 
 
 #ifdef __cplusplus

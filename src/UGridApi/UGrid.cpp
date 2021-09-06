@@ -65,6 +65,12 @@ namespace ugridapi
         }
     }
 
+    UGRID_API int mkernel_get_error(const char*& error_message)
+    {
+        error_message = exceptionMessage;
+        return Success;
+    }
+
     UGRID_API int ug_name_get_length()
     {
         return ugrid::name_lengths;
@@ -74,6 +80,65 @@ namespace ugridapi
     {
         return ugrid::name_long_lengths;
     }
+
+    UGRID_API  int ug_entity_get_node_location_enum()
+    {
+        return static_cast<int>(ugrid::UGridEntityLocations::nodes);
+    }
+
+    UGRID_API  int ug_entity_get_edge_location_enum()
+    {
+        return static_cast<int>(ugrid::UGridEntityLocations::edges);
+    }
+
+    UGRID_API  int ug_entity_get_face_location_enum()
+    {
+        return static_cast<int>(ugrid::UGridEntityLocations::faces);
+    }
+
+    UGRID_API int ug_topology_get_network1d_enum()
+    {
+        return Network1dTopology;
+    }
+
+    UGRID_API int ug_topology_get_mesh1d_enum()
+    {
+        return Mesh1dTopology;
+    }
+
+    UGRID_API int ug_topology_get_mesh2d_enum()
+    {
+        return Mesh2dTopology;
+    }
+
+    UGRID_API int ug_topology_get_contacts_enum()
+    {
+        return ContactsTopology;
+    }
+
+    UGRID_API int ug_topology_get_count(int file_id, int topology_type)
+    {
+
+        if (topology_type == Network1dTopology)
+        {
+            return ugrid_states[file_id].m_network1d.size();
+        }
+        if (topology_type == Mesh1dTopology)
+        {
+            return ugrid_states[file_id].m_mesh1d.size();
+        }
+        if (topology_type == Mesh2dTopology)
+        {
+            return ugrid_states[file_id].m_mesh2d.size();
+        }
+        if (topology_type == ContactsTopology)
+        {
+            return ugrid_states[file_id].m_contacts.size();
+        }
+
+        return 0;
+    }
+
     UGRID_API int ug_file_read_mode()
     {
         return netCDF::NcFile::read;
@@ -89,26 +154,12 @@ namespace ugridapi
         return netCDF::NcFile::replace;
     }
 
-    UGRID_API  int ug_entity_get_node_location()
-    {
-        return static_cast<int>(ugrid::UGridEntityLocations::nodes);
-    }
-
-    UGRID_API  int ug_entity_get_edge_location()
-    {
-        return static_cast<int>(ugrid::UGridEntityLocations::edges);
-    }
-
-    UGRID_API  int ug_entity_get_face_location()
-    {
-        return static_cast<int>(ugrid::UGridEntityLocations::faces);
-    }
-
-    UGRID_API  int ug_file_add_coordinate_mapping(int espg)
+    UGRID_API  int ug_file_add_coordinate_mapping(int file_id, int espg)
     {
         int exitCode = Success;
         try
         {
+            //TODO: add a method for adding coordinate mappings
         }
         catch (...)
         {
@@ -117,7 +168,7 @@ namespace ugridapi
         return exitCode;
     }
 
-    UGRID_API int ug_open(char const* filePath, int mode, int& file_id)
+    UGRID_API int ug_file_open(char const* filePath, int mode, int& file_id)
     {
         int exitCode = Success;
         try
@@ -137,7 +188,6 @@ namespace ugridapi
             {
                 auto const ncFile = std::make_shared< netCDF::NcFile>(filePath, netCDF::NcFile::replace, netCDF::NcFile::classic);
                 file_id = ncFile->getId();
-
                 ugrid_states.insert({ ncFile->getId(), UGridState(ncFile) });
             }
         }
@@ -148,7 +198,7 @@ namespace ugridapi
         return exitCode;
     };
 
-    UGRID_API int ug_close(int file_id)
+    UGRID_API int ug_file_close(int file_id)
     {
         int exitCode = Success;
         try
@@ -473,47 +523,4 @@ namespace ugridapi
         return exitCode;
     }
 
-    UGRID_API int ug_topology_get_network1d_type_enum()
-    {
-        return Network1dTopology;
-    }
-
-    UGRID_API int ug_topology_get_mesh1d_type_enum()
-    {
-        return Mesh1dTopology;
-    }
-
-    UGRID_API int ug_topology_get_mesh2d_type_enum()
-    {
-        return Mesh2dTopology;
-    }
-
-    UGRID_API int ug_topology_get_contacts_type_enum()
-    {
-        return ContactsTopology;
-    }
-
-    UGRID_API int ug_topology_get_count(int file_id, int topology_type)
-    {
-
-        if (topology_type == Network1dTopology)
-        {
-            return ugrid_states[file_id].m_network1d.size();
-        }
-        if (topology_type == Mesh1dTopology)
-        {
-            return ugrid_states[file_id].m_mesh1d.size();
-        }
-        if (topology_type == Mesh2dTopology)
-        {
-            return ugrid_states[file_id].m_mesh2d.size();
-        }
-        if (topology_type == ContactsTopology)
-        {
-            return ugrid_states[file_id].m_contacts.size();
-        }
-
-        return 0;
-    }
-
-} // namespace meshkernelapi
+} // namespace ugridapi
