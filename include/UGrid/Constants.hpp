@@ -67,16 +67,14 @@ namespace ugrid
         lon
     };
 
-    const int name_lengths = 40;
-    const int name_long_lengths = 80;
-    const int int_invalid_value = std::numeric_limits<int>::max();
-    const double double_invalid_value = std::numeric_limits<double>::max();
+    int const name_lengths = 40;
+    int const name_long_lengths = 80;
+    int const int_invalid_value = std::numeric_limits<int>::max();
+    double const double_invalid_value = std::numeric_limits<double>::max();
 
-    const int int_missing_value = -999;
-    const double double_missing_value = -999.0;
-
-    const int num_face_nodes_max = 6;
-
-    const std::string two_string = "Two";
+    int const int_missing_value = -999;
+    double const double_missing_value = -999.0;
+    int const  num_face_nodes_max = 6;
+    std::string const two_string("Two");
 
 } // namespace ugrid

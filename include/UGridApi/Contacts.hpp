@@ -34,7 +34,7 @@ namespace ugridapi
         /// @brief The name of the contact entity
         char* name = nullptr;
 
-        /// @brief The contacts, expressed as pair of indices from a mesh index to another mesh index
+        /// @brief The actual contacts, expressed as pair of indices from a mesh index to another mesh index
         int* edges = nullptr;
 
         /// @brief For each contact its type
