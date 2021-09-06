@@ -31,38 +31,55 @@ namespace ugridapi
 {
     struct Network1d
     {
+        /// @brief The name of the network
         char* name = nullptr;
 
+        /// @brief The node x coordinates
         double* node_x = nullptr;
 
+        /// @brief The node y coordinates
         double* node_y = nullptr;
 
+        /// @brief The node names 
         char* node_name_id = nullptr;
 
+        /// @brief The node long names
         char* node_name_long = nullptr;
 
-        int* edge_nodes = nullptr;
+        /// @brief The edge node connectivity (also called branches for a network) 
+        int* edge_node = nullptr;
 
-        double* branch_lengths = nullptr;
+        /// @brief The edge lengths
+        double* edge_length = nullptr;
 
-        int* branch_order = nullptr;
+        /// @brief The order of the edges
+        int* edge_order = nullptr;
 
-        char* branch_name_id = nullptr;
+        /// @brief The name of the edges
+        char* edge_name_id = nullptr;
 
-        char* branch_name_long = nullptr;
+        /// @brief The long name of the edges
+        char* edge_name_long = nullptr;
 
+        /// @brief The geometry nodes x coordinates
         double* geometry_nodes_x = nullptr;
 
+        /// @brief The geometry nodes y coordinates
         double* geometry_nodes_y = nullptr;
 
+        /// @brief The number of geometry nodes
         int num_geometry_nodes = 0;
 
+        /// @brief The number of network1d nodes
         int num_nodes = 0;
 
+        /// @brief The number of network1d edges
         int num_edges = 0;
 
+        /// @brief 1 if coordinates are in a spherical system, 0 otherwise 
         int is_spherical = 0;
 
+        /// @brief The start index used in arrays using indices, such as edge_nodes
         int start_index = 0;
     };
 }
