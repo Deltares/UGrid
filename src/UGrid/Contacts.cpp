@@ -68,7 +68,7 @@ void Contacts::define(ugridapi::Contacts const& contacts)
     // Add additional dimensions, maybe required
     m_dimensions.insert({ UGridDimensions::ids, m_nc_file->addDim("strLengthIds", name_lengths) });
     m_dimensions.insert({ UGridDimensions::long_names, m_nc_file->addDim("strLengthLongNames", name_long_lengths) });
-    m_dimensions.insert({ UGridDimensions::Two, m_nc_file->addDim("Two", 2) });
+    m_dimensions.insert({ UGridDimensions::Two, m_nc_file->addDim(two_string, 2) });
 
     auto string_builder = UGridVarAttributeStringBuilder(m_entity_name);
 
@@ -124,9 +124,9 @@ void Contacts::put(ugridapi::Contacts const& contacts)
     //{
     //    m_topology_attribute_variables.at("node_name_long").at(0).putVar(contacts.node_name_long);
     //}
-    //if (contacts.edge_node != nullptr)
+    //if (contacts.branch_node != nullptr)
     //{
-    //    m_topology_attribute_variables.at("edge_node_connectivity").at(0).putVar(contacts.edge_node);
+    //    m_topology_attribute_variables.at("edge_node_connectivity").at(0).putVar(contacts.branch_node);
     //}
 }
 

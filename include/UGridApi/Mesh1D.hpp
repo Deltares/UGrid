@@ -81,7 +81,7 @@ namespace ugridapi
         /// @brief 1 if coordinates are in a spherical system, 0 otherwise 
         int is_spherical = 0;
 
-        /// @brief The start index used in arrays using indices, such as edge_node
+        /// @brief The start index used in arrays using indices, such as branch_node
         int start_index = 0;
 
         /// @brief The fill value for array of doubles 

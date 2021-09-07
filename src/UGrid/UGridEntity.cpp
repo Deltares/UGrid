@@ -253,7 +253,8 @@ std::map<std::string, std::vector<netCDF::NcVar>>::const_iterator UGridEntity::f
         {"branch_id",{"branch_id", "branch_ids"}},
         {"branch_long_name",{"branch_long_name", "branch_long_names"}},
         {"contact_id",{"contact_id", "contact_ids"}},
-        {"contact_long_name",{"contact_long_name", "contact_long_names"}}
+        {"contact_long_name",{"contact_long_name", "contact_long_names"}},
+        {"branch_length",{"branch_length", "branch_lengths"}}
     };
 
     auto iterator = m_topology_attribute_variables.end();
