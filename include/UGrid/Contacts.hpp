@@ -45,7 +45,7 @@ namespace ugrid
         }
 
         /// @brief Constructor setting nc_file and all internal state
-        /// @param nc_file The nc file pointer
+        /// @param nc_file The NcFile file pointer
         /// @param entity_name The contacts name
         /// @param entity_attributes The topological attributes (key value pair with key the topological attribute name and value the associated vector of variables)
         /// @param entity_attribute_names The topological attributes names (key value pair with key the topological attribute name and value the associated vector of variables names)
@@ -55,26 +55,7 @@ namespace ugrid
             netCDF::NcVar const& topology_variable,
             std::map<std::string, std::vector<netCDF::NcVar>> const& entity_attributes,
             std::map<std::string, std::vector<std::string>> const& entity_attribute_names,
-            std::map<UGridDimensions, netCDF::NcDim> const& entity_dimensions
-        )
-            : UGridEntity(nc_file, topology_variable, entity_attributes, entity_attribute_names, entity_dimensions)
-        {
-            // Get the name from the tokens, remove colon at the end
-            m_mesh_from_name = m_topology_attributes_names.at("contact").at(0);
-            if (m_mesh_from_name.back() == ':')
-            {
-                m_mesh_from_name.pop_back();
-            }
-            m_mesh_to_name = m_topology_attributes_names.at("contact").at(2);
-
-            if (m_mesh_to_name.back() == ':')
-            {
-                m_mesh_to_name.pop_back();
-            }
-
-            m_mesh_from_location = from_location_string_to_location(m_topology_attributes_names.at("contact").at(1));
-            m_mesh_to_location = from_location_string_to_location(m_topology_attributes_names.at("contact").at(3));
-        }
+            std::map<UGridDimensions, netCDF::NcDim> const& entity_dimensions);
 
         /// @brief Defines the contacts header (ug_write_mesh_arrays)
         /// @param contacts The contacts api structure with the fields to write and all optional flags  
@@ -95,30 +76,20 @@ namespace ugrid
         /// @brief Function containing the criteria to determine if a variable is a mesh topology contact
         /// @param attributes The file attributes
         /// @return True if is a mesh topology contact, false otherwise
-        static bool is_topology_variable(std::map<std::string, netCDF::NcVarAtt> const& attributes)
-        {
-            if (attributes.find("cf_role") == attributes.end())
-            {
-                return false;
-            }
+        static bool is_topology_variable(std::map<std::string, netCDF::NcVarAtt> const& attributes);
 
-            std::string attribute_name;
-            attributes.at("cf_role").getValues(attribute_name);
-
-            if (attribute_name != "mesh_topology_contact")
-            {
-                return false;
-            }
-
-            return true;
-        };
-
+        /// @brief A function to determine if a topology variable has a matching dimensionality
+        /// @param attributes [in] The variable attributes
+        /// @param entity_dimensionality [in] The sought dimensionality
+        /// @return If The topology variable has a matching functionality
         static bool has_matching_dimensionality(std::map<std::string, netCDF::NcVarAtt> const& attributes, int entity_dimensionality)
         {
             return true;
         }
 
-        static int get_dimensionality() { return 1; };
+        /// @brief Get the dimensionality of a Network1d
+        /// @return The dimensionality
+        static int get_dimensionality() { return 1; }
 
     private:
 

@@ -34,6 +34,50 @@
 
 using ugrid::Contacts;
 
+Contacts::Contacts(
+    std::shared_ptr<netCDF::NcFile> nc_file,
+    netCDF::NcVar const& topology_variable,
+    std::map<std::string, std::vector<netCDF::NcVar>> const& entity_attributes,
+    std::map<std::string, std::vector<std::string>> const& entity_attribute_names,
+    std::map<UGridDimensions, netCDF::NcDim> const& entity_dimensions
+)
+    : UGridEntity(nc_file, topology_variable, entity_attributes, entity_attribute_names, entity_dimensions)
+{
+    // Get the name from the tokens, remove colon at the end
+    m_mesh_from_name = m_topology_attributes_names.at("contact").at(0);
+    if (m_mesh_from_name.back() == ':')
+    {
+        m_mesh_from_name.pop_back();
+    }
+    m_mesh_to_name = m_topology_attributes_names.at("contact").at(2);
+
+    if (m_mesh_to_name.back() == ':')
+    {
+        m_mesh_to_name.pop_back();
+    }
+
+    m_mesh_from_location = from_location_string_to_location(m_topology_attributes_names.at("contact").at(1));
+    m_mesh_to_location = from_location_string_to_location(m_topology_attributes_names.at("contact").at(3));
+}
+
+bool Contacts::is_topology_variable(std::map<std::string, netCDF::NcVarAtt> const& attributes)
+{
+    if (attributes.find("cf_role") == attributes.end())
+    {
+        return false;
+    }
+
+    std::string attribute_name;
+    attributes.at("cf_role").getValues(attribute_name);
+
+    if (attribute_name != "mesh_topology_contact")
+    {
+        return false;
+    }
+
+    return true;
+}
+
 // ug_create_1d_mesh_v2
 // ug_def_mesh_ids
 void Contacts::define(ugridapi::Contacts const& contacts)
@@ -91,11 +135,11 @@ void Contacts::define(ugridapi::Contacts const& contacts)
     add_topology_attribute(topology_attribute);
 
     string_builder.clear(); string_builder << "_id";
-    topology_attribute = m_topology_variable.putAtt("contact_ids", string_builder.str());
+    topology_attribute = m_topology_variable.putAtt("contact_id", string_builder.str());
     add_topology_attribute(topology_attribute);
 
     string_builder.clear(); string_builder << "_long_name";
-    topology_attribute = m_topology_variable.putAtt("contact_long_names", string_builder.str());
+    topology_attribute = m_topology_variable.putAtt("contact_long_name", string_builder.str());
     add_topology_attribute(topology_attribute);
 
     m_nc_file->enddef();
@@ -107,6 +151,20 @@ void Contacts::put(ugridapi::Contacts const& contacts)
     {
         throw std::invalid_argument("Contacts::put invalid mesh name");
     }
+
+    if (auto const it = find_variable_with_aliases("contact_id"); contacts.contact_name_id != nullptr && it != m_topology_attribute_variables.end())
+    {
+        it->second.at(0).putVar(contacts.contact_name_id);
+    }
+    if (auto const it = find_variable_with_aliases("contact_long_name"); contacts.contact_name_long != nullptr && it != m_topology_attribute_variables.end())
+    {
+        it->second.at(0).putVar(contacts.contact_name_long);
+    }
+    if (auto const it = m_topology_attribute_variables.find("contact_type"); contacts.contact_type != nullptr && it != m_topology_attribute_variables.end())
+    {
+        it->second.at(0).putVar(contacts.contact_type);
+    }
+
 
     //if (contacts.branch_id != nullptr)
     //{

@@ -383,7 +383,7 @@ namespace ugridapi
             ugrid::Mesh2D mesh2d(ugrid_states[file_id].m_ncFile);
             mesh2d.define(mesh2d_api);
             ugrid_states[file_id].m_mesh2d.emplace_back(mesh2d);
-            topology_id = ugrid_states[file_id].m_mesh2d.size() - 1;
+            topology_id = ugrid_states[file_id].m_mesh2d.size() -1;
         }
         catch (...)
         {
