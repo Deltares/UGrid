@@ -40,7 +40,8 @@ namespace ugrid
         layer,
         layer_interface,
         vertical,
-        contact
+        contact,
+        invalid_location
     };
 
 

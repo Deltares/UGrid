@@ -126,7 +126,7 @@ TEST(ApiTest, DefineAndPut_OneMesh2D_ShouldWriteData)
 {
     // Prepare
     // Open a file
-    std::string const file_path = TEST_WRITE_FOLDER + "/OneMesh2DWrite.nc";
+    std::string const file_path = TEST_WRITE_FOLDER + "/Mesh2DWrite.nc";
     int file_id = 0;
     auto const file_mode = ugridapi::ug_file_replace_mode();
     auto error_code = ugridapi::ug_file_open(file_path.c_str(), file_mode, file_id);
@@ -322,7 +322,7 @@ TEST(ApiTest, InquireAndGet_AFileWithOneNetwork1D_ShouldReadNetwork1D)
 
 TEST(ApiTest, DefineAndPut_OneNetwork1D_ShouldWriteData)
 {
-    std::string const file_path = TEST_WRITE_FOLDER + "/OneNetwork1DWrite.nc";
+    std::string const file_path = TEST_WRITE_FOLDER + "/Network1DWrite.nc";
 
     // Open a file
     int file_id = 0;
@@ -450,7 +450,7 @@ TEST(ApiTest, InquireAndGet_AFileWithOneMesh1D_ShouldReadMesh1D)
 
 TEST(ApiTest, DefineAndPut_OneMesh1D_ShouldWriteData)
 {
-    std::string const file_path = TEST_WRITE_FOLDER + "/OneMesh1DWrite.nc";
+    std::string const file_path = TEST_WRITE_FOLDER + "/Mesh1DWrite.nc";
 
     // Open a file
     int file_id = 0;
@@ -635,7 +635,7 @@ TEST(ApiTest, InquireAndGet_AFileWithOneContact_ShouldReadContact)
 
 TEST(ApiTest, DefineAndPut_AFileWithOneContact_ShouldWriteAContact)
 {
-    std::string const file_path = TEST_WRITE_FOLDER + "/OneMesh1DWrite.nc";
+    std::string const file_path = TEST_WRITE_FOLDER + "/ContactsWrite.nc";
 
     // Open a file
     int file_id = 0;

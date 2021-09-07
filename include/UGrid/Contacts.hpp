@@ -93,10 +93,10 @@ namespace ugrid
 
     private:
 
-        std::string m_mesh_from_name;
-        std::string m_mesh_to_name;
-        UGridEntityLocations m_mesh_from_location;
-        UGridEntityLocations m_mesh_to_location;
+        std::string m_mesh_from_name = "";
+        std::string m_mesh_to_name = "";
+        UGridEntityLocations m_mesh_from_location = UGridEntityLocations::invalid_location;
+        UGridEntityLocations m_mesh_to_location = UGridEntityLocations::invalid_location;
 
     };
 } // namespace ugrid

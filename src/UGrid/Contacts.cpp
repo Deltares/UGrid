@@ -130,17 +130,38 @@ void Contacts::define(ugridapi::Contacts const& contacts)
     topology_attribute = m_topology_variable.putAtt("contact", os.str());
     add_topology_attribute(topology_attribute);
 
+    // contact type
     string_builder.clear(); string_builder << "_contact_type";
     topology_attribute = m_topology_variable.putAtt("contact_type", string_builder.str());
     add_topology_attribute(topology_attribute);
 
+    auto topology_attribute_variable = m_nc_file->addVar(string_builder.str(), netCDF::NcType::nc_INT, { m_dimensions[UGridDimensions::nodes] });
+    topology_attribute_variable.setFill(true, -1);
+
+    std::vector<int> valid_range{ 3, 4 };
+    auto topology_attribute_variable_attribute = topology_attribute_variable.putAtt("valid_range", netCDF::NcType::nc_INT, 2, &valid_range[0]);
+    std::vector<int> flag_values{ 3, 4 };
+    topology_attribute_variable_attribute = topology_attribute_variable.putAtt("flag_values", netCDF::NcType::nc_INT, 2, &flag_values[0]);
+    topology_attribute_variable_attribute = topology_attribute_variable.putAtt("flag_meanings", "lateral_1d2d_link longitudinal_1d2d_link");
+    add_topology_attribute_variable(topology_attribute, topology_attribute_variable);
+
+    // contact id
     string_builder.clear(); string_builder << "_id";
     topology_attribute = m_topology_variable.putAtt("contact_id", string_builder.str());
     add_topology_attribute(topology_attribute);
 
+    topology_attribute_variable = m_nc_file->addVar(string_builder.str(), netCDF::NcType::nc_CHAR, { m_dimensions[UGridDimensions::nodes],m_dimensions[UGridDimensions::ids] });
+    topology_attribute_variable_attribute = topology_attribute_variable.putAtt("long_name", "ids of the contacts");
+    add_topology_attribute_variable(topology_attribute, topology_attribute_variable);
+
+    // contact long names
     string_builder.clear(); string_builder << "_long_name";
     topology_attribute = m_topology_variable.putAtt("contact_long_name", string_builder.str());
     add_topology_attribute(topology_attribute);
+
+    topology_attribute_variable = m_nc_file->addVar(string_builder.str(), netCDF::NcType::nc_CHAR, { m_dimensions[UGridDimensions::nodes],m_dimensions[UGridDimensions::long_names] });
+    topology_attribute_variable_attribute = topology_attribute_variable.putAtt("long_name", "long names of the contacts");
+    add_topology_attribute_variable(topology_attribute, topology_attribute_variable);
 
     m_nc_file->enddef();
 }
@@ -151,7 +172,10 @@ void Contacts::put(ugridapi::Contacts const& contacts)
     {
         throw std::invalid_argument("Contacts::put invalid mesh name");
     }
-
+    if (contacts.edges != nullptr)
+    {
+        m_topology_variable.putVar(contacts.edges);
+    }
     if (auto const it = find_variable_with_aliases("contact_id"); contacts.contact_name_id != nullptr && it != m_topology_attribute_variables.end())
     {
         it->second.at(0).putVar(contacts.contact_name_id);
@@ -164,28 +188,6 @@ void Contacts::put(ugridapi::Contacts const& contacts)
     {
         it->second.at(0).putVar(contacts.contact_type);
     }
-
-
-    //if (contacts.branch_id != nullptr)
-    //{
-    //    m_topology_attribute_variables.at("node_coordinates").at(0).putVar(contacts.branch_id);
-    //}
-    //if (contacts.branch_offset != nullptr)
-    //{
-    //    m_topology_attribute_variables.at("node_coordinates").at(1).putVar(contacts.branch_offset);
-    //}
-    //if (contacts.node_name_id != nullptr)
-    //{
-    //    m_topology_attribute_variables.at("node_name_id").at(0).putVar(contacts.node_name_id);
-    //}
-    //if (contacts.node_name_long != nullptr)
-    //{
-    //    m_topology_attribute_variables.at("node_name_long").at(0).putVar(contacts.node_name_long);
-    //}
-    //if (contacts.branch_node != nullptr)
-    //{
-    //    m_topology_attribute_variables.at("edge_node_connectivity").at(0).putVar(contacts.branch_node);
-    //}
 }
 
 void Contacts::inquire(ugridapi::Contacts& contacts) const
