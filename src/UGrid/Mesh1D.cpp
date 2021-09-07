@@ -170,22 +170,18 @@ void Mesh1D::put(ugridapi::Mesh1D const& mesh1d)
     {
         throw std::invalid_argument("Mesh1D::put invalid mesh name");
     }
-
     if (auto const it = m_topology_attribute_variables.find("node_coordinates"); mesh1d.branch_id != nullptr && it != m_topology_attribute_variables.end())
     {
         it->second.at(0).putVar(mesh1d.branch_id);
     }
-
     if (auto const it = m_topology_attribute_variables.find("node_coordinates"); mesh1d.branch_offset != nullptr && it != m_topology_attribute_variables.end())
     {
         it->second.at(1).putVar(mesh1d.branch_offset);
     }
-
     if (auto const it = m_topology_attribute_variables.find("node_name_id"); mesh1d.node_name_id != nullptr && it != m_topology_attribute_variables.end())
     {
         it->second.at(0).putVar(mesh1d.node_name_id);
     }
-
     if (auto const it = m_topology_attribute_variables.find("node_name_long"); mesh1d.node_name_long != nullptr && it != m_topology_attribute_variables.end())
     {
         it->second.at(0).putVar(mesh1d.node_name_long);

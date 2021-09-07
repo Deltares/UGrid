@@ -132,9 +132,9 @@ void Contacts::put(ugridapi::Contacts const& contacts)
 
 void Contacts::inquire(ugridapi::Contacts& contacts) const
 {
-    if (m_topology_attribute_variables.find("contact_type") != m_topology_attribute_variables.end())
+    if (auto const it = m_topology_attribute_variables.find("contact_type"); it != m_topology_attribute_variables.end())
     {
-        contacts.num_contacts = m_topology_attribute_variables.at("contact_type").at(0).getDim(0).getSize();
+        contacts.num_contacts = it->second.at(0).getDim(0).getSize();
     }
 }
 
@@ -151,20 +151,18 @@ void Contacts::get(ugridapi::Contacts& contacts) const
         m_topology_variable.getVar(contacts.edges);
     }
 
-    if (contacts.contact_name_id != nullptr)
+    if (auto const it = find_variable_with_aliases("contact_id"); contacts.contact_name_id != nullptr && it != m_topology_attribute_variables.end())
     {
-        auto const map_iterator = find_variable_with_aliases("contact_id");
-        map_iterator->second.at(0).getVar(contacts.contact_name_id);
+        it->second.at(0).getVar(contacts.contact_name_id);
     }
 
-    if (contacts.contact_name_long != nullptr)
+    if (auto const it = find_variable_with_aliases("contact_long_name"); contacts.contact_name_long != nullptr && it != m_topology_attribute_variables.end())
     {
-        auto const map_iterator = find_variable_with_aliases("contact_long_name");
-        map_iterator->second.at(0).getVar(contacts.contact_name_long);
+        it->second.at(0).getVar(contacts.contact_name_long);
     }
 
-    if (contacts.contact_type != nullptr)
+    if (auto const it = m_topology_attribute_variables.find("contact_type"); contacts.contact_type != nullptr && it != m_topology_attribute_variables.end())
     {
-        m_topology_attribute_variables.at("contact_type").at(0).getVar(contacts.contact_type);
+        it->second.at(0).getVar(contacts.contact_type);
     }
 }
