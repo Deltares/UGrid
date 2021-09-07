@@ -108,13 +108,13 @@ void Contacts::put(ugridapi::Contacts const& contacts)
         throw std::invalid_argument("Contacts::put invalid mesh name");
     }
 
-    //if (contacts.node_edge_id != nullptr)
+    //if (contacts.branch_id != nullptr)
     //{
-    //    m_topology_attribute_variables.at("node_coordinates").at(0).putVar(contacts.node_edge_id);
+    //    m_topology_attribute_variables.at("node_coordinates").at(0).putVar(contacts.branch_id);
     //}
-    //if (contacts.node_edge_offset != nullptr)
+    //if (contacts.branch_offset != nullptr)
     //{
-    //    m_topology_attribute_variables.at("node_coordinates").at(1).putVar(contacts.node_edge_offset);
+    //    m_topology_attribute_variables.at("node_coordinates").at(1).putVar(contacts.branch_offset);
     //}
     //if (contacts.node_name_id != nullptr)
     //{

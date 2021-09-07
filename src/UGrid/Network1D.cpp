@@ -34,6 +34,43 @@
 
 using ugrid::Network1D;
 
+Network1D::Network1D(std::shared_ptr<netCDF::NcFile> nc_file) : UGridEntity(nc_file) {}
+
+Network1D::Network1D(std::shared_ptr<netCDF::NcFile> nc_file,
+    netCDF::NcVar const& topology_variable,
+    std::map<std::string, std::vector<netCDF::NcVar>> const& entity_attributes,
+    std::map<std::string, std::vector<std::string>> const& entity_attribute_names,
+    std::map<UGridDimensions, netCDF::NcDim> const& entity_dimensions) : UGridEntity(nc_file, topology_variable, entity_attributes, entity_attribute_names, entity_dimensions)
+
+{
+    // file variables and file dimensions
+    auto const file_variables = nc_file->getVars();
+    auto const file_dimensions = nc_file->getDims();
+
+    // find the network geometry
+    auto const entity_attribute_strings_iterator = entity_attribute_names.find("edge_geometry");
+    if (entity_attribute_strings_iterator == entity_attribute_names.end())
+    {
+        throw std::invalid_argument("Network1D::create " + entity_attribute_strings_iterator->first + " attribute in" + m_topology_variable.getName() + " can not be found");
+    }
+    auto const edge_geometry_variable_name = entity_attribute_strings_iterator->second.front();
+    auto const edge_geometry_variable_iterator = file_variables.find(edge_geometry_variable_name);
+    if (edge_geometry_variable_iterator == file_variables.end())
+    {
+        throw std::invalid_argument("Network1D::create " + edge_geometry_variable_name + " variable can not be found");
+    }
+
+    auto const network_geometry_variable = edge_geometry_variable_iterator->second;
+    auto const [edge_geometry_attribute_variables, edge_geometry_attribute_names, edge_geometry_entity_dimensions] =
+        get_ugrid_entity(network_geometry_variable, file_dimensions, file_variables);
+
+    m_network_geometry_variable = network_geometry_variable;
+    m_network_geometry_attribute_variables = edge_geometry_attribute_variables;
+    m_network_geometry_attributes_names = edge_geometry_attribute_names;
+    m_network_geometry_dimensions = edge_geometry_entity_dimensions;
+
+}
+
 void Network1D::define(ugridapi::Network1d const& network1d)
 {
     if (network1d.name == nullptr)
@@ -181,7 +218,6 @@ void Network1D::put(ugridapi::Network1d const& network1d)
         throw std::invalid_argument("Network1D::put invalid mesh name");
     }
 
-    // Nodes
     if (auto const it = m_topology_attribute_variables.find("node_coordinates"); network1d.node_x != nullptr && it != m_topology_attribute_variables.end())
     {
         it->second.at(0).putVar(network1d.node_x);
@@ -247,10 +283,9 @@ void Network1D::inquire(ugridapi::Network1d& network1d) const
         network1d.num_edges = m_dimensions.at(UGridDimensions::edges).getSize();
     }
     // get network dimensions
-    auto const it = m_network_geometry_attribute_variables.find("node_coordinates");
-    if (it != m_network_geometry_attribute_variables.end())
+    if (auto const it = m_network_geometry_attribute_variables.find("node_coordinates"); it != m_network_geometry_attribute_variables.end())
     {
-        network1d.num_geometry_nodes = it->second.at(0).getDim(0).getSize();;
+        network1d.num_geometry_nodes = it->second.at(0).getDim(0).getSize();
     }
 }
 
@@ -312,4 +347,19 @@ void Network1D::get(ugridapi::Network1d& network1d) const
     {
         it->second.at(1).getVar(network1d.geometry_nodes_y);
     }
+}
+
+bool Network1D::is_topology_variable(std::map<std::string, netCDF::NcVarAtt> const& attributes)
+{
+    if (attributes.find("cf_role") == attributes.end())
+    {
+        return false;
+    }
+
+    if (attributes.find("edge_geometry") == attributes.end())
+    {
+        return false;
+    }
+    return true;
+
 }

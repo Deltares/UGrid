@@ -49,10 +49,10 @@ namespace ugridapi
         int* edge_node = nullptr;
 
         /// @brief The id of the network edge (branch) where every node lies
-        int* node_edge_id = nullptr;
+        int* branch_id = nullptr;
 
         /// @brief The offset of each node on the network edge (branch)
-        double* node_edge_offset = nullptr;
+        double* branch_offset = nullptr;
 
         /// @brief The node name  
         char* node_name_id = nullptr;

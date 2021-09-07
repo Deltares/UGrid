@@ -42,10 +42,7 @@ namespace ugrid
     {
         /// @brief Constructor setting the NetCDF file
         /// @param nc_file The NetCDF file pointer
-        explicit Mesh1D(
-            std::shared_ptr<netCDF::NcFile> nc_file) : UGridEntity(nc_file)
-        {
-        }
+        explicit Mesh1D(std::shared_ptr<netCDF::NcFile> nc_file);
 
         /// @brief Constructor setting nc_file and all internal state
         /// @param nc_file The nc file pointer
@@ -53,16 +50,12 @@ namespace ugrid
         /// @param entity_attributes The topological attributes (key value pair with key the topological attribute name and value the associated vector of variables)
         /// @param entity_attribute_names The topological attributes names (key value pair with key the topological attribute name and value the associated vector of variables names)
         /// @param entity_dimensions The dimensions associated with the mesh1d (key value pair with key the dimension enumeration and value the associated NetCDF dimension)
-        explicit Mesh1D(
-            std::shared_ptr<netCDF::NcFile> nc_file,
+        explicit Mesh1D(std::shared_ptr<netCDF::NcFile> nc_file,
             netCDF::NcVar const& topology_variable,
             std::map<std::string, std::vector<netCDF::NcVar>> const& entity_attributes,
             std::map<std::string, std::vector<std::string>> const& entity_attribute_names,
             std::map<UGridDimensions, netCDF::NcDim> const& entity_dimensions
-        )
-            : UGridEntity(nc_file, topology_variable, entity_attributes, entity_attribute_names, entity_dimensions)
-        {
-        }
+        );
 
         /// @brief Defines the mesh1d header (ug_write_mesh_arrays)
         /// @param mesh1d The mesh1d api structure with the fields to write and all optional flags  
@@ -80,7 +73,9 @@ namespace ugrid
         /// @param mesh1d The mesh1d api structure with the fields where to assign the data
         void get(ugridapi::Mesh1D& mesh1d) const;
 
-        static int get_dimensionality() { return 1; };
+        /// @brief Get the dimensionality of a Mesh1d
+        /// @return The dimensionality
+        static int get_dimensionality() { return 1; }
 
     };
 } // namespace ugrid

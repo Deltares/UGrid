@@ -408,10 +408,10 @@ TEST(ApiTest, InquireAndGet_AFileWithOneMesh1D_ShouldReadMesh1D)
     mesh1d.network_name = network_name.get();
 
     std::unique_ptr<int> const branch_id(new int[mesh1d.num_nodes]);
-    mesh1d.node_edge_id = branch_id.get();
+    mesh1d.branch_id = branch_id.get();
 
     std::unique_ptr<double> const branch_offset(new double[mesh1d.num_nodes]);
-    mesh1d.node_edge_offset = branch_offset.get();
+    mesh1d.branch_offset = branch_offset.get();
 
     std::unique_ptr<int> const edge_nodes(new int[mesh1d.num_edges * 2]);
     mesh1d.edge_node = edge_nodes.get();
@@ -467,14 +467,14 @@ TEST(ApiTest, DefineAndPut_OneMesh1D_ShouldWriteData)
     mesh1d.network_name = network_name.get();
 
     std::unique_ptr<int> const node_branch_id(new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
-    mesh1d.node_edge_id = node_branch_id.get();
+    mesh1d.branch_id = node_branch_id.get();
 
     std::unique_ptr<double> const node_branch_offset(new double[] {
         0, 49.65, 99.29, 148.92, 198.54, 248.09,
             297.62, 347.15, 396.66, 446.19, 495.8, 545.44, 595.08, 644.63, 694.04,
             743.52, 793.07, 842.65, 892.26, 941.89, 991.53, 1041.17, 1090.82,
             1140.46, 1165.29 });
-    mesh1d.node_edge_offset = node_branch_offset.get();
+    mesh1d.branch_offset = node_branch_offset.get();
 
     mesh1d.num_nodes = 25;
     mesh1d.num_edges = 24;
