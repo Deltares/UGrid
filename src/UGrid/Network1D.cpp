@@ -71,7 +71,7 @@ Network1D::Network1D(std::shared_ptr<netCDF::NcFile> nc_file,
 
 }
 
-void Network1D::define(ugridapi::Network1d const& network1d)
+void Network1D::define(ugridapi::Network1D const& network1d)
 {
     if (network1d.name == nullptr)
     {
@@ -118,10 +118,10 @@ void Network1D::define(ugridapi::Network1d const& network1d)
         add_topology_attribute_variable(topology_attribute, topology_attribute_variable);
     }
 
-    if (network1d.num_edges > 0)
+    if (network1d.num_branches > 0)
     {
         string_builder.clear(); string_builder << "_nEdges";
-        m_dimensions.insert({ UGridDimensions::edges, m_nc_file->addDim(string_builder.str(), network1d.num_edges) });
+        m_dimensions.insert({ UGridDimensions::edges, m_nc_file->addDim(string_builder.str(), network1d.num_branches) });
         auto topology_attribute = m_topology_variable.putAtt("edge_dimension", string_builder.str());
         add_topology_attribute(topology_attribute);
 
@@ -211,7 +211,7 @@ void Network1D::define(ugridapi::Network1d const& network1d)
     m_nc_file->enddef();
 }
 
-void Network1D::put(ugridapi::Network1d const& network1d)
+void Network1D::put(ugridapi::Network1D const& network1d)
 {
     if (network1d.name == nullptr)
     {
@@ -272,7 +272,7 @@ void Network1D::put(ugridapi::Network1d const& network1d)
     }
 }
 
-void Network1D::inquire(ugridapi::Network1d& network1d) const
+void Network1D::inquire(ugridapi::Network1D& network1d) const
 {
     if (m_dimensions.find(UGridDimensions::nodes) != m_dimensions.end())
     {
@@ -280,7 +280,7 @@ void Network1D::inquire(ugridapi::Network1d& network1d) const
     }
     if (m_dimensions.find(UGridDimensions::edges) != m_dimensions.end())
     {
-        network1d.num_edges = m_dimensions.at(UGridDimensions::edges).getSize();
+        network1d.num_branches = m_dimensions.at(UGridDimensions::edges).getSize();
     }
     // get network dimensions
     if (auto const it = m_network_geometry_attribute_variables.find("node_coordinates"); it != m_network_geometry_attribute_variables.end())
@@ -289,10 +289,10 @@ void Network1D::inquire(ugridapi::Network1d& network1d) const
     }
 }
 
-void Network1D::get(ugridapi::Network1d& network1d) const
+void Network1D::get(ugridapi::Network1D& network1d) const
 {
 
-    fill_char_array_with_string_values(network1d.name, m_entity_name);
+    fill_char_array_with_string_values(network1d.name, m_entity_name, name_lengths);
 
     if (auto const it = m_topology_attribute_variables.find("node_coordinates"); network1d.node_x != nullptr && it != m_topology_attribute_variables.end())
     {

@@ -54,7 +54,7 @@ TEST(ApiTest, InquireAndGet_AFileWithOneMesh2d_ShouldReadMesh2d)
 
     // Assert
     std::string mesh_name(mesh2d.name);
-    ASSERT_EQ(mesh_name, "mesh2d");
+    ASSERT_EQ(mesh_name, "mesh2d                                 ");
     std::vector<double> node_x_vector(node_x.get(), node_x.get() + mesh2d.num_nodes);
     std::vector<double> node_x_expected{ 0, 1, 0, 1, 0, 1, 0, 1, 2, 2, 2, 2, 3, 3, 3, 3 };
     ASSERT_THAT(node_x_vector, ::testing::ContainerEq(node_x_expected));
@@ -222,7 +222,7 @@ TEST(ApiTest, InquireAndGet_AFileWithOneNetwork1D_ShouldReadNetwork1D)
     ASSERT_EQ(num_topologies, 1);
 
     // get the dimensions 
-    ugridapi::Network1d network1d;
+    ugridapi::Network1D network1d;
     error_code = ug_network1d_inq(file_id, 0, network1d);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
@@ -236,7 +236,7 @@ TEST(ApiTest, InquireAndGet_AFileWithOneNetwork1D_ShouldReadNetwork1D)
     std::unique_ptr<double> const node_y(new double[network1d.num_nodes]);
     network1d.node_y = node_y.get();
 
-    std::unique_ptr<int> const edge_nodes(new int[network1d.num_edges * 2]);
+    std::unique_ptr<int> const edge_nodes(new int[network1d.num_branches * 2]);
     network1d.branch_node = edge_nodes.get();
 
     std::unique_ptr<double> const geometry_nodes_x(new double[network1d.num_geometry_nodes]);
@@ -257,7 +257,7 @@ TEST(ApiTest, InquireAndGet_AFileWithOneNetwork1D_ShouldReadNetwork1D)
     std::unique_ptr<char> const branch_long_name(new char[long_names_length * network1d.num_nodes]);
     network1d.branch_name_long = branch_long_name.get();
 
-    std::unique_ptr<double> const branch_lengths(new double[network1d.num_edges]);
+    std::unique_ptr<double> const branch_lengths(new double[network1d.num_branches]);
     network1d.branch_length = branch_lengths.get();
 
     // get the data
@@ -276,9 +276,9 @@ TEST(ApiTest, InquireAndGet_AFileWithOneNetwork1D_ShouldReadNetwork1D)
 
     }
 
-    std::string branch_ids_string(branch_id.get(), branch_id.get() + name_length * network1d.num_edges);
-    std::string branch_long_names_string(branch_long_name.get(), branch_long_name.get() + long_names_length * network1d.num_edges);
-    for (auto i = 0; i < network1d.num_edges; ++i)
+    std::string branch_ids_string(branch_id.get(), branch_id.get() + name_length * network1d.num_branches);
+    std::string branch_long_names_string(branch_long_name.get(), branch_long_name.get() + long_names_length * network1d.num_branches);
+    for (auto i = 0; i < network1d.num_branches; ++i)
     {
         std::string branch_id_string = branch_ids_string.substr(i * name_length, name_length);
         std::string branch_long_name_string = branch_long_names_string.substr(i * long_names_length, long_names_length);
@@ -294,7 +294,7 @@ TEST(ApiTest, InquireAndGet_AFileWithOneNetwork1D_ShouldReadNetwork1D)
     std::vector<double> node_y_vector_expected{ 27.48, 956.75 };
     ASSERT_THAT(node_y_vector, ::testing::ContainerEq(node_y_vector_expected));
 
-    std::vector<int> edge_nodes_vector(edge_nodes.get(), edge_nodes.get() + network1d.num_edges * 2);
+    std::vector<int> edge_nodes_vector(edge_nodes.get(), edge_nodes.get() + network1d.num_branches * 2);
     std::vector<int> edge_nodes_vector_expected{ 0,1 };
     ASSERT_THAT(edge_nodes_vector, ::testing::ContainerEq(edge_nodes_vector_expected));
 
@@ -310,7 +310,7 @@ TEST(ApiTest, InquireAndGet_AFileWithOneNetwork1D_ShouldReadNetwork1D)
         643.09, 692.6, 742.02, 790.79, 838.83, 886.28, 933.33, 980.17, 956.75 };
     ASSERT_THAT(geometry_nodes_y_vector, ::testing::ContainerEq(geometry_nodes_y_expected_vector));
 
-    std::vector<double> branch_lengths_vector(branch_lengths.get(), branch_lengths.get() + network1d.num_edges);
+    std::vector<double> branch_lengths_vector(branch_lengths.get(), branch_lengths.get() + network1d.num_branches);
     std::vector<double> branch_lengths_expected_vector{ 1165.29 };
     ASSERT_THAT(branch_lengths_vector, ::testing::ContainerEq(branch_lengths_expected_vector));
 
@@ -331,7 +331,7 @@ TEST(ApiTest, DefineAndPut_OneNetwork1D_ShouldWriteData)
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
     // Fill data 
-    ugridapi::Network1d network1d;
+    ugridapi::Network1D network1d;
     std::unique_ptr<char> const name(new char[] {"network1d"});
     network1d.name = name.get();
     std::unique_ptr<double> const node_x(new double[] { 293.78, 538.89 });
@@ -341,7 +341,7 @@ TEST(ApiTest, DefineAndPut_OneNetwork1D_ShouldWriteData)
     network1d.num_nodes = 2;
     std::unique_ptr<int> const edge_nodes(new int[] { 0, 1});
     network1d.branch_node = edge_nodes.get();
-    network1d.num_edges = 1;
+    network1d.num_branches = 1;
     std::unique_ptr<double> const geometry_nodes_x(new double[] { 293.78, 278.97, 265.31, 254.17, 247.44, 248.3, 259.58,
         282.24, 314.61, 354.44, 398.94, 445, 490.6, 532.84, 566.64, 589.08,
         600.72, 603.53, 599.27, 590.05, 577.56, 562.97, 547.12, 530.67, 538.89 });
@@ -442,10 +442,10 @@ TEST(ApiTest, InquireAndGet_AFileWithOneMesh1D_ShouldReadMesh1D)
     }
 
     std::string network_name_string(mesh1d.network_name);
-    ASSERT_EQ("network", network_name_string);
+    ASSERT_EQ("network                                ", network_name_string);
 
     std::string mesh1d_name_string(mesh1d.name);
-    ASSERT_EQ("1dmesh", mesh1d_name_string);
+    ASSERT_EQ("1dmesh                                 ", mesh1d_name_string);
 }
 
 TEST(ApiTest, DefineAndPut_OneMesh1D_ShouldWriteData)
@@ -583,10 +583,10 @@ TEST(ApiTest, InquireAndGet_AFileWithOneContact_ShouldReadContact)
 
     // Asserts
     std::string mesh_from_name_string(contacts.mesh_from_name);
-    ASSERT_EQ("mesh2d", mesh_from_name_string);
+    ASSERT_EQ("mesh2d                                 ", mesh_from_name_string);
 
     std::string mesh_to_name_string(contacts.mesh_to_name);
-    ASSERT_EQ("1dmesh", mesh_to_name_string);
+    ASSERT_EQ("1dmesh                                 ", mesh_to_name_string);
 
     std::string contacts_ids_string(contact_name_id.get(), contact_name_id.get() + name_length * contacts.num_contacts);
     std::string contacts_long_names_string(contact_name_long.get(), contact_name_long.get() + long_names_length * contacts.num_contacts);

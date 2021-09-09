@@ -87,7 +87,7 @@ namespace ugrid
             return true;
         }
 
-        /// @brief Get the dimensionality of a Network1d
+        /// @brief Get the dimensionality of a Network1D
         /// @return The dimensionality
         static int get_dimensionality() { return 1; }
 

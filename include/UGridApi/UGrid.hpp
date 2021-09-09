@@ -148,28 +148,28 @@ namespace ugridapi
         /// @param network1d_api [in] The structure containing the network data
         /// @param topology_id [out] The id of the newly created network topology 
         /// @return Error code
-        UGRID_API int ug_network1d_def(int file_id, Network1d const& network1d_api, int& topology_id);
+        UGRID_API int ug_network1d_def(int file_id, Network1D const& network1d_api, int& topology_id);
 
         /// @brief Writes the network1d geometrical data to file 
         /// @param file_id [in] The file id 
         /// @param topology_id [in] The topology id
         /// @param network1d_api [in] The structure containing the network data 
         /// @return Error code
-        UGRID_API int ug_network1d_put(int file_id, int topology_id, Network1d const& network1d_api);
+        UGRID_API int ug_network1d_put(int file_id, int topology_id, Network1D const& network1d_api);
 
         /// @brief Inquires the network1d dimensions and names
         /// @param file_id [in] The file id 
         /// @param topology_id [in] The topology id 
         /// @param network1d_api [out] The structure containing the network data  
         /// @return Error code 
-        UGRID_API int ug_network1d_inq(int file_id, int topology_id, Network1d& network1d_api);
+        UGRID_API int ug_network1d_inq(int file_id, int topology_id, Network1D& network1d_api);
 
         /// @brief Gets the network1d geometrical data
         /// @param file_id [in] The file id 
         /// @param topology_id [in] The topology id 
         /// @param network1d_api [out] The structure containing the network data   
         /// @return Error code 
-        UGRID_API int ug_network1d_get(int file_id, int topology_id, Network1d& network1d_api);
+        UGRID_API int ug_network1d_get(int file_id, int topology_id, Network1D& network1d_api);
 
         /// @brief Defines a new mesh1d topology
         /// @param file_id [in] The file id 

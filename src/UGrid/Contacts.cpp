@@ -200,11 +200,11 @@ void Contacts::inquire(ugridapi::Contacts& contacts) const
 
 void Contacts::get(ugridapi::Contacts& contacts) const
 {
-    fill_char_array_with_string_values(contacts.name, m_entity_name);
+    fill_char_array_with_string_values(contacts.name, m_entity_name, name_lengths);
 
-    fill_char_array_with_string_values(contacts.mesh_from_name, m_mesh_from_name);
+    fill_char_array_with_string_values(contacts.mesh_from_name, m_mesh_from_name, name_lengths);
 
-    fill_char_array_with_string_values(contacts.mesh_to_name, m_mesh_to_name);
+    fill_char_array_with_string_values(contacts.mesh_to_name, m_mesh_to_name, name_lengths);
 
     if (contacts.edges != nullptr)
     {

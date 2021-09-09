@@ -65,7 +65,7 @@ namespace ugridapi
         }
     }
 
-    UGRID_API int mkernel_get_error(const char*& error_message)
+    UGRID_API int ug_error_get(const char*& error_message)
     {
         error_message = exceptionMessage;
         return Success;
@@ -217,7 +217,7 @@ namespace ugridapi
         return exit_code;
     }
 
-    UGRID_API int ug_network1d_def(int file_id, Network1d const& network1d_api, int& topology_id)
+    UGRID_API int ug_network1d_def(int file_id, Network1D const& network1d_api, int& topology_id)
     {
         int exit_code = Success;
         try
@@ -239,7 +239,7 @@ namespace ugridapi
         return exit_code;
     }
 
-    UGRID_API int ug_network1d_put(int file_id, int topology_id, Network1d const& network1d_api)
+    UGRID_API int ug_network1d_put(int file_id, int topology_id, Network1D const& network1d_api)
     {
         int exit_code = Success;
         try
@@ -258,7 +258,7 @@ namespace ugridapi
         return exit_code;
     }
 
-    UGRID_API int ug_network1d_inq(int file_id, int topology_id, Network1d& network1d_api)
+    UGRID_API int ug_network1d_inq(int file_id, int topology_id, Network1D& network1d_api)
     {
         int exit_code = Success;
         try
@@ -277,7 +277,7 @@ namespace ugridapi
         return exit_code;
     }
 
-    UGRID_API int ug_network1d_get(int file_id, int topology_id, Network1d& network1d_api)
+    UGRID_API int ug_network1d_get(int file_id, int topology_id, Network1D& network1d_api)
     {
         int exit_code = Success;
         try
@@ -383,7 +383,7 @@ namespace ugridapi
             ugrid::Mesh2D mesh2d(ugrid_states[file_id].m_ncFile);
             mesh2d.define(mesh2d_api);
             ugrid_states[file_id].m_mesh2d.emplace_back(mesh2d);
-            topology_id = ugrid_states[file_id].m_mesh2d.size() -1;
+            topology_id = ugrid_states[file_id].m_mesh2d.size() - 1;
         }
         catch (...)
         {

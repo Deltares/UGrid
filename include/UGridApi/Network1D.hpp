@@ -29,7 +29,7 @@
 
 namespace ugridapi
 {
-    struct Network1d
+    struct Network1D
     {
         /// @brief The name of the network
         char* name = nullptr;
@@ -74,7 +74,7 @@ namespace ugridapi
         int num_nodes = 0;
 
         /// @brief The number of network1d edges
-        int num_edges = 0;
+        int num_branches = 0;
 
         /// @brief 1 if coordinates are in a spherical system, 0 otherwise 
         int is_spherical = 0;

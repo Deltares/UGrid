@@ -206,10 +206,10 @@ void Mesh1D::inquire(ugridapi::Mesh1D& mesh1d) const
 
 void Mesh1D::get(ugridapi::Mesh1D& mesh1d) const
 {
-    fill_char_array_with_string_values(mesh1d.name, m_entity_name);
+    fill_char_array_with_string_values(mesh1d.name, m_entity_name, name_lengths);
 
     auto const network_name = m_topology_attributes_names.at("coordinate_space").at(0);
-    fill_char_array_with_string_values(mesh1d.network_name, network_name);
+    fill_char_array_with_string_values(mesh1d.network_name, network_name, name_lengths);
 
     if (auto const it = m_topology_attribute_variables.find("node_coordinates"); mesh1d.branch_id != nullptr && it != m_topology_attribute_variables.end())
     {

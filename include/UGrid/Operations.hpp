@@ -218,7 +218,7 @@ namespace ugrid
         }
     }
 
-    static void fill_char_array_with_string_values(char* char_array, std::string const& value)
+    static void fill_char_array_with_string_values(char* char_array, std::string const& value, size_t len)
     {
         if (char_array != nullptr && !value.empty())
         {
@@ -226,7 +226,11 @@ namespace ugrid
             {
                 char_array[i] = value[i];
             }
-            char_array[value.size()] = '\0';
+            for (auto i = value.size(); i < len - 1; ++i)
+            {
+                char_array[i] = ' ';
+            }
+            char_array[len - 1] = '\0';
         }
     }
 

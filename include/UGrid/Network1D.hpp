@@ -57,26 +57,26 @@ namespace ugrid
 
         /// @brief Defines the network1d header (ug_create_1d_network_v1)
         /// @param mesh2d The network1d api structure with the fields to write and all optional flags  
-        void define(ugridapi::Network1d const& mesh2d);
+        void define(ugridapi::Network1D const& mesh2d);
 
         /// @brief Writes a network1d to file
         /// @param mesh2d network1d The mesh2d api structure with the fields to write and all optional flags  
-        void put(ugridapi::Network1d const& mesh2d);
+        void put(ugridapi::Network1D const& mesh2d);
 
         /// @brief Inquires the network1d dimensions
         /// @param mesh2d The network1d api structure with the fields where to assign the dimensions
-        void inquire(ugridapi::Network1d& mesh2d) const;
+        void inquire(ugridapi::Network1D& mesh2d) const;
 
         /// @brief Inquires the network1d arrays
         /// @param mesh2d The network1d api structure with the fields where to assign the data
-        void get(ugridapi::Network1d& mesh2d) const;
+        void get(ugridapi::Network1D& mesh2d) const;
 
         /// @brief A function to determine if a variable is a network variable
         /// @param attributes [in] The variable attributes
         /// @return True if the variable is a topology variable 
         static bool is_topology_variable(std::map<std::string, netCDF::NcVarAtt> const& attributes);
 
-        /// @brief Get the dimensionality of a Network1d
+        /// @brief Get the dimensionality of a Network1D
         /// @return The dimensionality
         static int get_dimensionality() { return 1; }
 

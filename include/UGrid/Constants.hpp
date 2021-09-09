@@ -68,8 +68,8 @@ namespace ugrid
         lon
     };
 
-    int const name_lengths = 40;
-    int const name_long_lengths = 80;
+    size_t const name_lengths = 40;
+    size_t const name_long_lengths = 80;
     int const int_invalid_value = std::numeric_limits<int>::max();
     double const double_invalid_value = std::numeric_limits<double>::max();
 
