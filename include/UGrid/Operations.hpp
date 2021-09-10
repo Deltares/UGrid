@@ -220,19 +220,44 @@ namespace ugrid
 
     static void fill_char_array_with_string_values(char* char_array, std::string const& value, size_t len)
     {
-        if (char_array != nullptr && !value.empty())
+        if (char_array == nullptr || value.empty())
         {
-            for (auto i = 0; i < value.size(); ++i)
-            {
-                char_array[i] = value[i];
-            }
-            for (auto i = value.size(); i < len - 1; ++i)
-            {
-                char_array[i] = ' ';
-            }
-            char_array[len - 1] = '\0';
+            return;
         }
+        for (auto i = 0; i < value.size(); ++i)
+        {
+            char_array[i] = value[i];
+        }
+        for (auto i = value.size(); i < len - 1; ++i)
+        {
+            char_array[i] = ' ';
+        }
+        char_array[len - 1] = '\0';
+
     }
+
+
+    static std::string rtrim(const std::string& s)
+    {
+        size_t end = s.find_last_not_of(" \n\r\t\f\v");
+        return (end == std::string::npos) ? "" : s.substr(0, end + 1);
+    }
+
+
+    static std::string fill_string_with_char_array(char* char_array, size_t len)
+    {
+        std::string result(" ", len);
+        if (char_array == nullptr)
+        {
+            return result;
+        }
+        for (auto i = 0; i < len; ++i)
+        {
+            result[i] = char_array[i];
+        }
+        return rtrim(result);
+    }
+
 
 
 } // namespace ugrid

@@ -292,7 +292,7 @@ void UGridEntity::add_topology_attribute_variable(netCDF::NcVarAtt const& nc_var
 void UGridEntity::define(char* entity_name, int start_index, std::string const& long_name, int topology_dimension, int is_spherical)
 {
     m_start_index = start_index;
-    m_entity_name = std::string(entity_name);
+    m_entity_name = fill_string_with_char_array(entity_name, name_lengths);
     m_spherical_coordinates = is_spherical == 0 ? false : true;
 
     // Topology with some standard attributes

@@ -134,7 +134,7 @@ TEST(ApiTest, DefineAndPut_OneMesh2D_ShouldWriteData)
 
     // Fill data 
     ugridapi::Mesh2D mesh2d;
-    std::unique_ptr<char> const name(new char[] {"mesh2d"});
+    std::unique_ptr<char> const name(new char[] {"mesh2d                                  "});
     mesh2d.name = name.get();
     std::unique_ptr<double> const node_x(new double[] { 0, 1, 0, 1, 0, 1, 0, 1, 2, 2, 2, 2, 3, 3, 3, 3 });
 
@@ -236,8 +236,8 @@ TEST(ApiTest, InquireAndGet_AFileWithOneNetwork1D_ShouldReadNetwork1D)
     std::unique_ptr<double> const node_y(new double[network1d.num_nodes]);
     network1d.node_y = node_y.get();
 
-    std::unique_ptr<int> const edge_nodes(new int[network1d.num_branches * 2]);
-    network1d.branch_node = edge_nodes.get();
+    std::unique_ptr<int> const branch_node(new int[network1d.num_branches * 2]);
+    network1d.branch_node = branch_node.get();
 
     std::unique_ptr<double> const geometry_nodes_x(new double[network1d.num_geometry_nodes]);
     network1d.geometry_nodes_x = geometry_nodes_x.get();
@@ -264,7 +264,7 @@ TEST(ApiTest, InquireAndGet_AFileWithOneNetwork1D_ShouldReadNetwork1D)
     error_code = ug_network1d_get(file_id, 0, network1d);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
-    //// Assert
+    //// Asserts
     std::string node_ids_string(node_id.get(), node_id.get() + name_length * network1d.num_nodes);
     std::string node_long_names_string(node_long_name.get(), node_long_name.get() + long_names_length * network1d.num_nodes);
     for (auto i = 0; i < network1d.num_nodes; ++i)
@@ -294,7 +294,7 @@ TEST(ApiTest, InquireAndGet_AFileWithOneNetwork1D_ShouldReadNetwork1D)
     std::vector<double> node_y_vector_expected{ 27.48, 956.75 };
     ASSERT_THAT(node_y_vector, ::testing::ContainerEq(node_y_vector_expected));
 
-    std::vector<int> edge_nodes_vector(edge_nodes.get(), edge_nodes.get() + network1d.num_branches * 2);
+    std::vector<int> edge_nodes_vector(branch_node.get(), branch_node.get() + network1d.num_branches * 2);
     std::vector<int> edge_nodes_vector_expected{ 0,1 };
     ASSERT_THAT(edge_nodes_vector, ::testing::ContainerEq(edge_nodes_vector_expected));
 
@@ -332,15 +332,15 @@ TEST(ApiTest, DefineAndPut_OneNetwork1D_ShouldWriteData)
 
     // Fill data 
     ugridapi::Network1D network1d;
-    std::unique_ptr<char> const name(new char[] {"network1d"});
+    std::unique_ptr<char> const name(new char[] {"network1d                               "});
     network1d.name = name.get();
     std::unique_ptr<double> const node_x(new double[] { 293.78, 538.89 });
     network1d.node_x = node_x.get();
     std::unique_ptr<double> const node_y(new double[] { 27.48, 956.75 });
     network1d.node_y = node_y.get();
     network1d.num_nodes = 2;
-    std::unique_ptr<int> const edge_nodes(new int[] { 0, 1});
-    network1d.branch_node = edge_nodes.get();
+    std::unique_ptr<int> const branch_node(new int[] { 0, 1});
+    network1d.branch_node = branch_node.get();
     network1d.num_branches = 1;
     std::unique_ptr<double> const geometry_nodes_x(new double[] { 293.78, 278.97, 265.31, 254.17, 247.44, 248.3, 259.58,
         282.24, 314.61, 354.44, 398.94, 445, 490.6, 532.84, 566.64, 589.08,
@@ -460,10 +460,10 @@ TEST(ApiTest, DefineAndPut_OneMesh1D_ShouldWriteData)
 
     // Fill data 
     ugridapi::Mesh1D mesh1d;
-    std::unique_ptr<char> const name(new char[] {"mesh1d"});
+    std::unique_ptr<char> const name(new char[] {"mesh1d                                  "});
     mesh1d.name = name.get();
 
-    std::unique_ptr<char> const network_name(new char[] {"network1d"});
+    std::unique_ptr<char> const network_name(new char[] {"network1d                               "});
     mesh1d.network_name = network_name.get();
 
     std::unique_ptr<int> const node_branch_id(new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
@@ -648,10 +648,10 @@ TEST(ApiTest, DefineAndPut_AFileWithOneContact_ShouldWriteAContact)
     std::unique_ptr<char> const name(new char[] {"2d1dlinks"});
     contacts.name = name.get();
 
-    std::unique_ptr<char> const mesh_from_name(new char[] {"mesh2d"});
+    std::unique_ptr<char> const mesh_from_name(new char[] {"mesh2d                                 "});
     contacts.mesh_from_name = mesh_from_name.get();
 
-    std::unique_ptr<char> const mesh_to_name(new char[] {"1dmesh"});
+    std::unique_ptr<char> const mesh_to_name(new char[] {"mesh1d                                 "});
     contacts.mesh_to_name = mesh_to_name.get();
 
     contacts.mesh_from_location = ugridapi::ug_entity_get_face_location_enum();
