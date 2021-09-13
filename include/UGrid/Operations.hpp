@@ -218,7 +218,7 @@ namespace ugrid
         }
     }
 
-    static void fill_char_array_with_string_values(char* char_array, std::string const& value, size_t len)
+    static void string_to_char_array(char* char_array, std::string const& value, size_t len)
     {
         if (char_array == nullptr || value.empty())
         {
@@ -236,15 +236,13 @@ namespace ugrid
 
     }
 
-
-    static std::string rtrim(const std::string& s)
-    {
-        size_t end = s.find_last_not_of(" \n\r\t\f\v");
-        return (end == std::string::npos) ? "" : s.substr(0, end + 1);
+    static void rtrim(std::string& s) {
+        s.erase(std::find_if(s.rbegin(), s.rend(), [](auto& ch) {
+            return !std::isspace(ch);
+            }).base(), s.end());
     }
 
-
-    static std::string fill_string_with_char_array(char* char_array, size_t len)
+    static std::string char_array_to_string(char* char_array, size_t len)
     {
         std::string result(" ", len);
         if (char_array == nullptr)
@@ -255,7 +253,8 @@ namespace ugrid
         {
             result[i] = char_array[i];
         }
-        return rtrim(result);
+        rtrim(result);
+        return result;
     }
 
 

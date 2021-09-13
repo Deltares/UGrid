@@ -175,7 +175,7 @@ void Mesh2D::define(ugridapi::Mesh2D const& mesh2d)
             topology_attribute = m_topology_variable.putAtt("edge_face_connectivity", string_builder.str());
             add_topology_attribute(topology_attribute);
 
-            topology_attribute_variable = m_nc_file->addVar(string_builder.str(), netCDF::NcType::nc_INT, { m_dimensions[UGridDimensions::faces], m_dimensions[UGridDimensions::max_face_nodes] });
+            topology_attribute_variable = m_nc_file->addVar(string_builder.str(), netCDF::NcType::nc_INT, { m_dimensions[UGridDimensions::edges], m_dimensions[UGridDimensions::Two] });
             topology_attribute_variable_attribute = topology_attribute_variable.putAtt("cf_role", topology_attribute.getName());
             topology_attribute_variable_attribute = topology_attribute_variable.putAtt("long_name", "Neighboring faces of mesh edges");
             add_start_index(m_start_index, topology_attribute_variable, m_double_fill_value, m_int_fill_value);
@@ -281,7 +281,7 @@ void Mesh2D::inquire(ugridapi::Mesh2D& mesh2d) const
 
 void Mesh2D::get(ugridapi::Mesh2D& mesh2d) const
 {
-    fill_char_array_with_string_values(mesh2d.name, m_entity_name, name_lengths);
+    string_to_char_array(mesh2d.name, m_entity_name, name_lengths);
 
     if (auto const it = m_topology_attribute_variables.find("node_coordinates"); mesh2d.node_x != nullptr && it != m_topology_attribute_variables.end())
     {

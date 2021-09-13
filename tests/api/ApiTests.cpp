@@ -645,7 +645,7 @@ TEST(ApiTest, DefineAndPut_AFileWithOneContact_ShouldWriteAContact)
 
     // Fill data 
     ugridapi::Contacts contacts;
-    std::unique_ptr<char> const name(new char[] {"2d1dlinks"});
+    std::unique_ptr<char> const name(new char[] {"2d1dlinks                              "});
     contacts.name = name.get();
 
     std::unique_ptr<char> const mesh_from_name(new char[] {"mesh2d                                 "});

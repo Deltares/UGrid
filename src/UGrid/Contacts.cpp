@@ -88,19 +88,19 @@ void Contacts::define(ugridapi::Contacts const& contacts)
     }
     if (contacts.mesh_from_name == nullptr)
     {
-        throw std::invalid_argument("Contacts::define contacts mesh from name is empty");
+        throw std::invalid_argument("Contacts::define from mesh name is empty");
     }
     if (contacts.mesh_to_name == nullptr)
     {
-        throw std::invalid_argument("Contacts::define contacts mesh to name is empty");
-    }
-    if (contacts.num_contacts == 0)
-    {
-        throw std::invalid_argument("Contacts::define no contacts available");
+        throw std::invalid_argument("Contacts::define to mesh to name is empty");
     }
     if (contacts.name == nullptr)
     {
         throw std::invalid_argument("Mesh2D::define mesh name field is empty");
+    }
+    if (contacts.num_contacts == 0)
+    {
+        throw std::invalid_argument("Contacts::define no contacts available");
     }
     if (contacts.num_contacts < 0)
     {
@@ -108,6 +108,7 @@ void Contacts::define(ugridapi::Contacts const& contacts)
     }
 
     m_entity_name = std::string(contacts.name);
+    rtrim(m_entity_name);
 
     // Add additional dimensions, maybe required
     m_dimensions.insert({ UGridDimensions::ids, m_nc_file->addDim("strLengthIds", name_lengths) });
@@ -125,8 +126,13 @@ void Contacts::define(ugridapi::Contacts const& contacts)
 
     auto const mesh_from_location_string = from_location_integer_to_location_string(contacts.mesh_from_location);
     auto const mesh_to_location_string = from_location_integer_to_location_string(contacts.mesh_to_location);
+
     std::stringstream os;
-    os << std::string(contacts.mesh_from_name) << ": " << mesh_from_location_string << " " << std::string(contacts.mesh_to_name) << ": " << mesh_to_location_string;
+    auto mesh_from_name = std::string(contacts.mesh_from_name);
+    auto mesh_to_name = std::string(contacts.mesh_to_name);
+    rtrim(mesh_from_name);
+    rtrim(mesh_to_name);
+    os << mesh_from_name << ": " << mesh_from_location_string << " " << mesh_to_name << ": " << mesh_to_location_string;
     topology_attribute = m_topology_variable.putAtt("contact", os.str());
     add_topology_attribute(topology_attribute);
 
@@ -200,11 +206,11 @@ void Contacts::inquire(ugridapi::Contacts& contacts) const
 
 void Contacts::get(ugridapi::Contacts& contacts) const
 {
-    fill_char_array_with_string_values(contacts.name, m_entity_name, name_lengths);
+    string_to_char_array(contacts.name, m_entity_name, name_lengths);
 
-    fill_char_array_with_string_values(contacts.mesh_from_name, m_mesh_from_name, name_lengths);
+    string_to_char_array(contacts.mesh_from_name, m_mesh_from_name, name_lengths);
 
-    fill_char_array_with_string_values(contacts.mesh_to_name, m_mesh_to_name, name_lengths);
+    string_to_char_array(contacts.mesh_to_name, m_mesh_to_name, name_lengths);
 
     if (contacts.edges != nullptr)
     {

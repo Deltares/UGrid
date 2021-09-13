@@ -42,9 +42,6 @@ namespace ugridapi
         /// @brief The nodes composing each face
         int* face_node = nullptr;
 
-        /// @brief The number of nodes composing each face
-        int* nodes_per_face = nullptr;
-
         /// @brief The node x coordinates
         double* node_x = nullptr;
 
