@@ -48,10 +48,10 @@ namespace ugridapi
         /// @brief The edge node connectivity
         int* edge_node = nullptr;
 
-        /// @brief The id of the network edge (branch) where every node lies
+        /// @brief The network branch id where every node lies
         int* branch_id = nullptr;
 
-        /// @brief The offset of each node on the network edge (branch)
+        /// @brief The offset of each node on the network branch
         double* branch_offset = nullptr;
 
         /// @brief The node name  
@@ -60,10 +60,10 @@ namespace ugridapi
         /// @brief The node long name
         char* node_name_long = nullptr;
 
-        /// @brief The id of the network edge (branch) where every edge lies
+        /// @brief The network edge id where every edge lies
         int* edge_edge_id = nullptr;
 
-        /// @brief The offset of each edge on the network edge (branch)
+        /// @brief The offset of each edge on the network branch
         double* edge_edge_offset = nullptr;
 
         /// @brief The edge x coordinate
@@ -78,7 +78,7 @@ namespace ugridapi
         /// @brief The number of edges
         int num_edges = 0;
 
-        /// @brief 1 if coordinates are in a spherical system, 0 otherwise 
+        /// @brief 1 If coordinates are in a spherical system, 0 otherwise 
         int is_spherical = 0;
 
         /// @brief The start index used in arrays using indices, such as branch_node
