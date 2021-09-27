@@ -6,7 +6,8 @@ endif()
 
 set(DOXYGEN_IMAGE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/images)
 set(DOXYGEN_INPUT_LIST
-    "${PROJECT_SOURCE_DIR}/include/UGrid   \
+    "${CMAKE_CURRENT_SOURCE_DIR}/main_page.md \
+    ${PROJECT_SOURCE_DIR}/include/UGrid   \
     ${PROJECT_SOURCE_DIR}/include/UGridApi")
 set(DOXYGEN_OUTPUT_DIR ${CMAKE_CURRENT_BINARY_DIR})
 set(DOXYGEN_INDEX_FILE ${DOXYGEN_OUTPUT_DIR}/html/index.html)
