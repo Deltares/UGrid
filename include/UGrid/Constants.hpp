@@ -32,6 +32,7 @@
 /// @brief Contains the logic of the C++ static library
 namespace ugrid
 {
+    /// @brief The UGrid entity locations
     enum class UGridEntityLocations
     {
         nodes,
@@ -44,7 +45,8 @@ namespace ugrid
         invalid_location
     };
 
-    enum class UGridDimensions
+    /// @brief The dimensions on a UGrid file
+    enum class UGridFileDimensions
     {
         Two,
         nodes,
@@ -59,7 +61,8 @@ namespace ugrid
         long_names
     };
 
-    enum class UGridCoordinates
+    /// @brief The UGrid Entity coordinates
+    enum class UGridEntityCoordinates
     {
         x,
         y,
@@ -67,14 +70,14 @@ namespace ugrid
         lon
     };
 
-    size_t const name_lengths = 40;
-    size_t const name_long_lengths = 80;
-    int const int_invalid_value = std::numeric_limits<int>::max();
-    double const double_invalid_value = std::numeric_limits<double>::max();
+    size_t const name_lengths = 40;                                         ///< length of the names
+    size_t const name_long_lengths = 80;                                    ///< length of the long names
+    int const int_invalid_value = std::numeric_limits<int>::max();          ///< integer invalid value
+    double const double_invalid_value = std::numeric_limits<double>::max(); ///< double invalid value
 
-    int const int_missing_value = -999;
-    double const double_missing_value = -999.0;
-    int const num_face_nodes_max = 6;
-    std::string const two_string("Two");
+    int const int_missing_value = -999;         ///< integer missing value
+    double const double_missing_value = -999.0; ///< double missing value
+    int const num_face_nodes_max = 6;           ///< default maximum number of nodes per face
+    std::string const two_string("Two");        ///< Name of variable dimension containg two
 
 } // namespace ugrid

@@ -55,7 +55,7 @@ namespace ugrid
             netCDF::NcVar const& topology_variable,
             std::map<std::string, std::vector<netCDF::NcVar>> const& entity_attributes,
             std::map<std::string, std::vector<std::string>> const& entity_attribute_names,
-            std::map<UGridDimensions, netCDF::NcDim> const& entity_dimensions);
+            std::map<UGridFileDimensions, netCDF::NcDim> const& entity_dimensions);
 
         /// @brief Defines the contacts header (ug_write_mesh_arrays)
         /// @param contacts The contacts api structure with the fields to write and all optional flags

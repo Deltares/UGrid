@@ -60,7 +60,7 @@ namespace ugrid
             netCDF::NcVar const& topology_variable,
             std::map<std::string, std::vector<netCDF::NcVar>> const& entity_attributes,
             std::map<std::string, std::vector<std::string>> const& entity_attribute_names,
-            std::map<UGridDimensions, netCDF::NcDim> const& entity_dimensions);
+            std::map<UGridFileDimensions, netCDF::NcDim> const& entity_dimensions);
 
         /// @brief Defines the mesh2d header
         /// @param mesh2d The mesh2d api structure with the fields to write and all optional flags

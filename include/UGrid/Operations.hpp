@@ -50,23 +50,23 @@ namespace ugrid
         return std::abs(value - referenceValue) < std::numeric_limits<T>::epsilon();
     }
 
-    static UGridDimensions from_location_string_to_dimension(std::string const& location_string)
+    static UGridFileDimensions from_location_string_to_dimension(std::string const& location_string)
     {
         if (location_string == "node")
         {
-            return UGridDimensions::nodes;
+            return UGridFileDimensions::nodes;
         }
         if (location_string == "edge")
         {
-            return UGridDimensions::edges;
+            return UGridFileDimensions::edges;
         }
         if (location_string == "face")
         {
-            return UGridDimensions::faces;
+            return UGridFileDimensions::faces;
         }
         if (location_string == "max_face_nodes")
         {
-            return UGridDimensions::max_face_nodes;
+            return UGridFileDimensions::max_face_nodes;
         }
     }
 
@@ -107,7 +107,7 @@ namespace ugrid
     static bool fill_ugrid_entity_dimension(std::multimap<std::string, netCDF::NcDim> const& dimensions,
                                             std::string const& attribute_key_string,
                                             std::string const& attribute_value_string,
-                                            std::map<UGridDimensions, netCDF::NcDim>& entity_dimensions)
+                                            std::map<UGridFileDimensions, netCDF::NcDim>& entity_dimensions)
     {
         auto const substring_dimension_pos = attribute_value_string.find("_dimension");
         bool isDimensionVariable = false;
@@ -124,7 +124,7 @@ namespace ugrid
 
     static std::tuple<std::map<std::string, std::vector<netCDF::NcVar>>,
                       std::map<std::string, std::vector<std::string>>,
-                      std::map<UGridDimensions, netCDF::NcDim>>
+                      std::map<UGridFileDimensions, netCDF::NcDim>>
     get_ugrid_entity(
         netCDF::NcVar const& variable,
         std::multimap<std::string, netCDF::NcDim> const& file_dimensions,
@@ -132,7 +132,7 @@ namespace ugrid
     {
         std::map<std::string, std::vector<netCDF::NcVar>> entity_attribute_variables;
         std::map<std::string, std::vector<std::string>> entity_attribute_names;
-        std::map<UGridDimensions, netCDF::NcDim> entity_dimensions;
+        std::map<UGridFileDimensions, netCDF::NcDim> entity_dimensions;
         const auto variable_attributes = variable.getAtts();
         for (const auto& attribute : variable_attributes)
         {

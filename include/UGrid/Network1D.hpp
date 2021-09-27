@@ -52,7 +52,7 @@ namespace ugrid
             netCDF::NcVar const& topology_variable,
             std::map<std::string, std::vector<netCDF::NcVar>> const& entity_attributes,
             std::map<std::string, std::vector<std::string>> const& entity_attribute_names,
-            std::map<UGridDimensions, netCDF::NcDim> const& entity_dimensions);
+            std::map<UGridFileDimensions, netCDF::NcDim> const& entity_dimensions);
 
         /// @brief Defines the network1d header (ug_create_1d_network_v1)
         /// @param mesh2d The network1d api structure with the fields to write and all optional flags
@@ -83,6 +83,6 @@ namespace ugrid
         netCDF::NcVar m_network_geometry_variable;                                                ///< The network topology variable
         std::map<std::string, std::vector<netCDF::NcVar>> m_network_geometry_attribute_variables; ///< For each network attribute, the corresponding attributes
         std::map<std::string, std::vector<std::string>> m_network_geometry_attributes_names;      ///< For each network attribute, the corresponding names
-        std::map<UGridDimensions, netCDF::NcDim> m_network_geometry_dimensions;                   ///< The network entity dimensions
+        std::map<UGridFileDimensions, netCDF::NcDim> m_network_geometry_dimensions;               ///< The network entity dimensions
     };
 } // namespace ugrid
