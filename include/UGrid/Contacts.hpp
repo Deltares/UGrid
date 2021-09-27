@@ -92,9 +92,9 @@ namespace ugrid
         static int get_dimensionality() { return 1; }
 
     private:
-        std::string m_mesh_from_name = "";
-        std::string m_mesh_to_name = "";
-        UGridEntityLocations m_mesh_from_location = UGridEntityLocations::invalid_location;
-        UGridEntityLocations m_mesh_to_location = UGridEntityLocations::invalid_location;
+        std::string m_entity_from_name = "";                                                ///< The name of entity where the contact starts
+        std::string m_entity_to_name = "";                                                  ///< The name of entity where the contact ends
+        UGridEntityLocations m_mesh_from_location = UGridEntityLocations::invalid_location; ///< The location on the entity where the contact starts
+        UGridEntityLocations m_mesh_to_location = UGridEntityLocations::invalid_location;   ///< The location on the entity where the contact ends
     };
 } // namespace ugrid

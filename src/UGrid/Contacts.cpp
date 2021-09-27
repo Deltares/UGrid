@@ -44,16 +44,16 @@ Contacts::Contacts(
     : UGridEntity(nc_file, topology_variable, entity_attributes, entity_attribute_names, entity_dimensions)
 {
     // Get the name from the tokens, remove colon at the end
-    m_mesh_from_name = m_topology_attributes_names.at("contact").at(0);
-    if (m_mesh_from_name.back() == ':')
+    m_entity_from_name = m_topology_attributes_names.at("contact").at(0);
+    if (m_entity_from_name.back() == ':')
     {
-        m_mesh_from_name.pop_back();
+        m_entity_from_name.pop_back();
     }
-    m_mesh_to_name = m_topology_attributes_names.at("contact").at(2);
+    m_entity_to_name = m_topology_attributes_names.at("contact").at(2);
 
-    if (m_mesh_to_name.back() == ':')
+    if (m_entity_to_name.back() == ':')
     {
-        m_mesh_to_name.pop_back();
+        m_entity_to_name.pop_back();
     }
 
     m_mesh_from_location = from_location_string_to_location(m_topology_attributes_names.at("contact").at(1));
@@ -212,9 +212,9 @@ void Contacts::get(ugridapi::Contacts& contacts) const
 {
     string_to_char_array(contacts.name, m_entity_name, name_lengths);
 
-    string_to_char_array(contacts.mesh_from_name, m_mesh_from_name, name_lengths);
+    string_to_char_array(contacts.mesh_from_name, m_entity_from_name, name_lengths);
 
-    string_to_char_array(contacts.mesh_to_name, m_mesh_to_name, name_lengths);
+    string_to_char_array(contacts.mesh_to_name, m_entity_to_name, name_lengths);
 
     if (contacts.edges != nullptr)
     {
