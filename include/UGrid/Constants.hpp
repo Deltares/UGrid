@@ -78,6 +78,6 @@ namespace ugrid
     int const int_missing_value = -999;         ///< integer missing value
     double const double_missing_value = -999.0; ///< double missing value
     int const num_face_nodes_max = 6;           ///< default maximum number of nodes per face
-    std::string const two_string("Two");        ///< Name of variable dimension containg two
+    std::string const two_string("Two");        ///< Name of variable dimension containing two
 
 } // namespace ugrid

@@ -53,7 +53,7 @@ UGridEntity::UGridEntity(
     netCDF::NcVar const& topology_variable,
     std::map<std::string, std::vector<netCDF::NcVar>> const& attribute_variables,
     std::map<std::string, std::vector<std::string>> const& attribute_variable_names,
-    std::map<UGridDimensions, netCDF::NcDim> const& dimensions)
+    std::map<UGridFileDimensions, netCDF::NcDim> const& dimensions)
     : m_nc_file(nc_file),
       m_topology_variable(topology_variable),
       m_topology_attribute_variables(attribute_variables),
@@ -104,7 +104,7 @@ bool UGridEntity::has_matching_dimensionality(std::map<std::string, netCDF::NcVa
 
 void UGridEntity::define_topological_variable_with_coordinates(
     UGridEntityLocations const& location,
-    UGridDimensions const& dimension,
+    UGridFileDimensions const& dimension,
     std::string const& long_name_pattern,
     std::string const& name_pattern)
 {
@@ -136,8 +136,8 @@ void UGridEntity::define_topological_variable_with_coordinates(
         string_builder << "_" << boost::format(name_pattern) % location_string % "_y";
         second_coordinate_variable = string_builder.str();
 
-        define_variable_with_coordinate(topology_attribute_name, first_coordinate_variable, dimension, UGridCoordinates::x, long_name_pattern);
-        define_variable_with_coordinate(topology_attribute_name, second_coordinate_variable, dimension, UGridCoordinates::y, long_name_pattern);
+        define_variable_with_coordinate(topology_attribute_name, first_coordinate_variable, dimension, UGridEntityCoordinates::x, long_name_pattern);
+        define_variable_with_coordinate(topology_attribute_name, second_coordinate_variable, dimension, UGridEntityCoordinates::y, long_name_pattern);
     }
 
     if (m_spherical_coordinates)
@@ -150,8 +150,8 @@ void UGridEntity::define_topological_variable_with_coordinates(
         string_builder << "_" << boost::format(name_pattern) % location_string % "_lat";
         second_coordinate_variable = string_builder.str();
 
-        define_variable_with_coordinate(topology_attribute_name, first_coordinate_variable, dimension, UGridCoordinates::lon, long_name_pattern);
-        define_variable_with_coordinate(topology_attribute_name, second_coordinate_variable, dimension, UGridCoordinates::lat, long_name_pattern);
+        define_variable_with_coordinate(topology_attribute_name, first_coordinate_variable, dimension, UGridEntityCoordinates::lon, long_name_pattern);
+        define_variable_with_coordinate(topology_attribute_name, second_coordinate_variable, dimension, UGridEntityCoordinates::lat, long_name_pattern);
     }
 
     // If some coordinates have been already added, append the newly defined ones
@@ -170,7 +170,7 @@ void UGridEntity::define_topological_variable_with_coordinates(
 }
 
 netCDF::NcVar UGridEntity::define_variable_on_location(std::string const& variable_name,
-                                                       UGridDimensions const& dimension,
+                                                       UGridFileDimensions const& dimension,
                                                        std::string const& standard_name,
                                                        std::string const& long_name,
                                                        std::string const& units,
@@ -180,7 +180,7 @@ netCDF::NcVar UGridEntity::define_variable_on_location(std::string const& variab
 }
 
 netCDF::NcVar UGridEntity::define_variable_on_location(std::string const& variable_name,
-                                                       UGridDimensions const& dimension,
+                                                       UGridFileDimensions const& dimension,
                                                        std::string const& standard_name,
                                                        std::string const& long_name,
                                                        std::string const& units,
@@ -190,7 +190,7 @@ netCDF::NcVar UGridEntity::define_variable_on_location(std::string const& variab
 }
 
 netCDF::NcVar UGridEntity::define_variable_on_location(std::string const& variable_name,
-                                                       UGridDimensions const& ugrid_entity_dimension,
+                                                       UGridFileDimensions const& ugrid_entity_dimension,
                                                        netCDF::NcType const& nc_type,
                                                        std::string const& standard_name,
                                                        std::string const& long_name,
@@ -204,19 +204,19 @@ netCDF::NcVar UGridEntity::define_variable_on_location(std::string const& variab
     netCDF::NcVar variable = m_nc_file->addVar(string_builder.str(), nc_type, m_dimensions.at(ugrid_entity_dimension));
 
     std::string location;
-    if (ugrid_entity_dimension == UGridDimensions::nodes)
+    if (ugrid_entity_dimension == UGridFileDimensions::nodes)
     {
         location = "node";
     }
-    if (ugrid_entity_dimension == UGridDimensions::edges)
+    if (ugrid_entity_dimension == UGridFileDimensions::edges)
     {
         location = "edges";
     }
-    if (ugrid_entity_dimension == UGridDimensions::faces)
+    if (ugrid_entity_dimension == UGridFileDimensions::faces)
     {
         location = "faces";
     }
-    if (ugrid_entity_dimension == UGridDimensions::contacts)
+    if (ugrid_entity_dimension == UGridFileDimensions::contacts)
     {
         location = "contact";
         string_builder.clear();
@@ -310,23 +310,23 @@ void UGridEntity::define(char* entity_name, int start_index, std::string const& 
     add_topology_attribute(topology_attribute);
 
     // Add additional dimensions, maybe required
-    m_dimensions.insert({UGridDimensions::ids, m_nc_file->addDim("strLengthIds", name_lengths)});
-    m_dimensions.insert({UGridDimensions::long_names, m_nc_file->addDim("strLengthLongNames", name_long_lengths)});
-    m_dimensions.insert({UGridDimensions::Two, m_nc_file->addDim(two_string, 2)});
+    m_dimensions.insert({UGridFileDimensions::ids, m_nc_file->addDim("strLengthIds", name_lengths)});
+    m_dimensions.insert({UGridFileDimensions::long_names, m_nc_file->addDim("strLengthLongNames", name_long_lengths)});
+    m_dimensions.insert({UGridFileDimensions::Two, m_nc_file->addDim(two_string, 2)});
 }
 
 void UGridEntity::define_variable_with_coordinate(
     std::string const& attribute_name,
     std::string const& attribute_variable,
-    UGridDimensions const& ugrid_entity_dimension,
-    UGridCoordinates const& coordinate,
+    UGridFileDimensions const& ugrid_entity_dimension,
+    UGridEntityCoordinates const& coordinate,
     std::string const& long_name_pattern)
 {
     std::string standard_name;
     std::string units;
     std::string long_name;
 
-    if (!m_spherical_coordinates && coordinate == UGridCoordinates::x)
+    if (!m_spherical_coordinates && coordinate == UGridEntityCoordinates::x)
     {
         boost::format formatter = boost::format(long_name_pattern) % "x-coordinate";
         long_name = formatter.str();
@@ -334,14 +334,14 @@ void UGridEntity::define_variable_with_coordinate(
         standard_name = "projection_x_coordinate";
     }
 
-    if (!m_spherical_coordinates && coordinate == UGridCoordinates::y)
+    if (!m_spherical_coordinates && coordinate == UGridEntityCoordinates::y)
     {
         boost::format formatter = boost::format(long_name_pattern) % "y-coordinate";
         long_name = formatter.str();
         units = "m";
         standard_name = "projection_y_coordinate";
     }
-    if (m_spherical_coordinates && coordinate == UGridCoordinates::lat)
+    if (m_spherical_coordinates && coordinate == UGridEntityCoordinates::lat)
     {
         boost::format formatter = boost::format(long_name_pattern) % "latitude coordinate";
         long_name = formatter.str();
@@ -349,7 +349,7 @@ void UGridEntity::define_variable_with_coordinate(
         standard_name = "latitude";
     }
 
-    if (m_spherical_coordinates && coordinate == UGridCoordinates::lon)
+    if (m_spherical_coordinates && coordinate == UGridEntityCoordinates::lon)
     {
         boost::format formatter = boost::format(long_name_pattern) % "longitude coordinate";
         long_name = formatter.str();

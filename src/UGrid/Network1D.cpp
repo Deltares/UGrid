@@ -41,7 +41,7 @@ Network1D::Network1D(std::shared_ptr<netCDF::NcFile> nc_file,
                      netCDF::NcVar const& topology_variable,
                      std::map<std::string, std::vector<netCDF::NcVar>> const& entity_attributes,
                      std::map<std::string, std::vector<std::string>> const& entity_attribute_names,
-                     std::map<UGridDimensions, netCDF::NcDim> const& entity_dimensions) : UGridEntity(nc_file, topology_variable, entity_attributes, entity_attribute_names, entity_dimensions)
+                     std::map<UGridFileDimensions, netCDF::NcDim> const& entity_dimensions) : UGridEntity(nc_file, topology_variable, entity_attributes, entity_attribute_names, entity_dimensions)
 
 {
     // file variables and file dimensions
@@ -97,17 +97,17 @@ void Network1D::define(ugridapi::Network1D const& network1d)
     {
         string_builder.clear();
         string_builder << "_nNodes";
-        m_dimensions.insert({UGridDimensions::nodes, m_nc_file->addDim(string_builder.str(), network1d.num_nodes)});
+        m_dimensions.insert({UGridFileDimensions::nodes, m_nc_file->addDim(string_builder.str(), network1d.num_nodes)});
         auto topology_attribute = m_topology_variable.putAtt("node_dimension", string_builder.str());
         add_topology_attribute(topology_attribute);
 
-        define_topological_variable_with_coordinates(UGridEntityLocations::nodes, UGridDimensions::nodes, "%s of network nodes");
+        define_topological_variable_with_coordinates(UGridEntityLocations::nodes, UGridFileDimensions::nodes, "%s of network nodes");
 
         string_builder.clear();
         string_builder << "_node_id";
         topology_attribute = m_topology_variable.putAtt("node_id", string_builder.str());
         add_topology_attribute(topology_attribute);
-        auto topology_attribute_variable = m_nc_file->addVar(string_builder.str(), netCDF::NcType::nc_CHAR, {m_dimensions[UGridDimensions::nodes], m_dimensions[UGridDimensions::ids]});
+        auto topology_attribute_variable = m_nc_file->addVar(string_builder.str(), netCDF::NcType::nc_CHAR, {m_dimensions[UGridFileDimensions::nodes], m_dimensions[UGridFileDimensions::ids]});
         auto topology_attribute_variable_attribute = topology_attribute_variable.putAtt("long_name", "ID of network nodes");
         add_topology_attribute_variable(topology_attribute, topology_attribute_variable);
 
@@ -115,7 +115,7 @@ void Network1D::define(ugridapi::Network1D const& network1d)
         string_builder << "_node_long_name";
         topology_attribute = m_topology_variable.putAtt("node_long_name", string_builder.str());
         add_topology_attribute(topology_attribute);
-        topology_attribute_variable = m_nc_file->addVar(string_builder.str(), netCDF::NcType::nc_CHAR, {m_dimensions[UGridDimensions::nodes], m_dimensions[UGridDimensions::long_names]});
+        topology_attribute_variable = m_nc_file->addVar(string_builder.str(), netCDF::NcType::nc_CHAR, {m_dimensions[UGridFileDimensions::nodes], m_dimensions[UGridFileDimensions::long_names]});
         topology_attribute_variable_attribute = topology_attribute_variable.putAtt("long_name", "Long name of network nodes");
         add_topology_attribute_variable(topology_attribute, topology_attribute_variable);
     }
@@ -124,7 +124,7 @@ void Network1D::define(ugridapi::Network1D const& network1d)
     {
         string_builder.clear();
         string_builder << "_nEdges";
-        m_dimensions.insert({UGridDimensions::edges, m_nc_file->addDim(string_builder.str(), network1d.num_branches)});
+        m_dimensions.insert({UGridFileDimensions::edges, m_nc_file->addDim(string_builder.str(), network1d.num_branches)});
         auto topology_attribute = m_topology_variable.putAtt("edge_dimension", string_builder.str());
         add_topology_attribute(topology_attribute);
 
@@ -132,7 +132,7 @@ void Network1D::define(ugridapi::Network1D const& network1d)
         string_builder << "_edge_nodes";
         topology_attribute = m_topology_variable.putAtt("edge_node_connectivity", string_builder.str());
         add_topology_attribute(topology_attribute);
-        auto topology_attribute_variable = m_nc_file->addVar(string_builder.str(), netCDF::NcType::nc_INT, {m_dimensions[UGridDimensions::edges], m_dimensions[UGridDimensions::Two]});
+        auto topology_attribute_variable = m_nc_file->addVar(string_builder.str(), netCDF::NcType::nc_INT, {m_dimensions[UGridFileDimensions::edges], m_dimensions[UGridFileDimensions::Two]});
         auto topology_attribute_variable_attribute = topology_attribute_variable.putAtt("cf_role", topology_attribute.getName());
         topology_attribute_variable_attribute = topology_attribute_variable.putAtt("long_name", "Start and end nodes of network edges");
         add_topology_attribute_variable(topology_attribute, topology_attribute_variable);
@@ -141,7 +141,7 @@ void Network1D::define(ugridapi::Network1D const& network1d)
         string_builder << "_edge_length";
         topology_attribute = m_topology_variable.putAtt("branch_length", string_builder.str());
         add_topology_attribute(topology_attribute);
-        topology_attribute_variable = m_nc_file->addVar(string_builder.str(), netCDF::NcType::nc_DOUBLE, {m_dimensions[UGridDimensions::edges]});
+        topology_attribute_variable = m_nc_file->addVar(string_builder.str(), netCDF::NcType::nc_DOUBLE, {m_dimensions[UGridFileDimensions::edges]});
         topology_attribute_variable_attribute = topology_attribute_variable.putAtt("long_name", "Real length of branch geometries");
         topology_attribute_variable_attribute = topology_attribute_variable.putAtt("units", "m");
         add_topology_attribute_variable(topology_attribute, topology_attribute_variable);
@@ -149,7 +149,7 @@ void Network1D::define(ugridapi::Network1D const& network1d)
         // Other branch variables
         string_builder.clear();
         string_builder << "_branch_order";
-        auto topology_related_variable = m_nc_file->addVar(string_builder.str(), netCDF::NcType::nc_INT, {m_dimensions[UGridDimensions::edges]});
+        auto topology_related_variable = m_nc_file->addVar(string_builder.str(), netCDF::NcType::nc_INT, {m_dimensions[UGridFileDimensions::edges]});
         auto topology_related_variable_attribute = topology_related_variable.putAtt("long_name", "Order of branches for interpolation");
         topology_related_variable_attribute = topology_related_variable.putAtt("mesh", m_entity_name);
         topology_related_variable_attribute = topology_related_variable.putAtt("location", "edge");
@@ -157,7 +157,7 @@ void Network1D::define(ugridapi::Network1D const& network1d)
 
         string_builder.clear();
         string_builder << "_branch_type";
-        topology_related_variable = m_nc_file->addVar(string_builder.str(), netCDF::NcType::nc_INT, {m_dimensions[UGridDimensions::edges]});
+        topology_related_variable = m_nc_file->addVar(string_builder.str(), netCDF::NcType::nc_INT, {m_dimensions[UGridFileDimensions::edges]});
         topology_related_variable_attribute = topology_related_variable.putAtt("long_name", "Type of branches");
         topology_related_variable_attribute = topology_related_variable.putAtt("mesh", m_entity_name);
         topology_related_variable_attribute = topology_related_variable.putAtt("location", "edge");
@@ -167,7 +167,7 @@ void Network1D::define(ugridapi::Network1D const& network1d)
         string_builder << "_branch_id";
         topology_attribute = m_topology_variable.putAtt("branch_id", string_builder.str());
         add_topology_attribute(topology_attribute);
-        topology_attribute_variable = m_nc_file->addVar(string_builder.str(), netCDF::NcType::nc_CHAR, {m_dimensions[UGridDimensions::edges], m_dimensions[UGridDimensions::ids]});
+        topology_attribute_variable = m_nc_file->addVar(string_builder.str(), netCDF::NcType::nc_CHAR, {m_dimensions[UGridFileDimensions::edges], m_dimensions[UGridFileDimensions::ids]});
         topology_attribute_variable_attribute = topology_attribute_variable.putAtt("long_name", "Long name of branch geometries");
         add_topology_attribute_variable(topology_attribute, topology_attribute_variable);
 
@@ -175,7 +175,7 @@ void Network1D::define(ugridapi::Network1D const& network1d)
         string_builder << "_branch_long_name";
         topology_attribute = m_topology_variable.putAtt("branch_long_name", string_builder.str());
         add_topology_attribute(topology_attribute);
-        topology_attribute_variable = m_nc_file->addVar(string_builder.str(), netCDF::NcType::nc_CHAR, {m_dimensions[UGridDimensions::edges], m_dimensions[UGridDimensions::long_names]});
+        topology_attribute_variable = m_nc_file->addVar(string_builder.str(), netCDF::NcType::nc_CHAR, {m_dimensions[UGridFileDimensions::edges], m_dimensions[UGridFileDimensions::long_names]});
         topology_attribute_variable_attribute = topology_attribute_variable.putAtt("long_name", "Long name of branch geometries");
         add_topology_attribute_variable(topology_attribute, topology_attribute_variable);
     }
@@ -184,13 +184,13 @@ void Network1D::define(ugridapi::Network1D const& network1d)
     {
         string_builder.clear();
         string_builder << "_nGeometryNodes";
-        m_dimensions.insert({UGridDimensions::nodes_geometry, m_nc_file->addDim(string_builder.str(), network1d.num_geometry_nodes)});
+        m_dimensions.insert({UGridFileDimensions::nodes_geometry, m_nc_file->addDim(string_builder.str(), network1d.num_geometry_nodes)});
 
         string_builder.clear();
         string_builder << "_geometry";
         auto topology_attribute = m_topology_variable.putAtt("edge_geometry", string_builder.str());
         add_topology_attribute(topology_attribute);
-        auto topology_attribute_variable = m_nc_file->addVar(string_builder.str(), netCDF::NcType::nc_INT, {m_dimensions[UGridDimensions::nodes_geometry]});
+        auto topology_attribute_variable = m_nc_file->addVar(string_builder.str(), netCDF::NcType::nc_INT, {m_dimensions[UGridFileDimensions::nodes_geometry]});
         auto topology_attribute_variable_attribute = topology_attribute_variable.putAtt("geometry_type", "line");
         topology_attribute_variable_attribute = topology_attribute_variable.putAtt("long_name", "1D Geometry");
         string_builder.clear();
@@ -203,7 +203,7 @@ void Network1D::define(ugridapi::Network1D const& network1d)
 
         string_builder.clear();
         string_builder << "_geom_node_count";
-        auto topology_related_variable = m_nc_file->addVar(string_builder.str(), netCDF::NcType::nc_INT, {m_dimensions[UGridDimensions::edges]});
+        auto topology_related_variable = m_nc_file->addVar(string_builder.str(), netCDF::NcType::nc_INT, {m_dimensions[UGridFileDimensions::edges]});
         auto topology_related_variable_attribute = topology_related_variable.putAtt("node_count", string_builder.str());
         topology_related_variable_attribute = topology_related_variable.putAtt("long_name", "Number of geometry nodes per branch");
         m_related_variables.insert({string_builder.str(), {topology_related_variable}});
@@ -211,13 +211,13 @@ void Network1D::define(ugridapi::Network1D const& network1d)
         // TODO: this could be included into define_topological_variable_with_coordinates
         string_builder.clear();
         string_builder << "_geom_x";
-        auto node_geometry_x = m_nc_file->addVar(string_builder.str(), netCDF::NcType::nc_DOUBLE, {m_dimensions[UGridDimensions::nodes_geometry]});
+        auto node_geometry_x = m_nc_file->addVar(string_builder.str(), netCDF::NcType::nc_DOUBLE, {m_dimensions[UGridFileDimensions::nodes_geometry]});
         topology_related_variable_attribute = node_geometry_x.putAtt("long_name", "x-coordinate of branch geometry nodes");
         m_related_variables.insert({string_builder.str(), {node_geometry_x}});
 
         string_builder.clear();
         string_builder << "_geom_y";
-        auto node_geometry_y = m_nc_file->addVar(string_builder.str(), netCDF::NcType::nc_DOUBLE, {m_dimensions[UGridDimensions::nodes_geometry]});
+        auto node_geometry_y = m_nc_file->addVar(string_builder.str(), netCDF::NcType::nc_DOUBLE, {m_dimensions[UGridFileDimensions::nodes_geometry]});
         topology_related_variable_attribute = node_geometry_y.putAtt("long_name", "y-coordinate of branch geometry nodes");
         m_related_variables.insert({string_builder.str(), {node_geometry_y}});
 
@@ -290,13 +290,13 @@ void Network1D::put(ugridapi::Network1D const& network1d)
 
 void Network1D::inquire(ugridapi::Network1D& network1d) const
 {
-    if (m_dimensions.find(UGridDimensions::nodes) != m_dimensions.end())
+    if (m_dimensions.find(UGridFileDimensions::nodes) != m_dimensions.end())
     {
-        network1d.num_nodes = m_dimensions.at(UGridDimensions::nodes).getSize();
+        network1d.num_nodes = m_dimensions.at(UGridFileDimensions::nodes).getSize();
     }
-    if (m_dimensions.find(UGridDimensions::edges) != m_dimensions.end())
+    if (m_dimensions.find(UGridFileDimensions::edges) != m_dimensions.end())
     {
-        network1d.num_branches = m_dimensions.at(UGridDimensions::edges).getSize();
+        network1d.num_branches = m_dimensions.at(UGridFileDimensions::edges).getSize();
     }
     // get network dimensions
     if (auto const it = m_network_geometry_attribute_variables.find("node_coordinates"); it != m_network_geometry_attribute_variables.end())

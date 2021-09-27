@@ -40,7 +40,7 @@ Contacts::Contacts(
     netCDF::NcVar const& topology_variable,
     std::map<std::string, std::vector<netCDF::NcVar>> const& entity_attributes,
     std::map<std::string, std::vector<std::string>> const& entity_attribute_names,
-    std::map<UGridDimensions, netCDF::NcDim> const& entity_dimensions)
+    std::map<UGridFileDimensions, netCDF::NcDim> const& entity_dimensions)
     : UGridEntity(nc_file, topology_variable, entity_attributes, entity_attribute_names, entity_dimensions)
 {
     // Get the name from the tokens, remove colon at the end
@@ -111,17 +111,17 @@ void Contacts::define(ugridapi::Contacts const& contacts)
     rtrim(m_entity_name);
 
     // Add additional dimensions, maybe required
-    m_dimensions.insert({UGridDimensions::ids, m_nc_file->addDim("strLengthIds", name_lengths)});
-    m_dimensions.insert({UGridDimensions::long_names, m_nc_file->addDim("strLengthLongNames", name_long_lengths)});
-    m_dimensions.insert({UGridDimensions::Two, m_nc_file->addDim(two_string, 2)});
+    m_dimensions.insert({UGridFileDimensions::ids, m_nc_file->addDim("strLengthIds", name_lengths)});
+    m_dimensions.insert({UGridFileDimensions::long_names, m_nc_file->addDim("strLengthLongNames", name_long_lengths)});
+    m_dimensions.insert({UGridFileDimensions::Two, m_nc_file->addDim(two_string, 2)});
 
     auto string_builder = UGridVarAttributeStringBuilder(m_entity_name);
 
     string_builder.clear();
     string_builder << "_nContacts";
-    m_dimensions.insert({UGridDimensions::nodes, m_nc_file->addDim(string_builder.str(), contacts.num_contacts)});
+    m_dimensions.insert({UGridFileDimensions::nodes, m_nc_file->addDim(string_builder.str(), contacts.num_contacts)});
 
-    m_topology_variable = m_nc_file->addVar(m_entity_name, netCDF::NcType::nc_INT, {m_dimensions[UGridDimensions::nodes], m_dimensions[UGridDimensions::Two]});
+    m_topology_variable = m_nc_file->addVar(m_entity_name, netCDF::NcType::nc_INT, {m_dimensions[UGridFileDimensions::nodes], m_dimensions[UGridFileDimensions::Two]});
     auto topology_attribute = m_topology_variable.putAtt("cf_role", "mesh_topology_contact");
     add_topology_attribute(topology_attribute);
 
@@ -143,7 +143,7 @@ void Contacts::define(ugridapi::Contacts const& contacts)
     topology_attribute = m_topology_variable.putAtt("contact_type", string_builder.str());
     add_topology_attribute(topology_attribute);
 
-    auto topology_attribute_variable = m_nc_file->addVar(string_builder.str(), netCDF::NcType::nc_INT, {m_dimensions[UGridDimensions::nodes]});
+    auto topology_attribute_variable = m_nc_file->addVar(string_builder.str(), netCDF::NcType::nc_INT, {m_dimensions[UGridFileDimensions::nodes]});
     topology_attribute_variable.setFill(true, -1);
 
     std::vector<int> valid_range{3, 4};
@@ -159,7 +159,7 @@ void Contacts::define(ugridapi::Contacts const& contacts)
     topology_attribute = m_topology_variable.putAtt("contact_id", string_builder.str());
     add_topology_attribute(topology_attribute);
 
-    topology_attribute_variable = m_nc_file->addVar(string_builder.str(), netCDF::NcType::nc_CHAR, {m_dimensions[UGridDimensions::nodes], m_dimensions[UGridDimensions::ids]});
+    topology_attribute_variable = m_nc_file->addVar(string_builder.str(), netCDF::NcType::nc_CHAR, {m_dimensions[UGridFileDimensions::nodes], m_dimensions[UGridFileDimensions::ids]});
     topology_attribute_variable_attribute = topology_attribute_variable.putAtt("long_name", "ids of the contacts");
     add_topology_attribute_variable(topology_attribute, topology_attribute_variable);
 
@@ -169,7 +169,7 @@ void Contacts::define(ugridapi::Contacts const& contacts)
     topology_attribute = m_topology_variable.putAtt("contact_long_name", string_builder.str());
     add_topology_attribute(topology_attribute);
 
-    topology_attribute_variable = m_nc_file->addVar(string_builder.str(), netCDF::NcType::nc_CHAR, {m_dimensions[UGridDimensions::nodes], m_dimensions[UGridDimensions::long_names]});
+    topology_attribute_variable = m_nc_file->addVar(string_builder.str(), netCDF::NcType::nc_CHAR, {m_dimensions[UGridFileDimensions::nodes], m_dimensions[UGridFileDimensions::long_names]});
     topology_attribute_variable_attribute = topology_attribute_variable.putAtt("long_name", "long names of the contacts");
     add_topology_attribute_variable(topology_attribute, topology_attribute_variable);
 
