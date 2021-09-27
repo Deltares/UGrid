@@ -60,6 +60,9 @@ add_subdirectory(package)
 # The external library
 add_subdirectory(extern)
 
+# The version file
+add_subdirectory(include/Version)
+
 # The static library
 add_subdirectory(src/UGrid)
 
