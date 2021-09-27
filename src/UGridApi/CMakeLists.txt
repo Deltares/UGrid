@@ -11,10 +11,8 @@ add_library(UGridApi SHARED ${SOURCE_LIST} ${HEADER_LIST}
 
 # Expose the interface of the shared lib
 set(NETCDF_PATH "${PROJECT_SOURCE_DIR}/extern/netcdf/netcdf_4_8_0")
-message("NETCDF_PATH is ${NETCDF_PATH}")
 
 set(NETCDFCXX_PATH "${PROJECT_SOURCE_DIR}/extern/netcdf-cxx4")
-message("NETCDFCXX_PATH is ${NETCDFCXX_PATH}")
 
 target_include_directories(UGridApi PUBLIC "${PROJECT_SOURCE_DIR}/include" "${NETCDF_PATH}/include" "${NETCDFCXX_PATH}/cxx4")
 

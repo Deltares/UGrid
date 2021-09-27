@@ -19,10 +19,9 @@ endif()
 
 # NetCDF
 set(NETCDF_PATH "${PROJECT_SOURCE_DIR}/extern/netcdf/netcdf_4_8_0")
-message("NETCDF_PATH is ${NETCDF_PATH}")
 
+# NetCDF-cxx
 set(NETCDFCXX_PATH "${PROJECT_SOURCE_DIR}/extern/netcdf-cxx4")
-message("NETCDFCXX_PATH is ${NETCDFCXX_PATH}")
 
 # NetCDF CPP wrapper
 target_include_directories(UGrid PUBLIC "${PROJECT_SOURCE_DIR}/include" "${NETCDFCXX_PATH}/cxx4")

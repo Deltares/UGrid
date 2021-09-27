@@ -71,7 +71,6 @@ add_subdirectory(src/UGridApi)
 
 # The path to netcdf libraries
 set(NETCDF_PATH "${PROJECT_SOURCE_DIR}/extern/netcdf/netcdf_4_8_0")
-message("NETCDF_PATH is ${NETCDF_PATH}")
 
 # Testing only available if this is the main app.
 if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
