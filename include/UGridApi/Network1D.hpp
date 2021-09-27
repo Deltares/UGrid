@@ -29,6 +29,7 @@
 
 namespace ugridapi
 {
+    /// @brief A struct used to describe UGrid network1d in a C-compatible manner
     struct Network1D
     {
         /// @brief The name of the network

@@ -31,6 +31,7 @@
 
 namespace ugridapi
 {
+    /// @brief A struct used to describe UGrid mesh1d in a C-compatible manner
     struct Mesh1D
     {
         /// @brief The mesh1d name

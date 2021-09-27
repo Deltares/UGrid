@@ -4,7 +4,6 @@ if(NOT Doxygen_FOUND)
   return()
 endif()
 
-set(DOXYGEN_IMAGE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/images)
 set(DOXYGEN_INPUT_LIST
     "${CMAKE_CURRENT_SOURCE_DIR}/main_page.md \
     ${PROJECT_SOURCE_DIR}/include/UGrid   \
@@ -31,9 +30,6 @@ file(GLOB UGrid_HEADER_LIST CONFIGURE_DEPENDS
 # UGridapi headers
 file(GLOB UGridAPI_HEADER_LIST CONFIGURE_DEPENDS
      "${PROJECT_SOURCE_DIR}/include/UGridApi/*.hpp")
-
-# images
-file(GLOB DOXYGEN_IMAGES CONFIGURE_DEPENDS "${DOXYGEN_IMAGE_DIR}/*")
 
 # markdown file
 file(GLOB DOXYGEN_MARKDOWN_FILES CONFIGURE_DEPENDS

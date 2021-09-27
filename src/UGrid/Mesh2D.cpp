@@ -31,6 +31,7 @@
 
 #include <UGrid/Mesh2D.hpp>
 #include <UGrid/Operations.hpp>
+#include <UGrid/UGridVarAttributeStringBuilder.hpp>
 
 using ugrid::Mesh2D;
 

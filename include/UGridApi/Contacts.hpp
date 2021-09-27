@@ -29,6 +29,7 @@
 
 namespace ugridapi
 {
+    /// @brief A struct used to describe UGrid contacts in a C-compatible manner
     struct Contacts
     {
         /// @brief The name of the contact entity

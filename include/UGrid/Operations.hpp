@@ -26,7 +26,7 @@
 //------------------------------------------------------------------------------
 
 #pragma once
-#include <sstream>
+
 #include <string>
 
 #include <boost/algorithm/string.hpp>
@@ -49,36 +49,6 @@ namespace ugrid
     {
         return std::abs(value - referenceValue) < std::numeric_limits<T>::epsilon();
     }
-
-    class UGridVarAttributeStringBuilder
-    {
-        std::stringstream m_os;
-        std::string m_name;
-
-    public:
-        explicit UGridVarAttributeStringBuilder(std::string const& name) : m_name(name)
-        {
-            m_os << m_name;
-        }
-
-        void clear()
-        {
-            m_os.str(std::string());
-            m_os << m_name;
-        }
-
-        [[nodiscard]] std::string str() const
-        {
-            return m_os.str();
-        }
-
-        template <typename T>
-        UGridVarAttributeStringBuilder& operator<<(T val)
-        {
-            m_os << val;
-            return *this;
-        }
-    };
 
     static UGridDimensions from_location_string_to_dimension(std::string const& location_string)
     {

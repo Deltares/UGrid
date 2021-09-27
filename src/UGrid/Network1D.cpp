@@ -31,6 +31,7 @@
 
 #include <UGrid/Network1D.hpp>
 #include <UGrid/Operations.hpp>
+#include <UGrid/UGridVarAttributeStringBuilder.hpp>
 
 using ugrid::Network1D;
 

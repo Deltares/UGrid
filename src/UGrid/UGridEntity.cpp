@@ -39,6 +39,7 @@
 #include <UGrid/Constants.hpp>
 #include <UGrid/Operations.hpp>
 #include <UGrid/UGridEntity.hpp>
+#include <UGrid/UGridVarAttributeStringBuilder.hpp>
 
 using namespace ugrid;
 
