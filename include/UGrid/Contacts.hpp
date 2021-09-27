@@ -46,7 +46,7 @@ namespace ugrid
 
         /// @brief Constructor setting nc_file and all internal state
         /// @param nc_file The NcFile file pointer
-        /// @param entity_name The contacts name
+        /// @param topology_variable The contacts name
         /// @param entity_attributes The topological attributes (key value pair with key the topological attribute name and value the associated vector of variables)
         /// @param entity_attribute_names The topological attributes names (key value pair with key the topological attribute name and value the associated vector of variables names)
         /// @param entity_dimensions The dimensions associated with the contacts (key value pair with key the dimension enumeration and value the associated NetCDF dimension)
