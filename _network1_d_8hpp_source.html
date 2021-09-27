@@ -120,7 +120,7 @@ $(function() {
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;            netCDF::NcVar <span class="keyword">const</span>&amp; topology_variable,</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;            std::map&lt;std::string, std::vector&lt;netCDF::NcVar&gt;&gt; <span class="keyword">const</span>&amp; entity_attributes,</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;            std::map&lt;std::string, std::vector&lt;std::string&gt;&gt; <span class="keyword">const</span>&amp; entity_attribute_names,</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;            std::map&lt;UGridDimensions, netCDF::NcDim&gt; <span class="keyword">const</span>&amp; entity_dimensions);</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;            std::map&lt;UGridFileDimensions, netCDF::NcDim&gt; <span class="keyword">const</span>&amp; entity_dimensions);</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; </div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="structugrid_1_1_network1_d.html#a8e1c4f77037a7a191fddb4a23871b498">define</a>(<a class="code" href="structugridapi_1_1_network1_d.html">ugridapi::Network1D</a> <span class="keyword">const</span>&amp; mesh2d);</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
@@ -138,7 +138,7 @@ $(function() {
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        netCDF::NcVar m_network_geometry_variable;                                                </div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        std::map&lt;std::string, std::vector&lt;netCDF::NcVar&gt;&gt; m_network_geometry_attribute_variables; </div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        std::map&lt;std::string, std::vector&lt;std::string&gt;&gt; m_network_geometry_attributes_names;      </div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        std::map&lt;UGridDimensions, netCDF::NcDim&gt; m_network_geometry_dimensions;                   </div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        std::map&lt;UGridFileDimensions, netCDF::NcDim&gt; m_network_geometry_dimensions;               </div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    };</div>
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;} <span class="comment">// namespace ugrid</span></div>
 </div><!-- fragment --></div><!-- contents -->

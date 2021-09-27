@@ -124,27 +124,27 @@ $(function() {
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        <span class="keywordflow">return</span> std::abs(value - referenceValue) &lt; std::numeric_limits&lt;T&gt;::epsilon();</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    }</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; </div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="keyword">static</span> UGridDimensions from_location_string_to_dimension(std::string <span class="keyword">const</span>&amp; location_string)</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="keyword">static</span> <a class="code" href="namespaceugrid.html#a6683ff1752ab0bcf618e39cef85b2bd3">UGridFileDimensions</a> from_location_string_to_dimension(std::string <span class="keyword">const</span>&amp; location_string)</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    {</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        <span class="keywordflow">if</span> (location_string == <span class="stringliteral">&quot;node&quot;</span>)</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        {</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;            <span class="keywordflow">return</span> UGridDimensions::nodes;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;            <span class="keywordflow">return</span> UGridFileDimensions::nodes;</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        }</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        <span class="keywordflow">if</span> (location_string == <span class="stringliteral">&quot;edge&quot;</span>)</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        {</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;            <span class="keywordflow">return</span> UGridDimensions::edges;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;            <span class="keywordflow">return</span> UGridFileDimensions::edges;</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        }</div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        <span class="keywordflow">if</span> (location_string == <span class="stringliteral">&quot;face&quot;</span>)</div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        {</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;            <span class="keywordflow">return</span> UGridDimensions::faces;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;            <span class="keywordflow">return</span> UGridFileDimensions::faces;</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        }</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        <span class="keywordflow">if</span> (location_string == <span class="stringliteral">&quot;max_face_nodes&quot;</span>)</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        {</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;            <span class="keywordflow">return</span> UGridDimensions::max_face_nodes;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;            <span class="keywordflow">return</span> UGridFileDimensions::max_face_nodes;</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        }</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    }</div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="keyword">static</span> UGridEntityLocations from_location_string_to_location(std::string <span class="keyword">const</span>&amp; location_string)</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="keyword">static</span> <a class="code" href="namespaceugrid.html#a5ede1cf60a09eaa14fdcb558a078738c">UGridEntityLocations</a> from_location_string_to_location(std::string <span class="keyword">const</span>&amp; location_string)</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    {</div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        <span class="keywordflow">if</span> (location_string == <span class="stringliteral">&quot;node&quot;</span>)</div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        {</div>
@@ -162,7 +162,7 @@ $(function() {
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160; </div>
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    <span class="keyword">static</span> std::string from_location_integer_to_location_string(<span class="keywordtype">int</span> location)</div>
 <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    {</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        <span class="keyword">auto</span> <span class="keyword">const</span> ug_entity_location = <span class="keyword">static_cast&lt;</span>UGridEntityLocations<span class="keyword">&gt;</span>(location);</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        <span class="keyword">auto</span> <span class="keyword">const</span> ug_entity_location = <span class="keyword">static_cast&lt;</span><a class="code" href="namespaceugrid.html#a5ede1cf60a09eaa14fdcb558a078738c">UGridEntityLocations</a><span class="keyword">&gt;</span>(location);</div>
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160; </div>
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        <span class="keywordflow">if</span> (ug_entity_location == UGridEntityLocations::nodes)</div>
 <div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        {</div>
@@ -181,7 +181,7 @@ $(function() {
 <div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">bool</span> fill_ugrid_entity_dimension(std::multimap&lt;std::string, netCDF::NcDim&gt; <span class="keyword">const</span>&amp; dimensions,</div>
 <div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;                                            std::string <span class="keyword">const</span>&amp; attribute_key_string,</div>
 <div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;                                            std::string <span class="keyword">const</span>&amp; attribute_value_string,</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;                                            std::map&lt;UGridDimensions, netCDF::NcDim&gt;&amp; entity_dimensions)</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;                                            std::map&lt;UGridFileDimensions, netCDF::NcDim&gt;&amp; entity_dimensions)</div>
 <div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    {</div>
 <div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;        <span class="keyword">auto</span> <span class="keyword">const</span> substring_dimension_pos = attribute_value_string.find(<span class="stringliteral">&quot;_dimension&quot;</span>);</div>
 <div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;        <span class="keywordtype">bool</span> isDimensionVariable = <span class="keyword">false</span>;</div>
@@ -198,7 +198,7 @@ $(function() {
 <div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160; </div>
 <div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;    <span class="keyword">static</span> std::tuple&lt;std::map&lt;std::string, std::vector&lt;netCDF::NcVar&gt;&gt;,</div>
 <div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;                      std::map&lt;std::string, std::vector&lt;std::string&gt;&gt;,</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;                      std::map&lt;UGridDimensions, netCDF::NcDim&gt;&gt;</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;                      std::map&lt;UGridFileDimensions, netCDF::NcDim&gt;&gt;</div>
 <div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;    get_ugrid_entity(</div>
 <div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;        netCDF::NcVar <span class="keyword">const</span>&amp; variable,</div>
 <div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;        std::multimap&lt;std::string, netCDF::NcDim&gt; <span class="keyword">const</span>&amp; file_dimensions,</div>
@@ -206,7 +206,7 @@ $(function() {
 <div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;    {</div>
 <div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;        std::map&lt;std::string, std::vector&lt;netCDF::NcVar&gt;&gt; entity_attribute_variables;</div>
 <div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;        std::map&lt;std::string, std::vector&lt;std::string&gt;&gt; entity_attribute_names;</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;        std::map&lt;UGridDimensions, netCDF::NcDim&gt; entity_dimensions;</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;        std::map&lt;UGridFileDimensions, netCDF::NcDim&gt; entity_dimensions;</div>
 <div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;        <span class="keyword">const</span> <span class="keyword">auto</span> variable_attributes = variable.getAtts();</div>
 <div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;        <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; attribute : variable_attributes)</div>
 <div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;        {</div>
@@ -301,6 +301,8 @@ $(function() {
 <div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160; </div>
 <div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;} <span class="comment">// namespace ugrid</span></div>
 </div><!-- fragment --></div><!-- contents -->
+<div class="ttc" id="anamespaceugrid_html_a5ede1cf60a09eaa14fdcb558a078738c"><div class="ttname"><a href="namespaceugrid.html#a5ede1cf60a09eaa14fdcb558a078738c">ugrid::UGridEntityLocations</a></div><div class="ttdeci">UGridEntityLocations</div><div class="ttdoc">The UGrid entity locations.</div><div class="ttdef"><b>Definition:</b> Constants.hpp:36</div></div>
+<div class="ttc" id="anamespaceugrid_html_a6683ff1752ab0bcf618e39cef85b2bd3"><div class="ttname"><a href="namespaceugrid.html#a6683ff1752ab0bcf618e39cef85b2bd3">ugrid::UGridFileDimensions</a></div><div class="ttdeci">UGridFileDimensions</div><div class="ttdoc">The dimensions on a UGrid file.</div><div class="ttdef"><b>Definition:</b> Constants.hpp:49</div></div>
 <div class="ttc" id="anamespaceugrid_html"><div class="ttname"><a href="namespaceugrid.html">ugrid</a></div><div class="ttdoc">Contains the logic of the C++ static library.</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

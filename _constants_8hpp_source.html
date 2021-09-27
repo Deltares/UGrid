@@ -109,54 +109,65 @@ $(function() {
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespaceugrid.html">ugrid</a></div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;{</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <span class="keyword">enum class</span> UGridEntityLocations</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    {</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        nodes,</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        edges,</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        faces,</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        layer,</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        layer_interface,</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        vertical,</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        contact,</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        invalid_location</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    };</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; </div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="keyword">enum class</span> UGridDimensions</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    {</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        Two,</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        nodes,</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        nodes_geometry,</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        edges,</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        faces,</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        layer,</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        layer_interface,</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        max_face_nodes,</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        contacts,</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        ids,</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        long_names</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    };</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; </div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <span class="keyword">enum class</span> UGridCoordinates</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    {</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        x,</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        y,</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        lat,</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        lon</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    };</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <span class="keywordtype">size_t</span> <span class="keyword">const</span> name_lengths = 40;</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <span class="keywordtype">size_t</span> <span class="keyword">const</span> name_long_lengths = 80;</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <span class="keywordtype">int</span> <span class="keyword">const</span> int_invalid_value = std::numeric_limits&lt;int&gt;::max();</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="keywordtype">double</span> <span class="keyword">const</span> double_invalid_value = std::numeric_limits&lt;double&gt;::max();</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160; </div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <span class="keywordtype">int</span> <span class="keyword">const</span> int_missing_value = -999;</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="keywordtype">double</span> <span class="keyword">const</span> double_missing_value = -999.0;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="keywordtype">int</span> <span class="keyword">const</span> num_face_nodes_max = 6;</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    std::string <span class="keyword">const</span> two_string(<span class="stringliteral">&quot;Two&quot;</span>);</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;} <span class="comment">// namespace ugrid</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="namespaceugrid.html#a5ede1cf60a09eaa14fdcb558a078738c">   36</a></span>&#160;    <span class="keyword">enum class</span> <a class="code" href="namespaceugrid.html#a5ede1cf60a09eaa14fdcb558a078738c">UGridEntityLocations</a></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    {</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        nodes,</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        edges,</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        faces,</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        layer,</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        layer_interface,</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        vertical,</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        contact,</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        invalid_location</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    };</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
+<div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="namespaceugrid.html#a6683ff1752ab0bcf618e39cef85b2bd3">   49</a></span>&#160;    <span class="keyword">enum class</span> <a class="code" href="namespaceugrid.html#a6683ff1752ab0bcf618e39cef85b2bd3">UGridFileDimensions</a></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    {</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        Two,</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        nodes,</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        nodes_geometry,</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        edges,</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        faces,</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        layer,</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        layer_interface,</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        max_face_nodes,</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        contacts,</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        ids,</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        long_names</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    };</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>
+<div class="line"><a name="l00065"></a><span class="lineno"><a class="line" href="namespaceugrid.html#a727725d82af43f3a734d2de318c163ad">   65</a></span>&#160;    <span class="keyword">enum class</span> <a class="code" href="namespaceugrid.html#a727725d82af43f3a734d2de318c163ad">UGridEntityCoordinates</a></div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    {</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        x,</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        y,</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        lat,</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        lon</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    };</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
+<div class="line"><a name="l00073"></a><span class="lineno"><a class="line" href="namespaceugrid.html#ad3053d5ce08b50be71ecebf1539d7ed8">   73</a></span>&#160;    <span class="keywordtype">size_t</span> <span class="keyword">const</span> <a class="code" href="namespaceugrid.html#ad3053d5ce08b50be71ecebf1539d7ed8">name_lengths</a> = 40;                                         </div>
+<div class="line"><a name="l00074"></a><span class="lineno"><a class="line" href="namespaceugrid.html#a0ae77ff14df33d8ae4d9c235d841c2ed">   74</a></span>&#160;    <span class="keywordtype">size_t</span> <span class="keyword">const</span> <a class="code" href="namespaceugrid.html#a0ae77ff14df33d8ae4d9c235d841c2ed">name_long_lengths</a> = 80;                                    </div>
+<div class="line"><a name="l00075"></a><span class="lineno"><a class="line" href="namespaceugrid.html#a79258d7d553365851eb9b7befd5d3faf">   75</a></span>&#160;    <span class="keywordtype">int</span> <span class="keyword">const</span> <a class="code" href="namespaceugrid.html#a79258d7d553365851eb9b7befd5d3faf">int_invalid_value</a> = std::numeric_limits&lt;int&gt;::max();          </div>
+<div class="line"><a name="l00076"></a><span class="lineno"><a class="line" href="namespaceugrid.html#aa79aa82242e6772e069a7e7286607b7d">   76</a></span>&#160;    <span class="keywordtype">double</span> <span class="keyword">const</span> <a class="code" href="namespaceugrid.html#aa79aa82242e6772e069a7e7286607b7d">double_invalid_value</a> = std::numeric_limits&lt;double&gt;::max(); </div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160; </div>
+<div class="line"><a name="l00078"></a><span class="lineno"><a class="line" href="namespaceugrid.html#ae3cf59c9be19fde601eedeb3ddfe7063">   78</a></span>&#160;    <span class="keywordtype">int</span> <span class="keyword">const</span> <a class="code" href="namespaceugrid.html#ae3cf59c9be19fde601eedeb3ddfe7063">int_missing_value</a> = -999;         </div>
+<div class="line"><a name="l00079"></a><span class="lineno"><a class="line" href="namespaceugrid.html#af7a9f4bdf7e92849bb8a85eb64a690f4">   79</a></span>&#160;    <span class="keywordtype">double</span> <span class="keyword">const</span> <a class="code" href="namespaceugrid.html#af7a9f4bdf7e92849bb8a85eb64a690f4">double_missing_value</a> = -999.0; </div>
+<div class="line"><a name="l00080"></a><span class="lineno"><a class="line" href="namespaceugrid.html#a803108b683c75d9849eb976dda08243d">   80</a></span>&#160;    <span class="keywordtype">int</span> <span class="keyword">const</span> <a class="code" href="namespaceugrid.html#a803108b683c75d9849eb976dda08243d">num_face_nodes_max</a> = 6;           </div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    std::string <span class="keyword">const</span> <a class="code" href="namespaceugrid.html#a807c7034c20bf1c6d461f86f7dd3922a">two_string</a>(<span class="stringliteral">&quot;Two&quot;</span>);        </div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160; </div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;} <span class="comment">// namespace ugrid</span></div>
 </div><!-- fragment --></div><!-- contents -->
+<div class="ttc" id="anamespaceugrid_html_aa79aa82242e6772e069a7e7286607b7d"><div class="ttname"><a href="namespaceugrid.html#aa79aa82242e6772e069a7e7286607b7d">ugrid::double_invalid_value</a></div><div class="ttdeci">const double double_invalid_value</div><div class="ttdoc">double invalid value</div><div class="ttdef"><b>Definition:</b> Constants.hpp:76</div></div>
+<div class="ttc" id="anamespaceugrid_html_a803108b683c75d9849eb976dda08243d"><div class="ttname"><a href="namespaceugrid.html#a803108b683c75d9849eb976dda08243d">ugrid::num_face_nodes_max</a></div><div class="ttdeci">const int num_face_nodes_max</div><div class="ttdoc">default maximum number of nodes per face</div><div class="ttdef"><b>Definition:</b> Constants.hpp:80</div></div>
+<div class="ttc" id="anamespaceugrid_html_af7a9f4bdf7e92849bb8a85eb64a690f4"><div class="ttname"><a href="namespaceugrid.html#af7a9f4bdf7e92849bb8a85eb64a690f4">ugrid::double_missing_value</a></div><div class="ttdeci">const double double_missing_value</div><div class="ttdoc">double missing value</div><div class="ttdef"><b>Definition:</b> Constants.hpp:79</div></div>
+<div class="ttc" id="anamespaceugrid_html_a5ede1cf60a09eaa14fdcb558a078738c"><div class="ttname"><a href="namespaceugrid.html#a5ede1cf60a09eaa14fdcb558a078738c">ugrid::UGridEntityLocations</a></div><div class="ttdeci">UGridEntityLocations</div><div class="ttdoc">The UGrid entity locations.</div><div class="ttdef"><b>Definition:</b> Constants.hpp:36</div></div>
+<div class="ttc" id="anamespaceugrid_html_a6683ff1752ab0bcf618e39cef85b2bd3"><div class="ttname"><a href="namespaceugrid.html#a6683ff1752ab0bcf618e39cef85b2bd3">ugrid::UGridFileDimensions</a></div><div class="ttdeci">UGridFileDimensions</div><div class="ttdoc">The dimensions on a UGrid file.</div><div class="ttdef"><b>Definition:</b> Constants.hpp:49</div></div>
+<div class="ttc" id="anamespaceugrid_html_a807c7034c20bf1c6d461f86f7dd3922a"><div class="ttname"><a href="namespaceugrid.html#a807c7034c20bf1c6d461f86f7dd3922a">ugrid::two_string</a></div><div class="ttdeci">const std::string two_string(&quot;Two&quot;)</div><div class="ttdoc">Name of variable dimension containg two.</div></div>
+<div class="ttc" id="anamespaceugrid_html_ad3053d5ce08b50be71ecebf1539d7ed8"><div class="ttname"><a href="namespaceugrid.html#ad3053d5ce08b50be71ecebf1539d7ed8">ugrid::name_lengths</a></div><div class="ttdeci">const size_t name_lengths</div><div class="ttdoc">length of the names</div><div class="ttdef"><b>Definition:</b> Constants.hpp:73</div></div>
+<div class="ttc" id="anamespaceugrid_html_a79258d7d553365851eb9b7befd5d3faf"><div class="ttname"><a href="namespaceugrid.html#a79258d7d553365851eb9b7befd5d3faf">ugrid::int_invalid_value</a></div><div class="ttdeci">const int int_invalid_value</div><div class="ttdoc">integer invalid value</div><div class="ttdef"><b>Definition:</b> Constants.hpp:75</div></div>
 <div class="ttc" id="anamespaceugrid_html"><div class="ttname"><a href="namespaceugrid.html">ugrid</a></div><div class="ttdoc">Contains the logic of the C++ static library.</div></div>
+<div class="ttc" id="anamespaceugrid_html_ae3cf59c9be19fde601eedeb3ddfe7063"><div class="ttname"><a href="namespaceugrid.html#ae3cf59c9be19fde601eedeb3ddfe7063">ugrid::int_missing_value</a></div><div class="ttdeci">const int int_missing_value</div><div class="ttdoc">integer missing value</div><div class="ttdef"><b>Definition:</b> Constants.hpp:78</div></div>
+<div class="ttc" id="anamespaceugrid_html_a727725d82af43f3a734d2de318c163ad"><div class="ttname"><a href="namespaceugrid.html#a727725d82af43f3a734d2de318c163ad">ugrid::UGridEntityCoordinates</a></div><div class="ttdeci">UGridEntityCoordinates</div><div class="ttdoc">The UGrid Entity coordinates.</div><div class="ttdef"><b>Definition:</b> Constants.hpp:65</div></div>
+<div class="ttc" id="anamespaceugrid_html_a0ae77ff14df33d8ae4d9c235d841c2ed"><div class="ttname"><a href="namespaceugrid.html#a0ae77ff14df33d8ae4d9c235d841c2ed">ugrid::name_long_lengths</a></div><div class="ttdeci">const size_t name_long_lengths</div><div class="ttdoc">length of the long names</div><div class="ttdef"><b>Definition:</b> Constants.hpp:74</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">
