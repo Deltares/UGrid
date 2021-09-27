@@ -1,0 +1,30 @@
+var indexSectionsWithContent =
+{
+  0: "abcdefghilmnpsuv",
+  1: "cmnu",
+  2: "u",
+  3: "acdfghimnpu",
+  4: "bcdefgilmnsv",
+  5: "u"
+};
+
+var indexSectionNames =
+{
+  0: "all",
+  1: "classes",
+  2: "namespaces",
+  3: "functions",
+  4: "variables",
+  5: "enums"
+};
+
+var indexSectionLabels =
+{
+  0: "All",
+  1: "Classes",
+  2: "Namespaces",
+  3: "Functions",
+  4: "Variables",
+  5: "Enumerations"
+};
+
