@@ -51,6 +51,9 @@ endif()
 find_package(Boost REQUIRED COMPONENTS system filesystem)
 include_directories(${Boost_INCLUDE_DIR})
 
+# FetchContent added in CMake 3.11, downloads during the configure step
+include(FetchContent)
+
 # Run packaging scripts
 add_subdirectory(package)
 
@@ -63,9 +66,6 @@ add_subdirectory(src/UGrid)
 # The dynamic library
 add_subdirectory(src/UGridApi)
 
-# FetchContent added in CMake 3.11, downloads during the configure step
-include(FetchContent)
-
 # The path to netcdf libraries
 set(NETCDF_PATH "${PROJECT_SOURCE_DIR}/extern/netcdf/netcdf_4_8_0")
 message("NETCDF_PATH is ${NETCDF_PATH}")
@@ -74,6 +74,3 @@ message("NETCDF_PATH is ${NETCDF_PATH}")
 if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
   add_subdirectory(tests)
 endif()
-
-
-

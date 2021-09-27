@@ -13,7 +13,7 @@ add_library(UGridApi SHARED ${SOURCE_LIST} ${HEADER_LIST}
 set(NETCDF_PATH "${PROJECT_SOURCE_DIR}/extern/netcdf/netcdf_4_8_0")
 message("NETCDF_PATH is ${NETCDF_PATH}")
 
-set(NETCDFCXX_PATH "${PROJECT_SOURCE_DIR}/extern/netcdf/netcdf-cxx/netcdf-cxx4-4.3.1")
+set(NETCDFCXX_PATH "${PROJECT_SOURCE_DIR}/extern/netcdf-cxx4")
 message("NETCDFCXX_PATH is ${NETCDFCXX_PATH}")
 
 target_include_directories(UGridApi PUBLIC "${PROJECT_SOURCE_DIR}/include" "${NETCDF_PATH}/include" "${NETCDFCXX_PATH}/cxx4")
@@ -28,7 +28,7 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
 endif()
 
 # Link shared lib to static lib, but don't expose it
-target_link_libraries(UGridApi PRIVATE UGrid netcdf-cxx "${NETCDF_PATH}/lib/netcdf.lib")
+target_link_libraries(UGridApi LINK_PUBLIC UGrid netcdf-cxx "${NETCDF_PATH}/lib/netcdf.lib")
 
 # IDEs should put the headers in a nice place
 source_group(
