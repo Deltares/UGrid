@@ -62,16 +62,12 @@ docs_dir = root_dir / "docs"
 
 # Set paths
 main_page_path = docs_dir / "main_page.md"
-introduction_path = docs_dir / "introduction.md"
-design_path = docs_dir / "design.md"
 doxyfile_in_path = docs_dir / "Doxyfile.in"
 doxyfile_path = output_dir / "Doxyfile"
 doxygen_log_path = output_dir / "Doxygen_log.txt"
 doxygen_input_list = f"{UGrid_include_dir.resolve()}    \
                        {UGridapi_include_dir.resolve()} \
-                       {main_page_path.resolve()}            \
-                       {introduction_path.resolve()}         \
-                       {design_path.resolve()}"
+                       {main_page_path.resolve()}"
 
 # The dir tree is not created automatically
 output_dir.parent.mkdir(exist_ok=True)
