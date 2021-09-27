@@ -28,10 +28,6 @@ def configure_doxyfile(
     doxyfile_data = doxyfile_data.replace("@DOXYGEN_OUTPUT_DIR@", str(output_dir.resolve()))
     doxyfile_data = doxyfile_data.replace("@CMAKE_CURRENT_SOURCE_DIR@", str(docs_dir.resolve()))
     doxyfile_data = doxyfile_data.replace(
-        "@DOXYGEN_IMAGE_DIR@", str(docs_dir / "images")
-    )
-
-    doxyfile_data = doxyfile_data.replace(
         "@DOXYGEN_WARN_LOG_FILE@", str(doxygen_log_path)
     )
 
