@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>MeshKernel: /home/runner/work/UGrid/UGrid/include/UGrid/Mesh1D.hpp Source File</title>
+<title>MeshKernel: /home/runner/work/UGrid/UGrid/include/UGrid/UGridVarAttributeStringBuilder.hpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -74,7 +74,7 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">Mesh1D.hpp</div>  </div>
+<div class="title">UGridVarAttributeStringBuilder.hpp</div>  </div>
 </div><!--header-->
 <div class="contents">
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">//---- GPL ---------------------------------------------------------------------</span></div>
@@ -106,45 +106,50 @@ $(function() {
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; </div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#pragma once</span></div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; </div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &lt;UGridApi/Mesh1D.hpp&gt;</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; </div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &lt;UGrid/UGridEntity.hpp&gt;</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; </div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespaceugrid.html">ugrid</a></div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;{</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160; </div>
-<div class="line"><a name="l00040"></a><span class="lineno"><a class="line" href="structugrid_1_1_mesh1_d.html">   40</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="structugrid_1_1_mesh1_d.html">Mesh1D</a> : <a class="code" href="classugrid_1_1_u_grid_entity.html">UGridEntity</a></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    {</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        <span class="keyword">explicit</span> <a class="code" href="structugrid_1_1_mesh1_d.html#adc0a6ecfddf13f5f45799423ba07435a">Mesh1D</a>(std::shared_ptr&lt;netCDF::NcFile&gt; nc_file);</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        <span class="keyword">explicit</span> <a class="code" href="structugrid_1_1_mesh1_d.html#adc0a6ecfddf13f5f45799423ba07435a">Mesh1D</a>(std::shared_ptr&lt;netCDF::NcFile&gt; nc_file,</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;                        netCDF::NcVar <span class="keyword">const</span>&amp; topology_variable,</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;                        std::map&lt;std::string, std::vector&lt;netCDF::NcVar&gt;&gt; <span class="keyword">const</span>&amp; entity_attributes,</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;                        std::map&lt;std::string, std::vector&lt;std::string&gt;&gt; <span class="keyword">const</span>&amp; entity_attribute_names,</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;                        std::map&lt;UGridDimensions, netCDF::NcDim&gt; <span class="keyword">const</span>&amp; entity_dimensions);</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="structugrid_1_1_mesh1_d.html#a1836271ed3c139bfbb3ce07456340482">define</a>(<a class="code" href="structugridapi_1_1_mesh1_d.html">ugridapi::Mesh1D</a> <span class="keyword">const</span>&amp; mesh1d);</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &lt;sstream&gt;</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; </div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespaceugrid.html">ugrid</a></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;{</div>
+<div class="line"><a name="l00038"></a><span class="lineno"><a class="line" href="classugrid_1_1_u_grid_var_attribute_string_builder.html">   38</a></span>&#160;    <span class="keyword">class </span><a class="code" href="classugrid_1_1_u_grid_var_attribute_string_builder.html">UGridVarAttributeStringBuilder</a></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    {</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="classugrid_1_1_u_grid_var_attribute_string_builder.html#ace9680aea5e62823aa258be2de8f0bad">   43</a></span>&#160;        <span class="keyword">explicit</span> <a class="code" href="classugrid_1_1_u_grid_var_attribute_string_builder.html#ace9680aea5e62823aa258be2de8f0bad">UGridVarAttributeStringBuilder</a>(std::string <span class="keyword">const</span>&amp; name) : m_name(name)</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        {</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;            m_os &lt;&lt; m_name;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        }</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
+<div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="classugrid_1_1_u_grid_var_attribute_string_builder.html#aec7304989b90a3653b4f789ba43cd93b">   49</a></span>&#160;        <span class="keywordtype">void</span> <a class="code" href="classugrid_1_1_u_grid_var_attribute_string_builder.html#aec7304989b90a3653b4f789ba43cd93b">clear</a>()</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        {</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;            m_os.str(std::string());</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;            m_os &lt;&lt; m_name;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        }</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
+<div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="classugrid_1_1_u_grid_var_attribute_string_builder.html#a804cc402e70397ec56e839cfee838e7d">   57</a></span>&#160;        [[nodiscard]] std::string <a class="code" href="classugrid_1_1_u_grid_var_attribute_string_builder.html#a804cc402e70397ec56e839cfee838e7d">str</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="keyword">        </span>{</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            <span class="keywordflow">return</span> m_os.str();</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        }</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; </div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="structugrid_1_1_mesh1_d.html#a2fcccc345fa99d139de7c18204e1bd54">put</a>(<a class="code" href="structugridapi_1_1_mesh1_d.html">ugridapi::Mesh1D</a> <span class="keyword">const</span>&amp; mesh1d);</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160; </div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="structugrid_1_1_mesh1_d.html#abe5d6f20d1407dca29b86676b4bcb66b">inquire</a>(<a class="code" href="structugridapi_1_1_mesh1_d.html">ugridapi::Mesh1D</a>&amp; mesh1d) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="structugrid_1_1_mesh1_d.html#a2c81a017a81b24b670ca6389b52224be">get</a>(<a class="code" href="structugridapi_1_1_mesh1_d.html">ugridapi::Mesh1D</a>&amp; mesh1d) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160; </div>
-<div class="line"><a name="l00076"></a><span class="lineno"><a class="line" href="structugrid_1_1_mesh1_d.html#a72f2f4d4e3e7db182f6232c510ae73b8">   76</a></span>&#160;        <span class="keyword">static</span> <span class="keywordtype">int</span> <a class="code" href="structugrid_1_1_mesh1_d.html#a72f2f4d4e3e7db182f6232c510ae73b8">get_dimensionality</a>() { <span class="keywordflow">return</span> 1; }</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    };</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00067"></a><span class="lineno"><a class="line" href="classugrid_1_1_u_grid_var_attribute_string_builder.html#a53f55419bebfad657c4d10d897a8a167">   67</a></span>&#160;        <a class="code" href="classugrid_1_1_u_grid_var_attribute_string_builder.html">UGridVarAttributeStringBuilder</a>&amp; <a class="code" href="classugrid_1_1_u_grid_var_attribute_string_builder.html#a53f55419bebfad657c4d10d897a8a167">operator&lt;&lt;</a>(T val)</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        {</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;            m_os &lt;&lt; val;</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;            <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        }</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        std::stringstream m_os; </div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        std::string m_name;     </div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    };</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160; </div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;} <span class="comment">// namespace ugrid</span></div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="astructugrid_1_1_mesh1_d_html_a2c81a017a81b24b670ca6389b52224be"><div class="ttname"><a href="structugrid_1_1_mesh1_d.html#a2c81a017a81b24b670ca6389b52224be">ugrid::Mesh1D::get</a></div><div class="ttdeci">void get(ugridapi::Mesh1D &amp;mesh1d) const</div><div class="ttdoc">Inquires the mesh1d arrays.</div></div>
-<div class="ttc" id="astructugrid_1_1_mesh1_d_html_adc0a6ecfddf13f5f45799423ba07435a"><div class="ttname"><a href="structugrid_1_1_mesh1_d.html#adc0a6ecfddf13f5f45799423ba07435a">ugrid::Mesh1D::Mesh1D</a></div><div class="ttdeci">Mesh1D(std::shared_ptr&lt; netCDF::NcFile &gt; nc_file)</div><div class="ttdoc">Constructor setting the NetCDF file.</div></div>
-<div class="ttc" id="astructugrid_1_1_mesh1_d_html_abe5d6f20d1407dca29b86676b4bcb66b"><div class="ttname"><a href="structugrid_1_1_mesh1_d.html#abe5d6f20d1407dca29b86676b4bcb66b">ugrid::Mesh1D::inquire</a></div><div class="ttdeci">void inquire(ugridapi::Mesh1D &amp;mesh1d) const</div><div class="ttdoc">Inquires the mesh1d dimensions.</div></div>
-<div class="ttc" id="astructugrid_1_1_mesh1_d_html_a72f2f4d4e3e7db182f6232c510ae73b8"><div class="ttname"><a href="structugrid_1_1_mesh1_d.html#a72f2f4d4e3e7db182f6232c510ae73b8">ugrid::Mesh1D::get_dimensionality</a></div><div class="ttdeci">static int get_dimensionality()</div><div class="ttdoc">Get the dimensionality of a Mesh1d.</div><div class="ttdef"><b>Definition:</b> Mesh1D.hpp:76</div></div>
-<div class="ttc" id="astructugrid_1_1_mesh1_d_html"><div class="ttname"><a href="structugrid_1_1_mesh1_d.html">ugrid::Mesh1D</a></div><div class="ttdoc">A class implementing the methods for reading/writing a mesh1d in UGrid format.</div><div class="ttdef"><b>Definition:</b> Mesh1D.hpp:40</div></div>
-<div class="ttc" id="astructugrid_1_1_mesh1_d_html_a2fcccc345fa99d139de7c18204e1bd54"><div class="ttname"><a href="structugrid_1_1_mesh1_d.html#a2fcccc345fa99d139de7c18204e1bd54">ugrid::Mesh1D::put</a></div><div class="ttdeci">void put(ugridapi::Mesh1D const &amp;mesh1d)</div><div class="ttdoc">Writes a mesh1d to file.</div></div>
-<div class="ttc" id="astructugridapi_1_1_mesh1_d_html"><div class="ttname"><a href="structugridapi_1_1_mesh1_d.html">ugridapi::Mesh1D</a></div><div class="ttdoc">A struct used to describe UGrid mesh1d in a C-compatible manner.</div><div class="ttdef"><b>Definition:</b> Mesh1D.hpp:35</div></div>
+<div class="ttc" id="aclassugrid_1_1_u_grid_var_attribute_string_builder_html_aec7304989b90a3653b4f789ba43cd93b"><div class="ttname"><a href="classugrid_1_1_u_grid_var_attribute_string_builder.html#aec7304989b90a3653b4f789ba43cd93b">ugrid::UGridVarAttributeStringBuilder::clear</a></div><div class="ttdeci">void clear()</div><div class="ttdoc">Clears the stream and adds the entity name.</div><div class="ttdef"><b>Definition:</b> UGridVarAttributeStringBuilder.hpp:49</div></div>
+<div class="ttc" id="aclassugrid_1_1_u_grid_var_attribute_string_builder_html_a53f55419bebfad657c4d10d897a8a167"><div class="ttname"><a href="classugrid_1_1_u_grid_var_attribute_string_builder.html#a53f55419bebfad657c4d10d897a8a167">ugrid::UGridVarAttributeStringBuilder::operator&lt;&lt;</a></div><div class="ttdeci">UGridVarAttributeStringBuilder &amp; operator&lt;&lt;(T val)</div><div class="ttdoc">Customized &lt;&lt; operator for adding content into the internal stream.</div><div class="ttdef"><b>Definition:</b> UGridVarAttributeStringBuilder.hpp:67</div></div>
 <div class="ttc" id="anamespaceugrid_html"><div class="ttname"><a href="namespaceugrid.html">ugrid</a></div><div class="ttdoc">Contains the logic of the C++ static library.</div></div>
-<div class="ttc" id="astructugrid_1_1_mesh1_d_html_a1836271ed3c139bfbb3ce07456340482"><div class="ttname"><a href="structugrid_1_1_mesh1_d.html#a1836271ed3c139bfbb3ce07456340482">ugrid::Mesh1D::define</a></div><div class="ttdeci">void define(ugridapi::Mesh1D const &amp;mesh1d)</div><div class="ttdoc">Defines the mesh1d header (ug_write_mesh_arrays)</div></div>
-<div class="ttc" id="aclassugrid_1_1_u_grid_entity_html"><div class="ttname"><a href="classugrid_1_1_u_grid_entity.html">ugrid::UGridEntity</a></div><div class="ttdoc">A class containing the ids of UGrid netcdf file.</div><div class="ttdef"><b>Definition:</b> UGridEntity.hpp:44</div></div>
+<div class="ttc" id="aclassugrid_1_1_u_grid_var_attribute_string_builder_html_ace9680aea5e62823aa258be2de8f0bad"><div class="ttname"><a href="classugrid_1_1_u_grid_var_attribute_string_builder.html#ace9680aea5e62823aa258be2de8f0bad">ugrid::UGridVarAttributeStringBuilder::UGridVarAttributeStringBuilder</a></div><div class="ttdeci">UGridVarAttributeStringBuilder(std::string const &amp;name)</div><div class="ttdoc">Constructor setting the entity name.</div><div class="ttdef"><b>Definition:</b> UGridVarAttributeStringBuilder.hpp:43</div></div>
+<div class="ttc" id="aclassugrid_1_1_u_grid_var_attribute_string_builder_html"><div class="ttname"><a href="classugrid_1_1_u_grid_var_attribute_string_builder.html">ugrid::UGridVarAttributeStringBuilder</a></div><div class="ttdoc">A class for building ugrid variable names, starting with the entity names.</div><div class="ttdef"><b>Definition:</b> UGridVarAttributeStringBuilder.hpp:38</div></div>
+<div class="ttc" id="aclassugrid_1_1_u_grid_var_attribute_string_builder_html_a804cc402e70397ec56e839cfee838e7d"><div class="ttname"><a href="classugrid_1_1_u_grid_var_attribute_string_builder.html#a804cc402e70397ec56e839cfee838e7d">ugrid::UGridVarAttributeStringBuilder::str</a></div><div class="ttdeci">std::string str() const</div><div class="ttdoc">Get the stream content.</div><div class="ttdef"><b>Definition:</b> UGridVarAttributeStringBuilder.hpp:57</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">
