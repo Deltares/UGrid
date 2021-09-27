@@ -108,14 +108,13 @@ namespace ugridapi
         /// @brief The maximum number of face nodes
         int num_face_nodes_max = 4;
 
-        /// @brief 1 if coordinates are in a spherical system, 0 otherwise  
+        /// @brief 1 if coordinates are in a spherical system, 0 otherwise
         int is_spherical = 0;
 
-        /// @brief The fill value for array of doubles 
+        /// @brief The fill value for array of doubles
         double double_fill_value = ugrid::double_missing_value;
 
         /// @brief The fill value for array of integers
         int int_fill_value = ugrid::int_missing_value;
-
     };
-}
+} // namespace ugridapi

@@ -29,17 +29,16 @@
 
 #include <boost/format.hpp>
 
+#include <map>
 #include <string>
 #include <vector>
-#include <map>
 
 #include <ncFile.h>
 #include <ncVar.h>
 
-#include <UGrid/Operations.hpp>
 #include <UGrid/Constants.hpp>
+#include <UGrid/Operations.hpp>
 #include <UGrid/UGridEntity.hpp>
-
 
 using namespace ugrid;
 
@@ -54,12 +53,11 @@ UGridEntity::UGridEntity(
     std::map<std::string, std::vector<netCDF::NcVar>> const& attribute_variables,
     std::map<std::string, std::vector<std::string>> const& attribute_variable_names,
     std::map<UGridDimensions, netCDF::NcDim> const& dimensions)
-    :
-    m_nc_file(nc_file),
-    m_topology_variable(topology_variable),
-    m_topology_attribute_variables(attribute_variables),
-    m_topology_attributes_names(attribute_variable_names),
-    m_dimensions(dimensions)
+    : m_nc_file(nc_file),
+      m_topology_variable(topology_variable),
+      m_topology_attribute_variables(attribute_variables),
+      m_topology_attributes_names(attribute_variable_names),
+      m_dimensions(dimensions)
 {
     m_entity_name = m_topology_variable.getName();
 }
@@ -103,7 +101,6 @@ bool UGridEntity::has_matching_dimensionality(std::map<std::string, netCDF::NcVa
     return false;
 }
 
-
 void UGridEntity::define_topological_variable_with_coordinates(
     UGridEntityLocations const& location,
     UGridDimensions const& dimension,
@@ -130,10 +127,12 @@ void UGridEntity::define_topological_variable_with_coordinates(
     UGridVarAttributeStringBuilder string_builder(m_entity_name);
     if (!m_spherical_coordinates)
     {
-        string_builder.clear(); string_builder << "_" << boost::format(name_pattern) % location_string % "_x";
+        string_builder.clear();
+        string_builder << "_" << boost::format(name_pattern) % location_string % "_x";
         first_coordinate_variable = string_builder.str();
 
-        string_builder.clear(); string_builder << "_" << boost::format(name_pattern) % location_string % "_y";
+        string_builder.clear();
+        string_builder << "_" << boost::format(name_pattern) % location_string % "_y";
         second_coordinate_variable = string_builder.str();
 
         define_variable_with_coordinate(topology_attribute_name, first_coordinate_variable, dimension, UGridCoordinates::x, long_name_pattern);
@@ -142,10 +141,12 @@ void UGridEntity::define_topological_variable_with_coordinates(
 
     if (m_spherical_coordinates)
     {
-        string_builder.clear(); string_builder << "_" << boost::format(name_pattern) % location_string % "_lon";
+        string_builder.clear();
+        string_builder << "_" << boost::format(name_pattern) % location_string % "_lon";
         first_coordinate_variable = string_builder.str();
 
-        string_builder.clear(); string_builder << "_" << boost::format(name_pattern) % location_string % "_lat";
+        string_builder.clear();
+        string_builder << "_" << boost::format(name_pattern) % location_string % "_lat";
         second_coordinate_variable = string_builder.str();
 
         define_variable_with_coordinate(topology_attribute_name, first_coordinate_variable, dimension, UGridCoordinates::lon, long_name_pattern);
@@ -168,33 +169,33 @@ void UGridEntity::define_topological_variable_with_coordinates(
 }
 
 netCDF::NcVar UGridEntity::define_variable_on_location(std::string const& variable_name,
-    UGridDimensions const& dimension,
-    std::string const& standard_name,
-    std::string const& long_name,
-    std::string const& units,
-    double const& fill_value)
+                                                       UGridDimensions const& dimension,
+                                                       std::string const& standard_name,
+                                                       std::string const& long_name,
+                                                       std::string const& units,
+                                                       double const& fill_value)
 {
     return define_variable_on_location(variable_name, dimension, netCDF::NcType::nc_DOUBLE, standard_name, long_name, units, int_invalid_value, fill_value);
 }
 
 netCDF::NcVar UGridEntity::define_variable_on_location(std::string const& variable_name,
-    UGridDimensions const& dimension,
-    std::string const& standard_name,
-    std::string const& long_name,
-    std::string const& units,
-    int const& fill_value)
+                                                       UGridDimensions const& dimension,
+                                                       std::string const& standard_name,
+                                                       std::string const& long_name,
+                                                       std::string const& units,
+                                                       int const& fill_value)
 {
     return define_variable_on_location(variable_name, dimension, netCDF::NcType::nc_INT, standard_name, long_name, units, fill_value, fill_value);
 }
 
 netCDF::NcVar UGridEntity::define_variable_on_location(std::string const& variable_name,
-    UGridDimensions const& ugrid_entity_dimension,
-    netCDF::NcType const& nc_type,
-    std::string const& standard_name,
-    std::string const& long_name,
-    std::string const& units,
-    int const& int_fill_value,
-    double const& double_fill_value)
+                                                       UGridDimensions const& ugrid_entity_dimension,
+                                                       netCDF::NcType const& nc_type,
+                                                       std::string const& standard_name,
+                                                       std::string const& long_name,
+                                                       std::string const& units,
+                                                       int const& int_fill_value,
+                                                       double const& double_fill_value)
 {
     UGridVarAttributeStringBuilder string_builder(m_entity_name);
 
@@ -217,7 +218,8 @@ netCDF::NcVar UGridEntity::define_variable_on_location(std::string const& variab
     if (ugrid_entity_dimension == UGridDimensions::contacts)
     {
         location = "contact";
-        string_builder.clear(); string_builder << "_" << location;
+        string_builder.clear();
+        string_builder << "_" << location;
         auto variable_attribute = variable.putAtt("location", string_builder.str());
         variable_attribute = variable.putAtt("coordinates", location);
         define_additional_attributes(variable, standard_name, long_name, units, int_fill_value, double_fill_value);
@@ -226,14 +228,16 @@ netCDF::NcVar UGridEntity::define_variable_on_location(std::string const& variab
 
     if (!m_spherical_coordinates)
     {
-        string_builder.clear(); string_builder << "_" << location << "_x " << m_entity_name << "_" << location << "_y";
+        string_builder.clear();
+        string_builder << "_" << location << "_x " << m_entity_name << "_" << location << "_y";
         variable.putAtt("location", string_builder.str());
         variable.putAtt("coordinates", location);
     }
 
     if (m_spherical_coordinates)
     {
-        string_builder.clear(); string_builder << "_" << location << "_lon " << m_entity_name << "_" << location << "_lat";
+        string_builder.clear();
+        string_builder << "_" << location << "_lon " << m_entity_name << "_" << location << "_lat";
         variable.putAtt("location", string_builder.str());
         variable.putAtt("coordinates", location);
     }
@@ -246,16 +250,14 @@ netCDF::NcVar UGridEntity::define_variable_on_location(std::string const& variab
 std::map<std::string, std::vector<netCDF::NcVar>>::const_iterator UGridEntity::find_variable_with_aliases(std::string const& variable_name) const
 {
     // define topology variable aliases
-    static std::map<std::string, std::vector<std::string>> aliases
-    {
-        {"node_id",{"node_id", "node_ids"}},
-        {"node_long_name",{"node_long_name", "node_long_names"}},
-        {"branch_id",{"branch_id", "branch_ids"}},
-        {"branch_long_name",{"branch_long_name", "branch_long_names"}},
-        {"contact_id",{"contact_id", "contact_ids"}},
-        {"contact_long_name",{"contact_long_name", "contact_long_names"}},
-        {"branch_length",{"branch_length", "branch_lengths"}}
-    };
+    static std::map<std::string, std::vector<std::string>> aliases{
+        {"node_id", {"node_id", "node_ids"}},
+        {"node_long_name", {"node_long_name", "node_long_names"}},
+        {"branch_id", {"branch_id", "branch_ids"}},
+        {"branch_long_name", {"branch_long_name", "branch_long_names"}},
+        {"contact_id", {"contact_id", "contact_ids"}},
+        {"contact_long_name", {"contact_long_name", "contact_long_names"}},
+        {"branch_length", {"branch_length", "branch_lengths"}}};
 
     auto iterator = m_topology_attribute_variables.end();
     for (auto const& alias : aliases.at(variable_name))
@@ -272,7 +274,6 @@ std::map<std::string, std::vector<netCDF::NcVar>>::const_iterator UGridEntity::f
     }
 
     return iterator;
-
 }
 
 void UGridEntity::add_topology_attribute_variable(netCDF::NcVarAtt const& nc_var_attribute, netCDF::NcVar const& nc_var)
@@ -285,7 +286,7 @@ void UGridEntity::add_topology_attribute_variable(netCDF::NcVarAtt const& nc_var
     }
     else
     {
-        m_topology_attribute_variables.insert({ nc_var_attribute.getName(), {nc_var} });
+        m_topology_attribute_variables.insert({nc_var_attribute.getName(), {nc_var}});
     }
 }
 
@@ -308,9 +309,9 @@ void UGridEntity::define(char* entity_name, int start_index, std::string const& 
     add_topology_attribute(topology_attribute);
 
     // Add additional dimensions, maybe required
-    m_dimensions.insert({ UGridDimensions::ids, m_nc_file->addDim("strLengthIds", name_lengths) });
-    m_dimensions.insert({ UGridDimensions::long_names, m_nc_file->addDim("strLengthLongNames", name_long_lengths) });
-    m_dimensions.insert({ UGridDimensions::Two, m_nc_file->addDim(two_string , 2) });
+    m_dimensions.insert({UGridDimensions::ids, m_nc_file->addDim("strLengthIds", name_lengths)});
+    m_dimensions.insert({UGridDimensions::long_names, m_nc_file->addDim("strLengthLongNames", name_long_lengths)});
+    m_dimensions.insert({UGridDimensions::Two, m_nc_file->addDim(two_string, 2)});
 }
 
 void UGridEntity::define_variable_with_coordinate(
@@ -363,13 +364,12 @@ void UGridEntity::define_variable_with_coordinate(
     m_topology_attribute_variables[attribute_name].back().setFill(false, m_double_fill_value);
 }
 
-
 void UGridEntity::define_additional_attributes(netCDF::NcVar& variable,
-    std::string const& standard_name,
-    std::string const& long_name,
-    std::string const& units,
-    int const& int_fill_value,
-    double const& double_fill_value)
+                                               std::string const& standard_name,
+                                               std::string const& long_name,
+                                               std::string const& units,
+                                               int const& int_fill_value,
+                                               double const& double_fill_value)
 {
 
     if (!standard_name.empty())

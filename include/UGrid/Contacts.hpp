@@ -58,11 +58,11 @@ namespace ugrid
             std::map<UGridDimensions, netCDF::NcDim> const& entity_dimensions);
 
         /// @brief Defines the contacts header (ug_write_mesh_arrays)
-        /// @param contacts The contacts api structure with the fields to write and all optional flags  
+        /// @param contacts The contacts api structure with the fields to write and all optional flags
         void define(ugridapi::Contacts const& contacts);
 
         /// @brief Writes a contacts to file
-        /// @param contacts contacts The contacts api structure with the fields to write and all optional flags  
+        /// @param contacts contacts The contacts api structure with the fields to write and all optional flags
         void put(ugridapi::Contacts const& contacts);
 
         /// @brief Inquires the contacts dimensions
@@ -92,11 +92,9 @@ namespace ugrid
         static int get_dimensionality() { return 1; }
 
     private:
-
         std::string m_mesh_from_name = "";
         std::string m_mesh_to_name = "";
         UGridEntityLocations m_mesh_from_location = UGridEntityLocations::invalid_location;
         UGridEntityLocations m_mesh_to_location = UGridEntityLocations::invalid_location;
-
     };
 } // namespace ugrid

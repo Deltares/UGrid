@@ -19,10 +19,10 @@ namespace ugridapi
         {
         }
 
-        std::shared_ptr<netCDF::NcFile> m_ncFile;              ///< A pointer to a NcFile handler
-        std::vector<ugrid::Mesh1D> m_mesh1d;                   ///< A vector containing all Mesh1D instances
-        std::vector<ugrid::Network1D> m_network1d;             ///< A vector containing all Network1D instances
-        std::vector<ugrid::Mesh2D> m_mesh2d;                   ///< A vector containing all Mesh2D instances
-        std::vector<ugrid::Contacts> m_contacts;               ///< A vector containing all Contacts instances
+        std::shared_ptr<netCDF::NcFile> m_ncFile;  ///< A pointer to a NcFile handler
+        std::vector<ugrid::Mesh1D> m_mesh1d;       ///< A vector containing all Mesh1D instances
+        std::vector<ugrid::Network1D> m_network1d; ///< A vector containing all Network1D instances
+        std::vector<ugrid::Mesh2D> m_mesh2d;       ///< A vector containing all Mesh2D instances
+        std::vector<ugrid::Contacts> m_contacts;   ///< A vector containing all Contacts instances
     };
-}
+} // namespace ugridapi

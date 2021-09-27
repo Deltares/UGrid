@@ -49,7 +49,7 @@ namespace ugridapi
         /// @brief The name of the mesh where the contacts start
         char* mesh_from_name = nullptr;
 
-        /// @brief The name of the mesh where the contacts ends 
+        /// @brief The name of the mesh where the contacts ends
         char* mesh_to_name = nullptr;
 
         /// @brief The location type (node, edge or face) at the contact start
@@ -61,4 +61,4 @@ namespace ugridapi
         /// @brief The number of contacts
         int num_contacts = 0;
     };
-}
+} // namespace ugridapi

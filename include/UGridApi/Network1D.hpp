@@ -40,13 +40,13 @@ namespace ugridapi
         /// @brief The node y coordinates
         double* node_y = nullptr;
 
-        /// @brief The node name 
+        /// @brief The node name
         char* node_name_id = nullptr;
 
         /// @brief The node long name
         char* node_name_long = nullptr;
 
-        /// @brief The nodes defining each branch (also called node edge connectivity) 
+        /// @brief The nodes defining each branch (also called node edge connectivity)
         int* branch_node = nullptr;
 
         /// @brief The branch lengths
@@ -76,10 +76,10 @@ namespace ugridapi
         /// @brief The number of network1d branches
         int num_branches = 0;
 
-        /// @brief 1 If the coordinates are in a spherical system, 0 otherwise 
+        /// @brief 1 If the coordinates are in a spherical system, 0 otherwise
         int is_spherical = 0;
 
         /// @brief The start index used in arrays using indices, such as in the branch_node array
         int start_index = 0;
     };
-}
+} // namespace ugridapi

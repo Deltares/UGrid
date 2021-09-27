@@ -26,11 +26,11 @@
 //------------------------------------------------------------------------------
 
 #pragma once
-#include <string>
 #include <sstream>
+#include <string>
 
-#include <boost/algorithm/string/split.hpp>
 #include <boost/algorithm/string.hpp>
+#include <boost/algorithm/string/split.hpp>
 
 #include <UGrid/Constants.hpp>
 
@@ -50,13 +50,12 @@ namespace ugrid
         return std::abs(value - referenceValue) < std::numeric_limits<T>::epsilon();
     }
 
-
     class UGridVarAttributeStringBuilder
     {
         std::stringstream m_os;
         std::string m_name;
-    public:
 
+    public:
         explicit UGridVarAttributeStringBuilder(std::string const& name) : m_name(name)
         {
             m_os << m_name;
@@ -73,7 +72,7 @@ namespace ugrid
             return m_os.str();
         }
 
-        template<typename T>
+        template <typename T>
         UGridVarAttributeStringBuilder& operator<<(T val)
         {
             m_os << val;
@@ -136,9 +135,9 @@ namespace ugrid
     }
 
     static bool fill_ugrid_entity_dimension(std::multimap<std::string, netCDF::NcDim> const& dimensions,
-        std::string const& attribute_key_string,
-        std::string const& attribute_value_string,
-        std::map<UGridDimensions, netCDF::NcDim>& entity_dimensions)
+                                            std::string const& attribute_key_string,
+                                            std::string const& attribute_value_string,
+                                            std::map<UGridDimensions, netCDF::NcDim>& entity_dimensions)
     {
         auto const substring_dimension_pos = attribute_value_string.find("_dimension");
         bool isDimensionVariable = false;
@@ -148,19 +147,18 @@ namespace ugrid
             std::string location_name = attribute_value_string.substr(0, substring_dimension_pos);
             auto const it = dimensions.find(attribute_key_string);
             auto const dimension_enum = from_location_string_to_dimension(location_name);
-            entity_dimensions.insert({ dimension_enum, it->second });
+            entity_dimensions.insert({dimension_enum, it->second});
         }
         return isDimensionVariable;
     }
 
     static std::tuple<std::map<std::string, std::vector<netCDF::NcVar>>,
-        std::map < std::string, std::vector<std::string>>,
-        std::map<UGridDimensions, netCDF::NcDim>> get_ugrid_entity
-        (
-            netCDF::NcVar const& variable,
-            std::multimap<std::string, netCDF::NcDim> const& file_dimensions,
-            std::multimap<std::string, netCDF::NcVar> const& file_variables
-        )
+                      std::map<std::string, std::vector<std::string>>,
+                      std::map<UGridDimensions, netCDF::NcDim>>
+    get_ugrid_entity(
+        netCDF::NcVar const& variable,
+        std::multimap<std::string, netCDF::NcDim> const& file_dimensions,
+        std::multimap<std::string, netCDF::NcVar> const& file_variables)
     {
         std::map<std::string, std::vector<netCDF::NcVar>> entity_attribute_variables;
         std::map<std::string, std::vector<std::string>> entity_attribute_names;
@@ -200,13 +198,12 @@ namespace ugrid
             // valid file_variables have been found
             if (!valid_attribute_variables.empty())
             {
-                entity_attribute_variables.insert({ attribute_key_string, valid_attribute_variables });
+                entity_attribute_variables.insert({attribute_key_string, valid_attribute_variables});
             }
 
-            entity_attribute_names.insert({ attribute_key_string, attribute_value_string_tokens });
-
+            entity_attribute_names.insert({attribute_key_string, attribute_value_string_tokens});
         }
-        return { entity_attribute_variables, entity_attribute_names, entity_dimensions };
+        return {entity_attribute_variables, entity_attribute_names, entity_dimensions};
     }
 
     static void add_start_index(int const& start_index, netCDF::NcVar& variable, double double_fill_value, int int_fill_value)
@@ -233,13 +230,14 @@ namespace ugrid
             char_array[i] = ' ';
         }
         char_array[len - 1] = '\0';
-
     }
 
-    static void rtrim(std::string& s) {
+    static void rtrim(std::string& s)
+    {
         s.erase(std::find_if(s.rbegin(), s.rend(), [](auto& ch) {
-            return !std::isspace(ch);
-            }).base(), s.end());
+                    return !std::isspace(ch);
+                }).base(),
+                s.end());
     }
 
     static std::string char_array_to_string(char* char_array, size_t len)
@@ -256,7 +254,5 @@ namespace ugrid
         rtrim(result);
         return result;
     }
-
-
 
 } // namespace ugrid

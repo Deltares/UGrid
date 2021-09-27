@@ -37,7 +37,6 @@
 
 #include <UGrid/UGridEntity.hpp>
 
-
 /// \namespace ugrid
 /// @brief Contains the logic of the C++ static library
 namespace ugrid
@@ -64,11 +63,11 @@ namespace ugrid
             std::map<UGridDimensions, netCDF::NcDim> const& entity_dimensions);
 
         /// @brief Defines the mesh2d header
-        /// @param mesh2d The mesh2d api structure with the fields to write and all optional flags  
+        /// @param mesh2d The mesh2d api structure with the fields to write and all optional flags
         void define(ugridapi::Mesh2D const& mesh2d);
 
         /// @brief Writes a mesh2d to file
-        /// @param mesh2d mesh2d The mesh2d api structure with the fields to write and all optional flags  
+        /// @param mesh2d mesh2d The mesh2d api structure with the fields to write and all optional flags
         void put(ugridapi::Mesh2D const& mesh2d);
 
         /// @brief Inquires the mesh2d dimensions

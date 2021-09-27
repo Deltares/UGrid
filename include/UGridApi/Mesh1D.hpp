@@ -36,7 +36,7 @@ namespace ugridapi
         /// @brief The mesh1d name
         char* name = nullptr;
 
-        /// @brief The network name 
+        /// @brief The network name
         char* network_name = nullptr;
 
         /// @brief The node x coordinate
@@ -54,7 +54,7 @@ namespace ugridapi
         /// @brief The offset of each node on the network branch
         double* branch_offset = nullptr;
 
-        /// @brief The node name  
+        /// @brief The node name
         char* node_name_id = nullptr;
 
         /// @brief The node long name
@@ -78,16 +78,16 @@ namespace ugridapi
         /// @brief The number of edges
         int num_edges = 0;
 
-        /// @brief 1 If coordinates are in a spherical system, 0 otherwise 
+        /// @brief 1 If coordinates are in a spherical system, 0 otherwise
         int is_spherical = 0;
 
         /// @brief The start index used in arrays using indices, such as branch_node
         int start_index = 0;
 
-        /// @brief The fill value for array of doubles 
+        /// @brief The fill value for array of doubles
         double double_fill_value = ugrid::double_missing_value;
 
         /// @brief The fill value for array of integers
         int int_fill_value = ugrid::int_missing_value;
     };
-}
+} // namespace ugridapi

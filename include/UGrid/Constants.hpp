@@ -44,7 +44,6 @@ namespace ugrid
         invalid_location
     };
 
-
     enum class UGridDimensions
     {
         Two,
@@ -75,7 +74,7 @@ namespace ugrid
 
     int const int_missing_value = -999;
     double const double_missing_value = -999.0;
-    int const  num_face_nodes_max = 6;
+    int const num_face_nodes_max = 6;
     std::string const two_string("Two");
 
 } // namespace ugrid

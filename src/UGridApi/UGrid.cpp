@@ -40,8 +40,8 @@
 
 #include <ncFile.h>
 
-#include <UGrid/Mesh2D.hpp>
 #include <UGrid/Constants.hpp>
+#include <UGrid/Mesh2D.hpp>
 #include <UGridApi/UGrid.hpp>
 #include <UGridApi/UGridState.hpp>
 
@@ -81,17 +81,17 @@ namespace ugridapi
         return ugrid::name_long_lengths;
     }
 
-    UGRID_API  int ug_entity_get_node_location_enum()
+    UGRID_API int ug_entity_get_node_location_enum()
     {
         return static_cast<int>(ugrid::UGridEntityLocations::nodes);
     }
 
-    UGRID_API  int ug_entity_get_edge_location_enum()
+    UGRID_API int ug_entity_get_edge_location_enum()
     {
         return static_cast<int>(ugrid::UGridEntityLocations::edges);
     }
 
-    UGRID_API  int ug_entity_get_face_location_enum()
+    UGRID_API int ug_entity_get_face_location_enum()
     {
         return static_cast<int>(ugrid::UGridEntityLocations::faces);
     }
@@ -154,7 +154,7 @@ namespace ugridapi
         return netCDF::NcFile::replace;
     }
 
-    UGRID_API  int ug_file_add_coordinate_mapping(int file_id, int espg)
+    UGRID_API int ug_file_add_coordinate_mapping(int file_id, int espg)
     {
         int exit_code = Success;
         try
@@ -175,9 +175,9 @@ namespace ugridapi
         {
             if (mode == netCDF::NcFile::read)
             {
-                auto const nc_file = std::make_shared< netCDF::NcFile>(file_path, netCDF::NcFile::read, netCDF::NcFile::classic);
+                auto const nc_file = std::make_shared<netCDF::NcFile>(file_path, netCDF::NcFile::read, netCDF::NcFile::classic);
                 file_id = nc_file->getId();
-                ugrid_states.insert({ nc_file->getId(), UGridState(nc_file) });
+                ugrid_states.insert({nc_file->getId(), UGridState(nc_file)});
 
                 ugrid_states[file_id].m_mesh2d = ugrid::UGridEntity::create<ugrid::Mesh2D>(nc_file);
                 ugrid_states[file_id].m_network1d = ugrid::Network1D::create<ugrid::Network1D>(nc_file);
@@ -186,9 +186,9 @@ namespace ugridapi
             }
             if (mode == netCDF::NcFile::replace)
             {
-                auto const nc_file = std::make_shared< netCDF::NcFile>(file_path, netCDF::NcFile::replace, netCDF::NcFile::classic);
+                auto const nc_file = std::make_shared<netCDF::NcFile>(file_path, netCDF::NcFile::replace, netCDF::NcFile::classic);
                 file_id = nc_file->getId();
-                ugrid_states.insert({ nc_file->getId(), UGridState(nc_file) });
+                ugrid_states.insert({nc_file->getId(), UGridState(nc_file)});
             }
         }
         catch (...)
