@@ -75,9 +75,11 @@ namespace ugrid
     int const int_invalid_value = std::numeric_limits<int>::max();          ///< integer invalid value
     double const double_invalid_value = std::numeric_limits<double>::max(); ///< double invalid value
 
-    int const int_missing_value = -999;         ///< integer missing value
-    double const double_missing_value = -999.0; ///< double missing value
-    int const num_face_nodes_max = 6;           ///< default maximum number of nodes per face
-    std::string const two_string("Two");        ///< Name of variable dimension containing two
+    int const int_missing_value = -999;                         ///< integer missing value
+    double const double_missing_value = -999.0;                 ///< double missing value
+    int const num_face_nodes_max = 6;                           ///< default maximum number of nodes per face
+    std::string const two_string("Two");                        ///< Name of variable dimension containing two
+    std::string const strLengthIds("strLengthIds");             ///< Name of variable dimension containing two
+    std::string const strLengthLongNames("strLengthLongNames"); ///< Name of variable dimension containing two
 
 } // namespace ugrid

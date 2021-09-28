@@ -86,25 +86,27 @@ void Mesh2D::define(ugridapi::Mesh2D const& mesh2d)
     // edge variables
     if (mesh2d.num_edges)
     {
-        // Add dimensions and topology attributes
+        // Add dimensions
         string_builder.clear();
         string_builder << "_nEdges";
         m_dimensions.insert({UGridFileDimensions::edges, m_nc_file->addDim(string_builder.str(), mesh2d.num_edges)});
-        auto topology_attribute = m_topology_variable.putAtt("edge_dimension", string_builder.str());
-        add_topology_attribute(topology_attribute);
 
-        // Add edge connectivity
+        // Add edge_dimension topology attribute
+        add_topology_attribute("edge_dimension", string_builder.str());
+
+        // Add edge_nodes topology attribute
         string_builder.clear();
         string_builder << "_edge_nodes";
-        topology_attribute = m_topology_variable.putAtt("edge_node_connectivity", string_builder.str());
-        add_topology_attribute(topology_attribute);
+        auto topology_attribute = add_topology_attribute("edge_node_connectivity", string_builder.str());
+
+        // Add edge_nodes variable
         auto topology_attribute_variable = m_nc_file->addVar(string_builder.str(), netCDF::NcType::nc_DOUBLE, {m_dimensions[UGridFileDimensions::edges], m_dimensions[UGridFileDimensions::Two]});
         auto topology_attribute_variable_attribute = topology_attribute_variable.putAtt("cf_role", topology_attribute.getName());
         topology_attribute_variable_attribute = topology_attribute_variable.putAtt("long_name", "Start and end nodes of mesh edges");
         add_start_index(m_start_index, topology_attribute_variable, m_double_fill_value, m_int_fill_value);
         add_topology_attribute_variable(topology_attribute, topology_attribute_variable);
 
-        // Add coordinates
+        // Add edge_nodes coordinates
         bool const add_coordinate_variable = mesh2d.edge_x != nullptr && mesh2d.edge_y != nullptr;
         if (add_coordinate_variable)
         {
@@ -119,20 +121,17 @@ void Mesh2D::define(ugridapi::Mesh2D const& mesh2d)
         string_builder.clear();
         string_builder << "_nFace";
         m_dimensions.insert({UGridFileDimensions::faces, m_nc_file->addDim(string_builder.str(), mesh2d.num_faces)});
-        auto topology_attribute = m_topology_variable.putAtt("face_dimension", string_builder.str());
-        add_topology_attribute(topology_attribute);
+        auto topology_attribute = add_topology_attribute("face_dimension", string_builder.str());
 
         string_builder.clear();
         string_builder << "_nMax_face_nodes";
-        topology_attribute = m_topology_variable.putAtt("max_face_nodes_dimension", string_builder.str());
-        add_topology_attribute(topology_attribute);
+        topology_attribute = add_topology_attribute("max_face_nodes_dimension", string_builder.str());
         m_dimensions.insert({UGridFileDimensions::max_face_nodes, m_nc_file->addDim(string_builder.str(), mesh2d.num_face_nodes_max)});
 
         // Add face_node_connectivity
         string_builder.clear();
         string_builder << "_face_nodes";
-        topology_attribute = m_topology_variable.putAtt("face_node_connectivity", string_builder.str());
-        add_topology_attribute(topology_attribute);
+        add_topology_attribute("face_node_connectivity", string_builder.str());
 
         auto topology_attribute_variable = m_nc_file->addVar(string_builder.str(), netCDF::NcType::nc_INT, {m_dimensions[UGridFileDimensions::faces], m_dimensions[UGridFileDimensions::max_face_nodes]});
         auto topology_attribute_variable_attribute = topology_attribute_variable.putAtt("cf_role", topology_attribute.getName());
@@ -155,8 +154,7 @@ void Mesh2D::define(ugridapi::Mesh2D const& mesh2d)
         {
             string_builder.clear();
             string_builder << m_entity_name << "_face_edges";
-            topology_attribute = m_topology_variable.putAtt("face_edge_connectivity", string_builder.str());
-            add_topology_attribute(topology_attribute);
+            topology_attribute = add_topology_attribute("face_edge_connectivity", string_builder.str());
 
             topology_attribute_variable = m_nc_file->addVar(string_builder.str(), netCDF::NcType::nc_INT, {m_dimensions[UGridFileDimensions::faces], m_dimensions[UGridFileDimensions::max_face_nodes]});
             topology_attribute_variable_attribute = topology_attribute_variable.putAtt("cf_role", topology_attribute.getName());
@@ -168,8 +166,7 @@ void Mesh2D::define(ugridapi::Mesh2D const& mesh2d)
         {
             string_builder.clear();
             string_builder << m_entity_name << "_face_links";
-            topology_attribute = m_topology_variable.putAtt("face_face_connectivity", string_builder.str());
-            add_topology_attribute(topology_attribute);
+            topology_attribute = add_topology_attribute("face_face_connectivity", string_builder.str());
 
             topology_attribute_variable = m_nc_file->addVar(string_builder.str(), netCDF::NcType::nc_INT, {m_dimensions[UGridFileDimensions::faces], m_dimensions[UGridFileDimensions::max_face_nodes]});
             topology_attribute_variable_attribute = topology_attribute_variable.putAtt("cf_role", topology_attribute.getName());
@@ -181,8 +178,7 @@ void Mesh2D::define(ugridapi::Mesh2D const& mesh2d)
         {
             string_builder.clear();
             string_builder << m_entity_name << "_edge_faces";
-            topology_attribute = m_topology_variable.putAtt("edge_face_connectivity", string_builder.str());
-            add_topology_attribute(topology_attribute);
+            topology_attribute = add_topology_attribute("edge_face_connectivity", string_builder.str());
 
             topology_attribute_variable = m_nc_file->addVar(string_builder.str(), netCDF::NcType::nc_INT, {m_dimensions[UGridFileDimensions::edges], m_dimensions[UGridFileDimensions::Two]});
             topology_attribute_variable_attribute = topology_attribute_variable.putAtt("cf_role", topology_attribute.getName());

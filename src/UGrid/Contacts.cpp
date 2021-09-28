@@ -122,8 +122,7 @@ void Contacts::define(ugridapi::Contacts const& contacts)
     m_dimensions.insert({UGridFileDimensions::nodes, m_nc_file->addDim(string_builder.str(), contacts.num_contacts)});
 
     m_topology_variable = m_nc_file->addVar(m_entity_name, netCDF::NcType::nc_INT, {m_dimensions[UGridFileDimensions::nodes], m_dimensions[UGridFileDimensions::Two]});
-    auto topology_attribute = m_topology_variable.putAtt("cf_role", "mesh_topology_contact");
-    add_topology_attribute(topology_attribute);
+    add_topology_attribute("cf_role", "mesh_topology_contact");
 
     auto const mesh_from_location_string = from_location_integer_to_location_string(contacts.mesh_from_location);
     auto const mesh_to_location_string = from_location_integer_to_location_string(contacts.mesh_to_location);
@@ -134,43 +133,39 @@ void Contacts::define(ugridapi::Contacts const& contacts)
     rtrim(mesh_from_name);
     rtrim(mesh_to_name);
     os << mesh_from_name << ": " << mesh_from_location_string << " " << mesh_to_name << ": " << mesh_to_location_string;
-    topology_attribute = m_topology_variable.putAtt("contact", os.str());
-    add_topology_attribute(topology_attribute);
+    add_topology_attribute("contact", os.str());
 
     // contact type
     string_builder.clear();
     string_builder << "_contact_type";
-    topology_attribute = m_topology_variable.putAtt("contact_type", string_builder.str());
-    add_topology_attribute(topology_attribute);
+    auto topology_attribute = add_topology_attribute("contact_type", string_builder.str());
 
     auto topology_attribute_variable = m_nc_file->addVar(string_builder.str(), netCDF::NcType::nc_INT, {m_dimensions[UGridFileDimensions::nodes]});
     topology_attribute_variable.setFill(true, -1);
 
     std::vector<int> valid_range{3, 4};
-    auto topology_attribute_variable_attribute = topology_attribute_variable.putAtt("valid_range", netCDF::NcType::nc_INT, 2, &valid_range[0]);
+    topology_attribute_variable.putAtt("valid_range", netCDF::NcType::nc_INT, 2, &valid_range[0]);
     std::vector<int> flag_values{3, 4};
-    topology_attribute_variable_attribute = topology_attribute_variable.putAtt("flag_values", netCDF::NcType::nc_INT, 2, &flag_values[0]);
-    topology_attribute_variable_attribute = topology_attribute_variable.putAtt("flag_meanings", "lateral_1d2d_link longitudinal_1d2d_link");
+    topology_attribute_variable.putAtt("flag_values", netCDF::NcType::nc_INT, 2, &flag_values[0]);
+    topology_attribute_variable.putAtt("flag_meanings", "lateral_1d2d_link longitudinal_1d2d_link");
     add_topology_attribute_variable(topology_attribute, topology_attribute_variable);
 
     // contact id
     string_builder.clear();
     string_builder << "_id";
-    topology_attribute = m_topology_variable.putAtt("contact_id", string_builder.str());
-    add_topology_attribute(topology_attribute);
+    topology_attribute = add_topology_attribute("contact_id", string_builder.str());
 
     topology_attribute_variable = m_nc_file->addVar(string_builder.str(), netCDF::NcType::nc_CHAR, {m_dimensions[UGridFileDimensions::nodes], m_dimensions[UGridFileDimensions::ids]});
-    topology_attribute_variable_attribute = topology_attribute_variable.putAtt("long_name", "ids of the contacts");
+    topology_attribute_variable.putAtt("long_name", "ids of the contacts");
     add_topology_attribute_variable(topology_attribute, topology_attribute_variable);
 
     // contact long names
     string_builder.clear();
     string_builder << "_long_name";
-    topology_attribute = m_topology_variable.putAtt("contact_long_name", string_builder.str());
-    add_topology_attribute(topology_attribute);
+    topology_attribute = add_topology_attribute("contact_long_name", string_builder.str());
 
     topology_attribute_variable = m_nc_file->addVar(string_builder.str(), netCDF::NcType::nc_CHAR, {m_dimensions[UGridFileDimensions::nodes], m_dimensions[UGridFileDimensions::long_names]});
-    topology_attribute_variable_attribute = topology_attribute_variable.putAtt("long_name", "long names of the contacts");
+    topology_attribute_variable.putAtt("long_name", "long names of the contacts");
     add_topology_attribute_variable(topology_attribute, topology_attribute_variable);
 
     m_nc_file->enddef();

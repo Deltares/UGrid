@@ -46,8 +46,6 @@ Mesh1D::Mesh1D(
     std::map<UGridFileDimensions, netCDF::NcDim> const& entity_dimensions)
     : UGridEntity(nc_file, topology_variable, entity_attributes, entity_attribute_names, entity_dimensions){};
 
-// ug_create_1d_mesh_v2
-// ug_def_mesh_ids
 void Mesh1D::define(ugridapi::Mesh1D const& mesh1d)
 {
     if (mesh1d.name == nullptr)
@@ -78,13 +76,11 @@ void Mesh1D::define(ugridapi::Mesh1D const& mesh1d)
         string_builder.clear();
         string_builder << "_nNodes";
         m_dimensions.insert({UGridFileDimensions::nodes, m_nc_file->addDim(string_builder.str(), mesh1d.num_nodes)});
-        topology_attribute = m_topology_variable.putAtt("node_dimension", string_builder.str());
-        add_topology_attribute(topology_attribute);
+        topology_attribute = add_topology_attribute("node_dimension", string_builder.str());
 
         string_builder.clear();
         string_builder << "_node_branch " << m_entity_name << "_node_offset";
-        topology_attribute = m_topology_variable.putAtt("node_coordinates", string_builder.str());
-        add_topology_attribute(topology_attribute);
+        topology_attribute = add_topology_attribute("node_coordinates", string_builder.str());
 
         string_builder.clear();
         string_builder << "_node_branch";
@@ -107,16 +103,14 @@ void Mesh1D::define(ugridapi::Mesh1D const& mesh1d)
 
         string_builder.clear();
         string_builder << "_node_id";
-        topology_attribute = m_topology_variable.putAtt("node_name_id", string_builder.str());
-        add_topology_attribute(topology_attribute);
+        topology_attribute = add_topology_attribute("node_name_id", string_builder.str());
         topology_attribute_variable = m_nc_file->addVar(string_builder.str(), netCDF::NcType::nc_CHAR, {m_dimensions[UGridFileDimensions::nodes], m_dimensions[UGridFileDimensions::ids]});
         topology_attribute_variable_attribute = topology_attribute_variable.putAtt("long_name", "ID of mesh nodes");
         add_topology_attribute_variable(topology_attribute, topology_attribute_variable);
 
         string_builder.clear();
         string_builder << "_node_long_name";
-        topology_attribute = m_topology_variable.putAtt("node_name_long", string_builder.str());
-        add_topology_attribute(topology_attribute);
+        topology_attribute = add_topology_attribute("node_name_long", string_builder.str());
         topology_attribute_variable = m_nc_file->addVar(string_builder.str(), netCDF::NcType::nc_CHAR, {m_dimensions[UGridFileDimensions::nodes], m_dimensions[UGridFileDimensions::long_names]});
         topology_attribute_variable_attribute = topology_attribute_variable.putAtt("long_name", "'Long name of mesh nodes");
         add_topology_attribute_variable(topology_attribute, topology_attribute_variable);
@@ -127,14 +121,12 @@ void Mesh1D::define(ugridapi::Mesh1D const& mesh1d)
         string_builder.clear();
         string_builder << "_nEdges";
         m_dimensions.insert({UGridFileDimensions::edges, m_nc_file->addDim(string_builder.str(), mesh1d.num_edges)});
-        topology_attribute = m_topology_variable.putAtt("edge_dimension", string_builder.str());
-        add_topology_attribute(topology_attribute);
+        topology_attribute = add_topology_attribute("edge_dimension", string_builder.str());
         m_topology_attributes.insert({topology_attribute.getName(), topology_attribute});
 
         string_builder.clear();
         string_builder << "_edge_nodes";
-        topology_attribute = m_topology_variable.putAtt("edge_node_connectivity", string_builder.str());
-        add_topology_attribute(topology_attribute);
+        topology_attribute = add_topology_attribute("edge_node_connectivity", string_builder.str());
         auto topology_attribute_variable = m_nc_file->addVar(string_builder.str(), netCDF::NcType::nc_INT, {m_dimensions[UGridFileDimensions::edges], m_dimensions[UGridFileDimensions::Two]});
         auto topology_attribute_variable_attribute = topology_attribute_variable.putAtt("cf_role", topology_attribute.getName());
         topology_attribute_variable_attribute = topology_attribute_variable.putAtt("long_name", "Maps every edge to the two nodes that it connects");
@@ -144,8 +136,7 @@ void Mesh1D::define(ugridapi::Mesh1D const& mesh1d)
         {
             string_builder.clear();
             string_builder << "_edge_branch " << m_entity_name << "_edge_offset";
-            topology_attribute = m_topology_variable.putAtt("edge_coordinates", string_builder.str());
-            add_topology_attribute(topology_attribute);
+            topology_attribute = add_topology_attribute("edge_coordinates", string_builder.str());
 
             string_builder.clear();
             string_builder << "_edge_branch";
@@ -160,7 +151,7 @@ void Mesh1D::define(ugridapi::Mesh1D const& mesh1d)
             add_topology_attribute_variable(topology_attribute, topology_attribute_variable);
         }
 
-        bool const add_coordinate_variables = mesh1d.edge_x != nullptr && mesh1d.edge_y != nullptr;
+        const bool add_coordinate_variables = mesh1d.edge_x != nullptr && mesh1d.edge_y != nullptr;
         if (add_coordinate_variables)
         {
             define_topological_variable_with_coordinates(UGridEntityLocations::edges, UGridFileDimensions::edges, "%s of mesh edges");

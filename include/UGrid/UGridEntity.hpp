@@ -158,11 +158,15 @@ namespace ugrid
         /// @return An iterator to \ref m_topology_attribute_variables
         [[nodiscard]] std::map<std::string, std::vector<netCDF::NcVar>>::const_iterator find_variable_with_aliases(std::string const& variable_name) const;
 
-        /// @brief Add topology attributes
-        /// @param nc_var_attribute [in] The topology attributes
-        void add_topology_attribute(netCDF::NcVarAtt const& nc_var_attribute)
+        /// @brief Adds a new attribute to topology variable
+        /// @param name The attribute name
+        /// @param value The attribute value
+        /// @return The variable attribute (NcVarAtt)
+        netCDF::NcVarAtt add_topology_attribute(std::string const& name, std::string const& value)
         {
-            m_topology_attributes.insert({nc_var_attribute.getName(), nc_var_attribute});
+            auto topology_attribute = m_topology_variable.putAtt(name, value);
+            m_topology_attributes.insert({topology_attribute.getName(), topology_attribute});
+            return topology_attribute;
         }
 
         /// @brief Add topology attribute variables

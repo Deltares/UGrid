@@ -165,8 +165,7 @@ void UGridEntity::define_topological_variable_with_coordinates(
     {
         attribute_value = first_coordinate_variable + " " + second_coordinate_variable;
     }
-    auto topological_attribute = m_topology_variable.putAtt(topology_attribute_name, attribute_value);
-    add_topology_attribute(topological_attribute);
+    add_topology_attribute(topology_attribute_name, attribute_value);
 }
 
 netCDF::NcVar UGridEntity::define_variable_on_location(std::string const& variable_name,
@@ -297,21 +296,18 @@ void UGridEntity::define(char* entity_name, int start_index, std::string const& 
     m_entity_name = char_array_to_string(entity_name, name_lengths);
     m_spherical_coordinates = is_spherical == 0 ? false : true;
 
-    // Topology with some standard attributes
+    // Topology name
     m_topology_variable = m_nc_file->addVar(m_entity_name, netCDF::NcType::nc_CHAR);
 
-    auto topology_attribute = m_topology_variable.putAtt("cf_role", "mesh_topology");
-    add_topology_attribute(topology_attribute);
+    // Topology attributes
+    add_topology_attribute("cf_role", "mesh_topology");
+    add_topology_attribute("long_name", long_name);
+    auto topology_attribute = m_topology_variable.putAtt("topology_dimension", netCDF::NcType::nc_INT, topology_dimension);
+    m_topology_attributes.insert({topology_attribute.getName(), topology_attribute});
 
-    topology_attribute = m_topology_variable.putAtt("long_name", long_name);
-    add_topology_attribute(topology_attribute);
-
-    topology_attribute = m_topology_variable.putAtt("topology_dimension", netCDF::NcType::nc_INT, topology_dimension);
-    add_topology_attribute(topology_attribute);
-
-    // Add additional dimensions, maybe required
-    m_dimensions.insert({UGridFileDimensions::ids, m_nc_file->addDim("strLengthIds", name_lengths)});
-    m_dimensions.insert({UGridFileDimensions::long_names, m_nc_file->addDim("strLengthLongNames", name_long_lengths)});
+    // Add additional dimensions, maybe required later
+    m_dimensions.insert({UGridFileDimensions::ids, m_nc_file->addDim(strLengthIds, name_lengths)});
+    m_dimensions.insert({UGridFileDimensions::long_names, m_nc_file->addDim(strLengthLongNames, name_long_lengths)});
     m_dimensions.insert({UGridFileDimensions::Two, m_nc_file->addDim(two_string, 2)});
 }
 

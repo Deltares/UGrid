@@ -210,7 +210,7 @@ namespace ugrid
                 s.end());
     }
 
-    static std::string char_array_to_string(char* char_array, size_t len)
+    static std::string char_array_to_string(char const* char_array, size_t len)
     {
         std::string result(" ", len);
         if (char_array == nullptr)

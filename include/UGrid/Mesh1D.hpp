@@ -55,7 +55,7 @@ namespace ugrid
                         std::map<std::string, std::vector<std::string>> const& entity_attribute_names,
                         std::map<UGridFileDimensions, netCDF::NcDim> const& entity_dimensions);
 
-        /// @brief Defines the mesh1d header (ug_write_mesh_arrays)
+        /// @brief Defines the mesh1d header (ug_write_mesh_arrays, ug_create_1d_mesh_v2, ug_def_mesh_ids)
         /// @param mesh1d The mesh1d api structure with the fields to write and all optional flags
         void define(ugridapi::Mesh1D const& mesh1d);
 
