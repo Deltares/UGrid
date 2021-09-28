@@ -136,9 +136,9 @@ Protected Member Functions</h2></td></tr>
 <tr class="memitem:a76086f6aaa927dfefdb86dc98bb0814b"><td class="memItemLeft" align="right" valign="top">std::map&lt; std::string, std::vector&lt; netCDF::NcVar &gt; &gt;::const_iterator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classugrid_1_1_u_grid_entity.html#a76086f6aaa927dfefdb86dc98bb0814b">find_variable_with_aliases</a> (std::string const &amp;variable_name) const</td></tr>
 <tr class="memdesc:a76086f6aaa927dfefdb86dc98bb0814b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Find the names aliases (e.g. previous naming convention used plurals)  <a href="classugrid_1_1_u_grid_entity.html#a76086f6aaa927dfefdb86dc98bb0814b">More...</a><br /></td></tr>
 <tr class="separator:a76086f6aaa927dfefdb86dc98bb0814b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a39f05154b78e30240deb486b6c6e1bed"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classugrid_1_1_u_grid_entity.html#a39f05154b78e30240deb486b6c6e1bed">add_topology_attribute</a> (netCDF::NcVarAtt const &amp;nc_var_attribute)</td></tr>
-<tr class="memdesc:a39f05154b78e30240deb486b6c6e1bed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add topology attributes.  <a href="classugrid_1_1_u_grid_entity.html#a39f05154b78e30240deb486b6c6e1bed">More...</a><br /></td></tr>
-<tr class="separator:a39f05154b78e30240deb486b6c6e1bed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a41f33e81589614d405bbedc42a5a0e4f"><td class="memItemLeft" align="right" valign="top">netCDF::NcVarAtt&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classugrid_1_1_u_grid_entity.html#a41f33e81589614d405bbedc42a5a0e4f">add_topology_attribute</a> (std::string const &amp;name, std::string const &amp;value)</td></tr>
+<tr class="memdesc:a41f33e81589614d405bbedc42a5a0e4f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a new attribute to topology variable.  <a href="classugrid_1_1_u_grid_entity.html#a41f33e81589614d405bbedc42a5a0e4f">More...</a><br /></td></tr>
+<tr class="separator:a41f33e81589614d405bbedc42a5a0e4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad11639a02cd03561c194d712f5065ad5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classugrid_1_1_u_grid_entity.html#ad11639a02cd03561c194d712f5065ad5">add_topology_attribute_variable</a> (netCDF::NcVarAtt const &amp;nc_var_attribute, netCDF::NcVar const &amp;nc_var)</td></tr>
 <tr class="memdesc:ad11639a02cd03561c194d712f5065ad5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add topology attribute variables.  <a href="classugrid_1_1_u_grid_entity.html#ad11639a02cd03561c194d712f5065ad5">More...</a><br /></td></tr>
 <tr class="separator:ad11639a02cd03561c194d712f5065ad5"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -309,8 +309,8 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a39f05154b78e30240deb486b6c6e1bed"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a39f05154b78e30240deb486b6c6e1bed">&#9670;&nbsp;</a></span>add_topology_attribute()</h2>
+<a id="a41f33e81589614d405bbedc42a5a0e4f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a41f33e81589614d405bbedc42a5a0e4f">&#9670;&nbsp;</a></span>add_topology_attribute()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -319,11 +319,21 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void ugrid::UGridEntity::add_topology_attribute </td>
+          <td class="memname">netCDF::NcVarAtt ugrid::UGridEntity::add_topology_attribute </td>
           <td>(</td>
-          <td class="paramtype">netCDF::NcVarAtt const &amp;&#160;</td>
-          <td class="paramname"><em>nc_var_attribute</em></td><td>)</td>
+          <td class="paramtype">std::string const &amp;&#160;</td>
+          <td class="paramname"><em>name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">std::string const &amp;&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -333,13 +343,15 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class
 </table>
 </div><div class="memdoc">
 
-<p>Add topology attributes. </p>
+<p>Adds a new attribute to topology variable. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">nc_var_attribute</td><td>[in] The topology attributes </td></tr>
+    <tr><td class="paramname">name</td><td>The attribute name </td></tr>
+    <tr><td class="paramname">value</td><td>The attribute value </td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd>The variable attribute (NcVarAtt) </dd></dl>
 
 </div>
 </div>
