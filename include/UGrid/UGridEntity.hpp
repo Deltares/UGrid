@@ -128,7 +128,7 @@ namespace ugrid
 
         /// @brief Defines a new topological attribute
         /// @param attribute_name [in] The attribute name
-        /// @param attribute_value [in] The attribute value. If none is provided, it is constructed internally using \ref attribute_name
+        /// @param attribute_value [in] The attribute value. If none is provided, it is constructed internally using the attribute name
         void define_topological_attribute(std::string const& attribute_name, std::string const& attribute_value = "");
 
         /// @brief Defines a new topology variable
@@ -152,7 +152,9 @@ namespace ugrid
                                                std::vector<std::pair<std::string, std::string>> const& attributes = {});
 
         /// @brief Defines coordinate variables based on \ref m_spherical_coordinates
-        /// @param dimension [in] The dimension to
+        /// @param dimension [in] The dimension for which the coordinate will be added (either projected or not projected)
+        /// @param long_name_pattern [in] The string pattern to use for the long names
+        /// @param name_pattern [in] The string pattern to use for the names
         void define_topology_coordinates(UGridFileDimensions dimension,
                                          std::string const& long_name_pattern,
                                          std::string const& name_pattern = "%s%s");
