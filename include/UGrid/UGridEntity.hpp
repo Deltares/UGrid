@@ -183,7 +183,6 @@ namespace ugrid
     private:
         /// @brief Defines variables for storing the coordinates of specific entity locations
         /// @param location [in] The entity location (e.g. nodes, edges, faces)
-        /// @param dimension [in] The dimension of the entity location
         /// @param long_name_pattern [in] The string pattern to use for producing the long name string
         /// @param name_pattern [in] The string pattern to use for producing the name string
         std::tuple<std::string,
