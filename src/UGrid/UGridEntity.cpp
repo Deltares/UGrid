@@ -202,16 +202,19 @@ void UGridEntity::define_topology_coordinates(UGridFileDimensions dimension, std
     auto string_builder = UGridVarAttributeStringBuilder(m_entity_name);
     string_builder << "_" << location_coordinate_x << " " << m_entity_name << "_" << location_coordinate_y;
 
-    define_topological_attribute(dimension_string + "_coordinates", string_builder.str());
+    std::string attribute_name = dimension_string + "_coordinates";
+    define_topological_attribute(attribute_name, string_builder.str());
 
-    define_topological_variable(location_coordinate_x,
+    define_topological_variable(attribute_name,
+                                location_coordinate_x,
                                 netCDF::NcType::nc_DOUBLE,
                                 {dimension},
                                 {{"units", units_x},
                                  {"standard_name", standard_name_x},
                                  {"long_name", long_name_x}});
 
-    define_topological_variable(location_coordinate_y,
+    define_topological_variable(attribute_name,
+                                location_coordinate_y,
                                 netCDF::NcType::nc_DOUBLE,
                                 {dimension},
                                 {{"units", units_y},
@@ -219,7 +222,7 @@ void UGridEntity::define_topology_coordinates(UGridFileDimensions dimension, std
                                  {"long_name", long_name_y}});
 }
 
-std::map<std::string, std::vector<netCDF::NcVar>>::const_iterator UGridEntity::find_variable_name_with_aliases(std::string const& variable_name) const
+std::map<std::string, std::vector<netCDF::NcVar>>::const_iterator UGridEntity::find_attribute_variable_name_with_aliases(std::string const& variable_name) const
 {
     // define topology variable aliases
     static std::map<std::string, std::vector<std::string>> aliases{
@@ -242,7 +245,7 @@ std::map<std::string, std::vector<netCDF::NcVar>>::const_iterator UGridEntity::f
     }
     if (iterator == m_topology_attribute_variables.end())
     {
-        throw std::invalid_argument("find_variable_name_with_aliases: No Matching found");
+        throw std::invalid_argument("find_attribute_variable_name_with_aliases: No Matching found");
     }
 
     return iterator;
@@ -265,7 +268,8 @@ void UGridEntity::define_topological_attribute(std::string const& attribute_name
     m_topology_attributes.insert({attribute_name, topology_attribute});
 }
 
-void UGridEntity::define_topological_variable(std::string const& variable_suffix,
+void UGridEntity::define_topological_variable(std::string const& topology_attribute_name,
+                                              std::string const& variable_suffix,
                                               netCDF::NcType nc_type,
                                               std::vector<UGridFileDimensions> const& ugridfile_dimensions,
                                               std::vector<std::pair<std::string, std::string>> const& attributes,
@@ -302,14 +306,14 @@ void UGridEntity::define_topological_variable(std::string const& variable_suffix
     }
 
     // find if an attribute variable_suffix is already stored, otherwise fill it
-    auto topology_attribute_iterator = m_topology_attribute_variables.find(variable_suffix);
+    auto topology_attribute_iterator = m_topology_attribute_variables.find(topology_attribute_name);
     if (topology_attribute_iterator != m_topology_attribute_variables.end())
     {
         topology_attribute_iterator->second.emplace_back(topology_attribute_variable);
     }
     else
     {
-        m_topology_attribute_variables.insert({variable_suffix, {topology_attribute_variable}});
+        m_topology_attribute_variables.insert({topology_attribute_name, {topology_attribute_variable}});
     }
 }
 

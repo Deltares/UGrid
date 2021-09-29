@@ -124,7 +124,7 @@ namespace ugrid
         /// @brief Find the names aliases (e.g. previous naming convention used plurals)
         /// @param variable_name [in] The variable name
         /// @return An iterator to \ref m_topology_attribute_variables
-        [[nodiscard]] std::map<std::string, std::vector<netCDF::NcVar>>::const_iterator find_variable_name_with_aliases(std::string const& variable_name) const;
+        [[nodiscard]] std::map<std::string, std::vector<netCDF::NcVar>>::const_iterator find_attribute_variable_name_with_aliases(std::string const& variable_name) const;
 
         /// @brief Defines a new topological attribute
         /// @param attribute_name [in] The attribute name
@@ -132,11 +132,12 @@ namespace ugrid
         void define_topological_attribute(std::string const& attribute_name, std::string const& attribute_value = "");
 
         /// @brief Defines a new topology variable
-        /// @param variable_suffix [in] The variable name suffix, to append to the entity name to form a new variable name.
+        /// @param topology_attribute [in] The .
         /// @param nc_type [in] The variable type.
         /// @param ugridfile_dimensions [in] The variable dimensions (multidimensional variable are expressed as vectors).
         /// @param attributes [in] The variable attributes.
-        void define_topological_variable(std::string const& variable_suffix,
+        void define_topological_variable(std::string const& topology_attribute_name,
+                                         std::string const& variable_suffix,
                                          netCDF::NcType nc_type,
                                          std::vector<UGridFileDimensions> const& ugridfile_dimensions,
                                          std::vector<std::pair<std::string, std::string>> const& attributes = {},

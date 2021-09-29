@@ -9,7 +9,6 @@
 #include <UGridApi/UGrid.hpp>
 
 #include <boost/algorithm/string.hpp>
-#include <boost/algorithm/string/split.hpp>
 
 TEST(ApiTest, InquireAndGet_OneMesh2D_ShouldReadMesh2d)
 {

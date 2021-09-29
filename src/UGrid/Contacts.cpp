@@ -78,8 +78,6 @@ bool Contacts::is_topology_variable(std::map<std::string, netCDF::NcVarAtt> cons
     return true;
 }
 
-// ug_create_1d_mesh_v2
-// ug_def_mesh_ids
 void Contacts::define(ugridapi::Contacts const& contacts)
 {
     if (contacts.name == nullptr)
@@ -143,6 +141,7 @@ void Contacts::define(ugridapi::Contacts const& contacts)
     // Define topology attribute contact type and variable
     define_topological_attribute("contact_type");
     define_topological_variable("contact_type",
+                                "contact_type",
                                 netCDF::NcType::nc_INT,
                                 {UGridFileDimensions::nodes});
 
@@ -156,6 +155,7 @@ void Contacts::define(ugridapi::Contacts const& contacts)
     // Define topology attribute contact_id and variable
     define_topological_attribute("contact_id");
     define_topological_variable("contact_id",
+                                "contact_id",
                                 netCDF::NcType::nc_CHAR,
                                 {UGridFileDimensions::nodes, UGridFileDimensions::ids},
                                 {{"long_name", "ids of the contacts"}});
@@ -163,6 +163,7 @@ void Contacts::define(ugridapi::Contacts const& contacts)
     // Define topology attribute contact_long_name and variable
     define_topological_attribute("contact_long_name");
     define_topological_variable("contact_long_name",
+                                "contact_long_name",
                                 netCDF::NcType::nc_CHAR,
                                 {UGridFileDimensions::nodes, UGridFileDimensions::long_names},
                                 {{"long_name", "long names of the contacts"}});
@@ -180,11 +181,11 @@ void Contacts::put(ugridapi::Contacts const& contacts)
     {
         m_topology_variable.putVar(contacts.edges);
     }
-    if (auto const it = find_variable_name_with_aliases("contact_id"); contacts.contact_name_id != nullptr && it != m_topology_attribute_variables.end())
+    if (auto const it = find_attribute_variable_name_with_aliases("contact_id"); contacts.contact_name_id != nullptr && it != m_topology_attribute_variables.end())
     {
         it->second.at(0).putVar(contacts.contact_name_id);
     }
-    if (auto const it = find_variable_name_with_aliases("contact_long_name"); contacts.contact_name_long != nullptr && it != m_topology_attribute_variables.end())
+    if (auto const it = find_attribute_variable_name_with_aliases("contact_long_name"); contacts.contact_name_long != nullptr && it != m_topology_attribute_variables.end())
     {
         it->second.at(0).putVar(contacts.contact_name_long);
     }
@@ -215,12 +216,12 @@ void Contacts::get(ugridapi::Contacts& contacts) const
         m_topology_variable.getVar(contacts.edges);
     }
 
-    if (auto const it = find_variable_name_with_aliases("contact_id"); contacts.contact_name_id != nullptr && it != m_topology_attribute_variables.end())
+    if (auto const it = find_attribute_variable_name_with_aliases("contact_id"); contacts.contact_name_id != nullptr && it != m_topology_attribute_variables.end())
     {
         it->second.at(0).getVar(contacts.contact_name_id);
     }
 
-    if (auto const it = find_variable_name_with_aliases("contact_long_name"); contacts.contact_name_long != nullptr && it != m_topology_attribute_variables.end())
+    if (auto const it = find_attribute_variable_name_with_aliases("contact_long_name"); contacts.contact_name_long != nullptr && it != m_topology_attribute_variables.end())
     {
         it->second.at(0).getVar(contacts.contact_name_long);
     }

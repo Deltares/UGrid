@@ -110,6 +110,7 @@ void Network1D::define(ugridapi::Network1D const& network1d)
         // Define node_id topological attribute and variable
         define_topological_attribute("node_id");
         define_topological_variable("node_id",
+                                    "node_id",
                                     netCDF::NcType::nc_CHAR,
                                     {UGridFileDimensions::nodes, UGridFileDimensions::ids},
                                     {{"long_name", "ID of network nodes"}});
@@ -117,6 +118,7 @@ void Network1D::define(ugridapi::Network1D const& network1d)
         // Define node_long_name topological attribute and variable
         define_topological_attribute("node_long_name");
         define_topological_variable("node_long_name",
+                                    "node_long_name",
                                     netCDF::NcType::nc_CHAR,
                                     {UGridFileDimensions::nodes, UGridFileDimensions::long_names},
                                     {{"long_name", "ID of network nodes"}});
@@ -137,7 +139,8 @@ void Network1D::define(ugridapi::Network1D const& network1d)
         string_builder.clear();
         string_builder << "_edge_nodes";
         define_topological_attribute("edge_node_connectivity", string_builder.str());
-        define_topological_variable("edge_nodes",
+        define_topological_variable("edge_node_connectivity",
+                                    "edge_nodes",
                                     netCDF::NcType::nc_INT,
                                     {UGridFileDimensions::edges, UGridFileDimensions::Two},
                                     {{"cf_role", "edge_node_connectivity"},
@@ -146,6 +149,7 @@ void Network1D::define(ugridapi::Network1D const& network1d)
         // Define edge_lengths topology attribute and variable
         define_topological_attribute("branch_length");
         define_topological_variable("branch_length",
+                                    "branch_length",
                                     netCDF::NcType::nc_DOUBLE,
                                     {UGridFileDimensions::edges},
                                     {{"long_name", "Real length of branch geometries"}});
@@ -168,6 +172,7 @@ void Network1D::define(ugridapi::Network1D const& network1d)
         // Define branch_id topology attribute and variable
         define_topological_attribute("branch_id");
         define_topological_variable("branch_id",
+                                    "branch_id",
                                     netCDF::NcType::nc_CHAR,
                                     {UGridFileDimensions::edges, UGridFileDimensions::ids},
                                     {{"long_name", "ID of branch geometries"}});
@@ -175,6 +180,7 @@ void Network1D::define(ugridapi::Network1D const& network1d)
         // Define branch_long_name topology attribute and variable
         define_topological_attribute("branch_long_name");
         define_topological_variable("branch_long_name",
+                                    "branch_long_name",
                                     netCDF::NcType::nc_CHAR,
                                     {UGridFileDimensions::edges, UGridFileDimensions::long_names},
                                     {{"long_name", "Long name of branch geometries"}});
@@ -203,7 +209,8 @@ void Network1D::define(ugridapi::Network1D const& network1d)
         string_builder << "_geom_x " << m_entity_name << "_geom_y";
         auto const geometry_coordinate_var_name = string_builder.str();
 
-        define_topological_variable("geometry",
+        define_topological_variable("edge_geometry",
+                                    "geometry",
                                     netCDF::NcType::nc_INT,
                                     {},
                                     {
@@ -245,25 +252,25 @@ void Network1D::put(ugridapi::Network1D const& network1d)
         throw std::invalid_argument("Network1D::put invalid mesh name");
     }
 
-    if (auto const it = m_topology_attribute_variables.find("node_y"); network1d.node_x != nullptr && it != m_topology_attribute_variables.end())
+    if (auto const it = m_topology_attribute_variables.find("node_coordinates"); network1d.node_x != nullptr && it != m_topology_attribute_variables.end())
     {
         it->second.at(0).putVar(network1d.node_x);
     }
-    if (auto const it = m_topology_attribute_variables.find("node_x"); network1d.node_y != nullptr && it != m_topology_attribute_variables.end())
+    if (auto const it = m_topology_attribute_variables.find("node_coordinates"); network1d.node_y != nullptr && it != m_topology_attribute_variables.end())
     {
-        it->second.at(0).putVar(network1d.node_y);
+        it->second.at(1).putVar(network1d.node_y);
     }
-    if (auto const it = find_variable_name_with_aliases("node_id"); network1d.node_name_id != nullptr && it != m_topology_attribute_variables.end())
+    if (auto const it = find_attribute_variable_name_with_aliases("node_id"); network1d.node_name_id != nullptr && it != m_topology_attribute_variables.end())
     {
         it->second.at(0).putVar(network1d.node_name_id);
     }
 
-    if (auto const it = find_variable_name_with_aliases("node_long_name"); network1d.node_name_long != nullptr && it != m_topology_attribute_variables.end())
+    if (auto const it = find_attribute_variable_name_with_aliases("node_long_name"); network1d.node_name_long != nullptr && it != m_topology_attribute_variables.end())
     {
         it->second.at(0).putVar(network1d.node_name_long);
     }
 
-    if (auto const it = m_topology_attribute_variables.find("edge_nodes"); network1d.branch_node != nullptr && it != m_topology_attribute_variables.end())
+    if (auto const it = m_topology_attribute_variables.find("edge_node_connectivity"); network1d.branch_node != nullptr && it != m_topology_attribute_variables.end())
     {
         it->second.at(0).putVar(network1d.branch_node);
     }
@@ -278,12 +285,12 @@ void Network1D::put(ugridapi::Network1D const& network1d)
         it->second.putVar(network1d.branch_order);
     }
 
-    if (auto const it = find_variable_name_with_aliases("branch_id"); network1d.branch_name_id != nullptr && it != m_topology_attribute_variables.end())
+    if (auto const it = find_attribute_variable_name_with_aliases("branch_id"); network1d.branch_name_id != nullptr && it != m_topology_attribute_variables.end())
     {
         it->second.at(0).putVar(network1d.branch_name_id);
     }
 
-    if (auto const it = find_variable_name_with_aliases("branch_long_name"); network1d.branch_name_long != nullptr && it != m_topology_attribute_variables.end())
+    if (auto const it = find_attribute_variable_name_with_aliases("branch_long_name"); network1d.branch_name_long != nullptr && it != m_topology_attribute_variables.end())
     {
         it->second.at(0).putVar(network1d.branch_name_long);
     }
@@ -341,27 +348,27 @@ void Network1D::get(ugridapi::Network1D& network1d) const
         it->second.at(0).getVar(network1d.branch_node);
     }
 
-    if (auto const it = find_variable_name_with_aliases("node_id"); network1d.node_name_id != nullptr && it != m_topology_attribute_variables.end())
+    if (auto const it = find_attribute_variable_name_with_aliases("node_id"); network1d.node_name_id != nullptr && it != m_topology_attribute_variables.end())
     {
         it->second.at(0).getVar(network1d.node_name_id);
     }
 
-    if (auto const it = find_variable_name_with_aliases("node_long_name"); network1d.node_name_long != nullptr && it != m_topology_attribute_variables.end())
+    if (auto const it = find_attribute_variable_name_with_aliases("node_long_name"); network1d.node_name_long != nullptr && it != m_topology_attribute_variables.end())
     {
         it->second.at(0).getVar(network1d.node_name_long);
     }
 
-    if (auto const it = find_variable_name_with_aliases("branch_id"); network1d.branch_name_id != nullptr && it != m_topology_attribute_variables.end())
+    if (auto const it = find_attribute_variable_name_with_aliases("branch_id"); network1d.branch_name_id != nullptr && it != m_topology_attribute_variables.end())
     {
         it->second.at(0).getVar(network1d.branch_name_id);
     }
 
-    if (auto const it = find_variable_name_with_aliases("branch_long_name"); network1d.branch_name_long != nullptr && it != m_topology_attribute_variables.end())
+    if (auto const it = find_attribute_variable_name_with_aliases("branch_long_name"); network1d.branch_name_long != nullptr && it != m_topology_attribute_variables.end())
     {
         it->second.at(0).getVar(network1d.branch_name_long);
     }
 
-    if (auto const it = find_variable_name_with_aliases("branch_length"); network1d.branch_length != nullptr && it != m_topology_attribute_variables.end())
+    if (auto const it = find_attribute_variable_name_with_aliases("branch_length"); network1d.branch_length != nullptr && it != m_topology_attribute_variables.end())
     {
         it->second.at(0).getVar(network1d.branch_length);
     }
