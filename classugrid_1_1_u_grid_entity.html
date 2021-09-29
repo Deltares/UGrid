@@ -133,9 +133,9 @@ Protected Member Functions</h2></td></tr>
 <tr class="memitem:ab8e46bb51b6d82385ad473902bacdcac"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classugrid_1_1_u_grid_entity.html#ab8e46bb51b6d82385ad473902bacdcac">define_topological_attribute</a> (std::string const &amp;attribute_name, std::string const &amp;attribute_value=&quot;&quot;)</td></tr>
 <tr class="memdesc:ab8e46bb51b6d82385ad473902bacdcac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines a new topological attribute.  <a href="classugrid_1_1_u_grid_entity.html#ab8e46bb51b6d82385ad473902bacdcac">More...</a><br /></td></tr>
 <tr class="separator:ab8e46bb51b6d82385ad473902bacdcac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab566f3ec7828cceb810f0a0c2156fcd9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classugrid_1_1_u_grid_entity.html#ab566f3ec7828cceb810f0a0c2156fcd9">define_topological_variable</a> (std::string const &amp;variable_suffix, netCDF::NcType nc_type, std::vector&lt; <a class="el" href="namespaceugrid.html#a6683ff1752ab0bcf618e39cef85b2bd3">UGridFileDimensions</a> &gt; const &amp;ugridfile_dimensions, std::vector&lt; std::pair&lt; std::string, std::string &gt;&gt; const &amp;attributes={})</td></tr>
-<tr class="memdesc:ab566f3ec7828cceb810f0a0c2156fcd9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines a new topology variable.  <a href="classugrid_1_1_u_grid_entity.html#ab566f3ec7828cceb810f0a0c2156fcd9">More...</a><br /></td></tr>
-<tr class="separator:ab566f3ec7828cceb810f0a0c2156fcd9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6fa30284fe12e675f32dee9e004dc9c5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classugrid_1_1_u_grid_entity.html#a6fa30284fe12e675f32dee9e004dc9c5">define_topological_variable</a> (std::string const &amp;variable_suffix, netCDF::NcType nc_type, std::vector&lt; <a class="el" href="namespaceugrid.html#a6683ff1752ab0bcf618e39cef85b2bd3">UGridFileDimensions</a> &gt; const &amp;ugridfile_dimensions, std::vector&lt; std::pair&lt; std::string, std::string &gt;&gt; const &amp;attributes={}, bool add_fill_value=false)</td></tr>
+<tr class="memdesc:a6fa30284fe12e675f32dee9e004dc9c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines a new topology variable.  <a href="classugrid_1_1_u_grid_entity.html#a6fa30284fe12e675f32dee9e004dc9c5">More...</a><br /></td></tr>
+<tr class="separator:a6fa30284fe12e675f32dee9e004dc9c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0861dfcb4fff4850ec8d2d184ac90095"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classugrid_1_1_u_grid_entity.html#a0861dfcb4fff4850ec8d2d184ac90095">define_topology_related_variables</a> (std::string const &amp;variable, netCDF::NcType nc_type, std::vector&lt; <a class="el" href="namespaceugrid.html#a6683ff1752ab0bcf618e39cef85b2bd3">UGridFileDimensions</a> &gt; const &amp;ugridfile_dimensions, std::vector&lt; std::pair&lt; std::string, std::string &gt;&gt; const &amp;attributes={})</td></tr>
 <tr class="memdesc:a0861dfcb4fff4850ec8d2d184ac90095"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines a new topology-related variable.  <a href="classugrid_1_1_u_grid_entity.html#a0861dfcb4fff4850ec8d2d184ac90095">More...</a><br /></td></tr>
 <tr class="separator:a0861dfcb4fff4850ec8d2d184ac90095"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -460,8 +460,8 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="ab566f3ec7828cceb810f0a0c2156fcd9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab566f3ec7828cceb810f0a0c2156fcd9">&#9670;&nbsp;</a></span>define_topological_variable()</h2>
+<a id="a6fa30284fe12e675f32dee9e004dc9c5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6fa30284fe12e675f32dee9e004dc9c5">&#9670;&nbsp;</a></span>define_topological_variable()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -491,7 +491,13 @@ template&lt;typename T &gt; </div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">std::vector&lt; std::pair&lt; std::string, std::string &gt;&gt; const &amp;&#160;</td>
-          <td class="paramname"><em>attributes</em> = <code>{}</code>&#160;</td>
+          <td class="paramname"><em>attributes</em> = <code>{}</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>add_fill_value</em> = <code>false</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
