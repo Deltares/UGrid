@@ -1,11 +1,10 @@
 var searchData=
 [
-  ['edge_5fedge_5fid_23',['edge_edge_id',['../structugridapi_1_1_mesh1_d.html#a6086d3f05f20c27f9f12e4527491b08e',1,'ugridapi::Mesh1D']]],
-  ['edge_5fedge_5foffset_24',['edge_edge_offset',['../structugridapi_1_1_mesh1_d.html#aced0ce57439dd177a268b6fcd773d496',1,'ugridapi::Mesh1D']]],
-  ['edge_5fface_25',['edge_face',['../structugridapi_1_1_mesh2_d.html#a3c00f3c8a6dbf623c253e0d4fe26ecd3',1,'ugridapi::Mesh2D']]],
-  ['edge_5fnode_26',['edge_node',['../structugridapi_1_1_mesh1_d.html#ac0cc1d216950fdde127861ae9f1e04de',1,'ugridapi::Mesh1D::edge_node()'],['../structugridapi_1_1_mesh2_d.html#ae906b479ee23466bc981ef339333e1d9',1,'ugridapi::Mesh2D::edge_node()']]],
-  ['edge_5fx_27',['edge_x',['../structugridapi_1_1_mesh1_d.html#a658b0c2c136f51268a922afabc8b8da4',1,'ugridapi::Mesh1D::edge_x()'],['../structugridapi_1_1_mesh2_d.html#a07fab68ce22bf2984dec2f440f673308',1,'ugridapi::Mesh2D::edge_x()']]],
-  ['edge_5fy_28',['edge_y',['../structugridapi_1_1_mesh1_d.html#a0486b690e1c63a7c6810ec2c4d4851eb',1,'ugridapi::Mesh1D::edge_y()'],['../structugridapi_1_1_mesh2_d.html#afb4fe45ada04a0f9a4c51a139e8abec4',1,'ugridapi::Mesh2D::edge_y()']]],
-  ['edge_5fz_29',['edge_z',['../structugridapi_1_1_mesh2_d.html#a6c79750dc8dbc218e16d7ec0b55ed66a',1,'ugridapi::Mesh2D']]],
-  ['edges_30',['edges',['../structugridapi_1_1_contacts.html#a3a913d1687c60af3c550c2d71b204c3f',1,'ugridapi::Contacts']]]
+  ['face_5fedge_30',['face_edge',['../structugridapi_1_1_mesh2_d.html#ae12d57806d520eff4ed8cf94e8ef5fc2',1,'ugridapi::Mesh2D']]],
+  ['face_5fface_31',['face_face',['../structugridapi_1_1_mesh2_d.html#af19e46ca167882de0669f337158590a1',1,'ugridapi::Mesh2D']]],
+  ['face_5fnode_32',['face_node',['../structugridapi_1_1_mesh2_d.html#a2266e179de598db4bfa5f35849dbbe9f',1,'ugridapi::Mesh2D']]],
+  ['face_5fx_33',['face_x',['../structugridapi_1_1_mesh2_d.html#a7ac7ec5f436eca04e834f757cefe4124',1,'ugridapi::Mesh2D']]],
+  ['face_5fy_34',['face_y',['../structugridapi_1_1_mesh2_d.html#a2441915c3280e29c22ec85507c092549',1,'ugridapi::Mesh2D']]],
+  ['face_5fz_35',['face_z',['../structugridapi_1_1_mesh2_d.html#a24b948929511d61fcad3447f52d1ec8d',1,'ugridapi::Mesh2D']]],
+  ['find_5fvariable_5fwith_5faliases_36',['find_variable_with_aliases',['../classugrid_1_1_u_grid_entity.html#a76086f6aaa927dfefdb86dc98bb0814b',1,'ugrid::UGridEntity']]]
 ];

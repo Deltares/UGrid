@@ -1,11 +1,9 @@
 var searchData=
 [
-  ['boundary_5fnode_5fconnectivity_3',['boundary_node_connectivity',['../structugridapi_1_1_mesh2_d.html#a3b60522da4ac8a333b51e0dba28892fb',1,'ugridapi::Mesh2D']]],
-  ['branch_5fid_4',['branch_id',['../structugridapi_1_1_mesh1_d.html#ae2d5c5505ee8ca1c97e477707a08d2de',1,'ugridapi::Mesh1D']]],
-  ['branch_5flength_5',['branch_length',['../structugridapi_1_1_network1_d.html#ae1bbb62de7c65177aaf8958bef2ae9c7',1,'ugridapi::Network1D']]],
-  ['branch_5fname_5fid_6',['branch_name_id',['../structugridapi_1_1_network1_d.html#a24509bd76a989cda67b1070b73e61f41',1,'ugridapi::Network1D']]],
-  ['branch_5fname_5flong_7',['branch_name_long',['../structugridapi_1_1_network1_d.html#a18f166f6d70abf57eb303be8f57122b9',1,'ugridapi::Network1D']]],
-  ['branch_5fnode_8',['branch_node',['../structugridapi_1_1_network1_d.html#a305bfe4e5a6ff739abeafd4c1a430913',1,'ugridapi::Network1D']]],
-  ['branch_5foffset_9',['branch_offset',['../structugridapi_1_1_mesh1_d.html#a93a32d87eb80f1106d71dae095e636a6',1,'ugridapi::Mesh1D']]],
-  ['branch_5forder_10',['branch_order',['../structugridapi_1_1_network1_d.html#a4f0d15aa5d9800417de730a340c1d835',1,'ugridapi::Network1D']]]
+  ['clear_8',['clear',['../classugrid_1_1_u_grid_var_attribute_string_builder.html#aec7304989b90a3653b4f789ba43cd93b',1,'ugrid::UGridVarAttributeStringBuilder']]],
+  ['contact_5fname_5fid_9',['contact_name_id',['../structugridapi_1_1_contacts.html#a625df0f8356cb78d974035d95f048a81',1,'ugridapi::Contacts']]],
+  ['contact_5fname_5flong_10',['contact_name_long',['../structugridapi_1_1_contacts.html#a8e4c11d6cc337242fcc4bce4337b38f8',1,'ugridapi::Contacts']]],
+  ['contact_5ftype_11',['contact_type',['../structugridapi_1_1_contacts.html#a1fce3b7695f3d912b49a0397cb55f18f',1,'ugridapi::Contacts']]],
+  ['contacts_12',['Contacts',['../structugrid_1_1_contacts.html',1,'ugrid::Contacts'],['../structugridapi_1_1_contacts.html',1,'ugridapi::Contacts'],['../structugrid_1_1_contacts.html#ae08bf2b973f0a9256d4d11788c46568b',1,'ugrid::Contacts::Contacts(std::shared_ptr&lt; netCDF::NcFile &gt; nc_file)'],['../structugrid_1_1_contacts.html#abf3944e174301b29b76f746f4be90722',1,'ugrid::Contacts::Contacts(std::shared_ptr&lt; netCDF::NcFile &gt; nc_file, netCDF::NcVar const &amp;topology_variable, std::map&lt; std::string, std::vector&lt; netCDF::NcVar &gt;&gt; const &amp;entity_attributes, std::map&lt; std::string, std::vector&lt; std::string &gt;&gt; const &amp;entity_attribute_names, std::map&lt; UGridFileDimensions, netCDF::NcDim &gt; const &amp;entity_dimensions)']]],
+  ['create_13',['create',['../classugrid_1_1_u_grid_entity.html#adc50ee16c35e37c760015b275c7a94b5',1,'ugrid::UGridEntity']]]
 ];

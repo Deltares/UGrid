@@ -1,10 +1,7 @@
 var searchData=
 [
-  ['face_5fedge_31',['face_edge',['../structugridapi_1_1_mesh2_d.html#ae12d57806d520eff4ed8cf94e8ef5fc2',1,'ugridapi::Mesh2D']]],
-  ['face_5fface_32',['face_face',['../structugridapi_1_1_mesh2_d.html#af19e46ca167882de0669f337158590a1',1,'ugridapi::Mesh2D']]],
-  ['face_5fnode_33',['face_node',['../structugridapi_1_1_mesh2_d.html#a2266e179de598db4bfa5f35849dbbe9f',1,'ugridapi::Mesh2D']]],
-  ['face_5fx_34',['face_x',['../structugridapi_1_1_mesh2_d.html#a7ac7ec5f436eca04e834f757cefe4124',1,'ugridapi::Mesh2D']]],
-  ['face_5fy_35',['face_y',['../structugridapi_1_1_mesh2_d.html#a2441915c3280e29c22ec85507c092549',1,'ugridapi::Mesh2D']]],
-  ['face_5fz_36',['face_z',['../structugridapi_1_1_mesh2_d.html#a24b948929511d61fcad3447f52d1ec8d',1,'ugridapi::Mesh2D']]],
-  ['find_5fvariable_5fwith_5faliases_37',['find_variable_with_aliases',['../classugrid_1_1_u_grid_entity.html#a76086f6aaa927dfefdb86dc98bb0814b',1,'ugrid::UGridEntity']]]
+  ['geometry_5fnodes_5fx_37',['geometry_nodes_x',['../structugridapi_1_1_network1_d.html#a6b2b7616145a8e410a09748429d2d5bb',1,'ugridapi::Network1D']]],
+  ['geometry_5fnodes_5fy_38',['geometry_nodes_y',['../structugridapi_1_1_network1_d.html#a83b1952fed8448aa22ab4e33e36b33c5',1,'ugridapi::Network1D']]],
+  ['get_39',['get',['../structugrid_1_1_contacts.html#ac304fcf6c66105531d1bd178bc06ae63',1,'ugrid::Contacts::get()'],['../structugrid_1_1_mesh1_d.html#a2c81a017a81b24b670ca6389b52224be',1,'ugrid::Mesh1D::get()'],['../structugrid_1_1_mesh2_d.html#a3b8b73d8a8aa7233c337b58f3fba9adf',1,'ugrid::Mesh2D::get()'],['../structugrid_1_1_network1_d.html#a75d64c2edde1db2facb56a4f72cecda3',1,'ugrid::Network1D::get()']]],
+  ['get_5fdimensionality_40',['get_dimensionality',['../structugrid_1_1_contacts.html#ac61be2206b936c8f968aab60e8fa33dc',1,'ugrid::Contacts::get_dimensionality()'],['../structugrid_1_1_mesh1_d.html#a72f2f4d4e3e7db182f6232c510ae73b8',1,'ugrid::Mesh1D::get_dimensionality()'],['../structugrid_1_1_mesh2_d.html#aa3ea1818a97ac135e6250a96c78b2414',1,'ugrid::Mesh2D::get_dimensionality()'],['../structugrid_1_1_network1_d.html#ab76bad1fd298977351b2d77f457b4bd6',1,'ugrid::Network1D::get_dimensionality()']]]
 ];

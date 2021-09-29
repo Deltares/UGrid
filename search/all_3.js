@@ -1,9 +1,11 @@
 var searchData=
 [
-  ['define_17',['define',['../structugrid_1_1_contacts.html#a68487f44c6779c879cd27cefa76c47ec',1,'ugrid::Contacts::define()'],['../structugrid_1_1_mesh1_d.html#a1836271ed3c139bfbb3ce07456340482',1,'ugrid::Mesh1D::define()'],['../structugrid_1_1_mesh2_d.html#acf4bd75d99447b19682d4c23c85883c2',1,'ugrid::Mesh2D::define()'],['../structugrid_1_1_network1_d.html#a8e1c4f77037a7a191fddb4a23871b498',1,'ugrid::Network1D::define()'],['../classugrid_1_1_u_grid_entity.html#addf1d5db425f432003c83e78385310a1',1,'ugrid::UGridEntity::define()']]],
-  ['define_5ftopological_5fvariable_5fwith_5fcoordinates_18',['define_topological_variable_with_coordinates',['../classugrid_1_1_u_grid_entity.html#a914f4a5a48fcd0626ace06cf0779c251',1,'ugrid::UGridEntity']]],
-  ['define_5fvariable_5fon_5flocation_19',['define_variable_on_location',['../classugrid_1_1_u_grid_entity.html#a4820409f0c2f04a9c60acf739aa75486',1,'ugrid::UGridEntity::define_variable_on_location(std::string const &amp;variable_name, UGridFileDimensions const &amp;dimension, std::string const &amp;standard_name, std::string const &amp;long_name, std::string const &amp;units, double const &amp;double_fill_value=double_invalid_value)'],['../classugrid_1_1_u_grid_entity.html#a677f4bdcf82a4df18dad293d084ab875',1,'ugrid::UGridEntity::define_variable_on_location(std::string const &amp;variable_name, UGridFileDimensions const &amp;dimension, std::string const &amp;standard_name, std::string const &amp;long_name, std::string const &amp;units, int const &amp;int_fill_value=int_invalid_value)']]],
-  ['double_5ffill_5fvalue_20',['double_fill_value',['../structugridapi_1_1_mesh1_d.html#a41be3dae5faa48854f03e8aa379ae947',1,'ugridapi::Mesh1D::double_fill_value()'],['../structugridapi_1_1_mesh2_d.html#a8e645866fd8fba596bc256041030f253',1,'ugridapi::Mesh2D::double_fill_value()']]],
-  ['double_5finvalid_5fvalue_21',['double_invalid_value',['../namespaceugrid.html#aa79aa82242e6772e069a7e7286607b7d',1,'ugrid']]],
-  ['double_5fmissing_5fvalue_22',['double_missing_value',['../namespaceugrid.html#af7a9f4bdf7e92849bb8a85eb64a690f4',1,'ugrid']]]
+  ['edge_5fedge_5fid_22',['edge_edge_id',['../structugridapi_1_1_mesh1_d.html#a6086d3f05f20c27f9f12e4527491b08e',1,'ugridapi::Mesh1D']]],
+  ['edge_5fedge_5foffset_23',['edge_edge_offset',['../structugridapi_1_1_mesh1_d.html#aced0ce57439dd177a268b6fcd773d496',1,'ugridapi::Mesh1D']]],
+  ['edge_5fface_24',['edge_face',['../structugridapi_1_1_mesh2_d.html#a3c00f3c8a6dbf623c253e0d4fe26ecd3',1,'ugridapi::Mesh2D']]],
+  ['edge_5fnode_25',['edge_node',['../structugridapi_1_1_mesh1_d.html#ac0cc1d216950fdde127861ae9f1e04de',1,'ugridapi::Mesh1D::edge_node()'],['../structugridapi_1_1_mesh2_d.html#ae906b479ee23466bc981ef339333e1d9',1,'ugridapi::Mesh2D::edge_node()']]],
+  ['edge_5fx_26',['edge_x',['../structugridapi_1_1_mesh1_d.html#a658b0c2c136f51268a922afabc8b8da4',1,'ugridapi::Mesh1D::edge_x()'],['../structugridapi_1_1_mesh2_d.html#a07fab68ce22bf2984dec2f440f673308',1,'ugridapi::Mesh2D::edge_x()']]],
+  ['edge_5fy_27',['edge_y',['../structugridapi_1_1_mesh1_d.html#a0486b690e1c63a7c6810ec2c4d4851eb',1,'ugridapi::Mesh1D::edge_y()'],['../structugridapi_1_1_mesh2_d.html#afb4fe45ada04a0f9a4c51a139e8abec4',1,'ugridapi::Mesh2D::edge_y()']]],
+  ['edge_5fz_28',['edge_z',['../structugridapi_1_1_mesh2_d.html#a6c79750dc8dbc218e16d7ec0b55ed66a',1,'ugridapi::Mesh2D']]],
+  ['edges_29',['edges',['../structugridapi_1_1_contacts.html#a3a913d1687c60af3c550c2d71b204c3f',1,'ugridapi::Contacts']]]
 ];
