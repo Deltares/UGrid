@@ -73,12 +73,12 @@ namespace ugridapi
 
     UGRID_API int ug_name_get_length()
     {
-        return ugrid::name_lengths;
+        return ugrid::name_length;
     }
 
     UGRID_API int ug_name_get_long_length()
     {
-        return ugrid::name_long_lengths;
+        return ugrid::name_long_length;
     }
 
     UGRID_API int ug_entity_get_node_location_enum()

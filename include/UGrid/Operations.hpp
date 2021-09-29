@@ -176,15 +176,6 @@ namespace ugrid
         return {entity_attribute_variables, entity_attribute_names, entity_dimensions};
     }
 
-    static void add_start_index(int const& start_index, netCDF::NcVar& variable, double double_fill_value, int int_fill_value)
-    {
-        if (start_index != 0)
-        {
-            variable.getType() == netCDF::NcType::nc_DOUBLE ? variable.setFill(true, double_fill_value) : variable.setFill(true, int_fill_value);
-            variable.putAtt("start_index", netCDF::NcType::nc_INT, start_index);
-        }
-    }
-
     static void string_to_char_array(char* char_array, std::string const& value, size_t len)
     {
         if (char_array == nullptr || value.empty())

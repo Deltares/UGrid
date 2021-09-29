@@ -123,63 +123,34 @@ namespace ugrid
                                                           std::string const& long_name_pattern,
                                                           std::string const& name_pattern = "%s%s");
 
-        /// @brief Defines a new double variable on a specific entity location (e.g. nodes, edges, faces)
-        /// @param variable_name [in] The variable name
-        /// @param dimension [in] The dimension of the entity location
-        /// @param standard_name [in] The variable standard name
-        /// @param long_name [in] The variable long name
-        /// @param units [in] The variable units
-        /// @param double_fill_value [in] The double fill value
-        /// @return The resulting variable
-        [[nodiscard]] netCDF::NcVar define_variable_on_location(std::string const& variable_name,
-                                                                UGridFileDimensions const& dimension,
-                                                                std::string const& standard_name,
-                                                                std::string const& long_name,
-                                                                std::string const& units,
-                                                                double const& double_fill_value = double_invalid_value);
-
-        /// @brief Defines a new integer variable on a specific entity location (e.g. nodes, edges, faces)
-        /// @param variable_name [in] The variable name
-        /// @param dimension [in] The dimension of the entity location
-        /// @param standard_name [in] The variable standard name
-        /// @param long_name [in] The variable long name
-        /// @param units [in] The variable units
-        /// @param int_fill_value [in] The integer fill value
-        /// @return The resulting variable
-        [[nodiscard]] netCDF::NcVar define_variable_on_location(std::string const& variable_name,
-                                                                UGridFileDimensions const& dimension,
-                                                                std::string const& standard_name,
-                                                                std::string const& long_name,
-                                                                std::string const& units,
-                                                                int const& int_fill_value = int_invalid_value);
-
         /// @brief Find the names aliases (e.g. previous naming convention used plurals)
         /// @param variable_name [in] The variable name
         /// @return An iterator to \ref m_topology_attribute_variables
         [[nodiscard]] std::map<std::string, std::vector<netCDF::NcVar>>::const_iterator find_variable_with_aliases(std::string const& variable_name) const;
 
-        /// @brief Adds a new attribute to topology variable
-        /// @param name The attribute name
-        /// @param value The attribute value
-        /// @return The variable attribute (NcVarAtt)
-        netCDF::NcVarAtt add_topology_attribute(std::string const& name, std::string const& value)
-        {
-            auto topology_attribute = m_topology_variable.putAtt(name, value);
-            m_topology_attributes.insert({topology_attribute.getName(), topology_attribute});
-            return topology_attribute;
-        }
+        /// @brief Defines a new topological attribute
+        /// @param attribute_name [in] The attribute name
+        /// @param attribute_value [in] The attribute value. If none is provided, it is constructed internally using \ref attribute_name
+        void define_topological_attribute(std::string const& attribute_name, std::string const& attribute_value = "");
 
-        /// @brief Add topology attribute variables
-        /// @param nc_var_attribute [in] The topology attribute
-        /// @param nc_var [in] The topology attribute variable
-        void add_topology_attribute_variable(netCDF::NcVarAtt const& nc_var_attribute, netCDF::NcVar const& nc_var);
+        /// @brief Defines a new topology variable
+        /// @param variable_suffix[in] The variable suffix name.
+        /// @param nc_type[in]
+        /// @param ugridfile_dimensions[in]
+        /// @param attributes[in]
+        void define_topological_variable(std::string const& variable_suffix,
+                                         netCDF::NcType nc_type,
+                                         std::vector<UGridFileDimensions> const& ugridfile_dimensions,
+                                         std::vector<std::pair<std::string, std::string>> const& attributes = {});
 
-        /// @brief Add variables related to a specific topology
+        /// @brief Define variables related to a specific topology
         /// @param nc_var [in] The related variable to add
-        void add_topology_related_variables(netCDF::NcVar const& nc_var)
-        {
-            m_related_variables.insert({nc_var.getName(), {nc_var}});
-        }
+        void define_topology_related_variables(std::string const& variable,
+                                               netCDF::NcType nc_type,
+                                               std::vector<UGridFileDimensions> const& ugridfile_dimensions,
+                                               std::vector<std::pair<std::string, std::string>> const& attributes = {});
+
+        std::string get_location_attribute_value(std::string const& location);
 
         /// @brief Method collecting common operations for defining a UGrid entity to file
         /// @param entity_name [in] The entity name
@@ -217,38 +188,5 @@ namespace ugrid
                                              UGridFileDimensions const& ugrid_entity_dimension,
                                              UGridEntityCoordinates const& coordinate,
                                              std::string const& long_name_pattern);
-
-        /// @brief
-        /// @param variable_name
-        /// @param ugrid_entity_dimension
-        /// @param nc_type
-        /// @param standard_name
-        /// @param long_name
-        /// @param units
-        /// @param int_fill_value
-        /// @param double_fill_value
-        /// @return
-        netCDF::NcVar define_variable_on_location(std::string const& variable_name,
-                                                  UGridFileDimensions const& ugrid_entity_dimension,
-                                                  netCDF::NcType const& nc_type,
-                                                  std::string const& standard_name,
-                                                  std::string const& long_name,
-                                                  std::string const& units,
-                                                  int const& int_fill_value = int_invalid_value,
-                                                  double const& double_fill_value = double_invalid_value);
-
-        /// @brief
-        /// @param variable
-        /// @param standard_name
-        /// @param long_name
-        /// @param units
-        /// @param int_fill_value
-        /// @param double_fill_value
-        void define_additional_attributes(netCDF::NcVar& variable,
-                                          std::string const& standard_name,
-                                          std::string const& long_name,
-                                          std::string const& units,
-                                          int const& int_fill_value = int_invalid_value,
-                                          double const& double_fill_value = double_invalid_value);
     };
 } // namespace ugrid

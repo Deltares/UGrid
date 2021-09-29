@@ -107,66 +107,68 @@ void Contacts::define(ugridapi::Contacts const& contacts)
         throw std::invalid_argument("Mesh2D::define no contacts present");
     }
 
-    m_entity_name = std::string(contacts.name);
-    rtrim(m_entity_name);
-
-    // Add additional dimensions, maybe required
-    m_dimensions.insert({UGridFileDimensions::ids, m_nc_file->addDim("strLengthIds", name_lengths)});
-    m_dimensions.insert({UGridFileDimensions::long_names, m_nc_file->addDim("strLengthLongNames", name_long_lengths)});
+    // Define additional dimensions, maybe required
+    m_dimensions.insert({UGridFileDimensions::ids, m_nc_file->addDim(name_length_dimension, name_length)});
+    m_dimensions.insert({UGridFileDimensions::long_names, m_nc_file->addDim(name_long_length_dimension, name_long_length)});
     m_dimensions.insert({UGridFileDimensions::Two, m_nc_file->addDim(two_string, 2)});
 
+    // Set the entity name
+    m_entity_name = std::string(contacts.name);
+    rtrim(m_entity_name);
     auto string_builder = UGridVarAttributeStringBuilder(m_entity_name);
 
+    // Define contacts dimension
     string_builder.clear();
     string_builder << "_nContacts";
     m_dimensions.insert({UGridFileDimensions::nodes, m_nc_file->addDim(string_builder.str(), contacts.num_contacts)});
 
+    // Define topology variable
     m_topology_variable = m_nc_file->addVar(m_entity_name, netCDF::NcType::nc_INT, {m_dimensions[UGridFileDimensions::nodes], m_dimensions[UGridFileDimensions::Two]});
-    add_topology_attribute("cf_role", "mesh_topology_contact");
+
+    // Define topology attribute
+    define_topological_attribute("cf_role", "mesh_topology_contact");
 
     auto const mesh_from_location_string = from_location_integer_to_location_string(contacts.mesh_from_location);
     auto const mesh_to_location_string = from_location_integer_to_location_string(contacts.mesh_to_location);
 
+    // Define topology attribute from to mesh
     std::stringstream os;
     auto mesh_from_name = std::string(contacts.mesh_from_name);
     auto mesh_to_name = std::string(contacts.mesh_to_name);
     rtrim(mesh_from_name);
     rtrim(mesh_to_name);
     os << mesh_from_name << ": " << mesh_from_location_string << " " << mesh_to_name << ": " << mesh_to_location_string;
-    add_topology_attribute("contact", os.str());
+    define_topological_attribute("contact", os.str());
 
-    // contact type
-    string_builder.clear();
-    string_builder << "_contact_type";
-    auto topology_attribute = add_topology_attribute("contact_type", string_builder.str());
+    // Define topology attribute contact type and variable
+    std::string topology_attribute_name = "contact_type";
+    define_topological_attribute(topology_attribute_name);
+    define_topological_variable(topology_attribute_name,
+                                netCDF::NcType::nc_INT,
+                                {UGridFileDimensions::nodes});
 
-    auto topology_attribute_variable = m_nc_file->addVar(string_builder.str(), netCDF::NcType::nc_INT, {m_dimensions[UGridFileDimensions::nodes]});
-    topology_attribute_variable.setFill(true, -1);
-
+    m_topology_attribute_variables[topology_attribute_name].back().setFill(true, -1);
     std::vector<int> valid_range{3, 4};
-    topology_attribute_variable.putAtt("valid_range", netCDF::NcType::nc_INT, 2, &valid_range[0]);
+    m_topology_attribute_variables[topology_attribute_name].back().putAtt("valid_range", netCDF::NcType::nc_INT, 2, &valid_range[0]);
     std::vector<int> flag_values{3, 4};
-    topology_attribute_variable.putAtt("flag_values", netCDF::NcType::nc_INT, 2, &flag_values[0]);
-    topology_attribute_variable.putAtt("flag_meanings", "lateral_1d2d_link longitudinal_1d2d_link");
-    add_topology_attribute_variable(topology_attribute, topology_attribute_variable);
+    m_topology_attribute_variables[topology_attribute_name].back().putAtt("flag_values", netCDF::NcType::nc_INT, 2, &flag_values[0]);
+    m_topology_attribute_variables[topology_attribute_name].back().putAtt("flag_meanings", "lateral_1d2d_link longitudinal_1d2d_link");
 
-    // contact id
-    string_builder.clear();
-    string_builder << "_id";
-    topology_attribute = add_topology_attribute("contact_id", string_builder.str());
+    // Define topology attribute contact_id and variable
+    topology_attribute_name = "contact_id";
+    define_topological_attribute(topology_attribute_name);
+    define_topological_variable(topology_attribute_name,
+                                netCDF::NcType::nc_CHAR,
+                                {UGridFileDimensions::nodes, UGridFileDimensions::ids},
+                                {{"long_name", "ids of the contacts"}});
 
-    topology_attribute_variable = m_nc_file->addVar(string_builder.str(), netCDF::NcType::nc_CHAR, {m_dimensions[UGridFileDimensions::nodes], m_dimensions[UGridFileDimensions::ids]});
-    topology_attribute_variable.putAtt("long_name", "ids of the contacts");
-    add_topology_attribute_variable(topology_attribute, topology_attribute_variable);
-
-    // contact long names
-    string_builder.clear();
-    string_builder << "_long_name";
-    topology_attribute = add_topology_attribute("contact_long_name", string_builder.str());
-
-    topology_attribute_variable = m_nc_file->addVar(string_builder.str(), netCDF::NcType::nc_CHAR, {m_dimensions[UGridFileDimensions::nodes], m_dimensions[UGridFileDimensions::long_names]});
-    topology_attribute_variable.putAtt("long_name", "long names of the contacts");
-    add_topology_attribute_variable(topology_attribute, topology_attribute_variable);
+    // Define topology attribute contact_long_name and variable
+    topology_attribute_name = "contact_long_name";
+    define_topological_attribute(topology_attribute_name);
+    define_topological_variable(topology_attribute_name,
+                                netCDF::NcType::nc_CHAR,
+                                {UGridFileDimensions::nodes, UGridFileDimensions::long_names},
+                                {{"long_name", "long names of the contacts"}});
 
     m_nc_file->enddef();
 }
@@ -205,11 +207,11 @@ void Contacts::inquire(ugridapi::Contacts& contacts) const
 
 void Contacts::get(ugridapi::Contacts& contacts) const
 {
-    string_to_char_array(contacts.name, m_entity_name, name_lengths);
+    string_to_char_array(contacts.name, m_entity_name, name_length);
 
-    string_to_char_array(contacts.mesh_from_name, m_entity_from_name, name_lengths);
+    string_to_char_array(contacts.mesh_from_name, m_entity_from_name, name_length);
 
-    string_to_char_array(contacts.mesh_to_name, m_entity_to_name, name_lengths);
+    string_to_char_array(contacts.mesh_to_name, m_entity_to_name, name_length);
 
     if (contacts.edges != nullptr)
     {
