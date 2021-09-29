@@ -78,7 +78,7 @@ void Mesh2D::define(ugridapi::Mesh2D const& mesh2d)
         // Define optional related variables
         if (mesh2d.node_z != nullptr)
         {
-            auto location_string = get_location_attribute_value("node");
+            auto const location_attribute_value = get_location_attribute_value("node");
             define_topology_related_variables(
                 "node_z",
                 netCDF::NcType::nc_DOUBLE,
@@ -87,7 +87,7 @@ void Mesh2D::define(ugridapi::Mesh2D const& mesh2d)
                  {"long_name", "z-coordinate of mesh nodes"},
                  {"units", "m"},
                  {"coordinates", "node"},
-                 {"location", location_string}});
+                 {"location", location_attribute_value}});
         }
     }
 

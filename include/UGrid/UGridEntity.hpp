@@ -139,7 +139,8 @@ namespace ugrid
         void define_topological_variable(std::string const& variable_suffix,
                                          netCDF::NcType nc_type,
                                          std::vector<UGridFileDimensions> const& ugridfile_dimensions,
-                                         std::vector<std::pair<std::string, std::string>> const& attributes = {});
+                                         std::vector<std::pair<std::string, std::string>> const& attributes = {},
+                                         bool add_fill_value = false);
 
         /// @brief Defines a new topology-related variable.
         /// @param variable [in] The variable name suffix, to append to the entity name to form a new variable name.
@@ -181,7 +182,7 @@ namespace ugrid
         int m_espg_code = 0;                            ///< The espg code
 
     private:
-        /// @brief Defines variables for storing the coordinates of specific entity locations
+        /// @brief Produces the attribute variables related to coordinate locations
         /// @param location [in] The entity location (e.g. nodes, edges, faces)
         /// @param long_name_pattern [in] The string pattern to use for producing the long name string
         /// @param name_pattern [in] The string pattern to use for producing the name string

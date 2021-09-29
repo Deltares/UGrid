@@ -140,7 +140,8 @@ void Network1D::define(ugridapi::Network1D const& network1d)
         define_topological_variable("edge_nodes",
                                     netCDF::NcType::nc_INT,
                                     {UGridFileDimensions::edges, UGridFileDimensions::Two},
-                                    {{"long_name", "Start and end nodes of network edges"}});
+                                    {{"cf_role", "edge_node_connectivity"},
+                                     {"long_name", "Start and end nodes of network edges"}});
 
         // Define edge_lengths topology attribute and variable
         define_topological_attribute("branch_length");
@@ -169,7 +170,7 @@ void Network1D::define(ugridapi::Network1D const& network1d)
         define_topological_variable("branch_id",
                                     netCDF::NcType::nc_CHAR,
                                     {UGridFileDimensions::edges, UGridFileDimensions::ids},
-                                    {{"long_name", "Long name of branch geometries"}});
+                                    {{"long_name", "ID of branch geometries"}});
 
         // Define branch_long_name topology attribute and variable
         define_topological_attribute("branch_long_name");
@@ -185,7 +186,8 @@ void Network1D::define(ugridapi::Network1D const& network1d)
         // Define dimension
         string_builder.clear();
         string_builder << "_nGeometryNodes";
-        m_dimensions.insert({UGridFileDimensions::nodes_geometry, m_nc_file->addDim(string_builder.str(), network1d.num_geometry_nodes)});
+        auto const node_geometry_dimension = string_builder.str();
+        m_dimensions.insert({UGridFileDimensions::nodes_geometry, m_nc_file->addDim(node_geometry_dimension, network1d.num_geometry_nodes)});
 
         // Define edge_geometry attribute
         string_builder.clear();
@@ -194,25 +196,26 @@ void Network1D::define(ugridapi::Network1D const& network1d)
 
         // Define edge_geometry variable, with edge_geometry attributes
         string_builder.clear();
-        string_builder << "_geom_node_count";
-        auto const geom_node_count_var_name = string_builder.str();
+        string_builder << "_geom_part_node_count";
+        auto const geom_node_node_count = string_builder.str();
 
         string_builder.clear();
-        string_builder << "_geom_x " << m_entity_name << " _geom_y";
+        string_builder << "_geom_x " << m_entity_name << "_geom_y";
         auto const geometry_coordinate_var_name = string_builder.str();
 
         define_topological_variable("geometry",
                                     netCDF::NcType::nc_INT,
-                                    {UGridFileDimensions::nodes_geometry},
+                                    {},
                                     {
-                                        {"geometry_type", "line"},
-                                        {"long_name", "1D Geometry "},
-                                        {"node_count", geom_node_count_var_name},
-                                        {"node_count", geometry_coordinate_var_name},
+                                        {"geometry_type", "multiline"},
+                                        {"long_name", "1D Geometry"},
+                                        {"node_count", node_geometry_dimension},
+                                        {"part_node_count", geom_node_node_count},
+                                        {"node_coordinates", geometry_coordinate_var_name},
                                     });
 
         // Define edge_geometry attribute variables
-        define_topology_related_variables("geom_node_count",
+        define_topology_related_variables("geom_part_node_count",
                                           netCDF::NcType::nc_INT,
                                           {UGridFileDimensions::edges},
                                           {{"node_count", string_builder.str()},
@@ -228,6 +231,7 @@ void Network1D::define(ugridapi::Network1D const& network1d)
                                           {UGridFileDimensions::nodes_geometry},
                                           {{"long_name", "y-coordinate of branch geometry nodes"}});
 
+        m_network_geometry_attribute_variables.insert({"part_node_count", {m_related_variables.at("geom_part_node_count")}});
         m_network_geometry_attribute_variables.insert({"node_coordinates", {m_related_variables.at("geom_x"), m_related_variables.at("geom_y")}});
     }
 
@@ -292,6 +296,11 @@ void Network1D::put(ugridapi::Network1D const& network1d)
     if (auto const it = m_network_geometry_attribute_variables.find("node_coordinates"); network1d.geometry_nodes_y != nullptr && it != m_network_geometry_attribute_variables.end())
     {
         it->second.at(1).putVar(network1d.geometry_nodes_y);
+    }
+
+    if (auto const it = m_network_geometry_attribute_variables.find("part_node_count"); network1d.geometry_nodes_count != nullptr && it != m_network_geometry_attribute_variables.end())
+    {
+        it->second.at(0).putVar(network1d.geometry_nodes_count);
     }
 }
 
@@ -366,6 +375,10 @@ void Network1D::get(ugridapi::Network1D& network1d) const
     if (auto const it = m_network_geometry_attribute_variables.find("node_coordinates"); network1d.geometry_nodes_y != nullptr && it != m_network_geometry_attribute_variables.end())
     {
         it->second.at(1).getVar(network1d.geometry_nodes_y);
+    }
+    if (auto const it = m_network_geometry_attribute_variables.find("part_node_count"); network1d.geometry_nodes_count != nullptr && it != m_network_geometry_attribute_variables.end())
+    {
+        it->second.at(0).getVar(network1d.geometry_nodes_count);
     }
 }
 
