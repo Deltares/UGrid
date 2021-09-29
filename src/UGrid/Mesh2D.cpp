@@ -146,7 +146,7 @@ void Mesh2D::define(ugridapi::Mesh2D const& mesh2d)
         bool const add_coordinate_variable = mesh2d.face_x != nullptr && mesh2d.face_y != nullptr;
         if (add_coordinate_variable)
         {
-            define_topology_coordinates(UGridFileDimensions::faces, "characteristic % of the mesh face");
+            define_topology_coordinates(UGridFileDimensions::faces, "characteristic %s of the mesh face");
         }
 
         // Define face bounds (is this always required?)
@@ -157,9 +157,9 @@ void Mesh2D::define(ugridapi::Mesh2D const& mesh2d)
         {
             // Define face_edges topology attribute and variable
             string_builder.clear();
-            string_builder << "_face_nodes";
+            string_builder << "_face_edge";
             define_topological_attribute("face_edge_connectivity", string_builder.str());
-            define_topological_variable("face_nodes",
+            define_topological_variable("face_edge",
                                         netCDF::NcType::nc_INT,
                                         {UGridFileDimensions::faces, UGridFileDimensions::max_face_nodes},
                                         {{"long_name", "Side edges of mesh faces (counterclockwise)"}});
@@ -223,39 +223,39 @@ void Mesh2D::put(ugridapi::Mesh2D const& mesh2d)
     }
 
     // Edges
-    if (auto const it = m_topology_attribute_variables.find("edge_node_connectivity"); mesh2d.edge_node != nullptr && it != m_topology_attribute_variables.end())
+    if (auto const it = m_topology_attribute_variables.find("edge_node"); mesh2d.edge_node != nullptr && it != m_topology_attribute_variables.end())
     {
         it->second.at(0).putVar(mesh2d.edge_node);
     }
-    if (auto const it = m_topology_attribute_variables.find("edge_coordinates"); mesh2d.edge_x != nullptr && it != m_topology_attribute_variables.end())
+    if (auto const it = m_topology_attribute_variables.find("edge_x"); mesh2d.edge_x != nullptr && it != m_topology_attribute_variables.end())
     {
         it->second.at(0).putVar(mesh2d.edge_x);
     }
-    if (auto const it = m_topology_attribute_variables.find("edge_coordinates"); mesh2d.edge_y != nullptr && it != m_topology_attribute_variables.end())
+    if (auto const it = m_topology_attribute_variables.find("edge_y"); mesh2d.edge_y != nullptr && it != m_topology_attribute_variables.end())
     {
         it->second.at(1).putVar(mesh2d.edge_y);
     }
 
     // Faces
-    if (auto const it = m_topology_attribute_variables.find("face_node_connectivity"); mesh2d.face_node != nullptr && it != m_topology_attribute_variables.end())
+    if (auto const it = m_topology_attribute_variables.find("face_nodes"); mesh2d.face_node != nullptr && it != m_topology_attribute_variables.end())
     {
         it->second.at(0).putVar(mesh2d.face_node);
     }
-    if (auto const it = m_topology_attribute_variables.find("face_edge_connectivity"); mesh2d.face_face != nullptr && it != m_topology_attribute_variables.end())
+    if (auto const it = m_topology_attribute_variables.find("face_edge"); mesh2d.face_face != nullptr && it != m_topology_attribute_variables.end())
     {
         it->second.at(0).putVar(mesh2d.face_face);
     }
-    if (auto const it = m_topology_attribute_variables.find("edge_face_connectivity"); mesh2d.edge_face != nullptr && it != m_topology_attribute_variables.end())
+    if (auto const it = m_topology_attribute_variables.find("face_links"); mesh2d.edge_face != nullptr && it != m_topology_attribute_variables.end())
     {
         it->second.at(0).putVar(mesh2d.edge_face);
     }
-    if (auto const it = m_topology_attribute_variables.find("face_coordinates"); mesh2d.face_x != nullptr && it != m_topology_attribute_variables.end())
+    if (auto const it = m_topology_attribute_variables.find("face_x"); mesh2d.face_x != nullptr && it != m_topology_attribute_variables.end())
     {
         it->second.at(0).putVar(mesh2d.face_x);
     }
-    if (auto const it = m_topology_attribute_variables.find("face_coordinates"); mesh2d.face_y != nullptr && it != m_topology_attribute_variables.end())
+    if (auto const it = m_topology_attribute_variables.find("face_y"); mesh2d.face_y != nullptr && it != m_topology_attribute_variables.end())
     {
-        it->second.at(1).putVar(mesh2d.face_y);
+        it->second.at(0).putVar(mesh2d.face_y);
     }
     if (mesh2d.num_layers > 0)
     {
