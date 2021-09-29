@@ -127,12 +127,9 @@ Protected Member Functions</h2></td></tr>
 <tr class="memitem:addf1d5db425f432003c83e78385310a1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classugrid_1_1_u_grid_entity.html#addf1d5db425f432003c83e78385310a1">define</a> (char *entity_name, int start_index, std::string const &amp;long_name, int topology_dimension, int is_spherical)</td></tr>
 <tr class="memdesc:addf1d5db425f432003c83e78385310a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Method collecting common operations for defining a UGrid entity to file.  <a href="classugrid_1_1_u_grid_entity.html#addf1d5db425f432003c83e78385310a1">More...</a><br /></td></tr>
 <tr class="separator:addf1d5db425f432003c83e78385310a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a914f4a5a48fcd0626ace06cf0779c251"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classugrid_1_1_u_grid_entity.html#a914f4a5a48fcd0626ace06cf0779c251">define_topological_variable_with_coordinates</a> (<a class="el" href="namespaceugrid.html#a5ede1cf60a09eaa14fdcb558a078738c">UGridEntityLocations</a> const &amp;location, <a class="el" href="namespaceugrid.html#a6683ff1752ab0bcf618e39cef85b2bd3">UGridFileDimensions</a> const &amp;dimension, std::string const &amp;long_name_pattern, std::string const &amp;name_pattern=&quot;%s%s&quot;)</td></tr>
-<tr class="memdesc:a914f4a5a48fcd0626ace06cf0779c251"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines variables for storing the coordinates of specific entity locations.  <a href="classugrid_1_1_u_grid_entity.html#a914f4a5a48fcd0626ace06cf0779c251">More...</a><br /></td></tr>
-<tr class="separator:a914f4a5a48fcd0626ace06cf0779c251"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a76086f6aaa927dfefdb86dc98bb0814b"><td class="memItemLeft" align="right" valign="top">std::map&lt; std::string, std::vector&lt; netCDF::NcVar &gt; &gt;::const_iterator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classugrid_1_1_u_grid_entity.html#a76086f6aaa927dfefdb86dc98bb0814b">find_variable_with_aliases</a> (std::string const &amp;variable_name) const</td></tr>
-<tr class="memdesc:a76086f6aaa927dfefdb86dc98bb0814b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Find the names aliases (e.g. previous naming convention used plurals)  <a href="classugrid_1_1_u_grid_entity.html#a76086f6aaa927dfefdb86dc98bb0814b">More...</a><br /></td></tr>
-<tr class="separator:a76086f6aaa927dfefdb86dc98bb0814b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac58122e19e48f34ea16d8511f1f1f285"><td class="memItemLeft" align="right" valign="top">std::map&lt; std::string, std::vector&lt; netCDF::NcVar &gt; &gt;::const_iterator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classugrid_1_1_u_grid_entity.html#ac58122e19e48f34ea16d8511f1f1f285">find_variable_name_with_aliases</a> (std::string const &amp;variable_name) const</td></tr>
+<tr class="memdesc:ac58122e19e48f34ea16d8511f1f1f285"><td class="mdescLeft">&#160;</td><td class="mdescRight">Find the names aliases (e.g. previous naming convention used plurals)  <a href="classugrid_1_1_u_grid_entity.html#ac58122e19e48f34ea16d8511f1f1f285">More...</a><br /></td></tr>
+<tr class="separator:ac58122e19e48f34ea16d8511f1f1f285"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab8e46bb51b6d82385ad473902bacdcac"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classugrid_1_1_u_grid_entity.html#ab8e46bb51b6d82385ad473902bacdcac">define_topological_attribute</a> (std::string const &amp;attribute_name, std::string const &amp;attribute_value=&quot;&quot;)</td></tr>
 <tr class="memdesc:ab8e46bb51b6d82385ad473902bacdcac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines a new topological attribute.  <a href="classugrid_1_1_u_grid_entity.html#ab8e46bb51b6d82385ad473902bacdcac">More...</a><br /></td></tr>
 <tr class="separator:ab8e46bb51b6d82385ad473902bacdcac"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -142,6 +139,9 @@ Protected Member Functions</h2></td></tr>
 <tr class="memitem:a0861dfcb4fff4850ec8d2d184ac90095"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classugrid_1_1_u_grid_entity.html#a0861dfcb4fff4850ec8d2d184ac90095">define_topology_related_variables</a> (std::string const &amp;variable, netCDF::NcType nc_type, std::vector&lt; <a class="el" href="namespaceugrid.html#a6683ff1752ab0bcf618e39cef85b2bd3">UGridFileDimensions</a> &gt; const &amp;ugridfile_dimensions, std::vector&lt; std::pair&lt; std::string, std::string &gt;&gt; const &amp;attributes={})</td></tr>
 <tr class="memdesc:a0861dfcb4fff4850ec8d2d184ac90095"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines a new topology-related variable.  <a href="classugrid_1_1_u_grid_entity.html#a0861dfcb4fff4850ec8d2d184ac90095">More...</a><br /></td></tr>
 <tr class="separator:a0861dfcb4fff4850ec8d2d184ac90095"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6a1e94de734cebde10299e3c88fd84d0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classugrid_1_1_u_grid_entity.html#a6a1e94de734cebde10299e3c88fd84d0">define_topology_coordinates</a> (<a class="el" href="namespaceugrid.html#a6683ff1752ab0bcf618e39cef85b2bd3">UGridFileDimensions</a> dimension, std::string const &amp;long_name_pattern, std::string const &amp;name_pattern=&quot;%s%s&quot;)</td></tr>
+<tr class="memdesc:a6a1e94de734cebde10299e3c88fd84d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines coordinate variables based on <a class="el" href="classugrid_1_1_u_grid_entity.html#ae21a2d39b1841683e5dca7cccd1fddcc">m_spherical_coordinates</a>.  <a href="classugrid_1_1_u_grid_entity.html#a6a1e94de734cebde10299e3c88fd84d0">More...</a><br /></td></tr>
+<tr class="separator:a6a1e94de734cebde10299e3c88fd84d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae0aebd840d42376176cd44facccd4297"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classugrid_1_1_u_grid_entity.html#ae0aebd840d42376176cd44facccd4297">get_location_attribute_value</a> (std::string const &amp;location)</td></tr>
 <tr class="memdesc:ae0aebd840d42376176cd44facccd4297"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the location attribute variable based on <a class="el" href="classugrid_1_1_u_grid_entity.html#ae21a2d39b1841683e5dca7cccd1fddcc">m_spherical_coordinates</a> value.  <a href="classugrid_1_1_u_grid_entity.html#ae0aebd840d42376176cd44facccd4297">More...</a><br /></td></tr>
 <tr class="separator:ae0aebd840d42376176cd44facccd4297"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -519,8 +519,8 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="a914f4a5a48fcd0626ace06cf0779c251"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a914f4a5a48fcd0626ace06cf0779c251">&#9670;&nbsp;</a></span>define_topological_variable_with_coordinates()</h2>
+<a id="a6a1e94de734cebde10299e3c88fd84d0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6a1e94de734cebde10299e3c88fd84d0">&#9670;&nbsp;</a></span>define_topology_coordinates()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -529,15 +529,9 @@ template&lt;typename T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void ugrid::UGridEntity::define_topological_variable_with_coordinates </td>
+          <td class="memname">void ugrid::UGridEntity::define_topology_coordinates </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="namespaceugrid.html#a5ede1cf60a09eaa14fdcb558a078738c">UGridEntityLocations</a> const &amp;&#160;</td>
-          <td class="paramname"><em>location</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="namespaceugrid.html#a6683ff1752ab0bcf618e39cef85b2bd3">UGridFileDimensions</a> const &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="namespaceugrid.html#a6683ff1752ab0bcf618e39cef85b2bd3">UGridFileDimensions</a>&#160;</td>
           <td class="paramname"><em>dimension</em>, </td>
         </tr>
         <tr>
@@ -565,13 +559,10 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Defines variables for storing the coordinates of specific entity locations. </p>
+<p>Defines coordinate variables based on <a class="el" href="classugrid_1_1_u_grid_entity.html#ae21a2d39b1841683e5dca7cccd1fddcc">m_spherical_coordinates</a>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">location</td><td>[in] The entity location (e.g. nodes, edges, faces) </td></tr>
-    <tr><td class="paramname">dimension</td><td>[in] The dimension of the entity location </td></tr>
-    <tr><td class="paramname">long_name_pattern</td><td>[in] The string pattern to use for producing the long name string </td></tr>
-    <tr><td class="paramname">name_pattern</td><td>[in] The string pattern to use for producing the name string </td></tr>
+    <tr><td class="paramname">dimension</td><td>[in] The dimension to </td></tr>
   </table>
   </dd>
 </dl>
@@ -637,8 +628,8 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="a76086f6aaa927dfefdb86dc98bb0814b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a76086f6aaa927dfefdb86dc98bb0814b">&#9670;&nbsp;</a></span>find_variable_with_aliases()</h2>
+<a id="ac58122e19e48f34ea16d8511f1f1f285"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac58122e19e48f34ea16d8511f1f1f285">&#9670;&nbsp;</a></span>find_variable_name_with_aliases()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -647,7 +638,7 @@ template&lt;typename T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::map&lt;std::string, std::vector&lt;netCDF::NcVar&gt; &gt;::const_iterator ugrid::UGridEntity::find_variable_with_aliases </td>
+          <td class="memname">std::map&lt;std::string, std::vector&lt;netCDF::NcVar&gt; &gt;::const_iterator ugrid::UGridEntity::find_variable_name_with_aliases </td>
           <td>(</td>
           <td class="paramtype">std::string const &amp;&#160;</td>
           <td class="paramname"><em>variable_name</em></td><td>)</td>

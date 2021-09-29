@@ -6,5 +6,5 @@ var searchData=
   ['face_5fx_33',['face_x',['../structugridapi_1_1_mesh2_d.html#a7ac7ec5f436eca04e834f757cefe4124',1,'ugridapi::Mesh2D']]],
   ['face_5fy_34',['face_y',['../structugridapi_1_1_mesh2_d.html#a2441915c3280e29c22ec85507c092549',1,'ugridapi::Mesh2D']]],
   ['face_5fz_35',['face_z',['../structugridapi_1_1_mesh2_d.html#a24b948929511d61fcad3447f52d1ec8d',1,'ugridapi::Mesh2D']]],
-  ['find_5fvariable_5fwith_5faliases_36',['find_variable_with_aliases',['../classugrid_1_1_u_grid_entity.html#a76086f6aaa927dfefdb86dc98bb0814b',1,'ugrid::UGridEntity']]]
+  ['find_5fvariable_5fname_5fwith_5faliases_36',['find_variable_name_with_aliases',['../classugrid_1_1_u_grid_entity.html#ac58122e19e48f34ea16d8511f1f1f285',1,'ugrid::UGridEntity']]]
 ];
