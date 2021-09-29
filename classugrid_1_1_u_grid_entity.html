@@ -453,7 +453,7 @@ template&lt;typename T &gt; </div>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">attribute_name</td><td>[in] The attribute name </td></tr>
-    <tr><td class="paramname">attribute_value</td><td>[in] The attribute value. If none is provided, it is constructed internally using attribute_name </td></tr>
+    <tr><td class="paramname">attribute_value</td><td>[in] The attribute value. If none is provided, it is constructed internally using the attribute name </td></tr>
   </table>
   </dd>
 </dl>
@@ -562,7 +562,9 @@ template&lt;typename T &gt; </div>
 <p>Defines coordinate variables based on <a class="el" href="classugrid_1_1_u_grid_entity.html#ae21a2d39b1841683e5dca7cccd1fddcc">m_spherical_coordinates</a>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">dimension</td><td>[in] The dimension to </td></tr>
+    <tr><td class="paramname">dimension</td><td>[in] The dimension for which the coordinate will be added (either projected or not projected) </td></tr>
+    <tr><td class="paramname">long_name_pattern</td><td>[in] The string pattern to use for the long names </td></tr>
+    <tr><td class="paramname">name_pattern</td><td>[in] The string pattern to use for the names </td></tr>
   </table>
   </dd>
 </dl>
