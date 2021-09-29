@@ -121,20 +121,10 @@ namespace ugrid
         /// @return If The topology variable has a matching functionality
         static bool has_matching_dimensionality(std::map<std::string, netCDF::NcVarAtt> const& attributes, int entity_dimensionality);
 
-        /// @brief Defines variables for storing the coordinates of specific entity locations
-        /// @param location [in] The entity location (e.g. nodes, edges, faces)
-        /// @param dimension [in] The dimension of the entity location
-        /// @param long_name_pattern [in] The string pattern to use for producing the long name string
-        /// @param name_pattern [in] The string pattern to use for producing the name string
-        void define_topological_variable_with_coordinates(UGridEntityLocations const& location,
-                                                          UGridFileDimensions const& dimension,
-                                                          std::string const& long_name_pattern,
-                                                          std::string const& name_pattern = "%s%s");
-
         /// @brief Find the names aliases (e.g. previous naming convention used plurals)
         /// @param variable_name [in] The variable name
         /// @return An iterator to \ref m_topology_attribute_variables
-        [[nodiscard]] std::map<std::string, std::vector<netCDF::NcVar>>::const_iterator find_variable_with_aliases(std::string const& variable_name) const;
+        [[nodiscard]] std::map<std::string, std::vector<netCDF::NcVar>>::const_iterator find_variable_name_with_aliases(std::string const& variable_name) const;
 
         /// @brief Defines a new topological attribute
         /// @param attribute_name [in] The attribute name
@@ -161,6 +151,12 @@ namespace ugrid
                                                std::vector<UGridFileDimensions> const& ugridfile_dimensions,
                                                std::vector<std::pair<std::string, std::string>> const& attributes = {});
 
+        /// @brief Defines coordinate variables based on \ref m_spherical_coordinates
+        /// @param dimension [in] The dimension to
+        void define_topology_coordinates(UGridFileDimensions dimension,
+                                         std::string const& long_name_pattern,
+                                         std::string const& name_pattern = "%s%s");
+
         /// @brief Get the location attribute variable based on \ref m_spherical_coordinates value
         /// @param location [in] The location (node, edge, face)
         /// @return The location string appended with "x"/"y" or "lat"/"lon"
@@ -183,16 +179,21 @@ namespace ugrid
         int m_espg_code = 0;                            ///< The espg code
 
     private:
-        /// @brief
-        /// @param attribute_name
-        /// @param attribute_variable
-        /// @param ugrid_entity_dimension
-        /// @param coordinate
-        /// @param long_name_pattern
-        void define_variable_with_coordinate(std::string const& attribute_name,
-                                             std::string const& attribute_variable,
-                                             UGridFileDimensions const& ugrid_entity_dimension,
-                                             UGridEntityCoordinates const& coordinate,
-                                             std::string const& long_name_pattern);
+        /// @brief Defines variables for storing the coordinates of specific entity locations
+        /// @param location [in] The entity location (e.g. nodes, edges, faces)
+        /// @param dimension [in] The dimension of the entity location
+        /// @param long_name_pattern [in] The string pattern to use for producing the long name string
+        /// @param name_pattern [in] The string pattern to use for producing the name string
+        std::tuple<std::string,
+                   std::string,
+                   std::string,
+                   std::string,
+                   std::string,
+                   std::string,
+                   std::string,
+                   std::string>
+        get_location_variable_names(std::string const& location,
+                                    std::string const& long_name_pattern,
+                                    std::string const& name_pattern = "%s%s");
     };
 } // namespace ugrid

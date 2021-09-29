@@ -101,7 +101,7 @@ void Mesh1D::define(ugridapi::Mesh1D const& mesh1d)
         bool const add_coordinate_variables = mesh1d.node_x != nullptr && mesh1d.node_y != nullptr;
         if (add_coordinate_variables)
         {
-            define_topological_variable_with_coordinates(UGridEntityLocations::nodes, UGridFileDimensions::nodes, "%s of mesh nodes");
+            define_topology_coordinates(UGridFileDimensions::nodes, "%s of mesh nodes");
         }
 
         // Define node ids attribute and variable
@@ -165,7 +165,7 @@ void Mesh1D::define(ugridapi::Mesh1D const& mesh1d)
         const bool add_coordinate_variables = mesh1d.edge_x != nullptr && mesh1d.edge_y != nullptr;
         if (add_coordinate_variables)
         {
-            define_topological_variable_with_coordinates(UGridEntityLocations::edges, UGridFileDimensions::edges, "%s of mesh edges");
+            define_topology_coordinates(UGridFileDimensions::edges, "%s of mesh edges");
         }
     }
 
@@ -232,11 +232,11 @@ void Mesh1D::get(ugridapi::Mesh1D& mesh1d) const
     {
         it->second.at(0).getVar(mesh1d.edge_node);
     }
-    if (auto const it = find_variable_with_aliases("node_id"); mesh1d.node_name_id != nullptr && it != m_topology_attribute_variables.end())
+    if (auto const it = find_variable_name_with_aliases("node_id"); mesh1d.node_name_id != nullptr && it != m_topology_attribute_variables.end())
     {
         it->second.at(0).getVar(mesh1d.node_name_id);
     }
-    if (auto const it = find_variable_with_aliases("node_long_name"); mesh1d.node_name_long != nullptr && it != m_topology_attribute_variables.end())
+    if (auto const it = find_variable_name_with_aliases("node_long_name"); mesh1d.node_name_long != nullptr && it != m_topology_attribute_variables.end())
     {
         it->second.at(0).getVar(mesh1d.node_name_long);
     }

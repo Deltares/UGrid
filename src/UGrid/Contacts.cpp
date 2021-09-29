@@ -180,11 +180,11 @@ void Contacts::put(ugridapi::Contacts const& contacts)
     {
         m_topology_variable.putVar(contacts.edges);
     }
-    if (auto const it = find_variable_with_aliases("contact_id"); contacts.contact_name_id != nullptr && it != m_topology_attribute_variables.end())
+    if (auto const it = find_variable_name_with_aliases("contact_id"); contacts.contact_name_id != nullptr && it != m_topology_attribute_variables.end())
     {
         it->second.at(0).putVar(contacts.contact_name_id);
     }
-    if (auto const it = find_variable_with_aliases("contact_long_name"); contacts.contact_name_long != nullptr && it != m_topology_attribute_variables.end())
+    if (auto const it = find_variable_name_with_aliases("contact_long_name"); contacts.contact_name_long != nullptr && it != m_topology_attribute_variables.end())
     {
         it->second.at(0).putVar(contacts.contact_name_long);
     }
@@ -215,12 +215,12 @@ void Contacts::get(ugridapi::Contacts& contacts) const
         m_topology_variable.getVar(contacts.edges);
     }
 
-    if (auto const it = find_variable_with_aliases("contact_id"); contacts.contact_name_id != nullptr && it != m_topology_attribute_variables.end())
+    if (auto const it = find_variable_name_with_aliases("contact_id"); contacts.contact_name_id != nullptr && it != m_topology_attribute_variables.end())
     {
         it->second.at(0).getVar(contacts.contact_name_id);
     }
 
-    if (auto const it = find_variable_with_aliases("contact_long_name"); contacts.contact_name_long != nullptr && it != m_topology_attribute_variables.end())
+    if (auto const it = find_variable_name_with_aliases("contact_long_name"); contacts.contact_name_long != nullptr && it != m_topology_attribute_variables.end())
     {
         it->second.at(0).getVar(contacts.contact_name_long);
     }
