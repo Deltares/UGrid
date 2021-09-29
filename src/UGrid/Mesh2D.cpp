@@ -103,11 +103,10 @@ void Mesh2D::define(ugridapi::Mesh2D const& mesh2d)
         define_topological_attribute("edge_dimension", string_builder.str());
 
         // Define edge_nodes topology attribute and variable
-        std::string const topology_attribute_name = "edge_nodes";
         string_builder.clear();
-        string_builder << "_" << topology_attribute_name;
+        string_builder << "_edge_nodes";
         define_topological_attribute("edge_node_connectivity", string_builder.str());
-        define_topological_variable(topology_attribute_name,
+        define_topological_variable("edge_nodes",
                                     netCDF::NcType::nc_INT,
                                     {UGridFileDimensions::edges, UGridFileDimensions::Two},
                                     {{"long_name", "Start and end nodes of mesh edges"}});
@@ -135,11 +134,10 @@ void Mesh2D::define(ugridapi::Mesh2D const& mesh2d)
         m_dimensions.insert({UGridFileDimensions::max_face_nodes, m_nc_file->addDim(string_builder.str(), mesh2d.num_face_nodes_max)});
 
         // Define face_node topology attribute and variable
-        std::string topology_attribute_name = "face_nodes";
         string_builder.clear();
-        string_builder << "_" << topology_attribute_name;
+        string_builder << "_face_nodes";
         define_topological_attribute("face_node_connectivity", string_builder.str());
-        define_topological_variable(topology_attribute_name,
+        define_topological_variable("face_nodes",
                                     netCDF::NcType::nc_INT,
                                     {UGridFileDimensions::faces, UGridFileDimensions::max_face_nodes},
                                     {{"long_name", "Vertex nodes of mesh faces(counterclockwise)"}});
@@ -158,11 +156,10 @@ void Mesh2D::define(ugridapi::Mesh2D const& mesh2d)
         if (mesh2d.face_edge != nullptr)
         {
             // Define face_edges topology attribute and variable
-            topology_attribute_name = "face_nodes";
             string_builder.clear();
-            string_builder << "_" << topology_attribute_name;
+            string_builder << "_face_nodes";
             define_topological_attribute("face_edge_connectivity", string_builder.str());
-            define_topological_variable(topology_attribute_name,
+            define_topological_variable("face_nodes",
                                         netCDF::NcType::nc_INT,
                                         {UGridFileDimensions::faces, UGridFileDimensions::max_face_nodes},
                                         {{"long_name", "Side edges of mesh faces (counterclockwise)"}});
@@ -170,11 +167,10 @@ void Mesh2D::define(ugridapi::Mesh2D const& mesh2d)
         if (mesh2d.face_face != nullptr)
         {
             // Define face_links topology attribute and variable
-            topology_attribute_name = "face_links";
             string_builder.clear();
-            string_builder << "_" << topology_attribute_name;
+            string_builder << "_face_links";
             define_topological_attribute("face_face_connectivity", string_builder.str());
-            define_topological_variable(topology_attribute_name,
+            define_topological_variable("face_links",
                                         netCDF::NcType::nc_INT,
                                         {UGridFileDimensions::faces, UGridFileDimensions::max_face_nodes},
                                         {{"long_name", "Neighboring faces of mesh faces (counterclockwise)"}});
@@ -182,9 +178,8 @@ void Mesh2D::define(ugridapi::Mesh2D const& mesh2d)
         if (mesh2d.edge_face != nullptr)
         {
             // Define edge_face topology attribute variable and variable
-            topology_attribute_name = "edge_faces";
             string_builder.clear();
-            string_builder << "_" << topology_attribute_name;
+            string_builder << "_edge_faces";
             define_topological_attribute("edge_face_connectivity", string_builder.str());
             define_topological_variable("edge_faces",
                                         netCDF::NcType::nc_INT,

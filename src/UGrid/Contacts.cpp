@@ -141,31 +141,28 @@ void Contacts::define(ugridapi::Contacts const& contacts)
     define_topological_attribute("contact", os.str());
 
     // Define topology attribute contact type and variable
-    std::string topology_attribute_name = "contact_type";
-    define_topological_attribute(topology_attribute_name);
-    define_topological_variable(topology_attribute_name,
+    define_topological_attribute("contact_type");
+    define_topological_variable("contact_type",
                                 netCDF::NcType::nc_INT,
                                 {UGridFileDimensions::nodes});
 
-    m_topology_attribute_variables[topology_attribute_name].back().setFill(true, -1);
+    m_topology_attribute_variables["contact_type"].back().setFill(true, -1);
     std::vector<int> valid_range{3, 4};
-    m_topology_attribute_variables[topology_attribute_name].back().putAtt("valid_range", netCDF::NcType::nc_INT, 2, &valid_range[0]);
+    m_topology_attribute_variables["contact_type"].back().putAtt("valid_range", netCDF::NcType::nc_INT, 2, &valid_range[0]);
     std::vector<int> flag_values{3, 4};
-    m_topology_attribute_variables[topology_attribute_name].back().putAtt("flag_values", netCDF::NcType::nc_INT, 2, &flag_values[0]);
-    m_topology_attribute_variables[topology_attribute_name].back().putAtt("flag_meanings", "lateral_1d2d_link longitudinal_1d2d_link");
+    m_topology_attribute_variables["contact_type"].back().putAtt("flag_values", netCDF::NcType::nc_INT, 2, &flag_values[0]);
+    m_topology_attribute_variables["contact_type"].back().putAtt("flag_meanings", "lateral_1d2d_link longitudinal_1d2d_link");
 
     // Define topology attribute contact_id and variable
-    topology_attribute_name = "contact_id";
-    define_topological_attribute(topology_attribute_name);
-    define_topological_variable(topology_attribute_name,
+    define_topological_attribute("contact_id");
+    define_topological_variable("contact_id",
                                 netCDF::NcType::nc_CHAR,
                                 {UGridFileDimensions::nodes, UGridFileDimensions::ids},
                                 {{"long_name", "ids of the contacts"}});
 
     // Define topology attribute contact_long_name and variable
-    topology_attribute_name = "contact_long_name";
-    define_topological_attribute(topology_attribute_name);
-    define_topological_variable(topology_attribute_name,
+    define_topological_attribute("contact_long_name");
+    define_topological_variable("contact_long_name",
                                 netCDF::NcType::nc_CHAR,
                                 {UGridFileDimensions::nodes, UGridFileDimensions::long_names},
                                 {{"long_name", "long names of the contacts"}});

@@ -105,19 +105,17 @@ void Mesh1D::define(ugridapi::Mesh1D const& mesh1d)
         }
 
         // Define node ids attribute and variable
-        std::string topology_attribute_name = "node_id";
         string_builder.clear();
-        string_builder << "_" << topology_attribute_name;
+        string_builder << "_node_id";
         define_topological_attribute("node_name_id", string_builder.str());
-        define_topological_variable(topology_attribute_name,
+        define_topological_variable("node_id",
                                     netCDF::NcType::nc_CHAR,
                                     {UGridFileDimensions::nodes, UGridFileDimensions::ids},
                                     {{"long_name", "ID of mesh nodes"}});
 
         // Define node long name attribute and variable
-        topology_attribute_name = "node_name_long";
         define_topological_attribute("node_name_long");
-        define_topological_variable(topology_attribute_name,
+        define_topological_variable("node_name_long",
                                     netCDF::NcType::nc_CHAR,
                                     {UGridFileDimensions::nodes, UGridFileDimensions::long_names},
                                     {{"long_name", "Long name of mesh nodes"}});
@@ -136,11 +134,10 @@ void Mesh1D::define(ugridapi::Mesh1D const& mesh1d)
         m_topology_attributes.insert({topology_attribute.getName(), topology_attribute});
 
         // Define edge_nodes attribute and variable
-        std::string topology_attribute_name = "edge_nodes";
         string_builder.clear();
-        string_builder << "_" << topology_attribute_name;
+        string_builder << "_edge_nodes";
         define_topological_attribute("edge_node_connectivity", string_builder.str());
-        define_topological_variable(topology_attribute_name,
+        define_topological_variable("edge_nodes",
                                     netCDF::NcType::nc_INT,
                                     {UGridFileDimensions::edges, UGridFileDimensions::Two},
                                     {{"cf_role", topology_attribute.getName()},

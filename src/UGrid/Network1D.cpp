@@ -108,17 +108,15 @@ void Network1D::define(ugridapi::Network1D const& network1d)
         define_topological_variable_with_coordinates(UGridEntityLocations::nodes, UGridFileDimensions::nodes, "%s of network nodes");
 
         // Define node_id topological attribute and variable
-        std::string topology_attribute_name = "node_id";
-        define_topological_attribute(topology_attribute_name);
-        define_topological_variable(topology_attribute_name,
+        define_topological_attribute("node_id");
+        define_topological_variable("node_id",
                                     netCDF::NcType::nc_CHAR,
                                     {UGridFileDimensions::nodes, UGridFileDimensions::ids},
                                     {{"long_name", "ID of network nodes"}});
 
         // Define node_long_name topological attribute and variable
-        topology_attribute_name = "node_long_name";
-        define_topological_attribute(topology_attribute_name);
-        define_topological_variable(topology_attribute_name,
+        define_topological_attribute("node_long_name");
+        define_topological_variable("node_long_name",
                                     netCDF::NcType::nc_CHAR,
                                     {UGridFileDimensions::nodes, UGridFileDimensions::long_names},
                                     {{"long_name", "ID of network nodes"}});
@@ -136,19 +134,17 @@ void Network1D::define(ugridapi::Network1D const& network1d)
         define_topological_attribute("edge_dimension", string_builder.str());
 
         // Define edge_nodes topology attribute and variable
-        std::string topology_attribute_name = "edge_nodes";
         string_builder.clear();
-        string_builder << "_" << topology_attribute_name;
+        string_builder << "_edge_nodes";
         define_topological_attribute("edge_node_connectivity", string_builder.str());
-        define_topological_variable(topology_attribute_name,
+        define_topological_variable("edge_nodes",
                                     netCDF::NcType::nc_INT,
                                     {UGridFileDimensions::edges, UGridFileDimensions::Two},
                                     {{"long_name", "Start and end nodes of network edges"}});
 
         // Define edge_lengths topology attribute and variable
-        topology_attribute_name = "branch_length";
-        define_topological_attribute(topology_attribute_name);
-        define_topological_variable(topology_attribute_name,
+        define_topological_attribute("branch_length");
+        define_topological_variable("branch_length",
                                     netCDF::NcType::nc_DOUBLE,
                                     {UGridFileDimensions::edges},
                                     {{"long_name", "Real length of branch geometries"}});
@@ -169,17 +165,15 @@ void Network1D::define(ugridapi::Network1D const& network1d)
                                            {"location", "edge"}});
 
         // Define branch_id topology attribute and variable
-        topology_attribute_name = "branch_id";
-        define_topological_attribute(topology_attribute_name);
-        define_topological_variable(topology_attribute_name,
+        define_topological_attribute("branch_id");
+        define_topological_variable("branch_id",
                                     netCDF::NcType::nc_CHAR,
                                     {UGridFileDimensions::edges, UGridFileDimensions::ids},
                                     {{"long_name", "Long name of branch geometries"}});
 
         // Define branch_long_name topology attribute and variable
-        topology_attribute_name = "branch_long_name";
-        define_topological_attribute(topology_attribute_name);
-        define_topological_variable(topology_attribute_name,
+        define_topological_attribute("branch_long_name");
+        define_topological_variable("branch_long_name",
                                     netCDF::NcType::nc_CHAR,
                                     {UGridFileDimensions::edges, UGridFileDimensions::long_names},
                                     {{"long_name", "Long name of branch geometries"}});

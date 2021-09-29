@@ -102,6 +102,14 @@ namespace ugrid
         }
 
     protected:
+        /// @brief Method collecting common operations for defining a UGrid entity to file
+        /// @param entity_name [in] The entity name
+        /// @param start_index [in] The start_index of indices arrays
+        /// @param long_name [in] The entity long name
+        /// @param topology_dimension [in] The dimension of the topology
+        /// @param is_spherical [in] 1 if coordinates are in a spherical system, 0 otherwise
+        void define(char* entity_name, int start_index, std::string const& long_name, int topology_dimension, int is_spherical);
+
         /// @brief A function to determine if a variable is a topology variable (this function migh get overwritten in derived if necessary)
         /// @param attributes [in] The variable attributes
         /// @return True if the variable is a topology variable
@@ -134,31 +142,29 @@ namespace ugrid
         void define_topological_attribute(std::string const& attribute_name, std::string const& attribute_value = "");
 
         /// @brief Defines a new topology variable
-        /// @param variable_suffix[in] The variable suffix name.
-        /// @param nc_type[in]
-        /// @param ugridfile_dimensions[in]
-        /// @param attributes[in]
+        /// @param variable_suffix [in] The variable name suffix, to append to the entity name to form a new variable name.
+        /// @param nc_type [in] The variable type.
+        /// @param ugridfile_dimensions [in] The variable dimensions (multidimensional variable are expressed as vectors).
+        /// @param attributes [in] The variable attributes.
         void define_topological_variable(std::string const& variable_suffix,
                                          netCDF::NcType nc_type,
                                          std::vector<UGridFileDimensions> const& ugridfile_dimensions,
                                          std::vector<std::pair<std::string, std::string>> const& attributes = {});
 
-        /// @brief Define variables related to a specific topology
-        /// @param nc_var [in] The related variable to add
+        /// @brief Defines a new topology-related variable.
+        /// @param variable [in] The variable name suffix, to append to the entity name to form a new variable name.
+        /// @param nc_type [in] The variable type.
+        /// @param ugridfile_dimensions [in] The variable dimensions (multidimensional variable are expressed as vectors).
+        /// @param attributes [in] The variable attributes.
         void define_topology_related_variables(std::string const& variable,
                                                netCDF::NcType nc_type,
                                                std::vector<UGridFileDimensions> const& ugridfile_dimensions,
                                                std::vector<std::pair<std::string, std::string>> const& attributes = {});
 
+        /// @brief Get the location attribute variable based on \ref m_spherical_coordinates value
+        /// @param location [in] The location (node, edge, face)
+        /// @return The location string appended with "x"/"y" or "lat"/"lon"
         std::string get_location_attribute_value(std::string const& location);
-
-        /// @brief Method collecting common operations for defining a UGrid entity to file
-        /// @param entity_name [in] The entity name
-        /// @param start_index [in] The start_index of indices arrays
-        /// @param long_name [in] The entity long name
-        /// @param topology_dimension [in] The dimension of the topology
-        /// @param is_spherical [in] 1 if coordinates are in a spherical system, 0 otherwise
-        void define(char* entity_name, int start_index, std::string const& long_name, int topology_dimension, int is_spherical);
 
         std::shared_ptr<netCDF::NcFile> m_nc_file;                                        ///< A pointer to the opened file
         netCDF::NcVar m_topology_variable;                                                ///< The topology variable
