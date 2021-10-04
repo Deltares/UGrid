@@ -1,6 +1,7 @@
 # UGrid
 
-Deltares library for reading/writing UGrid compliant files.
+Deltares library for reading/writing UGrid geometrical entities. These UGrid entities contained in this library are: Network1d, Mesh1d, Mesh2d and Contacts.
+The library also offers APIs to get data variables and the attributes names/values of topological entites.
 
 ## Build
 
