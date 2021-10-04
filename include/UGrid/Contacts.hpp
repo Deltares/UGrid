@@ -58,19 +58,19 @@ namespace ugrid
             std::map<UGridFileDimensions, netCDF::NcDim> const& entity_dimensions);
 
         /// @brief Defines the contact header (ug_write_mesh_arrays: ug_create_1d_mesh_v2, ug_def_mesh_ids)
-        /// @param contact The contact api structure with the fields to write and all optional flags
+        /// @param contacts [in] The contact api structure with the fields to write and all optional flags
         void define(ugridapi::Contacts const& contacts);
 
         /// @brief Writes a contact to file
-        /// @param contact contact The contact api structure with the fields to write and all optional flags
+        /// @param contacts [in] contact The contact api structure with the fields to write and all optional flags
         void put(ugridapi::Contacts const& contacts);
 
         /// @brief Inquires the contact dimensions
-        /// @param contact The contact api structure with the fields where to assign the dimensions
+        /// @param contacts [out] The contact api structure with the fields where to assign the dimensions
         void inquire(ugridapi::Contacts& contacts) const;
 
         /// @brief Inquires the contact arrays
-        /// @param contact The contact api structure with the fields where to assign the data
+        /// @param contacts [out] The contact api structure with the fields where to assign the data
         void get(ugridapi::Contacts& contacts) const;
 
         /// @brief Function containing the criteria to determine if a variable is a mesh topology contact
