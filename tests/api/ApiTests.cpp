@@ -1,31 +1,14 @@
 #include <exception>
 #include <memory>
 #include <string.h>
+#include <string>
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
 #include <TestUtils/Definitions.hpp>
+#include <TestUtils/Utils.hpp>
 #include <UGridApi/UGrid.hpp>
-
-#include <boost/algorithm/string.hpp>
-
-static void rtrim(std::string& str)
-{
-    auto const isalnum_lambda = [](auto const& ch) { return std::isalnum(ch); };
-    str.erase(std::find_if(str.rbegin(), str.rend(), isalnum_lambda).base(), str.end());
-}
-
-static std::vector<std::string> split_string(std::string string_value, size_t num_tokens, size_t length_token)
-{
-    std::vector<std::string> result;
-    for (auto i = 0; i < num_tokens; ++i)
-    {
-        auto attribute_name = string_value.substr(i * length_token, length_token);
-        result.emplace_back(attribute_name);
-    }
-    return result;
-}
 
 TEST(ApiTest, InquireAndGet_OneMesh2D_ShouldReadMesh2d)
 {
@@ -70,7 +53,8 @@ TEST(ApiTest, InquireAndGet_OneMesh2D_ShouldReadMesh2d)
 
     // Assert
     std::string mesh_name(mesh2d.name);
-    ASSERT_EQ(mesh_name, "mesh2d                                 ");
+    right_trim_string(mesh_name);
+    ASSERT_EQ(mesh_name, "mesh2d");
     std::vector<double> node_x_vector(node_x.get(), node_x.get() + mesh2d.num_nodes);
     std::vector<double> node_x_expected{0, 1, 0, 1, 0, 1, 0, 1, 2, 2, 2, 2, 3, 3, 3, 3};
     ASSERT_THAT(node_x_vector, ::testing::ContainerEq(node_x_expected));
@@ -308,9 +292,11 @@ TEST(ApiTest, InquireAndGet_OneNetwork1D_ShouldReadNetwork1D)
     for (auto i = 0; i < network1d.num_nodes; ++i)
     {
         std::string node_id_string = node_ids_string.substr(i * name_length, name_length);
+        right_trim_string(node_id_string);
         std::string node_long_name_string = node_long_names_string.substr(i * long_names_length, long_names_length);
-        ASSERT_EQ("nodesids                                ", node_id_string);
-        ASSERT_EQ("nodeslongNames                                                                  ", node_long_name_string);
+        right_trim_string(node_long_name_string);
+        ASSERT_EQ("nodesids", node_id_string);
+        ASSERT_EQ("nodeslongNames", node_long_name_string);
     }
 
     std::string branch_ids_string(branch_id.get(), branch_id.get() + name_length * network1d.num_branches);
@@ -318,9 +304,11 @@ TEST(ApiTest, InquireAndGet_OneNetwork1D_ShouldReadNetwork1D)
     for (auto i = 0; i < network1d.num_branches; ++i)
     {
         std::string branch_id_string = branch_ids_string.substr(i * name_length, name_length);
+        right_trim_string(branch_id_string);
         std::string branch_long_name_string = branch_long_names_string.substr(i * long_names_length, long_names_length);
-        ASSERT_EQ("branchids                               ", branch_id_string);
-        ASSERT_EQ("branchlongNames                                                                 ", branch_long_name_string);
+        right_trim_string(branch_long_name_string);
+        ASSERT_EQ("branchids", branch_id_string);
+        ASSERT_EQ("branchlongNames", branch_long_name_string);
     }
 
     std::vector<double> node_x_vector(node_x.get(), node_x.get() + network1d.num_nodes);
@@ -479,9 +467,11 @@ TEST(ApiTest, InquireAndGet_OneMesh1D_ShouldReadMesh1D)
     for (auto i = 0; i < mesh1d.num_nodes; ++i)
     {
         std::string node_id_string = node_ids_string.substr(i * name_length, name_length);
+        right_trim_string(node_id_string);
         std::string node_long_name_string = node_long_names_string.substr(i * long_names_length, long_names_length);
-        ASSERT_EQ("meshnodeids                             ", node_id_string);
-        ASSERT_EQ("meshnodelongnames                                                               ", node_long_name_string);
+        right_trim_string(node_long_name_string);
+        ASSERT_EQ("meshnodeids", node_id_string);
+        ASSERT_EQ("meshnodelongnames", node_long_name_string);
     }
 
     std::string network_name_string(mesh1d.network_name);
@@ -626,19 +616,23 @@ TEST(ApiTest, InquireAndGet_OneContact_ShouldReadContact)
 
     // Asserts
     std::string mesh_from_name_string(contacts.mesh_from_name);
-    ASSERT_EQ("mesh2d                                 ", mesh_from_name_string);
+    right_trim_string(mesh_from_name_string);
+    ASSERT_EQ("mesh2d", mesh_from_name_string);
 
     std::string mesh_to_name_string(contacts.mesh_to_name);
-    ASSERT_EQ("1dmesh                                 ", mesh_to_name_string);
+    right_trim_string(mesh_to_name_string);
+    ASSERT_EQ("1dmesh", mesh_to_name_string);
 
     std::string contacts_ids_string(contact_name_id.get(), contact_name_id.get() + name_length * contacts.num_contacts);
     std::string contacts_long_names_string(contact_name_long.get(), contact_name_long.get() + long_names_length * contacts.num_contacts);
     for (auto i = 0; i < contacts.num_contacts; ++i)
     {
         std::string contact_id_string = contacts_ids_string.substr(i * name_length, name_length);
+        right_trim_string(contact_id_string);
         std::string contact_long_name_string = contacts_long_names_string.substr(i * long_names_length, long_names_length);
-        ASSERT_EQ("linkid                                  ", contact_id_string);
-        ASSERT_EQ("linklongname                                                                    ", contact_long_name_string);
+        right_trim_string(contact_long_name_string);
+        ASSERT_EQ("linkid", contact_id_string);
+        ASSERT_EQ("linklongname", contact_long_name_string);
     }
 
     std::vector<int> edge_vector(edges.get(), edges.get() + contacts.num_contacts * 2);
@@ -778,16 +772,41 @@ TEST(ApiTest, GetTopologyAttributes_OnResultFile_ShouldGetTopologyAttributes)
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
     std::string topology_attributes_names_string(topology_attributes_names.get(), topology_attributes_names.get() + long_names_length * attributes_count);
-    auto const names = split_string(topology_attributes_names_string, attributes_count, long_names_length);
-    ASSERT_EQ(9, names.size());
+    auto names = split_string(topology_attributes_names_string, attributes_count, long_names_length);
+    right_trim_string_vector(names);
 
     std::unique_ptr<char> const topology_attributes_values(new char[attributes_count * long_names_length]);
     error_code = ugridapi::ug_topology_get_attributes_values(file_id, topology_type, 0, topology_attributes_values.get());
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
     std::string topology_attributes_values_string(topology_attributes_values.get(), topology_attributes_values.get() + long_names_length * attributes_count);
-    auto const values = split_string(topology_attributes_values_string, attributes_count, long_names_length);
-    ASSERT_EQ(9, values.size());
+    auto values = split_string(topology_attributes_values_string, attributes_count, long_names_length);
+    right_trim_string_vector(values);
+
+    // Assert
+    std::vector<std::string> espected_names{
+        "cf_role",
+        "edge_coordinates",
+        "edge_dimension",
+        "edge_node_connectivity",
+        "long_name",
+        "max_face_nodes_dimension",
+        "node_coordinates",
+        "node_dimension",
+        "topology_dimension"};
+    ASSERT_THAT(names, ::testing::ContainerEq(espected_names));
+
+    std::vector<std::string> espected_values{
+        "mesh_topology",
+        "mesh1d_edge_x mesh1d_edge_y",
+        "nmesh1d_edge",
+        "mesh1d_edge_nodes",
+        "Topology data of 1D network",
+        "max_nmesh1d_face_nodes",
+        "mesh1d_node_x mesh1d_node_y",
+        "nmesh1d_node",
+        "1"};
+    ASSERT_THAT(values, ::testing::ContainerEq(espected_values));
 }
 
 TEST(ApiTest, GetDataVariables_OnResultFile_ShouldGetDataVariables)
