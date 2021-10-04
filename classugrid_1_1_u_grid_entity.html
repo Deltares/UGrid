@@ -85,7 +85,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p>A class containing the ids of UGrid netcdf file.  
+<p>A class containing the id of UGrid netcdf file.  
  <a href="classugrid_1_1_u_grid_entity.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="_u_grid_entity_8hpp_source.html">UGridEntity.hpp</a>&gt;</code></p>
@@ -95,7 +95,7 @@ Inheritance diagram for ugrid::UGridEntity:</div>
  <div class="center">
   <img src="classugrid_1_1_u_grid_entity.png" usemap="#ugrid::UGridEntity_map" alt=""/>
   <map id="ugrid::UGridEntity_map" name="ugrid::UGridEntity_map">
-<area href="structugrid_1_1_contacts.html" title="A class implementing the methods for reading/writing contacts in UGrid format." alt="ugrid::Contacts" shape="rect" coords="0,56,110,80"/>
+<area href="structugrid_1_1_contacts.html" title="A class implementing the methods for reading/writing contact in UGrid format." alt="ugrid::Contacts" shape="rect" coords="0,56,110,80"/>
 <area href="structugrid_1_1_mesh1_d.html" title="A class implementing the methods for reading/writing a mesh1d in UGrid format." alt="ugrid::Mesh1D" shape="rect" coords="120,56,230,80"/>
 <area href="structugrid_1_1_mesh2_d.html" title="A class implementing the methods for reading/writing a mesh2d in UGrid format." alt="ugrid::Mesh2D" shape="rect" coords="240,56,350,80"/>
 <area href="structugrid_1_1_network1_d.html" title="A class implementing the methods for reading/writing a mesh2d in UGrid format." alt="ugrid::Network1D" shape="rect" coords="360,56,470,80"/>
@@ -114,6 +114,24 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:acdad6f14f45355ef528af9acb8e1f0d4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classugrid_1_1_u_grid_entity.html#acdad6f14f45355ef528af9acb8e1f0d4">UGridEntity</a> (std::shared_ptr&lt; netCDF::NcFile &gt; nc_file, netCDF::NcVar const &amp;topology_variable, std::map&lt; std::string, std::vector&lt; netCDF::NcVar &gt;&gt; const &amp;attribute_variables, std::map&lt; std::string, std::vector&lt; std::string &gt;&gt; const &amp;attribute_variable_names, std::map&lt; <a class="el" href="namespaceugrid.html#a6683ff1752ab0bcf618e39cef85b2bd3">UGridFileDimensions</a>, netCDF::NcDim &gt; const &amp;dimensions)</td></tr>
 <tr class="memdesc:acdad6f14f45355ef528af9acb8e1f0d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor with several parameters as defined below.  <a href="classugrid_1_1_u_grid_entity.html#acdad6f14f45355ef528af9acb8e1f0d4">More...</a><br /></td></tr>
 <tr class="separator:acdad6f14f45355ef528af9acb8e1f0d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d7e62d67193453c142bd58afd7e9a4c"><td class="memItemLeft" align="right" valign="top"><a id="a8d7e62d67193453c142bd58afd7e9a4c"></a>
+auto&#160;</td><td class="memItemRight" valign="bottom"><b>get_num_attributes</b> () const</td></tr>
+<tr class="separator:a8d7e62d67193453c142bd58afd7e9a4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3c22d58fb986a6b38764eb8abbca52a8"><td class="memItemLeft" align="right" valign="top"><a id="a3c22d58fb986a6b38764eb8abbca52a8"></a>
+auto&#160;</td><td class="memItemRight" valign="bottom"><b>get_topology_variable</b> () const</td></tr>
+<tr class="separator:a3c22d58fb986a6b38764eb8abbca52a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a43ef5e3152a63e0008967e1ba1e0210f"><td class="memItemLeft" align="right" valign="top"><a id="a43ef5e3152a63e0008967e1ba1e0210f"></a>
+std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>get_attributes_names</b> () const</td></tr>
+<tr class="separator:a43ef5e3152a63e0008967e1ba1e0210f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac9e270e0878691539f7a91dca017179e"><td class="memItemLeft" align="right" valign="top"><a id="ac9e270e0878691539f7a91dca017179e"></a>
+std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>get_attributes_values</b> () const</td></tr>
+<tr class="separator:ac9e270e0878691539f7a91dca017179e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6746d2a5a07446e49140dca5545f306b"><td class="memItemLeft" align="right" valign="top"><a id="a6746d2a5a07446e49140dca5545f306b"></a>
+std::string&#160;</td><td class="memItemRight" valign="bottom"><b>get_name</b> () const</td></tr>
+<tr class="separator:a6746d2a5a07446e49140dca5545f306b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a34b561d2442e93a4ab65c3ebbda6bc31"><td class="memItemLeft" align="right" valign="top"><a id="a34b561d2442e93a4ab65c3ebbda6bc31"></a>
+std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>get_data_variables_names</b> (int location)</td></tr>
+<tr class="separator:a34b561d2442e93a4ab65c3ebbda6bc31"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -169,10 +187,10 @@ netCDF::NcVar&#160;</td><td class="memItemRight" valign="bottom"><a class="el" h
 std::map&lt; std::string, std::vector&lt; netCDF::NcVar &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classugrid_1_1_u_grid_entity.html#a0dd0209e041aecd4310f6536e6ed0cd1">m_topology_attribute_variables</a></td></tr>
 <tr class="memdesc:a0dd0209e041aecd4310f6536e6ed0cd1"><td class="mdescLeft">&#160;</td><td class="mdescRight">For each topology attribute, the corresponding variables. <br /></td></tr>
 <tr class="separator:a0dd0209e041aecd4310f6536e6ed0cd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aebeebc7e9793433b381aa3334dacbf7d"><td class="memItemLeft" align="right" valign="top"><a id="aebeebc7e9793433b381aa3334dacbf7d"></a>
-std::map&lt; std::string, std::vector&lt; std::string &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classugrid_1_1_u_grid_entity.html#aebeebc7e9793433b381aa3334dacbf7d">m_topology_attributes_names</a></td></tr>
-<tr class="memdesc:aebeebc7e9793433b381aa3334dacbf7d"><td class="mdescLeft">&#160;</td><td class="mdescRight">For each attribute, the corresponding attribute names (can be more than one separated by white spaces) <br /></td></tr>
-<tr class="separator:aebeebc7e9793433b381aa3334dacbf7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afb2b59fe9e1393c3ce35533e96625d95"><td class="memItemLeft" align="right" valign="top"><a id="afb2b59fe9e1393c3ce35533e96625d95"></a>
+std::map&lt; std::string, std::vector&lt; std::string &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classugrid_1_1_u_grid_entity.html#afb2b59fe9e1393c3ce35533e96625d95">m_topology_attributes_variables_values</a></td></tr>
+<tr class="memdesc:afb2b59fe9e1393c3ce35533e96625d95"><td class="mdescLeft">&#160;</td><td class="mdescRight">For each attribute, the corresponding attribute names (can be more than one separated by white spaces) <br /></td></tr>
+<tr class="separator:afb2b59fe9e1393c3ce35533e96625d95"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac5c77d56f43e2277b14a2a339b6f2168"><td class="memItemLeft" align="right" valign="top"><a id="ac5c77d56f43e2277b14a2a339b6f2168"></a>
 std::map&lt; <a class="el" href="namespaceugrid.html#a6683ff1752ab0bcf618e39cef85b2bd3">UGridFileDimensions</a>, netCDF::NcDim &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classugrid_1_1_u_grid_entity.html#ac5c77d56f43e2277b14a2a339b6f2168">m_dimensions</a></td></tr>
 <tr class="memdesc:ac5c77d56f43e2277b14a2a339b6f2168"><td class="mdescLeft">&#160;</td><td class="mdescRight">All entity dimensions. <br /></td></tr>
@@ -183,7 +201,7 @@ std::map&lt; std::string, netCDF::NcVarAtt &gt;&#160;</td><td class="memItemRigh
 <tr class="separator:acf42089151524bcb190ecea471393940"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a22ec1fff685f25a4c48612f971336ee5"><td class="memItemLeft" align="right" valign="top"><a id="a22ec1fff685f25a4c48612f971336ee5"></a>
 std::map&lt; std::string, netCDF::NcVar &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classugrid_1_1_u_grid_entity.html#a22ec1fff685f25a4c48612f971336ee5">m_related_variables</a></td></tr>
-<tr class="memdesc:a22ec1fff685f25a4c48612f971336ee5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Additional variables related to the entity (foe example defined on nodes, edges or faces) <br /></td></tr>
+<tr class="memdesc:a22ec1fff685f25a4c48612f971336ee5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Additional variables related to the entity (foe example defined on node, edge or face) <br /></td></tr>
 <tr class="separator:a22ec1fff685f25a4c48612f971336ee5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa0ce3e78f7f10252926d1ff14c8d6751"><td class="memItemLeft" align="right" valign="top"><a id="aa0ce3e78f7f10252926d1ff14c8d6751"></a>
 std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classugrid_1_1_u_grid_entity.html#aa0ce3e78f7f10252926d1ff14c8d6751">m_entity_name</a> = &quot;&quot;</td></tr>
@@ -211,7 +229,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class
 <tr class="separator:a6d6dc20f97f4fad9d37b711d988da793"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>A class containing the ids of UGrid netcdf file. </p>
+<div class="textblock"><p>A class containing the id of UGrid netcdf file. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a78d0d1f44434a68bf8ef00fecf8d1ce9"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a78d0d1f44434a68bf8ef00fecf8d1ce9">&#9670;&nbsp;</a></span>UGridEntity() <span class="overload">[1/2]</span></h2>

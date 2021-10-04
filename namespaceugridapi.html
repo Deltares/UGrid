@@ -84,7 +84,7 @@ $(function() {
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structugridapi_1_1_contacts.html">Contacts</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A struct used to describe UGrid contacts in a C-compatible manner.  <a href="structugridapi_1_1_contacts.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A struct used to describe UGrid contact in a C-compatible manner.  <a href="structugridapi_1_1_contacts.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structugridapi_1_1_mesh1_d.html">Mesh1D</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A struct used to describe UGrid mesh1d in a C-compatible manner.  <a href="structugridapi_1_1_mesh1_d.html#details">More...</a><br /></td></tr>
@@ -149,6 +149,36 @@ Functions</h2></td></tr>
 <tr class="memitem:a055533aa9b5d9d1af7ba182a43f7eefa"><td class="memItemLeft" align="right" valign="top">UGRID_API int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceugridapi.html#a055533aa9b5d9d1af7ba182a43f7eefa">ug_topology_get_count</a> (int file_id, int topology_type)</td></tr>
 <tr class="memdesc:a055533aa9b5d9d1af7ba182a43f7eefa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the number of topologies of a specific type.  <a href="namespaceugridapi.html#a055533aa9b5d9d1af7ba182a43f7eefa">More...</a><br /></td></tr>
 <tr class="separator:a055533aa9b5d9d1af7ba182a43f7eefa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3599c7a5c8381a9d46aebe45442fa2eb"><td class="memItemLeft" align="right" valign="top">UGRID_API int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceugridapi.html#a3599c7a5c8381a9d46aebe45442fa2eb">ug_topology_count_attributes</a> (int file_id, int topology_type, int topology_id, int &amp;attributes_count)</td></tr>
+<tr class="memdesc:a3599c7a5c8381a9d46aebe45442fa2eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">For a specific topology, counts how many attributes are present.  <a href="namespaceugridapi.html#a3599c7a5c8381a9d46aebe45442fa2eb">More...</a><br /></td></tr>
+<tr class="separator:a3599c7a5c8381a9d46aebe45442fa2eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab76a903d608e3ab31fb89bb43ae69ae4"><td class="memItemLeft" align="right" valign="top">UGRID_API int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceugridapi.html#ab76a903d608e3ab31fb89bb43ae69ae4">ug_topology_get_attributes_names</a> (int file_id, int topology_type, int topology_id, char *names)</td></tr>
+<tr class="memdesc:ab76a903d608e3ab31fb89bb43ae69ae4"><td class="mdescLeft">&#160;</td><td class="mdescRight">For a specific topology, retrieve its attribute names.  <a href="namespaceugridapi.html#ab76a903d608e3ab31fb89bb43ae69ae4">More...</a><br /></td></tr>
+<tr class="separator:ab76a903d608e3ab31fb89bb43ae69ae4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1140969a839f47b3848f894244d1c121"><td class="memItemLeft" align="right" valign="top">UGRID_API int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceugridapi.html#a1140969a839f47b3848f894244d1c121">ug_topology_get_attributes_values</a> (int file_id, int topology_type, int topology_id, char *values)</td></tr>
+<tr class="memdesc:a1140969a839f47b3848f894244d1c121"><td class="mdescLeft">&#160;</td><td class="mdescRight">For a specific topology, retrieve its attribute values.  <a href="namespaceugridapi.html#a1140969a839f47b3848f894244d1c121">More...</a><br /></td></tr>
+<tr class="separator:a1140969a839f47b3848f894244d1c121"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8cdb5e6ba456d3206cf5c95099e21715"><td class="memItemLeft" align="right" valign="top">UGRID_API int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceugridapi.html#a8cdb5e6ba456d3206cf5c95099e21715">ug_topology_count_data_variables</a> (int file_id, int topology_type, int topology_id, int location, int &amp;data_variable_count)</td></tr>
+<tr class="memdesc:a8cdb5e6ba456d3206cf5c95099e21715"><td class="mdescLeft">&#160;</td><td class="mdescRight">For a specific topology and location, count how many data variables are present.  <a href="namespaceugridapi.html#a8cdb5e6ba456d3206cf5c95099e21715">More...</a><br /></td></tr>
+<tr class="separator:a8cdb5e6ba456d3206cf5c95099e21715"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1868f41ecae2d2b7ef0a2a1f2a5c45d6"><td class="memItemLeft" align="right" valign="top">UGRID_API int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceugridapi.html#a1868f41ecae2d2b7ef0a2a1f2a5c45d6">ug_topology_get_data_variables_names</a> (int file_id, int topology_type, int topology_id, int location, char *data_variables_names_result)</td></tr>
+<tr class="memdesc:a1868f41ecae2d2b7ef0a2a1f2a5c45d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">For a specific topology and location, get all names of data variables.  <a href="namespaceugridapi.html#a1868f41ecae2d2b7ef0a2a1f2a5c45d6">More...</a><br /></td></tr>
+<tr class="separator:a1868f41ecae2d2b7ef0a2a1f2a5c45d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a533c6faa88c3a5e2497ce84c777fdbef"><td class="memItemLeft" align="right" valign="top">UGRID_API int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceugridapi.html#a533c6faa88c3a5e2497ce84c777fdbef">ug_topology_count_data_dimensions</a> (int file_id, char const *data_variable_name, int &amp;dimensions_count)</td></tr>
+<tr class="memdesc:a533c6faa88c3a5e2497ce84c777fdbef"><td class="mdescLeft">&#160;</td><td class="mdescRight">For a specific data variables, count the number of dimensions.  <a href="namespaceugridapi.html#a533c6faa88c3a5e2497ce84c777fdbef">More...</a><br /></td></tr>
+<tr class="separator:a533c6faa88c3a5e2497ce84c777fdbef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a838b353492caa3837aaa5285cd2c1fb2"><td class="memItemLeft" align="right" valign="top">UGRID_API int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceugridapi.html#a838b353492caa3837aaa5285cd2c1fb2">ug_topology_get_data_dimensions</a> (int file_id, char const *data_variable_name, int *dimension_vec)</td></tr>
+<tr class="memdesc:a838b353492caa3837aaa5285cd2c1fb2"><td class="mdescLeft">&#160;</td><td class="mdescRight">For a specific data variables, gets the dimension values.  <a href="namespaceugridapi.html#a838b353492caa3837aaa5285cd2c1fb2">More...</a><br /></td></tr>
+<tr class="separator:a838b353492caa3837aaa5285cd2c1fb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a31d96af6b4f55ab7ab6c3fea90d3f04e"><td class="memItemLeft" align="right" valign="top">UGRID_API int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceugridapi.html#a31d96af6b4f55ab7ab6c3fea90d3f04e">ug_topology_get_data_double</a> (int file_id, char const *data_variable_name, double *data)</td></tr>
+<tr class="memdesc:a31d96af6b4f55ab7ab6c3fea90d3f04e"><td class="mdescLeft">&#160;</td><td class="mdescRight">For a specific data variables, gets the data as an array of double. This might be large, because the arrays contains all time steps.  <a href="namespaceugridapi.html#a31d96af6b4f55ab7ab6c3fea90d3f04e">More...</a><br /></td></tr>
+<tr class="separator:a31d96af6b4f55ab7ab6c3fea90d3f04e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acb46306e3b50aa573978cf1f13a9eb79"><td class="memItemLeft" align="right" valign="top">UGRID_API int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceugridapi.html#acb46306e3b50aa573978cf1f13a9eb79">ug_topology_get_data_int</a> (int file_id, char const *data_variable_name, int *data)</td></tr>
+<tr class="memdesc:acb46306e3b50aa573978cf1f13a9eb79"><td class="mdescLeft">&#160;</td><td class="mdescRight">For a specific data variables, gets the data as an array of int. This might be large, because the arrays contains all time steps.  <a href="namespaceugridapi.html#acb46306e3b50aa573978cf1f13a9eb79">More...</a><br /></td></tr>
+<tr class="separator:acb46306e3b50aa573978cf1f13a9eb79"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac229c112f512590118271a3dab235e32"><td class="memItemLeft" align="right" valign="top">UGRID_API int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceugridapi.html#ac229c112f512590118271a3dab235e32">ug_topology_get_data_char</a> (int file_id, char const *data_variable_name, char *data)</td></tr>
+<tr class="memdesc:ac229c112f512590118271a3dab235e32"><td class="mdescLeft">&#160;</td><td class="mdescRight">For a specific data variables, gets the data as an array of chars. This might be large, because the arrays contains all time steps.  <a href="namespaceugridapi.html#ac229c112f512590118271a3dab235e32">More...</a><br /></td></tr>
+<tr class="separator:ac229c112f512590118271a3dab235e32"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a44cdbba34fdc91307d210073a2499b93"><td class="memItemLeft" align="right" valign="top">UGRID_API int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceugridapi.html#a44cdbba34fdc91307d210073a2499b93">ug_file_read_mode</a> ()</td></tr>
 <tr class="memdesc:a44cdbba34fdc91307d210073a2499b93"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the integer identifying the file read mode.  <a href="namespaceugridapi.html#a44cdbba34fdc91307d210073a2499b93">More...</a><br /></td></tr>
 <tr class="separator:a44cdbba34fdc91307d210073a2499b93"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -204,16 +234,16 @@ Functions</h2></td></tr>
 <tr class="memdesc:a30a30586e446869961a773a19981b8e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets mesh2d geometrical data.  <a href="namespaceugridapi.html#a30a30586e446869961a773a19981b8e8">More...</a><br /></td></tr>
 <tr class="separator:a30a30586e446869961a773a19981b8e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acab41511abb110830434651c77b9a3f2"><td class="memItemLeft" align="right" valign="top">UGRID_API int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceugridapi.html#acab41511abb110830434651c77b9a3f2">ug_contacts_def</a> (int file_id, <a class="el" href="structugridapi_1_1_contacts.html">Contacts</a> const &amp;contacts_api, int &amp;topology_id)</td></tr>
-<tr class="memdesc:acab41511abb110830434651c77b9a3f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines a new contacts topology.  <a href="namespaceugridapi.html#acab41511abb110830434651c77b9a3f2">More...</a><br /></td></tr>
+<tr class="memdesc:acab41511abb110830434651c77b9a3f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines a new contact topology.  <a href="namespaceugridapi.html#acab41511abb110830434651c77b9a3f2">More...</a><br /></td></tr>
 <tr class="separator:acab41511abb110830434651c77b9a3f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a73d91e75e03aa23906bd9b9998530c15"><td class="memItemLeft" align="right" valign="top">UGRID_API int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceugridapi.html#a73d91e75e03aa23906bd9b9998530c15">ug_contacts_put</a> (int file_id, int topology_id, <a class="el" href="structugridapi_1_1_contacts.html">Contacts</a> const &amp;contacts_api)</td></tr>
-<tr class="memdesc:a73d91e75e03aa23906bd9b9998530c15"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes contacts geometrical data to file.  <a href="namespaceugridapi.html#a73d91e75e03aa23906bd9b9998530c15">More...</a><br /></td></tr>
+<tr class="memdesc:a73d91e75e03aa23906bd9b9998530c15"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes contact geometrical data to file.  <a href="namespaceugridapi.html#a73d91e75e03aa23906bd9b9998530c15">More...</a><br /></td></tr>
 <tr class="separator:a73d91e75e03aa23906bd9b9998530c15"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7ea2b24e731520c205013ce5e96ec2de"><td class="memItemLeft" align="right" valign="top">UGRID_API int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceugridapi.html#a7ea2b24e731520c205013ce5e96ec2de">ug_contacts_inq</a> (int file_id, int topology_id, <a class="el" href="structugridapi_1_1_contacts.html">Contacts</a> &amp;contacts_api)</td></tr>
-<tr class="memdesc:a7ea2b24e731520c205013ce5e96ec2de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inquires contacts dimensions and names.  <a href="namespaceugridapi.html#a7ea2b24e731520c205013ce5e96ec2de">More...</a><br /></td></tr>
+<tr class="memdesc:a7ea2b24e731520c205013ce5e96ec2de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inquires contact dimensions and names.  <a href="namespaceugridapi.html#a7ea2b24e731520c205013ce5e96ec2de">More...</a><br /></td></tr>
 <tr class="separator:a7ea2b24e731520c205013ce5e96ec2de"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abee244959aec0c8476cd4d8218db7eb1"><td class="memItemLeft" align="right" valign="top">UGRID_API int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceugridapi.html#abee244959aec0c8476cd4d8218db7eb1">ug_contacts_get</a> (int file_id, int topology_id, <a class="el" href="structugridapi_1_1_contacts.html">Contacts</a> &amp;contacts_api)</td></tr>
-<tr class="memdesc:abee244959aec0c8476cd4d8218db7eb1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets contacts geometrical data.  <a href="namespaceugridapi.html#abee244959aec0c8476cd4d8218db7eb1">More...</a><br /></td></tr>
+<tr class="memdesc:abee244959aec0c8476cd4d8218db7eb1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets contact geometrical data.  <a href="namespaceugridapi.html#abee244959aec0c8476cd4d8218db7eb1">More...</a><br /></td></tr>
 <tr class="separator:abee244959aec0c8476cd4d8218db7eb1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -251,12 +281,12 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Defines a new contacts topology. </p>
+<p>Defines a new contact topology. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">file_id</td><td>[in] The file id </td></tr>
-    <tr><td class="paramname">contacts_api</td><td>[in] The structure containing the contacts data </td></tr>
-    <tr><td class="paramname">topology_id</td><td>[out] The id of the newly created contacts topology </td></tr>
+    <tr><td class="paramname">contacts_api</td><td>[in] The structure containing the contact data </td></tr>
+    <tr><td class="paramname">topology_id</td><td>[out] The id of the newly created contact topology </td></tr>
   </table>
   </dd>
 </dl>
@@ -296,12 +326,12 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Gets contacts geometrical data. </p>
+<p>Gets contact geometrical data. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">file_id</td><td>[in] The file id </td></tr>
     <tr><td class="paramname">topology_id</td><td>[in] The topology id </td></tr>
-    <tr><td class="paramname">contacts_api</td><td>[out] The structure containing the contacts data </td></tr>
+    <tr><td class="paramname">contacts_api</td><td>[out] The structure containing the contact data </td></tr>
   </table>
   </dd>
 </dl>
@@ -341,12 +371,12 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Inquires contacts dimensions and names. </p>
+<p>Inquires contact dimensions and names. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">file_id</td><td>[in] The file id </td></tr>
     <tr><td class="paramname">topology_id</td><td>[in] The topology id </td></tr>
-    <tr><td class="paramname">contacts_api</td><td>[out] The structure containing the contacts data </td></tr>
+    <tr><td class="paramname">contacts_api</td><td>[out] The structure containing the contact data </td></tr>
   </table>
   </dd>
 </dl>
@@ -386,12 +416,12 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Writes contacts geometrical data to file. </p>
+<p>Writes contact geometrical data to file. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">file_id</td><td>[in] The file id </td></tr>
     <tr><td class="paramname">topology_id</td><td>[in] The topology id </td></tr>
-    <tr><td class="paramname">contacts_api</td><td>[in] The structure containing the contacts data </td></tr>
+    <tr><td class="paramname">contacts_api</td><td>[in] The structure containing the contact data </td></tr>
   </table>
   </dd>
 </dl>
@@ -1236,6 +1266,266 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a3599c7a5c8381a9d46aebe45442fa2eb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3599c7a5c8381a9d46aebe45442fa2eb">&#9670;&nbsp;</a></span>ug_topology_count_attributes()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">UGRID_API int ugridapi::ug_topology_count_attributes </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>file_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>topology_type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>topology_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int &amp;&#160;</td>
+          <td class="paramname"><em>attributes_count</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>For a specific topology, counts how many attributes are present. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">file_id</td><td>[in] The file id </td></tr>
+    <tr><td class="paramname">topology_type</td><td>[in] The topology type </td></tr>
+    <tr><td class="paramname">topology_id</td><td>[in] The topology id </td></tr>
+    <tr><td class="paramname">attributes_count</td><td>[out] The number of attributes </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Error code </dd></dl>
+
+</div>
+</div>
+<a id="a533c6faa88c3a5e2497ce84c777fdbef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a533c6faa88c3a5e2497ce84c777fdbef">&#9670;&nbsp;</a></span>ug_topology_count_data_dimensions()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">UGRID_API int ugridapi::ug_topology_count_data_dimensions </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>file_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char const *&#160;</td>
+          <td class="paramname"><em>data_variable_name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int &amp;&#160;</td>
+          <td class="paramname"><em>dimensions_count</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>For a specific data variables, count the number of dimensions. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">file_id</td><td>[in] The file id </td></tr>
+    <tr><td class="paramname">data_variable_name</td><td>[in] The variable name </td></tr>
+    <tr><td class="paramname">dimensions_count</td><td>[in] The number of dimensions associated with the variable name </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Error code </dd></dl>
+
+</div>
+</div>
+<a id="a8cdb5e6ba456d3206cf5c95099e21715"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8cdb5e6ba456d3206cf5c95099e21715">&#9670;&nbsp;</a></span>ug_topology_count_data_variables()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">UGRID_API int ugridapi::ug_topology_count_data_variables </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>file_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>topology_type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>topology_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>location</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int &amp;&#160;</td>
+          <td class="paramname"><em>data_variable_count</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>For a specific topology and location, count how many data variables are present. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">file_id</td><td>[in] The file id </td></tr>
+    <tr><td class="paramname">topology_type</td><td>[in] The topology type </td></tr>
+    <tr><td class="paramname">topology_id</td><td>[in] The topology id </td></tr>
+    <tr><td class="paramname">location</td><td>[in] The location on the topology (e.g. node, edge or face) </td></tr>
+    <tr><td class="paramname">data_variable_count</td><td>[out] </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Error code </dd></dl>
+
+</div>
+</div>
+<a id="ab76a903d608e3ab31fb89bb43ae69ae4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab76a903d608e3ab31fb89bb43ae69ae4">&#9670;&nbsp;</a></span>ug_topology_get_attributes_names()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">UGRID_API int ugridapi::ug_topology_get_attributes_names </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>file_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>topology_type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>topology_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>names</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>For a specific topology, retrieve its attribute names. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">file_id</td><td>[in] The file id </td></tr>
+    <tr><td class="paramname">topology_type</td><td>[in] The topology type </td></tr>
+    <tr><td class="paramname">topology_id</td><td>[in] The topology id </td></tr>
+    <tr><td class="paramname">names</td><td>[out] The variable names </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Error code </dd></dl>
+
+</div>
+</div>
+<a id="a1140969a839f47b3848f894244d1c121"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1140969a839f47b3848f894244d1c121">&#9670;&nbsp;</a></span>ug_topology_get_attributes_values()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">UGRID_API int ugridapi::ug_topology_get_attributes_values </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>file_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>topology_type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>topology_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>values</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>For a specific topology, retrieve its attribute values. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">file_id</td><td>[in] The file id </td></tr>
+    <tr><td class="paramname">topology_type</td><td>[in] The topology type </td></tr>
+    <tr><td class="paramname">topology_id</td><td>[in] The topology id </td></tr>
+    <tr><td class="paramname">values</td><td>[out] The variable values </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Error code </dd></dl>
+
+</div>
+</div>
 <a id="a7d59fd0c3cdc728f7dd594873facf5a3"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7d59fd0c3cdc728f7dd594873facf5a3">&#9670;&nbsp;</a></span>ug_topology_get_contacts_enum()</h2>
 
@@ -1291,6 +1581,245 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The number of topologies of the specific type </dd></dl>
+
+</div>
+</div>
+<a id="ac229c112f512590118271a3dab235e32"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac229c112f512590118271a3dab235e32">&#9670;&nbsp;</a></span>ug_topology_get_data_char()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">UGRID_API int ugridapi::ug_topology_get_data_char </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>file_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char const *&#160;</td>
+          <td class="paramname"><em>data_variable_name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>data</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>For a specific data variables, gets the data as an array of chars. This might be large, because the arrays contains all time steps. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">file_id</td><td>[in] The file id </td></tr>
+    <tr><td class="paramname">data_variable_name</td><td>[in] The variable name </td></tr>
+    <tr><td class="paramname">data</td><td>[out] The variable data </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Error code </dd></dl>
+
+</div>
+</div>
+<a id="a838b353492caa3837aaa5285cd2c1fb2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a838b353492caa3837aaa5285cd2c1fb2">&#9670;&nbsp;</a></span>ug_topology_get_data_dimensions()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">UGRID_API int ugridapi::ug_topology_get_data_dimensions </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>file_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char const *&#160;</td>
+          <td class="paramname"><em>data_variable_name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int *&#160;</td>
+          <td class="paramname"><em>dimension_vec</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>For a specific data variables, gets the dimension values. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">file_id</td><td>[in] The file id </td></tr>
+    <tr><td class="paramname">data_variable_name</td><td>[in] The variable name </td></tr>
+    <tr><td class="paramname">dimension_vec</td><td>[in] The dimension values associated with the variable name </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Error code </dd></dl>
+
+</div>
+</div>
+<a id="a31d96af6b4f55ab7ab6c3fea90d3f04e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a31d96af6b4f55ab7ab6c3fea90d3f04e">&#9670;&nbsp;</a></span>ug_topology_get_data_double()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">UGRID_API int ugridapi::ug_topology_get_data_double </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>file_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char const *&#160;</td>
+          <td class="paramname"><em>data_variable_name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double *&#160;</td>
+          <td class="paramname"><em>data</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>For a specific data variables, gets the data as an array of double. This might be large, because the arrays contains all time steps. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">file_id</td><td>[in] The file id </td></tr>
+    <tr><td class="paramname">data_variable_name</td><td>[in] The variable name </td></tr>
+    <tr><td class="paramname">data</td><td>[out] The variable data </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Error code </dd></dl>
+
+</div>
+</div>
+<a id="acb46306e3b50aa573978cf1f13a9eb79"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acb46306e3b50aa573978cf1f13a9eb79">&#9670;&nbsp;</a></span>ug_topology_get_data_int()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">UGRID_API int ugridapi::ug_topology_get_data_int </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>file_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char const *&#160;</td>
+          <td class="paramname"><em>data_variable_name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int *&#160;</td>
+          <td class="paramname"><em>data</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>For a specific data variables, gets the data as an array of int. This might be large, because the arrays contains all time steps. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">file_id</td><td>[in] The file id </td></tr>
+    <tr><td class="paramname">data_variable_name</td><td>[in] The variable name </td></tr>
+    <tr><td class="paramname">data</td><td>[out] The variable data </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Error code </dd></dl>
+
+</div>
+</div>
+<a id="a1868f41ecae2d2b7ef0a2a1f2a5c45d6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1868f41ecae2d2b7ef0a2a1f2a5c45d6">&#9670;&nbsp;</a></span>ug_topology_get_data_variables_names()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">UGRID_API int ugridapi::ug_topology_get_data_variables_names </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>file_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>topology_type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>topology_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>location</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>data_variables_names_result</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>For a specific topology and location, get all names of data variables. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">file_id</td><td>[in] The file id </td></tr>
+    <tr><td class="paramname">topology_type</td><td>[in] The topology type </td></tr>
+    <tr><td class="paramname">topology_id</td><td>[in] The topology id </td></tr>
+    <tr><td class="paramname">location</td><td>[in] The location on the topology (e.g. node, edge or face) </td></tr>
+    <tr><td class="paramname">data_variables_names_result</td><td>[out] </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Error code </dd></dl>
 
 </div>
 </div>
