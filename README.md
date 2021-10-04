@@ -3,7 +3,7 @@
 Deltares library for reading/writing UGrid geometrical entities. The UGrid entities available in this library are: Network1d, Mesh1d, Mesh2d and Contacts.
 The library also offers APIs for:
 - Getting simulation results defined on specific entity locations (data variables).
-- Getting the topological entites attributes names and values, to facilitate the use of UGrid with Python xarray.
+- Getting the topological entities attributes names and values, to facilitate the use of UGrid with Python xarray.
 
 ## Build
 
