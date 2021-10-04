@@ -65,14 +65,14 @@ void Mesh2D::define(ugridapi::Mesh2D const& mesh2d)
         // Define node dimensions
         string_builder.clear();
         string_builder << "_nNodes";
-        m_dimensions.insert({UGridFileDimensions::nodes, m_nc_file->addDim(string_builder.str(), mesh2d.num_nodes)});
+        m_dimensions.insert({UGridFileDimensions::node, m_nc_file->addDim(string_builder.str(), mesh2d.num_nodes)});
         m_topology_attributes.insert({"node_dimension", m_topology_variable.putAtt("node_dimension", string_builder.str())});
 
         // Define coordinates
         bool const add_coordinate_variable = mesh2d.node_x != nullptr && mesh2d.node_y != nullptr;
         if (add_coordinate_variable)
         {
-            define_topology_coordinates(UGridFileDimensions::nodes, "%s of mesh nodes");
+            define_topology_coordinates(UGridFileDimensions::node, "%s of mesh node");
         }
 
         // Define optional related variables
@@ -82,9 +82,9 @@ void Mesh2D::define(ugridapi::Mesh2D const& mesh2d)
             define_topology_related_variables(
                 "node_z",
                 netCDF::NcType::nc_DOUBLE,
-                {UGridFileDimensions::nodes},
+                {UGridFileDimensions::node},
                 {{"standard_name", "altitude"},
-                 {"long_name", "z-coordinate of mesh nodes"},
+                 {"long_name", "z-coordinate of mesh node"},
                  {"units", "m"},
                  {"coordinates", "node"},
                  {"location", location_attribute_value}});
@@ -97,7 +97,7 @@ void Mesh2D::define(ugridapi::Mesh2D const& mesh2d)
         // Define edge dimensions
         string_builder.clear();
         string_builder << "_nEdges";
-        m_dimensions.insert({UGridFileDimensions::edges, m_nc_file->addDim(string_builder.str(), mesh2d.num_edges)});
+        m_dimensions.insert({UGridFileDimensions::edge, m_nc_file->addDim(string_builder.str(), mesh2d.num_edges)});
 
         // Define edge_dimension topology attribute
         define_topological_attribute("edge_dimension", string_builder.str());
@@ -109,30 +109,30 @@ void Mesh2D::define(ugridapi::Mesh2D const& mesh2d)
         define_topological_variable("edge_node_connectivity",
                                     "edge_nodes",
                                     netCDF::NcType::nc_INT,
-                                    {UGridFileDimensions::edges, UGridFileDimensions::Two},
-                                    {{"long_name", "Start and end nodes of mesh edges"}});
+                                    {UGridFileDimensions::edge, UGridFileDimensions::Two},
+                                    {{"long_name", "Start and end node of mesh edge"}});
 
         // Define edge_nodes coordinates
         bool const add_coordinate_variable = mesh2d.edge_x != nullptr && mesh2d.edge_y != nullptr;
         if (add_coordinate_variable)
         {
-            define_topology_coordinates(UGridFileDimensions::edges, "characteristic %s of the mesh edge (e.g. midpoint)");
+            define_topology_coordinates(UGridFileDimensions::edge, "characteristic %s of the mesh edge (e.g. midpoint)");
         }
     }
 
-    // faces variables
+    // face variables
     if (mesh2d.num_faces > 0)
     {
         // Define face dimensions
         string_builder.clear();
         string_builder << "_nFace";
-        m_dimensions.insert({UGridFileDimensions::faces, m_nc_file->addDim(string_builder.str(), mesh2d.num_faces)});
+        m_dimensions.insert({UGridFileDimensions::face, m_nc_file->addDim(string_builder.str(), mesh2d.num_faces)});
         define_topological_attribute("face_dimension", string_builder.str());
 
         string_builder.clear();
         string_builder << "_nMax_face_nodes";
         define_topological_attribute("max_face_nodes_dimension", string_builder.str());
-        m_dimensions.insert({UGridFileDimensions::max_face_nodes, m_nc_file->addDim(string_builder.str(), mesh2d.num_face_nodes_max)});
+        m_dimensions.insert({UGridFileDimensions::max_face_node, m_nc_file->addDim(string_builder.str(), mesh2d.num_face_nodes_max)});
 
         // Define face_node topology attribute and variable
         string_builder.clear();
@@ -141,18 +141,18 @@ void Mesh2D::define(ugridapi::Mesh2D const& mesh2d)
         define_topological_variable("face_node_connectivity",
                                     "face_nodes",
                                     netCDF::NcType::nc_INT,
-                                    {UGridFileDimensions::faces, UGridFileDimensions::max_face_nodes},
-                                    {{"long_name", "Vertex nodes of mesh faces(counterclockwise)"}});
+                                    {UGridFileDimensions::face, UGridFileDimensions::max_face_node},
+                                    {{"long_name", "Vertex node of mesh face(counterclockwise)"}});
 
         // Define face coordinates
         bool const add_coordinate_variable = mesh2d.face_x != nullptr && mesh2d.face_y != nullptr;
         if (add_coordinate_variable)
         {
-            define_topology_coordinates(UGridFileDimensions::faces, "characteristic %s of the mesh face");
+            define_topology_coordinates(UGridFileDimensions::face, "characteristic %s of the mesh face");
         }
 
         // Define face bounds (is this always required?)
-        // define_topology_coordinates(UGridFileDimensions::faces, "%s bounds of mesh faces (i.e. corner coordinates)", "%s%s_bnd");
+        // define_topology_coordinates(UGridFileDimensions::face, "%s bounds of mesh face (i.e. corner coordinates)", "%s%s_bnd");
 
         // Define optional variables
         if (mesh2d.face_edge != nullptr)
@@ -164,8 +164,8 @@ void Mesh2D::define(ugridapi::Mesh2D const& mesh2d)
             define_topological_variable("face_edge_connectivity",
                                         "face_edge",
                                         netCDF::NcType::nc_INT,
-                                        {UGridFileDimensions::faces, UGridFileDimensions::max_face_nodes},
-                                        {{"long_name", "Side edges of mesh faces (counterclockwise)"}});
+                                        {UGridFileDimensions::face, UGridFileDimensions::max_face_node},
+                                        {{"long_name", "Side edge of mesh face (counterclockwise)"}});
         }
         if (mesh2d.face_face != nullptr)
         {
@@ -176,8 +176,8 @@ void Mesh2D::define(ugridapi::Mesh2D const& mesh2d)
             define_topological_variable("face_face_connectivity",
                                         "face_links",
                                         netCDF::NcType::nc_INT,
-                                        {UGridFileDimensions::faces, UGridFileDimensions::max_face_nodes},
-                                        {{"long_name", "Neighboring faces of mesh faces (counterclockwise)"}});
+                                        {UGridFileDimensions::face, UGridFileDimensions::max_face_node},
+                                        {{"long_name", "Neighboring face of mesh face (counterclockwise)"}});
         }
         if (mesh2d.edge_face != nullptr)
         {
@@ -188,8 +188,8 @@ void Mesh2D::define(ugridapi::Mesh2D const& mesh2d)
             define_topological_variable("edge_face_connectivity",
                                         "edge_faces",
                                         netCDF::NcType::nc_INT,
-                                        {UGridFileDimensions::edges, UGridFileDimensions::Two},
-                                        {{"long_name", "Neighboring faces of mesh edges"}});
+                                        {UGridFileDimensions::edge, UGridFileDimensions::Two},
+                                        {{"long_name", "Neighboring face of mesh edge"}});
         }
     }
 
@@ -270,21 +270,21 @@ void Mesh2D::put(ugridapi::Mesh2D const& mesh2d)
 
 void Mesh2D::inquire(ugridapi::Mesh2D& mesh2d) const
 {
-    if (m_dimensions.find(UGridFileDimensions::nodes) != m_dimensions.end())
+    if (m_dimensions.find(UGridFileDimensions::node) != m_dimensions.end())
     {
-        mesh2d.num_nodes = m_dimensions.at(UGridFileDimensions::nodes).getSize();
+        mesh2d.num_nodes = m_dimensions.at(UGridFileDimensions::node).getSize();
     }
-    if (m_dimensions.find(UGridFileDimensions::edges) != m_dimensions.end())
+    if (m_dimensions.find(UGridFileDimensions::edge) != m_dimensions.end())
     {
-        mesh2d.num_edges = m_dimensions.at(UGridFileDimensions::edges).getSize();
+        mesh2d.num_edges = m_dimensions.at(UGridFileDimensions::edge).getSize();
     }
-    if (m_dimensions.find(UGridFileDimensions::faces) != m_dimensions.end())
+    if (m_dimensions.find(UGridFileDimensions::face) != m_dimensions.end())
     {
-        mesh2d.num_faces = m_dimensions.at(UGridFileDimensions::faces).getSize();
+        mesh2d.num_faces = m_dimensions.at(UGridFileDimensions::face).getSize();
     }
-    if (m_dimensions.find(UGridFileDimensions::max_face_nodes) != m_dimensions.end())
+    if (m_dimensions.find(UGridFileDimensions::max_face_node) != m_dimensions.end())
     {
-        mesh2d.num_face_nodes_max = m_dimensions.at(UGridFileDimensions::max_face_nodes).getSize();
+        mesh2d.num_face_nodes_max = m_dimensions.at(UGridFileDimensions::max_face_node).getSize();
     }
 }
 

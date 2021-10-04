@@ -47,7 +47,7 @@ namespace ugridapi
         /// @brief The node long name
         char* node_name_long = nullptr;
 
-        /// @brief The nodes defining each branch (also called node edge connectivity)
+        /// @brief The node defining each branch (also called node edge connectivity)
         int* branch_node = nullptr;
 
         /// @brief The branch lengths
@@ -62,19 +62,19 @@ namespace ugridapi
         /// @brief The long name of the branches
         char* branch_name_long = nullptr;
 
-        /// @brief The geometry nodes x coordinates
+        /// @brief The geometry node x coordinates
         double* geometry_nodes_x = nullptr;
 
-        /// @brief The geometry nodes y coordinates
+        /// @brief The geometry node y coordinates
         double* geometry_nodes_y = nullptr;
 
-        /// @brief The number of geometry nodes on each branch
+        /// @brief The number of geometry node on each branch
         int* geometry_nodes_count = nullptr;
 
-        /// @brief The number of geometry nodes
+        /// @brief The number of geometry node
         int num_geometry_nodes = 0;
 
-        /// @brief The number of network1d nodes
+        /// @brief The number of network1d node
         int num_nodes = 0;
 
         /// @brief The number of network1d branches

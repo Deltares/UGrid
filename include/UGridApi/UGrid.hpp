@@ -112,6 +112,83 @@ namespace ugridapi
         /// @return The number of topologies of the specific type
         UGRID_API int ug_topology_get_count(int file_id, int topology_type);
 
+        /// @brief For a specific topology, counts how many attributes are present
+        /// @param file_id [in] The file id
+        /// @param topology_type [in] The topology type
+        /// @param topology_id [in] The topology id
+        /// @param attributes_count [out] The number of attributes
+        /// @return Error code
+        UGRID_API int ug_topology_count_attributes(int file_id, int topology_type, int topology_id, int& attributes_count);
+
+        /// @brief For a specific topology, retrieve its attribute names
+        /// @param file_id [in] The file id
+        /// @param topology_type [in] The topology type
+        /// @param topology_id [in] The topology id
+        /// @param names [out] The variable names
+        /// @return Error code
+        UGRID_API int ug_topology_get_attributes_names(int file_id, int topology_type, int topology_id, char* names);
+
+        /// @brief For a specific topology, retrieve its attribute values
+        /// @param file_id [in] The file id
+        /// @param topology_type [in] The topology type
+        /// @param topology_id [in] The topology id
+        /// @param values [out] The variable values
+        /// @return Error code
+        UGRID_API int ug_topology_get_attributes_values(int file_id, int topology_type, int topology_id, char* values);
+
+        /// @brief For a specific topology and location, count how many data variables are present
+        /// @param file_id [in] The file id
+        /// @param topology_type [in] The topology type
+        /// @param topology_id [in] The topology id
+        /// @param location [in] The location on the topology (e.g. node, edge or face)
+        /// @param data_variable_count [out]
+        /// @return Error code
+        UGRID_API int ug_topology_count_data_variables(int file_id, int topology_type, int topology_id, int location, int& data_variable_count);
+
+        /// @brief For a specific topology and location, get all names of data variables
+        /// @param file_id [in] The file id
+        /// @param topology_type [in] The topology type
+        /// @param topology_id [in] The topology id
+        /// @param location [in] The location on the topology (e.g. node, edge or face)
+        /// @param data_variables_names_result [out]
+        /// @return Error code
+        UGRID_API int ug_topology_get_data_variables_names(int file_id, int topology_type, int topology_id, int location, char* data_variables_names_result);
+
+        /// @brief For a specific data variables, count the number of dimensions
+        /// @param file_id [in] The file id
+        /// @param data_variable_name [in] The variable name
+        /// @param dimensions_count [in] The number of dimensions associated with the variable name
+        /// @return Error code
+        UGRID_API int ug_topology_count_data_dimensions(int file_id, char const* data_variable_name, int& dimensions_count);
+
+        /// @brief For a specific data variables, gets the dimension values.
+        /// @param file_id [in] The file id
+        /// @param data_variable_name [in] The variable name
+        /// @param dimension_vec [in] The dimension values associated with the variable name
+        /// @return Error code
+        UGRID_API int ug_topology_get_data_dimensions(int file_id, char const* data_variable_name, int* dimension_vec);
+
+        /// @brief For a specific data variables, gets the data as an array of double. This might be large, because the arrays contains all time steps.
+        /// @param file_id [in] The file id
+        /// @param data_variable_name [in] The variable name
+        /// @param data [out] The variable data
+        /// @return Error code
+        UGRID_API int ug_topology_get_data_double(int file_id, char const* data_variable_name, double* data);
+
+        /// @brief For a specific data variables, gets the data as an array of int. This might be large, because the arrays contains all time steps.
+        /// @param file_id [in] The file id
+        /// @param data_variable_name [in] The variable name
+        /// @param data [out] The variable data
+        /// @return Error code
+        UGRID_API int ug_topology_get_data_int(int file_id, char const* data_variable_name, int* data);
+
+        /// @brief For a specific data variables, gets the data as an array of chars. This might be large, because the arrays contains all time steps.
+        /// @param file_id [in] The file id
+        /// @param data_variable_name [in] The variable name
+        /// @param data [out] The variable data
+        /// @return Error code
+        UGRID_API int ug_topology_get_data_char(int file_id, char const* data_variable_name, char* data);
+
         /// @brief Gets the integer identifying the file read mode
         /// @return the integer identifying the file read mode
         UGRID_API int ug_file_read_mode();
@@ -226,31 +303,31 @@ namespace ugridapi
         /// @return Error code
         UGRID_API int ug_mesh2d_get(int file_id, int topology_id, Mesh2D& mesh2d_api);
 
-        /// @brief Defines a new contacts topology
+        /// @brief Defines a new contact topology
         /// @param file_id [in] The file id
-        /// @param contacts_api [in] The structure containing the contacts data
-        /// @param topology_id [out] The id of the newly created contacts topology
+        /// @param contacts_api [in] The structure containing the contact data
+        /// @param topology_id [out] The id of the newly created contact topology
         /// @return Error code
         UGRID_API int ug_contacts_def(int file_id, Contacts const& contacts_api, int& topology_id);
 
-        /// @brief Writes contacts geometrical data to file
+        /// @brief Writes contact geometrical data to file
         /// @param file_id [in] The file id
         /// @param topology_id [in] The topology id
-        /// @param contacts_api [in] The structure containing the contacts data
+        /// @param contacts_api [in] The structure containing the contact data
         /// @return Error code
         UGRID_API int ug_contacts_put(int file_id, int topology_id, Contacts const& contacts_api);
 
-        /// @brief Inquires contacts dimensions and names
+        /// @brief Inquires contact dimensions and names
         /// @param file_id [in] The file id
         /// @param topology_id [in] The topology id
-        /// @param contacts_api [out] The structure containing the contacts data
+        /// @param contacts_api [out] The structure containing the contact data
         /// @return Error code
         UGRID_API int ug_contacts_inq(int file_id, int topology_id, Contacts& contacts_api);
 
-        /// @brief Gets contacts geometrical data
+        /// @brief Gets contact geometrical data
         /// @param file_id [in] The file id
         /// @param topology_id [in] The topology id
-        /// @param contacts_api [out] The structure containing the contacts data
+        /// @param contacts_api [out] The structure containing the contact data
         /// @return Error code
         UGRID_API int ug_contacts_get(int file_id, int topology_id, Contacts& contacts_api);
 

@@ -50,39 +50,40 @@ namespace ugrid
         return std::abs(value - referenceValue) < std::numeric_limits<T>::epsilon();
     }
 
-    static UGridFileDimensions from_location_string_to_dimension(std::string const& location_string)
+    static UGridFileDimensions from_dimension_string_to_dimension_enum(std::string const& dimension_string)
     {
-        if (location_string == "node")
+        if (dimension_string == "node" || dimension_string == "nodes")
         {
-            return UGridFileDimensions::nodes;
+            return UGridFileDimensions::node;
         }
-        if (location_string == "edge")
+        if (dimension_string == "edge" || dimension_string == "edges")
         {
-            return UGridFileDimensions::edges;
+            return UGridFileDimensions::edge;
         }
-        if (location_string == "face")
+        if (dimension_string == "face" || dimension_string == "faces")
         {
-            return UGridFileDimensions::faces;
+            return UGridFileDimensions::face;
         }
-        if (location_string == "max_face_nodes")
+        if (dimension_string == "max_face_node" || dimension_string == "max_face_nodes")
         {
-            return UGridFileDimensions::max_face_nodes;
+            return UGridFileDimensions::max_face_node;
         }
+        throw std::invalid_argument("from_dimension_string_to_dimension_enum: Dimension not found.");
     }
 
     static UGridEntityLocations from_location_string_to_location(std::string const& location_string)
     {
         if (location_string == "node")
         {
-            return UGridEntityLocations::nodes;
+            return node;
         }
         if (location_string == "edge")
         {
-            return UGridEntityLocations::edges;
+            return edge;
         }
         if (location_string == "face")
         {
-            return UGridEntityLocations::faces;
+            return face;
         }
     }
 
@@ -90,17 +91,29 @@ namespace ugrid
     {
         auto const ug_entity_location = static_cast<UGridEntityLocations>(location);
 
-        if (ug_entity_location == UGridEntityLocations::nodes)
+        if (ug_entity_location == node)
         {
             return "node";
         }
-        if (ug_entity_location == UGridEntityLocations::edges)
+        if (ug_entity_location == edge)
         {
             return "edge";
         }
-        if (ug_entity_location == UGridEntityLocations::faces)
+        if (ug_entity_location == face)
         {
             return "face";
+        }
+        if (ug_entity_location == layer)
+        {
+            return "layer";
+        }
+        if (ug_entity_location == layer_interface)
+        {
+            return "layer_interface";
+        }
+        if (ug_entity_location == vertical)
+        {
+            return "vertical";
         }
     }
 
@@ -109,14 +122,19 @@ namespace ugrid
                                             std::string const& attribute_value_string,
                                             std::map<UGridFileDimensions, netCDF::NcDim>& entity_dimensions)
     {
-        auto const substring_dimension_pos = attribute_value_string.find("_dimension");
         bool isDimensionVariable = false;
+        auto const it = dimensions.find(attribute_key_string);
+        if (it == dimensions.end())
+        {
+            return isDimensionVariable;
+        }
+
         if (attribute_value_string.find("_dimension") != std::string::npos)
         {
             isDimensionVariable = true;
-            std::string location_name = attribute_value_string.substr(0, substring_dimension_pos);
-            auto const it = dimensions.find(attribute_key_string);
-            auto const dimension_enum = from_location_string_to_dimension(location_name);
+            auto const substring_dimension_pos = attribute_value_string.find("_dimension");
+            std::string const location_name = attribute_value_string.substr(0, substring_dimension_pos);
+            auto const dimension_enum = from_dimension_string_to_dimension_enum(location_name);
             entity_dimensions.insert({dimension_enum, it->second});
         }
         return isDimensionVariable;
@@ -125,10 +143,9 @@ namespace ugrid
     static std::tuple<std::map<std::string, std::vector<netCDF::NcVar>>,
                       std::map<std::string, std::vector<std::string>>,
                       std::map<UGridFileDimensions, netCDF::NcDim>>
-    get_ugrid_entity(
-        netCDF::NcVar const& variable,
-        std::multimap<std::string, netCDF::NcDim> const& file_dimensions,
-        std::multimap<std::string, netCDF::NcVar> const& file_variables)
+    get_ugrid_entity(netCDF::NcVar const& variable,
+                     std::multimap<std::string, netCDF::NcDim> const& file_dimensions,
+                     std::multimap<std::string, netCDF::NcVar> const& file_variables)
     {
         std::map<std::string, std::vector<netCDF::NcVar>> entity_attribute_variables;
         std::map<std::string, std::vector<std::string>> entity_attribute_names;
@@ -146,8 +163,11 @@ namespace ugrid
             attribute.second.getValues(attribute_value_string);
 
             // check if it is a dimension variable
-            auto const isDimensionVariable = fill_ugrid_entity_dimension(file_dimensions, attribute_value_string, attribute_key_string, entity_dimensions);
-            if (isDimensionVariable)
+            auto const is_dimension_variable = fill_ugrid_entity_dimension(file_dimensions,
+                                                                           attribute_value_string,
+                                                                           attribute_key_string,
+                                                                           entity_dimensions);
+            if (is_dimension_variable)
             {
                 continue;
             }
@@ -170,13 +190,12 @@ namespace ugrid
             {
                 entity_attribute_variables.insert({attribute_key_string, valid_attribute_variables});
             }
-
             entity_attribute_names.insert({attribute_key_string, attribute_value_string_tokens});
         }
         return {entity_attribute_variables, entity_attribute_names, entity_dimensions};
     }
 
-    static void string_to_char_array(char* char_array, std::string const& value, size_t len)
+    static void string_to_char_array(char* char_array, std::string const& value, size_t len, size_t char_array_position = 0)
     {
         if (char_array == nullptr || value.empty())
         {
@@ -184,21 +203,19 @@ namespace ugrid
         }
         for (auto i = 0; i < value.size(); ++i)
         {
-            char_array[i] = value[i];
+            char_array[char_array_position + i] = value[i];
         }
         for (auto i = value.size(); i < len - 1; ++i)
         {
-            char_array[i] = ' ';
+            char_array[char_array_position + i] = ' ';
         }
-        char_array[len - 1] = '\0';
+        char_array[char_array_position + (len - 1)] = '\0';
     }
 
-    static void rtrim(std::string& s)
+    static void rtrim(std::string& str)
     {
-        s.erase(std::find_if(s.rbegin(), s.rend(), [](auto& ch) {
-                    return !std::isspace(ch);
-                }).base(),
-                s.end());
+        auto const isalnum_lambda = [](auto const& ch) { return std::isalnum(ch); };
+        str.erase(std::find_if(str.rbegin(), str.rend(), isalnum_lambda).base(), str.end());
     }
 
     static std::string char_array_to_string(char const* char_array, size_t len)

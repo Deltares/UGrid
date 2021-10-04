@@ -40,7 +40,7 @@
 /// @brief Contains the logic of the C++ static library
 namespace ugrid
 {
-    /// @brief A class containing the ids of UGrid netcdf file
+    /// @brief A class containing the id of UGrid netcdf file
     class UGridEntity
     {
     public:
@@ -99,6 +99,77 @@ namespace ugrid
             }
 
             return result;
+        }
+
+        auto get_num_attributes() const
+        {
+            return m_topology_attributes_variables_values.size();
+        }
+
+        auto get_topology_variable() const
+        {
+            return m_topology_variable;
+        }
+
+        [[nodiscard]] std::vector<std::string> get_attributes_names() const
+        {
+            std::vector<std::string> result;
+            result.reserve(m_topology_attributes_variables_values.size());
+            for (auto const& v : m_topology_attributes_variables_values)
+            {
+                result.emplace_back(v.first);
+            }
+            return result;
+        }
+
+        [[nodiscard]] std::vector<std::string> get_attributes_values() const
+        {
+            std::vector<std::string> result;
+            for (auto const& v : m_topology_attributes_variables_values)
+            {
+                for (auto const& s : v.second)
+                {
+                    result.emplace_back(s);
+                }
+            }
+            return result;
+        }
+
+        std::string get_name() const
+        {
+            return m_entity_name;
+        }
+
+        std::vector<std::string> get_data_variables_names(int location)
+        {
+            auto const variables = m_nc_file->getVars();
+            auto const location_type = from_location_integer_to_location_string(location);
+
+            std::string const mesh_attribute_name = "mesh";
+            std::string const location_attribute_name = "location";
+            std::vector<std::string> variable_names;
+            for (auto const& v : variables)
+            {
+                auto const variable_attributes = v.second.getAtts();
+                auto const mesh_it = variable_attributes.find(mesh_attribute_name);
+                auto const location_it = variable_attributes.find(location_attribute_name);
+
+                if (mesh_it == variable_attributes.end() || location_it == variable_attributes.end())
+                {
+                    continue;
+                }
+
+                std::string variable_location_type;
+                location_it->second.getValues(variable_location_type);
+                std::string variable_mesh_name;
+                mesh_it->second.getValues(variable_mesh_name);
+
+                if (variable_mesh_name == m_entity_name && variable_location_type == location_type)
+                {
+                    variable_names.emplace_back(v.first);
+                }
+            }
+            return variable_names;
         }
 
     protected:
@@ -166,14 +237,14 @@ namespace ugrid
         /// @return The location string appended with "x"/"y" or "lat"/"lon"
         std::string get_location_attribute_value(std::string const& location);
 
-        std::shared_ptr<netCDF::NcFile> m_nc_file;                                        ///< A pointer to the opened file
-        netCDF::NcVar m_topology_variable;                                                ///< The topology variable
-        std::map<std::string, std::vector<netCDF::NcVar>> m_topology_attribute_variables; ///< For each topology attribute, the corresponding variables
-        std::map<std::string, std::vector<std::string>> m_topology_attributes_names;      ///< For each attribute, the corresponding attribute names (can be more than one separated by white spaces)
-        std::map<UGridFileDimensions, netCDF::NcDim> m_dimensions;                        ///< All entity dimensions
+        std::shared_ptr<netCDF::NcFile> m_nc_file;                                              ///< A pointer to the opened file
+        netCDF::NcVar m_topology_variable;                                                      ///< The topology variable
+        std::map<std::string, std::vector<netCDF::NcVar>> m_topology_attribute_variables;       ///< For each topology attribute, the corresponding variables
+        std::map<std::string, std::vector<std::string>> m_topology_attributes_variables_values; ///< For each attribute, the corresponding attribute names (can be more than one separated by white spaces)
+        std::map<UGridFileDimensions, netCDF::NcDim> m_dimensions;                              ///< All entity dimensions
 
         std::map<std::string, netCDF::NcVarAtt> m_topology_attributes; ///< The attributes of the topology variable
-        std::map<std::string, netCDF::NcVar> m_related_variables;      ///< Additional variables related to the entity (foe example defined on nodes, edges or faces)
+        std::map<std::string, netCDF::NcVar> m_related_variables;      ///< Additional variables related to the entity (foe example defined on node, edge or face)
         std::string m_entity_name = "";                                ///< The name of the entity
 
         bool m_spherical_coordinates = false;           ///< If it is a spherical entity
@@ -184,7 +255,7 @@ namespace ugrid
 
     private:
         /// @brief Produces the attribute variables related to coordinate locations
-        /// @param location [in] The entity location (e.g. nodes, edges, faces)
+        /// @param location [in] The entity location (e.g. node, edge, face)
         /// @param long_name_pattern [in] The string pattern to use for producing the long name string
         /// @param name_pattern [in] The string pattern to use for producing the name string
         std::tuple<std::string,

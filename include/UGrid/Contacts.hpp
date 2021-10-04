@@ -35,7 +35,7 @@
 /// @brief Contains the logic of the C++ static library
 namespace ugrid
 {
-    /// @brief A class implementing the methods for reading/writing contacts in UGrid format
+    /// @brief A class implementing the methods for reading/writing contact in UGrid format
     struct Contacts : UGridEntity
     {
         /// @brief Constructor setting the NetCDF file
@@ -46,10 +46,10 @@ namespace ugrid
 
         /// @brief Constructor setting nc_file and all internal state
         /// @param nc_file The NcFile file pointer
-        /// @param topology_variable The contacts name
+        /// @param topology_variable The contact name
         /// @param entity_attributes The topological attributes (key value pair with key the topological attribute name and value the associated vector of variables)
         /// @param entity_attribute_names The topological attributes names (key value pair with key the topological attribute name and value the associated vector of variables names)
-        /// @param entity_dimensions The dimensions associated with the contacts (key value pair with key the dimension enumeration and value the associated NetCDF dimension)
+        /// @param entity_dimensions The dimensions associated with the contact (key value pair with key the dimension enumeration and value the associated NetCDF dimension)
         explicit Contacts(
             std::shared_ptr<netCDF::NcFile> nc_file,
             netCDF::NcVar const& topology_variable,
@@ -57,20 +57,20 @@ namespace ugrid
             std::map<std::string, std::vector<std::string>> const& entity_attribute_names,
             std::map<UGridFileDimensions, netCDF::NcDim> const& entity_dimensions);
 
-        /// @brief Defines the contacts header (ug_write_mesh_arrays: ug_create_1d_mesh_v2, ug_def_mesh_ids)
-        /// @param contacts The contacts api structure with the fields to write and all optional flags
+        /// @brief Defines the contact header (ug_write_mesh_arrays: ug_create_1d_mesh_v2, ug_def_mesh_ids)
+        /// @param contact The contact api structure with the fields to write and all optional flags
         void define(ugridapi::Contacts const& contacts);
 
-        /// @brief Writes a contacts to file
-        /// @param contacts contacts The contacts api structure with the fields to write and all optional flags
+        /// @brief Writes a contact to file
+        /// @param contact contact The contact api structure with the fields to write and all optional flags
         void put(ugridapi::Contacts const& contacts);
 
-        /// @brief Inquires the contacts dimensions
-        /// @param contacts The contacts api structure with the fields where to assign the dimensions
+        /// @brief Inquires the contact dimensions
+        /// @param contact The contact api structure with the fields where to assign the dimensions
         void inquire(ugridapi::Contacts& contacts) const;
 
-        /// @brief Inquires the contacts arrays
-        /// @param contacts The contacts api structure with the fields where to assign the data
+        /// @brief Inquires the contact arrays
+        /// @param contact The contact api structure with the fields where to assign the data
         void get(ugridapi::Contacts& contacts) const;
 
         /// @brief Function containing the criteria to determine if a variable is a mesh topology contact
@@ -92,9 +92,9 @@ namespace ugrid
         static int get_dimensionality() { return 1; }
 
     private:
-        std::string m_entity_from_name = "";                                                ///< The name of entity where the contact starts
-        std::string m_entity_to_name = "";                                                  ///< The name of entity where the contact ends
-        UGridEntityLocations m_mesh_from_location = UGridEntityLocations::invalid_location; ///< The location on the entity where the contact starts
-        UGridEntityLocations m_mesh_to_location = UGridEntityLocations::invalid_location;   ///< The location on the entity where the contact ends
+        std::string m_entity_from_name = "";                          ///< The name of entity where the contact starts
+        std::string m_entity_to_name = "";                            ///< The name of entity where the contact ends
+        UGridEntityLocations m_mesh_from_location = invalid_location; ///< The location on the entity where the contact starts
+        UGridEntityLocations m_mesh_to_location = invalid_location;   ///< The location on the entity where the contact ends
     };
 } // namespace ugrid

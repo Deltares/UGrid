@@ -42,6 +42,8 @@
 
 #include <UGrid/Constants.hpp>
 #include <UGrid/Mesh2D.hpp>
+#include <UGrid/Operations.hpp>
+#include <UGrid/UGridEntity.hpp>
 #include <UGridApi/UGrid.hpp>
 #include <UGridApi/UGridState.hpp>
 
@@ -65,6 +67,92 @@ namespace ugridapi
         }
     }
 
+    std::unique_ptr<ugrid::UGridEntity> get_topology(int file_id, int topology_id, int topology_type)
+    {
+        if (topology_type == Network1dTopology)
+        {
+            return std::make_unique<ugrid::UGridEntity>(ugrid_states[file_id].m_network1d[topology_id]);
+        }
+        if (topology_type == Mesh1dTopology)
+        {
+            return std::make_unique<ugrid::UGridEntity>(ugrid_states[file_id].m_mesh1d[topology_id]);
+        }
+        if (topology_type == Mesh2dTopology)
+        {
+            return std::make_unique<ugrid::UGridEntity>(ugrid_states[file_id].m_mesh2d[topology_id]);
+        }
+        if (topology_type == ContactsTopology)
+        {
+            return std::make_unique<ugrid::UGridEntity>(ugrid_states[file_id].m_contacts[topology_id]);
+        }
+    }
+
+    /// @brief Gets all attributes names of a netCDF variable
+    /// @param nc_var [in] The netCDF variable
+    /// @return The attributes names
+    static std::vector<std::string> get_attributes_names(netCDF::NcVar const& nc_var)
+    {
+
+        std::vector<std::string> result;
+        auto const attributes = nc_var.getAtts();
+        result.reserve(attributes.size());
+        for (auto const& att : attributes)
+        {
+            result.emplace_back(att.first);
+        }
+        return result;
+    }
+
+    /// @brief Gets all attributes values of a netCDF variable
+    /// @param nc_var [in] The netCDF variable
+    /// @return The attributes values
+    static std::vector<std::string> get_attributes_values(netCDF::NcVar const& nc_var)
+    {
+        std::vector<std::string> result;
+        auto const attributes = nc_var.getAtts();
+        for (auto const& att : attributes)
+        {
+            if (att.second.getType() == netCDF::NcType::nc_INT)
+            {
+                int value;
+                att.second.getValues(&value);
+                result.emplace_back(std::to_string(value));
+            }
+            if (att.second.getType() == netCDF::NcType::nc_CHAR)
+            {
+                std::string value;
+                att.second.getValues(value);
+                result.emplace_back(value);
+            }
+        }
+        return result;
+    }
+
+    /// @brief Gets all values of a data variable
+    /// @tparam T The value type
+    /// @param file_id The file id
+    /// @param data_variable_name The name of the data variable
+    /// @param data The retrieved data
+    template <typename T>
+    void get_data_array(int file_id, const char* data_variable_name, T& data)
+    {
+        // Gets the variable name
+        const auto variable_name = ugrid::char_array_to_string(data_variable_name, ugrid::name_long_length);
+
+        // Gets all variables
+        const auto vars = ugrid_states[file_id].m_ncFile->getVars();
+
+        // Finds the the data variables using its name
+        const auto it = vars.find(variable_name);
+        if (it == vars.end())
+        {
+            throw std::invalid_argument("get_data_array: The variable name is not present in the netcdf file.");
+        }
+
+        // Gets the data for all time steps
+        it->second.getVar(&data);
+    }
+
     UGRID_API int ug_error_get(const char*& error_message)
     {
         error_message = exceptionMessage;
@@ -83,17 +171,17 @@ namespace ugridapi
 
     UGRID_API int ug_entity_get_node_location_enum()
     {
-        return static_cast<int>(ugrid::UGridEntityLocations::nodes);
+        return static_cast<int>(ugrid::UGridEntityLocations::node);
     }
 
     UGRID_API int ug_entity_get_edge_location_enum()
     {
-        return static_cast<int>(ugrid::UGridEntityLocations::edges);
+        return static_cast<int>(ugrid::UGridEntityLocations::edge);
     }
 
     UGRID_API int ug_entity_get_face_location_enum()
     {
-        return static_cast<int>(ugrid::UGridEntityLocations::faces);
+        return static_cast<int>(ugrid::UGridEntityLocations::face);
     }
 
     UGRID_API int ug_topology_get_network1d_enum()
@@ -135,8 +223,270 @@ namespace ugridapi
         {
             return ugrid_states[file_id].m_contacts.size();
         }
-
         return 0;
+    }
+
+    UGRID_API int ug_topology_count_attributes(int file_id, int topology_type, int topology_id, int& attributes_count)
+    {
+        int exit_code = Success;
+        try
+        {
+            if (ugrid_states.count(file_id) == 0)
+            {
+                throw std::invalid_argument("UGrid: The selected file_id does not exist.");
+            }
+
+            auto const topology = get_topology(file_id, topology_id, topology_type)->get_topology_variable();
+            attributes_count = get_attributes_names(topology).size();
+
+            return 0;
+        }
+        catch (...)
+        {
+            exit_code = HandleExceptions(std::current_exception());
+        }
+        return exit_code;
+    }
+
+    UGRID_API int ug_topology_get_attributes_names(int file_id, int topology_type, int topology_id, char* names)
+    {
+        int exit_code = Success;
+        try
+        {
+            if (ugrid_states.count(file_id) == 0)
+            {
+                throw std::invalid_argument("UGrid: The selected file_id does not exist.");
+            }
+
+            auto const topology = get_topology(file_id, topology_id, topology_type)->get_topology_variable();
+            auto const attribute_names = get_attributes_names(topology);
+
+            for (auto i = 0; i < attribute_names.size(); ++i)
+            {
+                ugrid::string_to_char_array(names, attribute_names[i], ugrid::name_long_length, ugrid::name_long_length * i);
+            }
+        }
+        catch (...)
+        {
+            exit_code = HandleExceptions(std::current_exception());
+        }
+        return exit_code;
+    }
+
+    UGRID_API int ug_topology_get_attributes_values(int file_id, int topology_type, int topology_id, char* values)
+    {
+        int exit_code = Success;
+        try
+        {
+            if (ugrid_states.count(file_id) == 0)
+            {
+                throw std::invalid_argument("UGrid: The selected file_id does not exist.");
+            }
+
+            auto const topology = get_topology(file_id, topology_id, topology_type)->get_topology_variable();
+            auto const attribute_values = get_attributes_values(topology);
+
+            for (auto i = 0; i < attribute_values.size(); ++i)
+            {
+                ugrid::string_to_char_array(values, attribute_values[i], ugrid::name_long_length, ugrid::name_long_length * i);
+            }
+        }
+        catch (...)
+        {
+            exit_code = HandleExceptions(std::current_exception());
+        }
+        return exit_code;
+    }
+
+    UGRID_API int ug_topology_count_data_variables(int file_id, int topology_type, int topology_id, int location, int& data_variable_count)
+    {
+        int exit_code = Success;
+        try
+        {
+            if (ugrid_states.count(file_id) == 0)
+            {
+                throw std::invalid_argument("UGrid: The selected file_id does not exist.");
+            }
+
+            auto const topology = get_topology(file_id, topology_id, topology_type);
+            auto const data_variables_names = topology->get_data_variables_names(location);
+
+            // count data variables
+            data_variable_count = data_variables_names.size();
+
+            return 0;
+        }
+        catch (...)
+        {
+            exit_code = HandleExceptions(std::current_exception());
+        }
+        return exit_code;
+    }
+
+    UGRID_API int ug_topology_get_data_variables_names(int file_id, int topology_type, int topology_id, int location, char* data_variables_names_result)
+    {
+
+        int exit_code = Success;
+        try
+        {
+            if (ugrid_states.count(file_id) == 0)
+            {
+                throw std::invalid_argument("UGrid: The selected file_id does not exist.");
+            }
+
+            auto const topology = get_topology(file_id, topology_id, topology_type);
+            auto const data_variables_names = topology->get_data_variables_names(location);
+
+            // count data variables
+            for (auto i = 0; i < data_variables_names.size(); ++i)
+            {
+                ugrid::string_to_char_array(data_variables_names_result, data_variables_names[i], ugrid::name_long_length, ugrid::name_long_length * i);
+            }
+
+            return 0;
+        }
+        catch (...)
+        {
+            exit_code = HandleExceptions(std::current_exception());
+        }
+        return exit_code;
+    }
+
+    UGRID_API int ug_topology_count_data_dimensions(int file_id, char const* data_variable_name, int& dimensions_count)
+    {
+        int exit_code = Success;
+        try
+        {
+            if (ugrid_states.count(file_id) == 0)
+            {
+                throw std::invalid_argument("UGrid: The selected file_id does not exist.");
+            }
+
+            // Get the variable name
+            const auto variable_name = ugrid::char_array_to_string(data_variable_name, ugrid::name_long_length);
+
+            // Get all variables
+            const auto vars = ugrid_states[file_id].m_ncFile->getVars();
+
+            // Find the variable name
+            const auto it = vars.find(variable_name);
+            if (it == vars.end())
+            {
+                throw std::invalid_argument("ug_topology_get_data_double: The variable name is not present in the netcdf file.");
+            }
+
+            // Get the dimensions
+            dimensions_count = it->second.getDims().size();
+
+            return 0;
+        }
+        catch (...)
+        {
+            exit_code = HandleExceptions(std::current_exception());
+        }
+        return exit_code;
+    }
+
+    UGRID_API int ug_topology_get_data_dimensions(int file_id, char const* data_variable_name, int* dimension_vec)
+    {
+        int exit_code = Success;
+        try
+        {
+            if (ugrid_states.count(file_id) == 0)
+            {
+                throw std::invalid_argument("UGrid: The selected file_id does not exist.");
+            }
+
+            // Get the variable name
+            const auto variable_name = ugrid::char_array_to_string(data_variable_name, ugrid::name_long_length);
+
+            // Get all variables
+            const auto vars = ugrid_states[file_id].m_ncFile->getVars();
+
+            // Find the variable name
+            const auto it = vars.find(variable_name);
+            if (it == vars.end())
+            {
+                throw std::invalid_argument("ug_topology_get_data_double: The variable name is not present in the netcdf file.");
+            }
+
+            // Get the dimensions
+            auto const dimensions = it->second.getDims();
+            for (auto i = 0; i < dimensions.size(); ++i)
+            {
+                dimension_vec[i] = dimensions[i].getSize();
+            }
+
+            return 0;
+        }
+        catch (...)
+        {
+            exit_code = HandleExceptions(std::current_exception());
+        }
+        return exit_code;
+    }
+
+    UGRID_API int ug_topology_get_data_double(int file_id, char const* data_variable_name, double* data)
+    {
+        int exit_code = Success;
+        try
+        {
+            if (ugrid_states.count(file_id) == 0)
+            {
+                throw std::invalid_argument("UGrid: The selected file_id does not exist.");
+            }
+
+            get_data_array(file_id, data_variable_name, *data);
+
+            return 0;
+        }
+        catch (...)
+        {
+            exit_code = HandleExceptions(std::current_exception());
+        }
+        return exit_code;
+    }
+
+    UGRID_API int ug_topology_get_data_int(int file_id, char const* data_variable_name, int* data)
+    {
+        int exit_code = Success;
+        try
+        {
+            if (ugrid_states.count(file_id) == 0)
+            {
+                throw std::invalid_argument("UGrid: The selected file_id does not exist.");
+            }
+
+            get_data_array(file_id, data_variable_name, data);
+
+            return 0;
+        }
+        catch (...)
+        {
+            exit_code = HandleExceptions(std::current_exception());
+        }
+        return exit_code;
+    }
+
+    UGRID_API int ug_topology_get_data_char(int file_id, char const* data_variable_name, char* data)
+    {
+        int exit_code = Success;
+        try
+        {
+            if (ugrid_states.count(file_id) == 0)
+            {
+                throw std::invalid_argument("UGrid: The selected file_id does not exist.");
+            }
+
+            get_data_array(file_id, data_variable_name, data);
+
+            return 0;
+        }
+        catch (...)
+        {
+            exit_code = HandleExceptions(std::current_exception());
+        }
+        return exit_code;
     }
 
     UGRID_API int ug_file_read_mode()

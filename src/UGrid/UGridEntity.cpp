@@ -57,7 +57,7 @@ UGridEntity::UGridEntity(
     : m_nc_file(nc_file),
       m_topology_variable(topology_variable),
       m_topology_attribute_variables(attribute_variables),
-      m_topology_attributes_names(attribute_variable_names),
+      m_topology_attributes_variables_values(attribute_variable_names),
       m_dimensions(dimensions)
 {
     m_entity_name = m_topology_variable.getName();
@@ -177,15 +177,15 @@ UGridEntity::get_location_variable_names(std::string const& location, std::strin
 void UGridEntity::define_topology_coordinates(UGridFileDimensions dimension, std::string const& long_name_pattern, std::string const& name_pattern)
 {
     std::string dimension_string;
-    if (dimension == UGridFileDimensions::nodes)
+    if (dimension == UGridFileDimensions::node)
     {
         dimension_string = "node";
     }
-    if (dimension == UGridFileDimensions::edges)
+    if (dimension == UGridFileDimensions::edge)
     {
         dimension_string = "edge";
     }
-    if (dimension == UGridFileDimensions::faces)
+    if (dimension == UGridFileDimensions::face)
     {
         dimension_string = "face";
     }
@@ -224,18 +224,8 @@ void UGridEntity::define_topology_coordinates(UGridFileDimensions dimension, std
 
 std::map<std::string, std::vector<netCDF::NcVar>>::const_iterator UGridEntity::find_attribute_variable_name_with_aliases(std::string const& variable_name) const
 {
-    // define topology variable aliases
-    static std::map<std::string, std::vector<std::string>> aliases{
-        {"node_id", {"node_id", "node_ids"}},
-        {"node_long_name", {"node_long_name", "node_long_names"}},
-        {"branch_id", {"branch_id", "branch_ids"}},
-        {"branch_long_name", {"branch_long_name", "branch_long_names"}},
-        {"contact_id", {"contact_id", "contact_ids"}},
-        {"contact_long_name", {"contact_long_name", "contact_long_names"}},
-        {"branch_length", {"branch_length", "branch_lengths"}}};
-
     auto iterator = m_topology_attribute_variables.end();
-    for (auto const& alias : aliases.at(variable_name))
+    for (auto const& alias : attribute_aliases.at(variable_name))
     {
         iterator = m_topology_attribute_variables.find(alias);
         if (iterator != m_topology_attribute_variables.end())
@@ -288,6 +278,7 @@ void UGridEntity::define_topological_variable(std::string const& topology_attrib
     // create topology variable
     auto const topology_attribute_variable = m_nc_file->addVar(string_builder.str(), nc_type, dimensions);
 
+    // create the attributes
     for (auto const& attribute : attributes)
     {
         topology_attribute_variable.putAtt(attribute.first, attribute.second);
@@ -358,7 +349,7 @@ void UGridEntity::define(char* entity_name, int start_index, std::string const& 
     m_topology_attributes.insert({topology_attribute.getName(), topology_attribute});
 
     // Define additional dimensions, maybe required later
-    m_dimensions.insert({UGridFileDimensions::ids, m_nc_file->addDim(name_length_dimension, name_length)});
-    m_dimensions.insert({UGridFileDimensions::long_names, m_nc_file->addDim(name_long_length_dimension, name_long_length)});
+    m_dimensions.insert({UGridFileDimensions::id, m_nc_file->addDim(name_length_dimension, name_length)});
+    m_dimensions.insert({UGridFileDimensions::long_name, m_nc_file->addDim(name_long_length_dimension, name_long_length)});
     m_dimensions.insert({UGridFileDimensions::Two, m_nc_file->addDim(two_string, 2)});
 }

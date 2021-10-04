@@ -10,6 +10,23 @@
 
 #include <boost/algorithm/string.hpp>
 
+static void rtrim(std::string& str)
+{
+    auto const isalnum_lambda = [](auto const& ch) { return std::isalnum(ch); };
+    str.erase(std::find_if(str.rbegin(), str.rend(), isalnum_lambda).base(), str.end());
+}
+
+static std::vector<std::string> split_string(std::string string_value, size_t num_tokens, size_t length_token)
+{
+    std::vector<std::string> result;
+    for (auto i = 0; i < num_tokens; ++i)
+    {
+        auto attribute_name = string_value.substr(i * length_token, length_token);
+        result.emplace_back(attribute_name);
+    }
+    return result;
+}
+
 TEST(ApiTest, InquireAndGet_OneMesh2D_ShouldReadMesh2d)
 {
     // Prepare
@@ -711,7 +728,6 @@ TEST(ApiTest, DefineAndPut_OneContact_ShouldWriteAContact)
                                                337, 22,
                                                353, 23});
     contacts.edges = edges.get();
-
     contacts.num_contacts = 23;
 
     std::stringstream ids;
@@ -739,4 +755,99 @@ TEST(ApiTest, DefineAndPut_OneContact_ShouldWriteAContact)
     // Close the file
     error_code = ugridapi::ug_file_close(file_id);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+}
+
+TEST(ApiTest, GetTopologyAttributes_OnResultFile_ShouldGetTopologyAttributes)
+{
+    std::string const file_path = TEST_FOLDER + "/ResultFile.nc";
+
+    // Open a file
+    int file_id = 0;
+    auto const file_mode = ugridapi::ug_file_read_mode();
+    auto error_code = ugridapi::ug_file_open(file_path.c_str(), file_mode, file_id);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+
+    // Counts the topology type
+    auto const topology_type = ugridapi::ug_topology_get_mesh1d_enum();
+    int attributes_count = 0;
+    error_code = ugridapi::ug_topology_count_attributes(file_id, topology_type, 0, attributes_count);
+    auto const long_names_length = ugridapi::ug_name_get_long_length();
+
+    std::unique_ptr<char> const topology_attributes_names(new char[attributes_count * long_names_length]);
+    error_code = ugridapi::ug_topology_get_attributes_names(file_id, topology_type, 0, topology_attributes_names.get());
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+
+    std::string topology_attributes_names_string(topology_attributes_names.get(), topology_attributes_names.get() + long_names_length * attributes_count);
+    auto const names = split_string(topology_attributes_names_string, attributes_count, long_names_length);
+    ASSERT_EQ(9, names.size());
+
+    std::unique_ptr<char> const topology_attributes_values(new char[attributes_count * long_names_length]);
+    error_code = ugridapi::ug_topology_get_attributes_values(file_id, topology_type, 0, topology_attributes_values.get());
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+
+    std::string topology_attributes_values_string(topology_attributes_values.get(), topology_attributes_values.get() + long_names_length * attributes_count);
+    auto const values = split_string(topology_attributes_values_string, attributes_count, long_names_length);
+    ASSERT_EQ(9, values.size());
+}
+
+TEST(ApiTest, GetDataVariables_OnResultFile_ShouldGetDataVariables)
+{
+    std::string const file_path = TEST_FOLDER + "/ResultFile.nc";
+
+    // Open a file
+    int file_id = 0;
+    auto const file_mode = ugridapi::ug_file_read_mode();
+    auto error_code = ugridapi::ug_file_open(file_path.c_str(), file_mode, file_id);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+
+    // Count the number of data variables on a specific topology and location
+    auto const topology_type = ugridapi::ug_topology_get_mesh1d_enum();
+    auto const location = ugridapi::ug_entity_get_node_location_enum();
+    int data_variable_count = 0;
+    error_code = ugridapi::ug_topology_count_data_variables(file_id, topology_type, 0, location, data_variable_count);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+    ASSERT_EQ(14, data_variable_count);
+
+    // Get the data variables names for the topology type, topology_id and location
+    auto const long_names_length = ugridapi::ug_name_get_long_length();
+    int topology_id = 0;
+    std::unique_ptr<char> const data_variables_names(new char[data_variable_count * long_names_length]);
+    ugridapi::ug_topology_get_data_variables_names(file_id, topology_type, topology_id, location, data_variables_names.get());
+
+    std::string data_variables_names_string(data_variables_names.get(), data_variables_names.get() + long_names_length * data_variable_count);
+    auto const names = split_string(data_variables_names_string, data_variable_count, long_names_length);
+    ASSERT_EQ(14, names.size());
+
+    int dimensions_count = 0;
+    std::string const variable_name_to_retrive = names[7];
+    error_code = ugridapi::ug_topology_count_data_dimensions(file_id, variable_name_to_retrive.c_str(), dimensions_count);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+
+    // Get the dimensions of data variable
+    std::unique_ptr<int> const dimensions(new int[dimensions_count]);
+    error_code = ugridapi::ug_topology_get_data_dimensions(file_id, variable_name_to_retrive.c_str(), dimensions.get());
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+    std::string dimension_vector(dimensions.get(), dimensions.get() + dimensions_count);
+
+    // Compute the total dimension
+    int total_dimension = 1;
+    for (auto const& d : dimension_vector)
+    {
+        total_dimension *= d;
+    }
+
+    // Get the data
+    std::unique_ptr<double> const data(new double[total_dimension]);
+    ugridapi::ug_topology_get_data_double(file_id, variable_name_to_retrive.c_str(), data.get());
+
+    // Assert the first 5 values
+    std::vector<double> data_vector(data.get(), data.get() + 5);
+    std::vector<double> data_expected_vector{
+        -5.0,
+        -5.0,
+        -5.0,
+        -5.0,
+        -5.0,
+    };
+    ASSERT_THAT(data_vector, ::testing::ContainerEq(data_expected_vector));
 }

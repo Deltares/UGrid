@@ -34,7 +34,7 @@
 /// @brief Contains the logic of the C++ static library
 namespace ugrid
 {
-    /// @brief A class for building ugrid variable names, starting with the entity names
+    /// @brief A class for building ugrid variable names, appending strings to the entity name
     class UGridVarAttributeStringBuilder
     {
     public:

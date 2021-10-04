@@ -29,13 +29,13 @@
 
 namespace ugridapi
 {
-    /// @brief A struct used to describe UGrid contacts in a C-compatible manner
+    /// @brief A struct used to describe UGrid contact in a C-compatible manner
     struct Contacts
     {
         /// @brief The name of the contact entity
         char* name = nullptr;
 
-        /// @brief The actual contacts, expressed as pair of indices from a mesh index to another mesh index
+        /// @brief The actual contact, expressed as pair of indices from a mesh index to another mesh index
         int* edges = nullptr;
 
         /// @brief For each contact its type
@@ -47,10 +47,10 @@ namespace ugridapi
         /// @brief The long name of each contact
         char* contact_name_long = nullptr;
 
-        /// @brief The name of the mesh where the contacts start
+        /// @brief The name of the mesh where the contact start
         char* mesh_from_name = nullptr;
 
-        /// @brief The name of the mesh where the contacts ends
+        /// @brief The name of the mesh where the contact ends
         char* mesh_to_name = nullptr;
 
         /// @brief The location type (node, edge or face) at the contact start
@@ -59,7 +59,7 @@ namespace ugridapi
         /// @brief The location type (node, edge or face) at the contact end
         int mesh_to_location = 0;
 
-        /// @brief The number of contacts
+        /// @brief The number of contact
         int num_contacts = 0;
     };
 } // namespace ugridapi

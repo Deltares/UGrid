@@ -73,10 +73,10 @@ namespace ugridapi
         /// @brief The edge y coordinate
         double* edge_y = nullptr;
 
-        /// @brief The number of nodes
+        /// @brief The number of node
         int num_nodes = 0;
 
-        /// @brief The number of edges
+        /// @brief The number of edge
         int num_edges = 0;
 
         /// @brief 1 If coordinates are in a spherical system, 0 otherwise

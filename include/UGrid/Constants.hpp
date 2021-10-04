@@ -26,6 +26,7 @@
 //------------------------------------------------------------------------------
 
 #pragma once
+#include <map>
 #include <string>
 
 /// \namespace ugrid
@@ -33,32 +34,32 @@
 namespace ugrid
 {
     /// @brief The UGrid entity locations
-    enum class UGridEntityLocations
+    enum UGridEntityLocations
     {
-        nodes,
-        edges,
-        faces,
-        layer,
-        layer_interface,
-        vertical,
-        contact,
-        invalid_location
+        node = 0,
+        edge = 1,
+        face = 2,
+        layer = 3,
+        layer_interface = 4,
+        vertical = 5,
+        contact = 6,
+        invalid_location = 7
     };
 
     /// @brief The dimensions on a UGrid file
     enum class UGridFileDimensions
     {
         Two,
-        nodes,
-        nodes_geometry,
-        edges,
-        faces,
+        node,
+        node_geometry,
+        edge,
+        face,
         layer,
         layer_interface,
-        max_face_nodes,
-        contacts,
-        ids,
-        long_names
+        max_face_node,
+        contact,
+        id,
+        long_name
     };
 
     /// @brief The UGrid Entity coordinates
@@ -77,9 +78,19 @@ namespace ugrid
 
     int const int_missing_value = -999;                                         ///< integer missing value
     double const double_missing_value = -999.0;                                 ///< double missing value
-    int const num_face_nodes_max = 6;                                           ///< default maximum number of nodes per face
+    int const num_face_nodes_max = 6;                                           ///< default maximum number of node per face
     std::string const two_string("Two");                                        ///< Name of variable dimension containing two
     std::string const name_length_dimension("name_length_dimension");           ///< Name of variable dimension containing two
     std::string const name_long_length_dimension("name_long_length_dimension"); ///< Name of variable dimension containing two
+
+    // define topology variable aliases
+    static const std::map<std::string, std::vector<std::string>> attribute_aliases{
+        {"node_id", {"node_id", "node_ids"}},
+        {"node_long_name", {"node_long_name", "node_long_names"}},
+        {"branch_id", {"branch_id", "branch_ids"}},
+        {"branch_long_name", {"branch_long_name", "branch_long_names"}},
+        {"contact_id", {"contact_id", "contact_ids"}},
+        {"contact_long_name", {"contact_long_name", "contact_long_names"}},
+        {"branch_length", {"branch_length", "branch_lengths"}}};
 
 } // namespace ugrid

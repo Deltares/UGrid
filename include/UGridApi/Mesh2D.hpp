@@ -40,7 +40,7 @@ namespace ugridapi
         /// @brief The edge node connectivity
         int* edge_node = nullptr;
 
-        /// @brief The nodes composing each face
+        /// @brief The node composing each face
         int* face_node = nullptr;
 
         /// @brief The node x coordinates
@@ -61,13 +61,13 @@ namespace ugridapi
         /// @brief The face y coordinates
         double* face_y = nullptr;
 
-        /// @brief The edges composing each face
+        /// @brief The edge composing each face
         int* edge_face = nullptr;
 
-        /// @brief For each face, the edges composing it
+        /// @brief For each face, the edge composing it
         int* face_edge = nullptr;
 
-        /// @brief For each face, the neighboring faces
+        /// @brief For each face, the neighboring face
         int* face_face = nullptr;
 
         /// @brief The node z coordinates
@@ -91,13 +91,13 @@ namespace ugridapi
         /// @brief TODO to be detailed
         double* volume_coordinates = nullptr;
 
-        /// @brief The number of nodes
+        /// @brief The number of node
         int num_nodes = 0;
 
-        /// @brief The number of edges
+        /// @brief The number of edge
         int num_edges = 0;
 
-        /// @brief The number of faces
+        /// @brief The number of face
         int num_faces = 0;
 
         /// @brief The number of layers
@@ -106,7 +106,7 @@ namespace ugridapi
         /// @brief The start index used in arrays using indices, such as branch_node
         int start_index = 0;
 
-        /// @brief The maximum number of face nodes
+        /// @brief The maximum number of face node
         int num_face_nodes_max = 4;
 
         /// @brief 1 if coordinates are in a spherical system, 0 otherwise
