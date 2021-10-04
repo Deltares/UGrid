@@ -533,10 +533,12 @@ template&lt;typename T &gt; </div>
 <p>Defines a new topology variable. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">topology_attribute</td><td>[in] The . </td></tr>
-    <tr><td class="paramname">nc_type</td><td>[in] The variable type. </td></tr>
+    <tr><td class="paramname">topology_attribute_name</td><td>[in] The name of the attribute in topology associated with the variable </td></tr>
+    <tr><td class="paramname">variable_suffix</td><td>[in] The variable suffix (e.g. _mesh1d, mesh1d is the suffix) </td></tr>
+    <tr><td class="paramname">nc_type</td><td>[in] The variable type (int, float, char). </td></tr>
     <tr><td class="paramname">ugridfile_dimensions</td><td>[in] The variable dimensions (multidimensional variable are expressed as vectors). </td></tr>
-    <tr><td class="paramname">attributes</td><td>[in] The variable attributes. </td></tr>
+    <tr><td class="paramname">attributes</td><td>[in] Any additional variable attributes. </td></tr>
+    <tr><td class="paramname">add_fill_value</td><td>[in] Boolean to determine if a fill value should be used for empty data. </td></tr>
   </table>
   </dd>
 </dl>
