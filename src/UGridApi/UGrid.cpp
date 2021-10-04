@@ -309,7 +309,10 @@ namespace ugridapi
             }
 
             auto const topology = get_topology(file_id, topology_id, topology_type);
-            auto const data_variables_names = topology->get_data_variables_names(location);
+
+            auto const location_string = ugrid::from_location_integer_to_location_string(location);
+
+            auto const data_variables_names = topology->get_data_variables_names(location_string);
 
             // count data variables
             data_variable_count = data_variables_names.size();
@@ -335,7 +338,10 @@ namespace ugridapi
             }
 
             auto const topology = get_topology(file_id, topology_id, topology_type);
-            auto const data_variables_names = topology->get_data_variables_names(location);
+
+            auto const location_string = ugrid::from_location_integer_to_location_string(location);
+
+            auto const data_variables_names = topology->get_data_variables_names(location_string);
 
             // count data variables
             for (auto i = 0; i < data_variables_names.size(); ++i)

@@ -101,76 +101,31 @@ namespace ugrid
             return result;
         }
 
+        /// @brief Get the number of topological attributes
+        /// @return The number of topological attributes
         auto get_num_attributes() const
         {
             return m_topology_attributes_variables_values.size();
         }
 
+        /// @brief Get the topology variable
+        /// @return A copy of m_topology_variable
         auto get_topology_variable() const
         {
             return m_topology_variable;
         }
 
-        [[nodiscard]] std::vector<std::string> get_attributes_names() const
-        {
-            std::vector<std::string> result;
-            result.reserve(m_topology_attributes_variables_values.size());
-            for (auto const& v : m_topology_attributes_variables_values)
-            {
-                result.emplace_back(v.first);
-            }
-            return result;
-        }
-
-        [[nodiscard]] std::vector<std::string> get_attributes_values() const
-        {
-            std::vector<std::string> result;
-            for (auto const& v : m_topology_attributes_variables_values)
-            {
-                for (auto const& s : v.second)
-                {
-                    result.emplace_back(s);
-                }
-            }
-            return result;
-        }
-
-        std::string get_name() const
+        /// @brief Gets the entity name
+        /// @return The entity name
+        [[nodiscard]] std::string get_name() const
         {
             return m_entity_name;
         }
 
-        std::vector<std::string> get_data_variables_names(int location)
-        {
-            auto const variables = m_nc_file->getVars();
-            auto const location_type = from_location_integer_to_location_string(location);
-
-            std::string const mesh_attribute_name = "mesh";
-            std::string const location_attribute_name = "location";
-            std::vector<std::string> variable_names;
-            for (auto const& v : variables)
-            {
-                auto const variable_attributes = v.second.getAtts();
-                auto const mesh_it = variable_attributes.find(mesh_attribute_name);
-                auto const location_it = variable_attributes.find(location_attribute_name);
-
-                if (mesh_it == variable_attributes.end() || location_it == variable_attributes.end())
-                {
-                    continue;
-                }
-
-                std::string variable_location_type;
-                location_it->second.getValues(variable_location_type);
-                std::string variable_mesh_name;
-                mesh_it->second.getValues(variable_mesh_name);
-
-                if (variable_mesh_name == m_entity_name && variable_location_type == location_type)
-                {
-                    variable_names.emplace_back(v.first);
-                }
-            }
-            return variable_names;
-        }
+        /// @brief Gets the names of all data variables associated with a specific location
+        /// @param location_string The location string (e.g. node, edge or face)
+        /// @return The variables names
+        [[nodiscard]] std::vector<std::string> get_data_variables_names(std::string const& location_string);
 
     protected:
         /// @brief Method collecting common operations for defining a UGrid entity to file
