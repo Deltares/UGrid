@@ -158,10 +158,12 @@ namespace ugrid
         void define_topological_attribute(std::string const& attribute_name, std::string const& attribute_value = "");
 
         /// @brief Defines a new topology variable
-        /// @param topology_attribute [in] The .
-        /// @param nc_type [in] The variable type.
+        /// @param topology_attribute_name [in] The name of the attribute in topology associated with the variable
+        /// @param variable_suffix [in] The variable suffix (e.g. _mesh1d, mesh1d is the suffix)
+        /// @param nc_type [in] The variable type (int, float, char).
         /// @param ugridfile_dimensions [in] The variable dimensions (multidimensional variable are expressed as vectors).
-        /// @param attributes [in] The variable attributes.
+        /// @param attributes [in] Any additional variable attributes.
+        /// @param  add_fill_value [in] Boolean to determine if a fill value should be used for empty data.
         void define_topological_variable(std::string const& topology_attribute_name,
                                          std::string const& variable_suffix,
                                          netCDF::NcType nc_type,
