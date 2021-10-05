@@ -264,7 +264,7 @@ TEST(ApiTest, InquireAndGet_OneNetwork1D_ShouldReadNetwork1D)
     network1d.geometry_nodes_y = geometry_nodes_y.get();
 
     std::unique_ptr<int> const geometry_nodes_count(new int[network1d.num_branches]);
-    network1d.geometry_nodes_count = geometry_nodes_count.get();
+    network1d.num_branch_geometry_nodes = geometry_nodes_count.get();
 
     std::unique_ptr<char> const node_id(new char[name_length * network1d.num_nodes]);
     network1d.node_name_id = node_id.get();
@@ -286,7 +286,7 @@ TEST(ApiTest, InquireAndGet_OneNetwork1D_ShouldReadNetwork1D)
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
     //// Asserts
-    ASSERT_EQ(network1d.geometry_nodes_count[0], 25);
+    ASSERT_EQ(network1d.num_branch_geometry_nodes[0], 25);
     std::string node_ids_string(node_id.get(), node_id.get() + name_length * network1d.num_nodes);
     std::string node_long_names_string(node_long_name.get(), node_long_name.get() + long_names_length * network1d.num_nodes);
     for (auto i = 0; i < network1d.num_nodes; ++i)
@@ -378,7 +378,7 @@ TEST(ApiTest, DefineAndPut_OneNetwork1D_ShouldWriteData)
     network1d.geometry_nodes_y = geometry_nodes_y.get();
 
     std::unique_ptr<int> const geometry_nodes_count(new int[]{25});
-    network1d.geometry_nodes_count = geometry_nodes_count.get();
+    network1d.num_branch_geometry_nodes = geometry_nodes_count.get();
 
     network1d.num_geometry_nodes = 25;
 

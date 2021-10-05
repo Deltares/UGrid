@@ -305,9 +305,9 @@ void Network1D::put(ugridapi::Network1D const& network1d)
         it->second.at(1).putVar(network1d.geometry_nodes_y);
     }
 
-    if (auto const it = m_network_geometry_attribute_variables.find("part_node_count"); network1d.geometry_nodes_count != nullptr && it != m_network_geometry_attribute_variables.end())
+    if (auto const it = m_network_geometry_attribute_variables.find("part_node_count"); network1d.num_branch_geometry_nodes != nullptr && it != m_network_geometry_attribute_variables.end())
     {
-        it->second.at(0).putVar(network1d.geometry_nodes_count);
+        it->second.at(0).putVar(network1d.num_branch_geometry_nodes);
     }
 }
 
@@ -383,9 +383,9 @@ void Network1D::get(ugridapi::Network1D& network1d) const
     {
         it->second.at(1).getVar(network1d.geometry_nodes_y);
     }
-    if (auto const it = m_network_geometry_attribute_variables.find("part_node_count"); network1d.geometry_nodes_count != nullptr && it != m_network_geometry_attribute_variables.end())
+    if (auto const it = m_network_geometry_attribute_variables.find("part_node_count"); network1d.num_branch_geometry_nodes != nullptr && it != m_network_geometry_attribute_variables.end())
     {
-        it->second.at(0).getVar(network1d.geometry_nodes_count);
+        it->second.at(0).getVar(network1d.num_branch_geometry_nodes);
     }
 }
 

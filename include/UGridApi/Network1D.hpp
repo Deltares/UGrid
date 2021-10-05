@@ -69,7 +69,7 @@ namespace ugridapi
         double* geometry_nodes_y = nullptr;
 
         /// @brief The number of geometry node on each branch
-        int* geometry_nodes_count = nullptr;
+        int* num_branch_geometry_nodes = nullptr;
 
         /// @brief The number of geometry node
         int num_geometry_nodes = 0;
