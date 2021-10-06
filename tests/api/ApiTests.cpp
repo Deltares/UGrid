@@ -21,8 +21,12 @@ TEST(ApiTest, InquireAndGet_OneMesh2D_ShouldReadMesh2d)
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
     // Get the number of topologies
-    auto topology_type = ugridapi::ug_topology_get_mesh2d_enum();
-    auto const num_mesh2d_topologies = ugridapi::ug_topology_get_count(file_id, topology_type);
+    int topology_type;
+    error_code = ugridapi::ug_topology_get_mesh2d_enum(topology_type);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+    int num_mesh2d_topologies;
+    error_code = ugridapi::ug_topology_get_count(file_id, topology_type, num_mesh2d_topologies);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
     ASSERT_EQ(num_mesh2d_topologies, 1);
 
     // Get the dimensions
@@ -31,7 +35,10 @@ TEST(ApiTest, InquireAndGet_OneMesh2D_ShouldReadMesh2d)
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
     // Allocate data variables
-    auto const name_length = ugridapi::ug_name_get_length();
+    int name_length;
+    error_code = ugridapi::ug_name_get_length(name_length);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+
     std::unique_ptr<char> const name(new char[name_length]);
     mesh2d.name = name.get();
     std::unique_ptr<double> const node_x(new double[mesh2d.num_nodes]);
@@ -235,8 +242,12 @@ TEST(ApiTest, InquireAndGet_OneNetwork1D_ShouldReadNetwork1D)
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
     // get the number of topologies
-    auto topology_type = ugridapi::ug_topology_get_network1d_enum();
-    auto const num_topologies = ugridapi::ug_topology_get_count(file_id, topology_type);
+    int topology_type;
+    error_code = ugridapi::ug_topology_get_network1d_enum(topology_type);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+    int num_topologies;
+    error_code = ugridapi::ug_topology_get_count(file_id, topology_type, num_topologies);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
     ASSERT_EQ(num_topologies, 1);
 
     // get the dimensions
@@ -245,8 +256,12 @@ TEST(ApiTest, InquireAndGet_OneNetwork1D_ShouldReadNetwork1D)
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
     // Allocate data variables
-    auto const name_length = ugridapi::ug_name_get_length();
-    auto const long_names_length = ugridapi::ug_name_get_long_length();
+    int name_length;
+    error_code = ugridapi::ug_name_get_length(name_length);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+    int long_names_length;
+    error_code = ugridapi::ug_name_get_long_length(long_names_length);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
     std::unique_ptr<double> const node_x(new double[network1d.num_nodes]);
     network1d.node_x = node_x.get();
@@ -417,8 +432,12 @@ TEST(ApiTest, InquireAndGet_OneMesh1D_ShouldReadMesh1D)
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
     // get the number of topologies
-    auto topology_type = ugridapi::ug_topology_get_mesh1d_enum();
-    auto const num_topologies = ugridapi::ug_topology_get_count(file_id, topology_type);
+    int topology_type;
+    error_code = ugridapi::ug_topology_get_mesh1d_enum(topology_type);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+    int num_topologies;
+    error_code = ugridapi::ug_topology_get_count(file_id, topology_type, num_topologies);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
     ASSERT_EQ(num_topologies, 1);
 
     // get the dimensions
@@ -429,8 +448,12 @@ TEST(ApiTest, InquireAndGet_OneMesh1D_ShouldReadMesh1D)
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
     // Allocate data variables
-    auto const name_length = ugridapi::ug_name_get_length();
-    auto const long_names_length = ugridapi::ug_name_get_long_length();
+    int name_length;
+    error_code = ugridapi::ug_name_get_length(name_length);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+    int long_names_length;
+    error_code = ugridapi::ug_name_get_long_length(long_names_length);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
     std::unique_ptr<char> const name(new char[name_length]);
     mesh1d.name = name.get();
@@ -575,8 +598,12 @@ TEST(ApiTest, InquireAndGet_OneContact_ShouldReadContact)
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
     // get the number of topologies
-    auto topology_type = ugridapi::ug_topology_get_contacts_enum();
-    auto const num_topologies = ugridapi::ug_topology_get_count(file_id, topology_type);
+    int topology_type;
+    error_code = ugridapi::ug_topology_get_contacts_enum(topology_type);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+    int num_topologies;
+    error_code = ugridapi::ug_topology_get_count(file_id, topology_type, num_topologies);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
     ASSERT_EQ(num_topologies, 1);
 
     // get the dimensions
@@ -586,8 +613,12 @@ TEST(ApiTest, InquireAndGet_OneContact_ShouldReadContact)
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
     // Allocate data variables
-    auto const name_length = ugridapi::ug_name_get_length();
-    auto const long_names_length = ugridapi::ug_name_get_long_length();
+    int name_length;
+    error_code = ugridapi::ug_name_get_length(name_length);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+    int long_names_length;
+    error_code = ugridapi::ug_name_get_long_length(long_names_length);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
     std::unique_ptr<char> const name(new char[name_length]);
     contacts.name = name.get();
@@ -691,9 +722,14 @@ TEST(ApiTest, DefineAndPut_OneContact_ShouldWriteAContact)
     std::unique_ptr<char> const mesh_to_name(new char[]{"mesh1d                                 "});
     contacts.mesh_to_name = mesh_to_name.get();
 
-    contacts.mesh_from_location = ugridapi::ug_entity_get_face_location_enum();
+    int face_location_enum;
+    error_code = ugridapi::ug_entity_get_face_location_enum(face_location_enum);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+    contacts.mesh_from_location = face_location_enum;
 
-    contacts.mesh_to_location = ugridapi::ug_entity_get_face_location_enum();
+    ugridapi::ug_entity_get_face_location_enum(face_location_enum);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+    contacts.mesh_to_location = face_location_enum;
 
     std::unique_ptr<int> const contact_type(new int[]{3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3});
     contacts.contact_type = contact_type.get();
@@ -762,10 +798,17 @@ TEST(ApiTest, GetTopologyAttributes_OnResultFile_ShouldGetTopologyAttributes)
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
     // Counts the topology type
-    auto const topology_type = ugridapi::ug_topology_get_mesh1d_enum();
+    int topology_type;
+    error_code = ugridapi::ug_topology_get_mesh1d_enum(topology_type);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+
     int attributes_count = 0;
     error_code = ugridapi::ug_topology_count_attributes(file_id, topology_type, 0, attributes_count);
-    auto const long_names_length = ugridapi::ug_name_get_long_length();
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+
+    int long_names_length;
+    error_code = ugridapi::ug_name_get_long_length(long_names_length);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
     std::unique_ptr<char> const topology_attributes_names(new char[attributes_count * long_names_length]);
     error_code = ugridapi::ug_topology_get_attributes_names(file_id, topology_type, 0, topology_attributes_names.get());
@@ -820,15 +863,22 @@ TEST(ApiTest, GetDataVariables_OnResultFile_ShouldGetDataVariables)
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
     // Count the number of data variables on a specific topology and location
-    auto const topology_type = ugridapi::ug_topology_get_mesh1d_enum();
-    auto const location = ugridapi::ug_entity_get_node_location_enum();
+    int topology_type;
+    error_code = ugridapi::ug_topology_get_mesh1d_enum(topology_type);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+    int location;
+    error_code = ugridapi::ug_entity_get_node_location_enum(location);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
     int data_variable_count = 0;
     error_code = ugridapi::ug_topology_count_data_variables(file_id, topology_type, 0, location, data_variable_count);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
     ASSERT_EQ(14, data_variable_count);
 
     // Get the data variables names for the topology type, topology_id and location
-    auto const long_names_length = ugridapi::ug_name_get_long_length();
+    int long_names_length;
+    error_code = ugridapi::ug_name_get_long_length(long_names_length);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+
     int topology_id = 0;
     std::unique_ptr<char> const data_variables_names(new char[data_variable_count * long_names_length]);
     ugridapi::ug_topology_get_data_variables_names(file_id, topology_type, topology_id, location, data_variables_names.get());

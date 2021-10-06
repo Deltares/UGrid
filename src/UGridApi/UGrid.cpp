@@ -142,7 +142,7 @@ namespace ugridapi
         // Gets all variables
         const auto vars = ugrid_states[file_id].m_ncFile->getVars();
 
-        // Finds the the data variables using its name
+        // Finds the data variables using its name
         const auto it = vars.find(variable_name);
         if (it == vars.end())
         {
@@ -159,71 +159,80 @@ namespace ugridapi
         return Success;
     }
 
-    UGRID_API int ug_name_get_length()
+    UGRID_API int ug_name_get_length(int& length)
     {
-        return ugrid::name_length;
+        length = static_cast<int>(ugrid::name_length);
+        return Success;
     }
 
-    UGRID_API int ug_name_get_long_length()
+    UGRID_API int ug_name_get_long_length(int& length)
     {
-        return ugrid::name_long_length;
+        length = static_cast<int>(ugrid::name_long_length);
+        return Success;
     }
 
-    UGRID_API int ug_entity_get_node_location_enum()
+    UGRID_API int ug_entity_get_node_location_enum(int& location)
     {
-        return static_cast<int>(ugrid::UGridEntityLocations::node);
+        location = static_cast<int>(ugrid::UGridEntityLocations::node);
+        return Success;
     }
 
-    UGRID_API int ug_entity_get_edge_location_enum()
+    UGRID_API int ug_entity_get_edge_location_enum(int& location)
     {
-        return static_cast<int>(ugrid::UGridEntityLocations::edge);
+        location = static_cast<int>(ugrid::UGridEntityLocations::edge);
+        return Success;
     }
 
-    UGRID_API int ug_entity_get_face_location_enum()
+    UGRID_API int ug_entity_get_face_location_enum(int& location)
     {
-        return static_cast<int>(ugrid::UGridEntityLocations::face);
+        location = static_cast<int>(ugrid::UGridEntityLocations::face);
+        return Success;
     }
 
-    UGRID_API int ug_topology_get_network1d_enum()
+    UGRID_API int ug_topology_get_network1d_enum(int& topology_enum)
     {
-        return Network1dTopology;
+        topology_enum = static_cast<int>(Network1dTopology);
+        return Success;
     }
 
-    UGRID_API int ug_topology_get_mesh1d_enum()
+    UGRID_API int ug_topology_get_mesh1d_enum(int& topology_enum)
     {
-        return Mesh1dTopology;
+        topology_enum = static_cast<int>(Mesh1dTopology);
+        return Success;
     }
 
-    UGRID_API int ug_topology_get_mesh2d_enum()
+    UGRID_API int ug_topology_get_mesh2d_enum(int& topology_enum)
     {
-        return Mesh2dTopology;
+        topology_enum = static_cast<int>(Mesh2dTopology);
+        return Success;
     }
 
-    UGRID_API int ug_topology_get_contacts_enum()
+    UGRID_API int ug_topology_get_contacts_enum(int& topology_enum)
     {
-        return ContactsTopology;
+        topology_enum = static_cast<int>(ContactsTopology);
+        return Success;
     }
 
-    UGRID_API int ug_topology_get_count(int file_id, int topology_type)
+    UGRID_API int ug_topology_get_count(int file_id, int topology_type, int& topology_count)
     {
 
         if (topology_type == Network1dTopology)
         {
-            return ugrid_states[file_id].m_network1d.size();
+            topology_count = static_cast<int>(ugrid_states[file_id].m_network1d.size());
         }
         if (topology_type == Mesh1dTopology)
         {
-            return ugrid_states[file_id].m_mesh1d.size();
+            topology_count = static_cast<int>(ugrid_states[file_id].m_mesh1d.size());
         }
         if (topology_type == Mesh2dTopology)
         {
-            return ugrid_states[file_id].m_mesh2d.size();
+            topology_count = static_cast<int>(ugrid_states[file_id].m_mesh2d.size());
         }
         if (topology_type == ContactsTopology)
         {
-            return ugrid_states[file_id].m_contacts.size();
+            topology_count = static_cast<int>(ugrid_states[file_id].m_contacts.size());
         }
-        return 0;
+        return Success;
     }
 
     UGRID_API int ug_topology_count_attributes(int file_id, int topology_type, int topology_id, int& attributes_count)
@@ -238,8 +247,6 @@ namespace ugridapi
 
             auto const topology = get_topology(file_id, topology_id, topology_type)->get_topology_variable();
             attributes_count = get_attributes_names(topology).size();
-
-            return 0;
         }
         catch (...)
         {
@@ -316,8 +323,6 @@ namespace ugridapi
 
             // count data variables
             data_variable_count = data_variables_names.size();
-
-            return 0;
         }
         catch (...)
         {
@@ -348,8 +353,6 @@ namespace ugridapi
             {
                 ugrid::string_to_char_array(data_variables_names_result, data_variables_names[i], ugrid::name_long_length, ugrid::name_long_length * i);
             }
-
-            return 0;
         }
         catch (...)
         {
@@ -383,8 +386,6 @@ namespace ugridapi
 
             // Get the dimensions
             dimensions_count = it->second.getDims().size();
-
-            return 0;
         }
         catch (...)
         {
@@ -422,8 +423,6 @@ namespace ugridapi
             {
                 dimension_vec[i] = dimensions[i].getSize();
             }
-
-            return 0;
         }
         catch (...)
         {
@@ -443,8 +442,6 @@ namespace ugridapi
             }
 
             get_data_array(file_id, data_variable_name, *data);
-
-            return 0;
         }
         catch (...)
         {
@@ -464,8 +461,6 @@ namespace ugridapi
             }
 
             get_data_array(file_id, data_variable_name, data);
-
-            return 0;
         }
         catch (...)
         {
@@ -485,8 +480,6 @@ namespace ugridapi
             }
 
             get_data_array(file_id, data_variable_name, data);
-
-            return 0;
         }
         catch (...)
         {

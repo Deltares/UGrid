@@ -72,45 +72,55 @@ namespace ugridapi
 
         /// @brief Gets the length of a name
         /// @return The length of a name
-        UGRID_API int ug_name_get_length();
+        /// @return Error code
+        UGRID_API int ug_name_get_length(int& length);
 
         /// @brief Gets the length of a long name
         /// @return The length of a long name
-        UGRID_API int ug_name_get_long_length();
+        /// @return Error code
+        UGRID_API int ug_name_get_long_length(int& length);
 
         /// @brief Gets the integer identifying a node location
         /// @return The integer identifying a node location
-        UGRID_API int ug_entity_get_node_location_enum();
+        /// @return Error code
+        UGRID_API int ug_entity_get_node_location_enum(int& location);
 
         /// @brief Gets the integer identifying an edge location
         /// @return The integer identifying an edge location
-        UGRID_API int ug_entity_get_edge_location_enum();
+        /// @return Error code
+        UGRID_API int ug_entity_get_edge_location_enum(int& location);
 
         /// @brief Gets the integer identifying an face location
         /// @return The integer identifying the face location
-        UGRID_API int ug_entity_get_face_location_enum();
+        /// @return Error code
+        UGRID_API int ug_entity_get_face_location_enum(int& location);
 
         /// @brief Gets the integer identifying the network topology type
         /// @return The integer identifying the network topology type
-        UGRID_API int ug_topology_get_network1d_enum();
+        /// @return Error code
+        UGRID_API int ug_topology_get_network1d_enum(int& topology_enum);
 
         /// @brief Gets the integer identifying the mesh1d topology type
         /// @return The integer identifying the mesh1d topology type
-        UGRID_API int ug_topology_get_mesh1d_enum();
+        /// @return Error code
+        UGRID_API int ug_topology_get_mesh1d_enum(int& topology_enum);
 
         /// @brief Gets the integer identifying the mesh2d topology type
         /// @return The integer identifying the mesh2d topology type
-        UGRID_API int ug_topology_get_mesh2d_enum();
+        /// @return Error code
+        UGRID_API int ug_topology_get_mesh2d_enum(int& topology_enum);
 
         /// @brief Gets the integer identifying the contact topology type
         /// @return The integer identifying the contact topology type
-        UGRID_API int ug_topology_get_contacts_enum();
+        /// @return Error code
+        UGRID_API int ug_topology_get_contacts_enum(int& topology_enum);
 
         /// @brief Gets the number of topologies of a specific type
         /// @param file_id The file id
         /// @param topology_type The topology type
         /// @return The number of topologies of the specific type
-        UGRID_API int ug_topology_get_count(int file_id, int topology_type);
+        /// @return Error code
+        UGRID_API int ug_topology_get_count(int file_id, int topology_type, int& topology_count);
 
         /// @brief For a specific topology, counts how many attributes are present
         /// @param file_id [in] The file id
