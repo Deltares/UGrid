@@ -446,9 +446,13 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Gets the integer identifying an edge location. </p>
-<dl class="section return"><dt>Returns</dt><dd>The integer identifying an edge location </dd>
-<dd>
-Error code </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">location</td><td>[out] The integer identifying an edge location </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Error code </dd></dl>
 
 </div>
 </div>
@@ -469,9 +473,13 @@ Error code </dd></dl>
 </div><div class="memdoc">
 
 <p>Gets the integer identifying an face location. </p>
-<dl class="section return"><dt>Returns</dt><dd>The integer identifying the face location </dd>
-<dd>
-Error code </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">location</td><td>[out] The integer identifying a face location </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Error code </dd></dl>
 
 </div>
 </div>
@@ -492,9 +500,13 @@ Error code </dd></dl>
 </div><div class="memdoc">
 
 <p>Gets the integer identifying a node location. </p>
-<dl class="section return"><dt>Returns</dt><dd>The integer identifying a node location </dd>
-<dd>
-Error code </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">location</td><td>[out] The integer identifying a node location </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Error code </dd></dl>
 
 </div>
 </div>
@@ -1072,6 +1084,12 @@ Error code </dd></dl>
 </div><div class="memdoc">
 
 <p>Gets the length of a name. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">length</td><td>[out] The length of names </td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section return"><dt>Returns</dt><dd>The length of a name </dd>
 <dd>
 Error code </dd></dl>
@@ -1095,7 +1113,7 @@ Error code </dd></dl>
 </div><div class="memdoc">
 
 <p>Gets the length of a long name. </p>
-<dl class="section return"><dt>Returns</dt><dd>The length of a long name </dd>
+<dl class="section return"><dt>Returns</dt><dd>length [out] The length of long names </dd>
 <dd>
 Error code </dd></dl>
 
@@ -1558,9 +1576,13 @@ Error code </dd></dl>
 </div><div class="memdoc">
 
 <p>Gets the integer identifying the contact topology type. </p>
-<dl class="section return"><dt>Returns</dt><dd>The integer identifying the contact topology type </dd>
-<dd>
-Error code </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">topology_enum</td><td>[out] The integer identifying the contact topology type </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Error code </dd></dl>
 
 </div>
 </div>
@@ -1599,14 +1621,13 @@ Error code </dd></dl>
 <p>Gets the number of topologies of a specific type. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">file_id</td><td>The file id </td></tr>
-    <tr><td class="paramname">topology_type</td><td>The topology type </td></tr>
+    <tr><td class="paramname">file_id</td><td>[in] The file id </td></tr>
+    <tr><td class="paramname">topology_type</td><td>[in] The topology type </td></tr>
+    <tr><td class="paramname">topology_count</td><td>[out] The number of topologies of the specific type </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The number of topologies of the specific type </dd>
-<dd>
-Error code </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Error code </dd></dl>
 
 </div>
 </div>
@@ -1866,9 +1887,13 @@ Error code </dd></dl>
 </div><div class="memdoc">
 
 <p>Gets the integer identifying the mesh1d topology type. </p>
-<dl class="section return"><dt>Returns</dt><dd>The integer identifying the mesh1d topology type </dd>
-<dd>
-Error code </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">topology_enum</td><td>[out] The integer identifying the mesh1d topology type </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Error code </dd></dl>
 
 </div>
 </div>
@@ -1889,9 +1914,13 @@ Error code </dd></dl>
 </div><div class="memdoc">
 
 <p>Gets the integer identifying the mesh2d topology type. </p>
-<dl class="section return"><dt>Returns</dt><dd>The integer identifying the mesh2d topology type </dd>
-<dd>
-Error code </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">topology_enum</td><td>[out] The integer identifying the mesh2d topology type </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Error code </dd></dl>
 
 </div>
 </div>
@@ -1912,9 +1941,13 @@ Error code </dd></dl>
 </div><div class="memdoc">
 
 <p>Gets the integer identifying the network topology type. </p>
-<dl class="section return"><dt>Returns</dt><dd>The integer identifying the network topology type </dd>
-<dd>
-Error code </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">topology_enum</td><td>[out] The integer identifying the network topology type </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Error code </dd></dl>
 
 </div>
 </div>
