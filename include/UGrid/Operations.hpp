@@ -212,7 +212,7 @@ namespace ugrid
         char_array[char_array_position + (len - 1)] = '\0';
     }
 
-    static void rtrim(std::string& str)
+    static void right_trim_string(std::string& str)
     {
         auto const isalnum_lambda = [](auto const& ch) { return std::isalnum(ch); };
         str.erase(std::find_if(str.rbegin(), str.rend(), isalnum_lambda).base(), str.end());
@@ -229,7 +229,7 @@ namespace ugrid
         {
             result[i] = char_array[i];
         }
-        rtrim(result);
+        right_trim_string(result);
         return result;
     }
 

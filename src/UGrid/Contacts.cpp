@@ -112,7 +112,7 @@ void Contacts::define(ugridapi::Contacts const& contacts)
 
     // Set the entity name
     m_entity_name = std::string(contacts.name);
-    rtrim(m_entity_name);
+    right_trim_string(m_entity_name);
     auto string_builder = UGridVarAttributeStringBuilder(m_entity_name);
 
     // Define contact dimension
@@ -133,8 +133,8 @@ void Contacts::define(ugridapi::Contacts const& contacts)
     std::stringstream os;
     auto mesh_from_name = std::string(contacts.mesh_from_name);
     auto mesh_to_name = std::string(contacts.mesh_to_name);
-    rtrim(mesh_from_name);
-    rtrim(mesh_to_name);
+    right_trim_string(mesh_from_name);
+    right_trim_string(mesh_to_name);
     os << mesh_from_name << ": " << mesh_from_location_string << " " << mesh_to_name << ": " << mesh_to_location_string;
     define_topological_attribute("contact", os.str());
 
