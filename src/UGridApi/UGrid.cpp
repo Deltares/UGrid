@@ -215,7 +215,6 @@ namespace ugridapi
 
     UGRID_API int ug_topology_get_count(int file_id, int topology_type, int& topology_count)
     {
-
         if (topology_type == Network1dTopology)
         {
             topology_count = static_cast<int>(ugrid_states[file_id].m_network1d.size());
@@ -488,19 +487,22 @@ namespace ugridapi
         return exit_code;
     }
 
-    UGRID_API int ug_file_read_mode()
+    UGRID_API int ug_file_read_mode(int& mode)
     {
-        return netCDF::NcFile::read;
+        mode = static_cast<int>(netCDF::NcFile::read);
+        return Success;
     }
 
-    UGRID_API int ug_file_write_mode()
+    UGRID_API int ug_file_write_mode(int& mode)
     {
-        return netCDF::NcFile::write;
+        mode = static_cast<int>(netCDF::NcFile::write);
+        return Success;
     }
 
-    UGRID_API int ug_file_replace_mode()
+    UGRID_API int ug_file_replace_mode(int& mode)
     {
-        return netCDF::NcFile::replace;
+        mode = static_cast<int>(netCDF::NcFile::replace);
+        return Success;
     }
 
     UGRID_API int ug_file_add_coordinate_mapping(int file_id, int espg)

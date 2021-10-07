@@ -201,16 +201,19 @@ namespace ugridapi
         UGRID_API int ug_topology_get_data_char(int file_id, char const* data_variable_name, char* data);
 
         /// @brief Gets the integer identifying the file read mode
-        /// @return the integer identifying the file read mode
-        UGRID_API int ug_file_read_mode();
+        /// @param mode [out] the integer identifying the file read mode
+        /// @return Error code
+        UGRID_API int ug_file_read_mode(int& mode);
 
         /// @brief Gets the integer identifying the file write mode
-        /// @return The integer identifying the file write mode
-        UGRID_API int ug_file_write_mode();
+        /// @param mode [out] The integer identifying the file write mode
+        /// @return Error code
+        UGRID_API int ug_file_write_mode(int& mode);
 
         /// @brief Gets the integer identifying the file replace mode
-        /// @return The integer identifying the file replace mode
-        UGRID_API int ug_file_replace_mode();
+        /// @param mode [out] The integer identifying the file replace mode
+        /// @return Error code
+        UGRID_API int ug_file_replace_mode(int& mode);
 
         /// @brief Writes the metadata to file for identify a specific coordinate projection system
         /// @param file_id [in] The file id

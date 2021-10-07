@@ -16,8 +16,10 @@ TEST(ApiTest, InquireAndGet_OneMesh2D_ShouldReadMesh2d)
     // Open a file
     std::string const file_path = TEST_FOLDER + "/OneMesh2D.nc";
     int file_id = 0;
-    auto const file_mode = ugridapi::ug_file_read_mode();
-    auto error_code = ugridapi::ug_file_open(file_path.c_str(), file_mode, file_id);
+    int file_mode = 0;
+    auto error_code = ugridapi::ug_file_read_mode(file_mode);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+    error_code = ugridapi::ug_file_open(file_path.c_str(), file_mode, file_id);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
     // Get the number of topologies
@@ -130,8 +132,10 @@ TEST(ApiTest, DefineAndPut_OneMesh2D_ShouldWriteData)
     // Open a file
     std::string const file_path = TEST_WRITE_FOLDER + "/Mesh2DWrite.nc";
     int file_id = 0;
-    auto const file_mode = ugridapi::ug_file_replace_mode();
-    auto error_code = ugridapi::ug_file_open(file_path.c_str(), file_mode, file_id);
+    int file_mode = 0;
+    auto error_code = ugridapi::ug_file_replace_mode(file_mode);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+    error_code = ugridapi::ug_file_open(file_path.c_str(), file_mode, file_id);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
     // Fill data
@@ -235,10 +239,14 @@ TEST(ApiTest, InquireAndGet_OneNetwork1D_ShouldReadNetwork1D)
 {
     // Prepare
     // Open a file
-    int file_id = 0;
     std::string const file_path = TEST_FOLDER + "/AllUGridEntities.nc";
-    auto const file_mode = ugridapi::ug_file_read_mode();
-    auto error_code = ugridapi::ug_file_open(file_path.c_str(), file_mode, file_id);
+
+    int file_mode = 0;
+    auto error_code = ugridapi::ug_file_read_mode(file_mode);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+
+    int file_id = 0;
+    error_code = ugridapi::ug_file_open(file_path.c_str(), file_mode, file_id);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
     // get the number of topologies
@@ -365,8 +373,10 @@ TEST(ApiTest, DefineAndPut_OneNetwork1D_ShouldWriteData)
 
     // Open a file
     int file_id = 0;
-    auto const file_mode = ugridapi::ug_file_replace_mode();
-    auto error_code = ugridapi::ug_file_open(file_path.c_str(), file_mode, file_id);
+    int file_mode = 0;
+    auto error_code = ugridapi::ug_file_replace_mode(file_mode);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+    error_code = ugridapi::ug_file_open(file_path.c_str(), file_mode, file_id);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
     // Fill data
@@ -427,8 +437,10 @@ TEST(ApiTest, InquireAndGet_OneMesh1D_ShouldReadMesh1D)
 
     // Open a file
     int file_id = 0;
-    auto const file_mode = ugridapi::ug_file_read_mode();
-    auto error_code = ugridapi::ug_file_open(file_path.c_str(), file_mode, file_id);
+    int file_mode = 0;
+    auto error_code = ugridapi::ug_file_read_mode(file_mode);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+    error_code = ugridapi::ug_file_open(file_path.c_str(), file_mode, file_id);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
     // get the number of topologies
@@ -510,8 +522,10 @@ TEST(ApiTest, DefineAndPut_OneMesh1D_ShouldWriteData)
 
     // Open a file
     int file_id = 0;
-    auto const file_mode = ugridapi::ug_file_replace_mode();
-    auto error_code = ugridapi::ug_file_open(file_path.c_str(), file_mode, file_id);
+    int file_mode = 0;
+    auto error_code = ugridapi::ug_file_replace_mode(file_mode);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+    error_code = ugridapi::ug_file_open(file_path.c_str(), file_mode, file_id);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
     // Fill data
@@ -593,8 +607,11 @@ TEST(ApiTest, InquireAndGet_OneContact_ShouldReadContact)
 
     // Open a file
     int file_id = 0;
-    auto const file_mode = ugridapi::ug_file_read_mode();
-    auto error_code = ugridapi::ug_file_open(file_path.c_str(), file_mode, file_id);
+    int file_mode = 0;
+    auto error_code = ugridapi::ug_file_read_mode(file_mode);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+
+    error_code = ugridapi::ug_file_open(file_path.c_str(), file_mode, file_id);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
     // get the number of topologies
@@ -707,8 +724,10 @@ TEST(ApiTest, DefineAndPut_OneContact_ShouldWriteAContact)
 
     // Open a file
     int file_id = 0;
-    auto const file_mode = ugridapi::ug_file_replace_mode();
-    auto error_code = ugridapi::ug_file_open(file_path.c_str(), file_mode, file_id);
+    int file_mode = 0;
+    auto error_code = ugridapi::ug_file_replace_mode(file_mode);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+    error_code = ugridapi::ug_file_open(file_path.c_str(), file_mode, file_id);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
     // Fill data
@@ -793,8 +812,10 @@ TEST(ApiTest, GetTopologyAttributes_OnResultFile_ShouldGetTopologyAttributes)
 
     // Open a file
     int file_id = 0;
-    auto const file_mode = ugridapi::ug_file_read_mode();
-    auto error_code = ugridapi::ug_file_open(file_path.c_str(), file_mode, file_id);
+    int file_mode = 0;
+    auto error_code = ugridapi::ug_file_read_mode(file_mode);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+    error_code = ugridapi::ug_file_open(file_path.c_str(), file_mode, file_id);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
     // Counts the topology type
@@ -858,8 +879,10 @@ TEST(ApiTest, GetDataVariables_OnResultFile_ShouldGetDataVariables)
 
     // Open a file
     int file_id = 0;
-    auto const file_mode = ugridapi::ug_file_read_mode();
-    auto error_code = ugridapi::ug_file_open(file_path.c_str(), file_mode, file_id);
+    int file_mode = 0;
+    auto error_code = ugridapi::ug_file_read_mode(file_mode);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+    error_code = ugridapi::ug_file_open(file_path.c_str(), file_mode, file_id);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
     // Count the number of data variables on a specific topology and location
