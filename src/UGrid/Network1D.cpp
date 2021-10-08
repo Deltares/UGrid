@@ -331,7 +331,7 @@ void Network1D::inquire(ugridapi::Network1D& network1d) const
 void Network1D::get(ugridapi::Network1D& network1d) const
 {
 
-    string_to_char_array(network1d.name, m_entity_name, name_length);
+    string_to_char_array(m_entity_name, name_length, network1d.name);
 
     if (auto const it = m_topology_attribute_variables.find("node_coordinates"); network1d.node_x != nullptr && it != m_topology_attribute_variables.end())
     {

@@ -265,12 +265,10 @@ namespace ugridapi
             }
 
             auto const topology = get_topology(file_id, topology_id, topology_type)->get_topology_variable();
+
             auto const attribute_names = get_attributes_names(topology);
 
-            for (auto i = 0; i < attribute_names.size(); ++i)
-            {
-                ugrid::string_to_char_array(names, attribute_names[i], ugrid::name_long_length, ugrid::name_long_length * i);
-            }
+            ugrid::vector_of_strings_to_char_array(attribute_names, ugrid::name_long_length, names);
         }
         catch (...)
         {
@@ -290,12 +288,10 @@ namespace ugridapi
             }
 
             auto const topology = get_topology(file_id, topology_id, topology_type)->get_topology_variable();
+
             auto const attribute_values = get_attributes_values(topology);
 
-            for (auto i = 0; i < attribute_values.size(); ++i)
-            {
-                ugrid::string_to_char_array(values, attribute_values[i], ugrid::name_long_length, ugrid::name_long_length * i);
-            }
+            ugrid::vector_of_strings_to_char_array(attribute_values, ugrid::name_long_length, values);
         }
         catch (...)
         {
@@ -347,11 +343,7 @@ namespace ugridapi
 
             auto const data_variables_names = topology->get_data_variables_names(location_string);
 
-            // count data variables
-            for (auto i = 0; i < data_variables_names.size(); ++i)
-            {
-                ugrid::string_to_char_array(data_variables_names_result, data_variables_names[i], ugrid::name_long_length, ugrid::name_long_length * i);
-            }
+            ugrid::vector_of_strings_to_char_array(data_variables_names, ugrid::name_long_length, data_variables_names_result);
         }
         catch (...)
         {

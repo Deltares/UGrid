@@ -848,7 +848,7 @@ TEST(ApiTest, GetTopologyAttributes_OnResultFile_ShouldGetTopologyAttributes)
     right_trim_string_vector(values);
 
     // Assert
-    std::vector<std::string> espected_names{
+    std::vector<std::string> expected_names{
         "cf_role",
         "edge_coordinates",
         "edge_dimension",
@@ -858,7 +858,7 @@ TEST(ApiTest, GetTopologyAttributes_OnResultFile_ShouldGetTopologyAttributes)
         "node_coordinates",
         "node_dimension",
         "topology_dimension"};
-    ASSERT_THAT(names, ::testing::ContainerEq(espected_names));
+    ASSERT_THAT(names, ::testing::ContainerEq(expected_names));
 
     std::vector<std::string> espected_values{
         "mesh_topology",

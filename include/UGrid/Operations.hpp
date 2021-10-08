@@ -195,7 +195,7 @@ namespace ugrid
         return {entity_attribute_variables, entity_attribute_names, entity_dimensions};
     }
 
-    static void string_to_char_array(char* char_array, std::string const& value, size_t len, size_t char_array_position = 0)
+    static void string_to_char_array(std::string const& value, size_t len, char* char_array)
     {
         if (char_array == nullptr || value.empty())
         {
@@ -203,13 +203,39 @@ namespace ugrid
         }
         for (auto i = 0; i < value.size(); ++i)
         {
-            char_array[char_array_position + i] = value[i];
+            char_array[i] = value[i];
         }
         for (auto i = value.size(); i < len - 1; ++i)
         {
-            char_array[char_array_position + i] = ' ';
+            char_array[i] = ' ';
         }
-        char_array[char_array_position + (len - 1)] = '\0';
+
+        // null terminate
+        char_array[len - 1] = '\0';
+    }
+
+    static void vector_of_strings_to_char_array(std::vector<std::string> const& values, size_t len, char* char_array)
+    {
+        if (char_array == nullptr || values.empty())
+        {
+            return;
+        }
+
+        for (auto i = 0; i < values.size(); ++i)
+        {
+            size_t char_array_position = i * len;
+            for (auto j = 0; j < values[i].size(); ++j)
+            {
+                char_array[char_array_position + j] = values[i][j];
+            }
+            for (auto j = values[i].size(); j < len - 1; ++j)
+            {
+                char_array[char_array_position + j] = ' ';
+            }
+        }
+
+        // null terminate
+        char_array[len * values.size() - 1] = '\0';
     }
 
     static void right_trim_string(std::string& str)
