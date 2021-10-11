@@ -123,6 +123,24 @@ namespace ugridapi
         /// @return Error code
         UGRID_API int ug_topology_get_count(int file_id, int topology_type, int& topology_count);
 
+        /// @brief For a specific topology and location, count how many data variables (variables w) are present
+        /// @param file_id [in] The file id
+        /// @param topology_type [in] The topology type
+        /// @param topology_id [in] The topology id
+        /// @param location [in] The location on the topology (e.g. node, edge or face)
+        /// @param data_variable_count [out]
+        /// @return Error code
+        UGRID_API int ug_topology_count_data_variables(int file_id, int topology_type, int topology_id, int location, int& data_variable_count);
+
+        /// @brief For a specific topology and location, get all names of data variables
+        /// @param file_id [in] The file id
+        /// @param topology_type [in] The topology type
+        /// @param topology_id [in] The topology id
+        /// @param location [in] The location on the topology (e.g. node, edge or face)
+        /// @param data_variables_names_result [out]
+        /// @return Error code
+        UGRID_API int ug_topology_get_data_variables_names(int file_id, int topology_type, int topology_id, int location, char* data_variables_names_result);
+
         /// @brief For a specific topology, counts how many attributes are present
         /// @param file_id [in] The file id
         /// @param topology_type [in] The topology type
@@ -146,24 +164,6 @@ namespace ugridapi
         /// @param values [out] The variable values
         /// @return Error code
         UGRID_API int ug_variable_get_attributes_values(int file_id, int topology_type, int topology_id, char* values);
-
-        /// @brief For a specific topology and location, count how many data variables are present
-        /// @param file_id [in] The file id
-        /// @param topology_type [in] The topology type
-        /// @param topology_id [in] The topology id
-        /// @param location [in] The location on the topology (e.g. node, edge or face)
-        /// @param data_variable_count [out]
-        /// @return Error code
-        UGRID_API int ug_topology_count_data_variables(int file_id, int topology_type, int topology_id, int location, int& data_variable_count);
-
-        /// @brief For a specific topology and location, get all names of data variables
-        /// @param file_id [in] The file id
-        /// @param topology_type [in] The topology type
-        /// @param topology_id [in] The topology id
-        /// @param location [in] The location on the topology (e.g. node, edge or face)
-        /// @param data_variables_names_result [out]
-        /// @return Error code
-        UGRID_API int ug_topology_get_data_variables_names(int file_id, int topology_type, int topology_id, int location, char* data_variables_names_result);
 
         /// @brief For a specific data variables, count the number of dimensions
         /// @param file_id [in] The file id

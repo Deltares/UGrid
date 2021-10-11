@@ -221,21 +221,23 @@ namespace ugrid
             return;
         }
 
+        size_t char_array_position = 0;
         for (auto i = 0; i < values.size(); ++i)
         {
-            size_t char_array_position = i * len;
             for (auto j = 0; j < values[i].size(); ++j)
             {
-                char_array[char_array_position + j] = values[i][j];
+                char_array[char_array_position] = values[i][j];
+                char_array_position++;
             }
-            for (auto j = values[i].size(); j < len - 1; ++j)
+            for (auto j = values[i].size(); j < len; ++j)
             {
-                char_array[char_array_position + j] = ' ';
+                char_array[char_array_position] = ' ';
+                char_array_position++;
             }
         }
 
         // null terminate
-        char_array[len * values.size() - 1] = '\0';
+        char_array[char_array_position - 1] = '\0';
     }
 
     static void right_trim_string(std::string& str)
