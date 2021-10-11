@@ -150,35 +150,35 @@ Functions</h2></td></tr>
 <tr class="memdesc:a7b172ad20f8a3f8411a8546dc10be345"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the number of topologies of a specific type.  <a href="namespaceugridapi.html#a7b172ad20f8a3f8411a8546dc10be345">More...</a><br /></td></tr>
 <tr class="separator:a7b172ad20f8a3f8411a8546dc10be345"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8cdb5e6ba456d3206cf5c95099e21715"><td class="memItemLeft" align="right" valign="top">UGRID_API int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceugridapi.html#a8cdb5e6ba456d3206cf5c95099e21715">ug_topology_count_data_variables</a> (int file_id, int topology_type, int topology_id, int location, int &amp;data_variable_count)</td></tr>
-<tr class="memdesc:a8cdb5e6ba456d3206cf5c95099e21715"><td class="mdescLeft">&#160;</td><td class="mdescRight">For a specific topology and location, count how many data variables (variables w) are present.  <a href="namespaceugridapi.html#a8cdb5e6ba456d3206cf5c95099e21715">More...</a><br /></td></tr>
+<tr class="memdesc:a8cdb5e6ba456d3206cf5c95099e21715"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the number of data variables for a specific topology on a specific location.  <a href="namespaceugridapi.html#a8cdb5e6ba456d3206cf5c95099e21715">More...</a><br /></td></tr>
 <tr class="separator:a8cdb5e6ba456d3206cf5c95099e21715"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1868f41ecae2d2b7ef0a2a1f2a5c45d6"><td class="memItemLeft" align="right" valign="top">UGRID_API int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceugridapi.html#a1868f41ecae2d2b7ef0a2a1f2a5c45d6">ug_topology_get_data_variables_names</a> (int file_id, int topology_type, int topology_id, int location, char *data_variables_names_result)</td></tr>
-<tr class="memdesc:a1868f41ecae2d2b7ef0a2a1f2a5c45d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">For a specific topology and location, get all names of data variables.  <a href="namespaceugridapi.html#a1868f41ecae2d2b7ef0a2a1f2a5c45d6">More...</a><br /></td></tr>
+<tr class="memdesc:a1868f41ecae2d2b7ef0a2a1f2a5c45d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the names of data variables for a specific topology on a specific location.  <a href="namespaceugridapi.html#a1868f41ecae2d2b7ef0a2a1f2a5c45d6">More...</a><br /></td></tr>
 <tr class="separator:a1868f41ecae2d2b7ef0a2a1f2a5c45d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a35b7b150ddce913842f2917f867f2abe"><td class="memItemLeft" align="right" valign="top">UGRID_API int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceugridapi.html#a35b7b150ddce913842f2917f867f2abe">ug_variable_count_attributes</a> (int file_id, int topology_type, int topology_id, int &amp;attributes_count)</td></tr>
-<tr class="memdesc:a35b7b150ddce913842f2917f867f2abe"><td class="mdescLeft">&#160;</td><td class="mdescRight">For a specific topology, counts how many attributes are present.  <a href="namespaceugridapi.html#a35b7b150ddce913842f2917f867f2abe">More...</a><br /></td></tr>
-<tr class="separator:a35b7b150ddce913842f2917f867f2abe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4efab1ba63f9ea20e935aedb36d95c0c"><td class="memItemLeft" align="right" valign="top">UGRID_API int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceugridapi.html#a4efab1ba63f9ea20e935aedb36d95c0c">ug_variable_get_attributes_names</a> (int file_id, int topology_type, int topology_id, char *names)</td></tr>
-<tr class="memdesc:a4efab1ba63f9ea20e935aedb36d95c0c"><td class="mdescLeft">&#160;</td><td class="mdescRight">For a specific topology, retrieve its attribute names.  <a href="namespaceugridapi.html#a4efab1ba63f9ea20e935aedb36d95c0c">More...</a><br /></td></tr>
-<tr class="separator:a4efab1ba63f9ea20e935aedb36d95c0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4f629c992fa323cf04eed7308a0691b0"><td class="memItemLeft" align="right" valign="top">UGRID_API int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceugridapi.html#a4f629c992fa323cf04eed7308a0691b0">ug_variable_get_attributes_values</a> (int file_id, int topology_type, int topology_id, char *values)</td></tr>
-<tr class="memdesc:a4f629c992fa323cf04eed7308a0691b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">For a specific topology, retrieve its attribute values.  <a href="namespaceugridapi.html#a4f629c992fa323cf04eed7308a0691b0">More...</a><br /></td></tr>
-<tr class="separator:a4f629c992fa323cf04eed7308a0691b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a837048cb2f7542293c7f0637e3ad3003"><td class="memItemLeft" align="right" valign="top">UGRID_API int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceugridapi.html#a837048cb2f7542293c7f0637e3ad3003">ug_variable_count_dimensions</a> (int file_id, char const *data_variable_name, int &amp;dimensions_count)</td></tr>
-<tr class="memdesc:a837048cb2f7542293c7f0637e3ad3003"><td class="mdescLeft">&#160;</td><td class="mdescRight">For a specific data variables, count the number of dimensions.  <a href="namespaceugridapi.html#a837048cb2f7542293c7f0637e3ad3003">More...</a><br /></td></tr>
-<tr class="separator:a837048cb2f7542293c7f0637e3ad3003"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a413406f309e8ba3b6da5d5d481f1d2de"><td class="memItemLeft" align="right" valign="top">UGRID_API int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceugridapi.html#a413406f309e8ba3b6da5d5d481f1d2de">ug_variable_get_data_dimensions</a> (int file_id, char const *data_variable_name, int *dimension_vec)</td></tr>
-<tr class="memdesc:a413406f309e8ba3b6da5d5d481f1d2de"><td class="mdescLeft">&#160;</td><td class="mdescRight">For a specific data variables, gets the dimension values.  <a href="namespaceugridapi.html#a413406f309e8ba3b6da5d5d481f1d2de">More...</a><br /></td></tr>
-<tr class="separator:a413406f309e8ba3b6da5d5d481f1d2de"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acc8a6f4cf8e5095dee677272f82b9272"><td class="memItemLeft" align="right" valign="top">UGRID_API int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceugridapi.html#acc8a6f4cf8e5095dee677272f82b9272">ug_variable_get_data_double</a> (int file_id, char const *data_variable_name, double *data)</td></tr>
-<tr class="memdesc:acc8a6f4cf8e5095dee677272f82b9272"><td class="mdescLeft">&#160;</td><td class="mdescRight">For a specific data variables, gets the data as an array of double. This might be large, because the arrays contains all time steps.  <a href="namespaceugridapi.html#acc8a6f4cf8e5095dee677272f82b9272">More...</a><br /></td></tr>
-<tr class="separator:acc8a6f4cf8e5095dee677272f82b9272"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a04b784ad8aeffd85f17f66a54c0d9c88"><td class="memItemLeft" align="right" valign="top">UGRID_API int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceugridapi.html#a04b784ad8aeffd85f17f66a54c0d9c88">ug_variable_get_data_int</a> (int file_id, char const *data_variable_name, int *data)</td></tr>
-<tr class="memdesc:a04b784ad8aeffd85f17f66a54c0d9c88"><td class="mdescLeft">&#160;</td><td class="mdescRight">For a specific data variables, gets the data as an array of int. This might be large, because the arrays contains all time steps.  <a href="namespaceugridapi.html#a04b784ad8aeffd85f17f66a54c0d9c88">More...</a><br /></td></tr>
-<tr class="separator:a04b784ad8aeffd85f17f66a54c0d9c88"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab19f5e620c9374fe2350bc766f0a3125"><td class="memItemLeft" align="right" valign="top">UGRID_API int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceugridapi.html#ab19f5e620c9374fe2350bc766f0a3125">ug_variable_get_data_char</a> (int file_id, char const *data_variable_name, char *data)</td></tr>
-<tr class="memdesc:ab19f5e620c9374fe2350bc766f0a3125"><td class="mdescLeft">&#160;</td><td class="mdescRight">For a specific data variables, gets the data as an array of chars. This might be large, because the arrays contains all time steps.  <a href="namespaceugridapi.html#ab19f5e620c9374fe2350bc766f0a3125">More...</a><br /></td></tr>
-<tr class="separator:ab19f5e620c9374fe2350bc766f0a3125"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a969c350b14490016f673e753008315fe"><td class="memItemLeft" align="right" valign="top">UGRID_API int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceugridapi.html#a969c350b14490016f673e753008315fe">ug_variable_count_attributes</a> (int file_id, char const *variable_name, int &amp;attributes_count)</td></tr>
+<tr class="memdesc:a969c350b14490016f673e753008315fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the number of attributes of a specific variable.  <a href="namespaceugridapi.html#a969c350b14490016f673e753008315fe">More...</a><br /></td></tr>
+<tr class="separator:a969c350b14490016f673e753008315fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a73dab2d8d412924b678add7f93844b81"><td class="memItemLeft" align="right" valign="top">UGRID_API int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceugridapi.html#a73dab2d8d412924b678add7f93844b81">ug_variable_get_attributes_values</a> (int file_id, char const *variable_name, char *values)</td></tr>
+<tr class="memdesc:a73dab2d8d412924b678add7f93844b81"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the attributes values of a specific variable.  <a href="namespaceugridapi.html#a73dab2d8d412924b678add7f93844b81">More...</a><br /></td></tr>
+<tr class="separator:a73dab2d8d412924b678add7f93844b81"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a31faca6268fbe74ec76744c2334c3b04"><td class="memItemLeft" align="right" valign="top">UGRID_API int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceugridapi.html#a31faca6268fbe74ec76744c2334c3b04">ug_variable_get_attributes_names</a> (int file_id, char const *variable_name, char *names)</td></tr>
+<tr class="memdesc:a31faca6268fbe74ec76744c2334c3b04"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the attributes names of a specific variable.  <a href="namespaceugridapi.html#a31faca6268fbe74ec76744c2334c3b04">More...</a><br /></td></tr>
+<tr class="separator:a31faca6268fbe74ec76744c2334c3b04"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab672fc2928bdbedc2ef0a73517b9eb9e"><td class="memItemLeft" align="right" valign="top">UGRID_API int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceugridapi.html#ab672fc2928bdbedc2ef0a73517b9eb9e">ug_variable_count_dimensions</a> (int file_id, char const *variable_name, int &amp;dimensions_count)</td></tr>
+<tr class="memdesc:ab672fc2928bdbedc2ef0a73517b9eb9e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the number of dimensions of a specific variable.  <a href="namespaceugridapi.html#ab672fc2928bdbedc2ef0a73517b9eb9e">More...</a><br /></td></tr>
+<tr class="separator:ab672fc2928bdbedc2ef0a73517b9eb9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae8159f27111bb5020d81317acc097063"><td class="memItemLeft" align="right" valign="top">UGRID_API int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceugridapi.html#ae8159f27111bb5020d81317acc097063">ug_variable_get_data_dimensions</a> (int file_id, char const *variable_name, int *dimension_vec)</td></tr>
+<tr class="memdesc:ae8159f27111bb5020d81317acc097063"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the dimension values of a specific variable.  <a href="namespaceugridapi.html#ae8159f27111bb5020d81317acc097063">More...</a><br /></td></tr>
+<tr class="separator:ae8159f27111bb5020d81317acc097063"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aac2eaa8ba21309e3b6e8bcb0acdacd6f"><td class="memItemLeft" align="right" valign="top">UGRID_API int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceugridapi.html#aac2eaa8ba21309e3b6e8bcb0acdacd6f">ug_variable_get_data_double</a> (int file_id, char const *variable_name, double *data)</td></tr>
+<tr class="memdesc:aac2eaa8ba21309e3b6e8bcb0acdacd6f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the variable data as a flat array of doubles. This might be large, because the arrays can have a large dimensionality.  <a href="namespaceugridapi.html#aac2eaa8ba21309e3b6e8bcb0acdacd6f">More...</a><br /></td></tr>
+<tr class="separator:aac2eaa8ba21309e3b6e8bcb0acdacd6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a31ba48af784ca138680487b25986c9a6"><td class="memItemLeft" align="right" valign="top">UGRID_API int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceugridapi.html#a31ba48af784ca138680487b25986c9a6">ug_variable_get_data_int</a> (int file_id, char const *variable_name, int *data)</td></tr>
+<tr class="memdesc:a31ba48af784ca138680487b25986c9a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the variable data as a flat array of int. This might be large, because the arrays can have a large dimensionality.  <a href="namespaceugridapi.html#a31ba48af784ca138680487b25986c9a6">More...</a><br /></td></tr>
+<tr class="separator:a31ba48af784ca138680487b25986c9a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a29256b47b095aa0bcc83f23c8b8ec60b"><td class="memItemLeft" align="right" valign="top">UGRID_API int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceugridapi.html#a29256b47b095aa0bcc83f23c8b8ec60b">ug_variable_get_data_char</a> (int file_id, char const *variable_name, char *data)</td></tr>
+<tr class="memdesc:a29256b47b095aa0bcc83f23c8b8ec60b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the variable data as a flat array of char. This might be large, because the arrays can have a large dimensionality.  <a href="namespaceugridapi.html#a29256b47b095aa0bcc83f23c8b8ec60b">More...</a><br /></td></tr>
+<tr class="separator:a29256b47b095aa0bcc83f23c8b8ec60b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5ba21f83a714bfdfca61e41cbdd1be45"><td class="memItemLeft" align="right" valign="top">UGRID_API int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceugridapi.html#a5ba21f83a714bfdfca61e41cbdd1be45">ug_file_read_mode</a> (int &amp;mode)</td></tr>
 <tr class="memdesc:a5ba21f83a714bfdfca61e41cbdd1be45"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the integer identifying the file read mode.  <a href="namespaceugridapi.html#a5ba21f83a714bfdfca61e41cbdd1be45">More...</a><br /></td></tr>
 <tr class="separator:a5ba21f83a714bfdfca61e41cbdd1be45"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1364,14 +1364,14 @@ Error code </dd></dl>
       </table>
 </div><div class="memdoc">
 
-<p>For a specific topology and location, count how many data variables (variables w) are present. </p>
+<p>Get the number of data variables for a specific topology on a specific location. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">file_id</td><td>[in] The file id </td></tr>
     <tr><td class="paramname">topology_type</td><td>[in] The topology type </td></tr>
     <tr><td class="paramname">topology_id</td><td>[in] The topology id </td></tr>
-    <tr><td class="paramname">location</td><td>[in] The location on the topology (e.g. node, edge or face) </td></tr>
-    <tr><td class="paramname">data_variable_count</td><td>[out] </td></tr>
+    <tr><td class="paramname">location</td><td>[in] The location (node, edge, face) </td></tr>
+    <tr><td class="paramname">data_variable_count</td><td>[out] The number of data variables on the topology </td></tr>
   </table>
   </dd>
 </dl>
@@ -1495,7 +1495,7 @@ Error code </dd></dl>
       </table>
 </div><div class="memdoc">
 
-<p>For a specific topology and location, get all names of data variables. </p>
+<p>Get the names of data variables for a specific topology on a specific location. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">file_id</td><td>[in] The file id </td></tr>
@@ -1591,8 +1591,8 @@ Error code </dd></dl>
 
 </div>
 </div>
-<a id="a35b7b150ddce913842f2917f867f2abe"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a35b7b150ddce913842f2917f867f2abe">&#9670;&nbsp;</a></span>ug_variable_count_attributes()</h2>
+<a id="a969c350b14490016f673e753008315fe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a969c350b14490016f673e753008315fe">&#9670;&nbsp;</a></span>ug_variable_count_attributes()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1606,14 +1606,8 @@ Error code </dd></dl>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>topology_type</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>topology_id</em>, </td>
+          <td class="paramtype">char const *&#160;</td>
+          <td class="paramname"><em>variable_name</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -1629,12 +1623,11 @@ Error code </dd></dl>
       </table>
 </div><div class="memdoc">
 
-<p>For a specific topology, counts how many attributes are present. </p>
+<p>Get the number of attributes of a specific variable. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">file_id</td><td>[in] The file id </td></tr>
-    <tr><td class="paramname">topology_type</td><td>[in] The topology type </td></tr>
-    <tr><td class="paramname">topology_id</td><td>[in] The topology id </td></tr>
+    <tr><td class="paramname">variable_name</td><td>[in] The variable name </td></tr>
     <tr><td class="paramname">attributes_count</td><td>[out] The number of attributes </td></tr>
   </table>
   </dd>
@@ -1643,8 +1636,8 @@ Error code </dd></dl>
 
 </div>
 </div>
-<a id="a837048cb2f7542293c7f0637e3ad3003"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a837048cb2f7542293c7f0637e3ad3003">&#9670;&nbsp;</a></span>ug_variable_count_dimensions()</h2>
+<a id="ab672fc2928bdbedc2ef0a73517b9eb9e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab672fc2928bdbedc2ef0a73517b9eb9e">&#9670;&nbsp;</a></span>ug_variable_count_dimensions()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1659,7 +1652,7 @@ Error code </dd></dl>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">char const *&#160;</td>
-          <td class="paramname"><em>data_variable_name</em>, </td>
+          <td class="paramname"><em>variable_name</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -1675,12 +1668,12 @@ Error code </dd></dl>
       </table>
 </div><div class="memdoc">
 
-<p>For a specific data variables, count the number of dimensions. </p>
+<p>Get the number of dimensions of a specific variable. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">file_id</td><td>[in] The file id </td></tr>
-    <tr><td class="paramname">data_variable_name</td><td>[in] The variable name </td></tr>
-    <tr><td class="paramname">dimensions_count</td><td>[in] The number of dimensions associated with the variable name </td></tr>
+    <tr><td class="paramname">variable_name</td><td>[in] The variable name </td></tr>
+    <tr><td class="paramname">dimensions_count</td><td>[in] The number of dimensions </td></tr>
   </table>
   </dd>
 </dl>
@@ -1688,8 +1681,8 @@ Error code </dd></dl>
 
 </div>
 </div>
-<a id="a4efab1ba63f9ea20e935aedb36d95c0c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4efab1ba63f9ea20e935aedb36d95c0c">&#9670;&nbsp;</a></span>ug_variable_get_attributes_names()</h2>
+<a id="a31faca6268fbe74ec76744c2334c3b04"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a31faca6268fbe74ec76744c2334c3b04">&#9670;&nbsp;</a></span>ug_variable_get_attributes_names()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1703,14 +1696,8 @@ Error code </dd></dl>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>topology_type</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>topology_id</em>, </td>
+          <td class="paramtype">char const *&#160;</td>
+          <td class="paramname"><em>variable_name</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -1726,13 +1713,12 @@ Error code </dd></dl>
       </table>
 </div><div class="memdoc">
 
-<p>For a specific topology, retrieve its attribute names. </p>
+<p>Get the attributes names of a specific variable. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">file_id</td><td>[in] The file id </td></tr>
-    <tr><td class="paramname">topology_type</td><td>[in] The topology type </td></tr>
-    <tr><td class="paramname">topology_id</td><td>[in] The topology id </td></tr>
-    <tr><td class="paramname">names</td><td>[out] The variable names </td></tr>
+    <tr><td class="paramname">variable_name</td><td>[in] The variable name </td></tr>
+    <tr><td class="paramname">names</td><td>[out] The attribute names </td></tr>
   </table>
   </dd>
 </dl>
@@ -1740,8 +1726,8 @@ Error code </dd></dl>
 
 </div>
 </div>
-<a id="a4f629c992fa323cf04eed7308a0691b0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4f629c992fa323cf04eed7308a0691b0">&#9670;&nbsp;</a></span>ug_variable_get_attributes_values()</h2>
+<a id="a73dab2d8d412924b678add7f93844b81"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a73dab2d8d412924b678add7f93844b81">&#9670;&nbsp;</a></span>ug_variable_get_attributes_values()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1755,14 +1741,8 @@ Error code </dd></dl>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>topology_type</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>topology_id</em>, </td>
+          <td class="paramtype">char const *&#160;</td>
+          <td class="paramname"><em>variable_name</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -1778,13 +1758,12 @@ Error code </dd></dl>
       </table>
 </div><div class="memdoc">
 
-<p>For a specific topology, retrieve its attribute values. </p>
+<p>Get the attributes values of a specific variable. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">file_id</td><td>[in] The file id </td></tr>
-    <tr><td class="paramname">topology_type</td><td>[in] The topology type </td></tr>
-    <tr><td class="paramname">topology_id</td><td>[in] The topology id </td></tr>
-    <tr><td class="paramname">values</td><td>[out] The variable values </td></tr>
+    <tr><td class="paramname">variable_name</td><td>[in] The variable name </td></tr>
+    <tr><td class="paramname">values</td><td>[out] The attribute values </td></tr>
   </table>
   </dd>
 </dl>
@@ -1792,8 +1771,8 @@ Error code </dd></dl>
 
 </div>
 </div>
-<a id="ab19f5e620c9374fe2350bc766f0a3125"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab19f5e620c9374fe2350bc766f0a3125">&#9670;&nbsp;</a></span>ug_variable_get_data_char()</h2>
+<a id="a29256b47b095aa0bcc83f23c8b8ec60b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a29256b47b095aa0bcc83f23c8b8ec60b">&#9670;&nbsp;</a></span>ug_variable_get_data_char()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1808,7 +1787,7 @@ Error code </dd></dl>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">char const *&#160;</td>
-          <td class="paramname"><em>data_variable_name</em>, </td>
+          <td class="paramname"><em>variable_name</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -1824,11 +1803,11 @@ Error code </dd></dl>
       </table>
 </div><div class="memdoc">
 
-<p>For a specific data variables, gets the data as an array of chars. This might be large, because the arrays contains all time steps. </p>
+<p>Get the variable data as a flat array of char. This might be large, because the arrays can have a large dimensionality. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">file_id</td><td>[in] The file id </td></tr>
-    <tr><td class="paramname">data_variable_name</td><td>[in] The variable name </td></tr>
+    <tr><td class="paramname">variable_name</td><td>[in] The variable name </td></tr>
     <tr><td class="paramname">data</td><td>[out] The variable data </td></tr>
   </table>
   </dd>
@@ -1837,8 +1816,8 @@ Error code </dd></dl>
 
 </div>
 </div>
-<a id="a413406f309e8ba3b6da5d5d481f1d2de"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a413406f309e8ba3b6da5d5d481f1d2de">&#9670;&nbsp;</a></span>ug_variable_get_data_dimensions()</h2>
+<a id="ae8159f27111bb5020d81317acc097063"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae8159f27111bb5020d81317acc097063">&#9670;&nbsp;</a></span>ug_variable_get_data_dimensions()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1853,7 +1832,7 @@ Error code </dd></dl>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">char const *&#160;</td>
-          <td class="paramname"><em>data_variable_name</em>, </td>
+          <td class="paramname"><em>variable_name</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -1869,11 +1848,11 @@ Error code </dd></dl>
       </table>
 </div><div class="memdoc">
 
-<p>For a specific data variables, gets the dimension values. </p>
+<p>Get the dimension values of a specific variable. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">file_id</td><td>[in] The file id </td></tr>
-    <tr><td class="paramname">data_variable_name</td><td>[in] The variable name </td></tr>
+    <tr><td class="paramname">variable_name</td><td>[in] The variable name </td></tr>
     <tr><td class="paramname">dimension_vec</td><td>[in] The dimension values associated with the variable name </td></tr>
   </table>
   </dd>
@@ -1882,8 +1861,8 @@ Error code </dd></dl>
 
 </div>
 </div>
-<a id="acc8a6f4cf8e5095dee677272f82b9272"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acc8a6f4cf8e5095dee677272f82b9272">&#9670;&nbsp;</a></span>ug_variable_get_data_double()</h2>
+<a id="aac2eaa8ba21309e3b6e8bcb0acdacd6f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aac2eaa8ba21309e3b6e8bcb0acdacd6f">&#9670;&nbsp;</a></span>ug_variable_get_data_double()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1898,7 +1877,7 @@ Error code </dd></dl>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">char const *&#160;</td>
-          <td class="paramname"><em>data_variable_name</em>, </td>
+          <td class="paramname"><em>variable_name</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -1914,11 +1893,11 @@ Error code </dd></dl>
       </table>
 </div><div class="memdoc">
 
-<p>For a specific data variables, gets the data as an array of double. This might be large, because the arrays contains all time steps. </p>
+<p>Get the variable data as a flat array of doubles. This might be large, because the arrays can have a large dimensionality. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">file_id</td><td>[in] The file id </td></tr>
-    <tr><td class="paramname">data_variable_name</td><td>[in] The variable name </td></tr>
+    <tr><td class="paramname">variable_name</td><td>[in] The variable name </td></tr>
     <tr><td class="paramname">data</td><td>[out] The variable data </td></tr>
   </table>
   </dd>
@@ -1927,8 +1906,8 @@ Error code </dd></dl>
 
 </div>
 </div>
-<a id="a04b784ad8aeffd85f17f66a54c0d9c88"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a04b784ad8aeffd85f17f66a54c0d9c88">&#9670;&nbsp;</a></span>ug_variable_get_data_int()</h2>
+<a id="a31ba48af784ca138680487b25986c9a6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a31ba48af784ca138680487b25986c9a6">&#9670;&nbsp;</a></span>ug_variable_get_data_int()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1943,7 +1922,7 @@ Error code </dd></dl>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">char const *&#160;</td>
-          <td class="paramname"><em>data_variable_name</em>, </td>
+          <td class="paramname"><em>variable_name</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -1959,11 +1938,11 @@ Error code </dd></dl>
       </table>
 </div><div class="memdoc">
 
-<p>For a specific data variables, gets the data as an array of int. This might be large, because the arrays contains all time steps. </p>
+<p>Get the variable data as a flat array of int. This might be large, because the arrays can have a large dimensionality. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">file_id</td><td>[in] The file id </td></tr>
-    <tr><td class="paramname">data_variable_name</td><td>[in] The variable name </td></tr>
+    <tr><td class="paramname">variable_name</td><td>[in] The variable name </td></tr>
     <tr><td class="paramname">data</td><td>[out] The variable data </td></tr>
   </table>
   </dd>
