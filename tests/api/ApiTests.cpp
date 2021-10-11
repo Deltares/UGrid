@@ -144,7 +144,7 @@ TEST(ApiTest, DefineAndPut_OneMesh2D_ShouldWriteData)
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
     ugridapi::Mesh2D mesh2d;
     std::unique_ptr<char> const name(new char[name_long_length]);
-    string_to_char_array("mesh2d", name.get());
+    string_to_char_array("mesh2d", name_long_length, name.get());
     mesh2d.name = name.get();
     std::unique_ptr<double> const node_x(new double[]{0, 1, 0, 1, 0, 1, 0, 1, 2, 2, 2, 2, 3, 3, 3, 3});
 
@@ -396,7 +396,7 @@ TEST(ApiTest, DefineAndPut_OneNetwork1D_ShouldWriteData)
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
     ugridapi::Network1D network1d;
     std::unique_ptr<char> const name(new char[name_long_length]);
-    string_to_char_array("network1d", name.get());
+    string_to_char_array("network1d", name_long_length, name.get());
     network1d.name = name.get();
     std::unique_ptr<double> const node_x(new double[]{293.78, 538.89});
     network1d.node_x = node_x.get();
@@ -551,7 +551,7 @@ TEST(ApiTest, DefineAndPut_OneMesh1D_ShouldWriteData)
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
     ugridapi::Mesh1D mesh1d;
     std::unique_ptr<char> const name(new char[name_long_length]);
-    string_to_char_array("mesh1d", name.get());
+    string_to_char_array("mesh1d", name_long_length, name.get());
     mesh1d.name = name.get();
 
     std::unique_ptr<char> const network_name(new char[]{"network1d                               "});
@@ -759,13 +759,13 @@ TEST(ApiTest, DefineAndPut_OneContact_ShouldWriteAContact)
 
     // Set the names
     std::unique_ptr<char> const name(new char[name_long_length]);
-    string_to_char_array("2d1dlinks", name.get());
+    string_to_char_array("2d1dlinks", name_long_length, name.get());
     contacts.name = name.get();
     std::unique_ptr<char> const mesh_from_name(new char[name_long_length]);
-    string_to_char_array("mesh2d", mesh_from_name.get());
+    string_to_char_array("mesh2d", name_long_length, mesh_from_name.get());
     contacts.mesh_from_name = mesh_from_name.get();
     std::unique_ptr<char> const mesh_to_name(new char[name_long_length]);
-    string_to_char_array("mesh1d", mesh_from_name.get());
+    string_to_char_array("mesh1d", name_long_length, mesh_from_name.get());
     contacts.mesh_to_name = mesh_to_name.get();
 
     int face_location_enum;

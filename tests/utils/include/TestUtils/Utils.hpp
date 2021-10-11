@@ -63,7 +63,7 @@ static std::vector<std::string> split_string(std::string string_value, size_t nu
 
 /// @brief Performs right trim of single string
 /// @param str [in] The input string
-static void string_to_char_array(std::string const& value, char* char_array)
+static void string_to_char_array(std::string const& value, size_t len, char* char_array)
 {
     if (value.empty())
     {
@@ -77,4 +77,10 @@ static void string_to_char_array(std::string const& value, char* char_array)
     {
         char_array[i] = value[i];
     }
+    for (auto i = value.size(); i < len - 1; ++i)
+    {
+        char_array[i] = ' ';
+    }
+    // null terminate
+    char_array[len - 1] = '\0';
 }
