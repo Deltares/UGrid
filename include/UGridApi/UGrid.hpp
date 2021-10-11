@@ -123,16 +123,16 @@ namespace ugridapi
         /// @return Error code
         UGRID_API int ug_topology_get_count(int file_id, int topology_type, int& topology_count);
 
-        /// @brief For a specific topology and location, count how many data variables (variables w) are present
+        /// @brief Get the number of data variables for a specific topology on a specific location
         /// @param file_id [in] The file id
         /// @param topology_type [in] The topology type
         /// @param topology_id [in] The topology id
-        /// @param location [in] The location on the topology (e.g. node, edge or face)
-        /// @param data_variable_count [out]
+        /// @param location [in] The location (node, edge, face)
+        /// @param data_variable_count [out] The number of data variables on the topology
         /// @return Error code
         UGRID_API int ug_topology_count_data_variables(int file_id, int topology_type, int topology_id, int location, int& data_variable_count);
 
-        /// @brief For a specific topology and location, get all names of data variables
+        /// @brief Get the names of data variables for a specific topology on a specific location
         /// @param file_id [in] The file id
         /// @param topology_type [in] The topology type
         /// @param topology_id [in] The topology id
@@ -141,64 +141,61 @@ namespace ugridapi
         /// @return Error code
         UGRID_API int ug_topology_get_data_variables_names(int file_id, int topology_type, int topology_id, int location, char* data_variables_names_result);
 
-        /// @brief For a specific topology, counts how many attributes are present
+        /// @brief Get the number of attributes of a specific variable
         /// @param file_id [in] The file id
-        /// @param topology_type [in] The topology type
-        /// @param topology_id [in] The topology id
+        /// @param variable_name [in] The variable name
         /// @param attributes_count [out] The number of attributes
         /// @return Error code
-        UGRID_API int ug_variable_count_attributes(int file_id, int topology_type, int topology_id, int& attributes_count);
+        UGRID_API int ug_variable_count_attributes(int file_id, char const* variable_name, int& attributes_count);
 
-        /// @brief For a specific topology, retrieve its attribute names
+        /// @brief Get the attributes values of a specific variable
         /// @param file_id [in] The file id
-        /// @param topology_type [in] The topology type
-        /// @param topology_id [in] The topology id
-        /// @param names [out] The variable names
+        /// @param variable_name [in] The variable name
+        /// @param values [out] The attribute values
         /// @return Error code
-        UGRID_API int ug_variable_get_attributes_names(int file_id, int topology_type, int topology_id, char* names);
+        UGRID_API int ug_variable_get_attributes_values(int file_id, char const* variable_name, char* values);
 
-        /// @brief For a specific topology, retrieve its attribute values
+        /// @brief Get the attributes names of a specific variable
         /// @param file_id [in] The file id
-        /// @param topology_type [in] The topology type
-        /// @param topology_id [in] The topology id
-        /// @param values [out] The variable values
+        /// @param variable_name [in] The variable name
+        /// @param names [out] The attribute names
         /// @return Error code
-        UGRID_API int ug_variable_get_attributes_values(int file_id, int topology_type, int topology_id, char* values);
+        UGRID_API int ug_variable_get_attributes_names(int file_id, char const* variable_name, char* names);
 
-        /// @brief For a specific data variables, count the number of dimensions
+        /// @brief Get the number of dimensions of a specific variable
         /// @param file_id [in] The file id
-        /// @param data_variable_name [in] The variable name
-        /// @param dimensions_count [in] The number of dimensions associated with the variable name
+        /// @param variable_name [in] The variable name
+        /// @param dimensions_count [in] The number of dimensions
         /// @return Error code
-        UGRID_API int ug_variable_count_dimensions(int file_id, char const* data_variable_name, int& dimensions_count);
+        UGRID_API int ug_variable_count_dimensions(int file_id, char const* variable_name, int& dimensions_count);
 
-        /// @brief For a specific data variables, gets the dimension values.
+        /// @brief Get the dimension values of a specific variable
         /// @param file_id [in] The file id
-        /// @param data_variable_name [in] The variable name
+        /// @param variable_name [in] The variable name
         /// @param dimension_vec [in] The dimension values associated with the variable name
         /// @return Error code
-        UGRID_API int ug_variable_get_data_dimensions(int file_id, char const* data_variable_name, int* dimension_vec);
+        UGRID_API int ug_variable_get_data_dimensions(int file_id, char const* variable_name, int* dimension_vec);
 
-        /// @brief For a specific data variables, gets the data as an array of double. This might be large, because the arrays contains all time steps.
+        /// @brief Get the variable data as a flat array of doubles. This might be large, because the arrays can have a large dimensionality
         /// @param file_id [in] The file id
-        /// @param data_variable_name [in] The variable name
+        /// @param variable_name [in] The variable name
         /// @param data [out] The variable data
         /// @return Error code
-        UGRID_API int ug_variable_get_data_double(int file_id, char const* data_variable_name, double* data);
+        UGRID_API int ug_variable_get_data_double(int file_id, char const* variable_name, double* data);
 
-        /// @brief For a specific data variables, gets the data as an array of int. This might be large, because the arrays contains all time steps.
+        /// @brief Get the variable data as a flat array of int. This might be large, because the arrays can have a large dimensionality
         /// @param file_id [in] The file id
-        /// @param data_variable_name [in] The variable name
+        /// @param variable_name [in] The variable name
         /// @param data [out] The variable data
         /// @return Error code
-        UGRID_API int ug_variable_get_data_int(int file_id, char const* data_variable_name, int* data);
+        UGRID_API int ug_variable_get_data_int(int file_id, char const* variable_name, int* data);
 
-        /// @brief For a specific data variables, gets the data as an array of chars. This might be large, because the arrays contains all time steps.
+        /// @brief Get the variable data as a flat array of char. This might be large, because the arrays can have a large dimensionality
         /// @param file_id [in] The file id
-        /// @param data_variable_name [in] The variable name
+        /// @param variable_name [in] The variable name
         /// @param data [out] The variable data
         /// @return Error code
-        UGRID_API int ug_variable_get_data_char(int file_id, char const* data_variable_name, char* data);
+        UGRID_API int ug_variable_get_data_char(int file_id, char const* variable_name, char* data);
 
         /// @brief Gets the integer identifying the file read mode
         /// @param mode [out] the integer identifying the file read mode

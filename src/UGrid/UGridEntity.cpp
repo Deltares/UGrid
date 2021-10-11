@@ -264,11 +264,6 @@ std::map<std::string, std::vector<netCDF::NcVar>>::const_iterator UGridEntity::f
             break;
         }
     }
-    if (iterator == m_topology_attribute_variables.end())
-    {
-        throw std::invalid_argument("find_attribute_variable_name_with_aliases: No Matching found");
-    }
-
     return iterator;
 }
 

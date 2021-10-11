@@ -37,11 +37,11 @@ TEST(ApiTest, InquireAndGet_OneMesh2D_ShouldReadMesh2d)
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
     // Allocate data variables
-    int name_length;
-    error_code = ugridapi::ug_name_get_length(name_length);
+    int name_long_length;
+    error_code = ugridapi::ug_name_get_long_length(name_long_length);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
-    std::unique_ptr<char> const name(new char[name_length]);
+    std::unique_ptr<char> const name(new char[name_long_length]);
     mesh2d.name = name.get();
     std::unique_ptr<double> const node_x(new double[mesh2d.num_nodes]);
     mesh2d.node_x = node_x.get();
@@ -139,8 +139,12 @@ TEST(ApiTest, DefineAndPut_OneMesh2D_ShouldWriteData)
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
     // Fill data
+    int name_long_length;
+    error_code = ugridapi::ug_name_get_long_length(name_long_length);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
     ugridapi::Mesh2D mesh2d;
-    std::unique_ptr<char> const name(new char[]{"mesh2d                                  "});
+    std::unique_ptr<char> const name(new char[name_long_length]);
+    string_to_char_array("mesh2d", name.get());
     mesh2d.name = name.get();
     std::unique_ptr<double> const node_x(new double[]{0, 1, 0, 1, 0, 1, 0, 1, 2, 2, 2, 2, 3, 3, 3, 3});
 
@@ -271,6 +275,9 @@ TEST(ApiTest, InquireAndGet_OneNetwork1D_ShouldReadNetwork1D)
     error_code = ugridapi::ug_name_get_long_length(long_names_length);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
+    std::unique_ptr<char> const name(new char[long_names_length]);
+    network1d.name = name.get();
+
     std::unique_ptr<double> const node_x(new double[network1d.num_nodes]);
     network1d.node_x = node_x.get();
 
@@ -362,6 +369,10 @@ TEST(ApiTest, InquireAndGet_OneNetwork1D_ShouldReadNetwork1D)
     std::vector<double> branch_lengths_expected_vector{1165.29};
     ASSERT_THAT(branch_lengths_vector, ::testing::ContainerEq(branch_lengths_expected_vector));
 
+    std::string network1d_name(network1d.name);
+    right_trim_string(network1d_name);
+    ASSERT_EQ(network1d_name, "network");
+
     // Close the file
     error_code = ugridapi::ug_file_close(file_id);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
@@ -380,8 +391,12 @@ TEST(ApiTest, DefineAndPut_OneNetwork1D_ShouldWriteData)
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
     // Fill data
+    int name_long_length;
+    error_code = ugridapi::ug_name_get_long_length(name_long_length);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
     ugridapi::Network1D network1d;
-    std::unique_ptr<char> const name(new char[]{"network1d                               "});
+    std::unique_ptr<char> const name(new char[name_long_length]);
+    string_to_char_array("network1d", name.get());
     network1d.name = name.get();
     std::unique_ptr<double> const node_x(new double[]{293.78, 538.89});
     network1d.node_x = node_x.get();
@@ -467,10 +482,10 @@ TEST(ApiTest, InquireAndGet_OneMesh1D_ShouldReadMesh1D)
     error_code = ugridapi::ug_name_get_long_length(long_names_length);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
-    std::unique_ptr<char> const name(new char[name_length]);
+    std::unique_ptr<char> const name(new char[long_names_length]);
     mesh1d.name = name.get();
 
-    std::unique_ptr<char> const network_name(new char[name_length]);
+    std::unique_ptr<char> const network_name(new char[long_names_length]);
     mesh1d.network_name = network_name.get();
 
     std::unique_ptr<int> const branch_id(new int[mesh1d.num_nodes]);
@@ -510,10 +525,12 @@ TEST(ApiTest, InquireAndGet_OneMesh1D_ShouldReadMesh1D)
     }
 
     std::string network_name_string(mesh1d.network_name);
-    ASSERT_EQ("network                                ", network_name_string);
+    right_trim_string(network_name_string);
+    ASSERT_EQ("network", network_name_string);
 
     std::string mesh1d_name_string(mesh1d.name);
-    ASSERT_EQ("1dmesh                                 ", mesh1d_name_string);
+    right_trim_string(mesh1d_name_string);
+    ASSERT_EQ("1dmesh", mesh1d_name_string);
 }
 
 TEST(ApiTest, DefineAndPut_OneMesh1D_ShouldWriteData)
@@ -529,8 +546,12 @@ TEST(ApiTest, DefineAndPut_OneMesh1D_ShouldWriteData)
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
     // Fill data
+    int name_long_length;
+    error_code = ugridapi::ug_name_get_long_length(name_long_length);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
     ugridapi::Mesh1D mesh1d;
-    std::unique_ptr<char> const name(new char[]{"mesh1d                                  "});
+    std::unique_ptr<char> const name(new char[name_long_length]);
+    string_to_char_array("mesh1d", name.get());
     mesh1d.name = name.get();
 
     std::unique_ptr<char> const network_name(new char[]{"network1d                               "});
@@ -637,13 +658,13 @@ TEST(ApiTest, InquireAndGet_OneContact_ShouldReadContact)
     error_code = ugridapi::ug_name_get_long_length(long_names_length);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
-    std::unique_ptr<char> const name(new char[name_length]);
+    std::unique_ptr<char> const name(new char[long_names_length]);
     contacts.name = name.get();
 
-    std::unique_ptr<char> const mesh_from_name(new char[name_length]);
+    std::unique_ptr<char> const mesh_from_name(new char[long_names_length]);
     contacts.mesh_from_name = mesh_from_name.get();
 
-    std::unique_ptr<char> const mesh_to_name(new char[name_length]);
+    std::unique_ptr<char> const mesh_to_name(new char[long_names_length]);
     contacts.mesh_to_name = mesh_to_name.get();
 
     std::unique_ptr<char> const contact_name_id(new char[name_length * contacts.num_contacts]);
@@ -731,14 +752,20 @@ TEST(ApiTest, DefineAndPut_OneContact_ShouldWriteAContact)
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
     // Fill data
+    int name_long_length;
+    error_code = ugridapi::ug_name_get_long_length(name_long_length);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
     ugridapi::Contacts contacts;
-    std::unique_ptr<char> const name(new char[]{"2d1dlinks                              "});
+
+    // Set the names
+    std::unique_ptr<char> const name(new char[name_long_length]);
+    string_to_char_array("2d1dlinks", name.get());
     contacts.name = name.get();
-
-    std::unique_ptr<char> const mesh_from_name(new char[]{"mesh2d                                 "});
+    std::unique_ptr<char> const mesh_from_name(new char[name_long_length]);
+    string_to_char_array("mesh2d", mesh_from_name.get());
     contacts.mesh_from_name = mesh_from_name.get();
-
-    std::unique_ptr<char> const mesh_to_name(new char[]{"mesh1d                                 "});
+    std::unique_ptr<char> const mesh_to_name(new char[name_long_length]);
+    string_to_char_array("mesh1d", mesh_from_name.get());
     contacts.mesh_to_name = mesh_to_name.get();
 
     int face_location_enum;
@@ -806,7 +833,7 @@ TEST(ApiTest, DefineAndPut_OneContact_ShouldWriteAContact)
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 }
 
-TEST(ApiTest, GetTopologyAttributes_OnResultFile_ShouldGetTopologyAttributes)
+TEST(ApiTest, GetVariableAttributes_OnResultFile_ShouldGetVariableAttributes)
 {
     std::string const file_path = TEST_FOLDER + "/ResultFile.nc";
 
@@ -818,21 +845,22 @@ TEST(ApiTest, GetTopologyAttributes_OnResultFile_ShouldGetTopologyAttributes)
     error_code = ugridapi::ug_file_open(file_path.c_str(), file_mode, file_id);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
-    // Counts the topology type
-    int topology_type;
-    error_code = ugridapi::ug_topology_get_mesh1d_enum(topology_type);
-    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
-
-    int attributes_count = 0;
-    error_code = ugridapi::ug_variable_count_attributes(file_id, topology_type, 0, attributes_count);
-    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
-
+    // Get mesh1d and its name
     int long_names_length;
     error_code = ugridapi::ug_name_get_long_length(long_names_length);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+    ugridapi::Mesh1D mesh1d;
+    std::unique_ptr<char> const name(new char[long_names_length]);
+    mesh1d.name = name.get();
+    error_code = ug_mesh1d_get(file_id, 0, mesh1d);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+
+    int attributes_count = 0;
+    error_code = ugridapi::ug_variable_count_attributes(file_id, mesh1d.name, attributes_count);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
     std::unique_ptr<char> const topology_attributes_names(new char[attributes_count * long_names_length]);
-    error_code = ugridapi::ug_variable_get_attributes_names(file_id, topology_type, 0, topology_attributes_names.get());
+    error_code = ugridapi::ug_variable_get_attributes_names(file_id, mesh1d.name, topology_attributes_names.get());
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
     std::string topology_attributes_names_string(topology_attributes_names.get(), topology_attributes_names.get() + long_names_length * attributes_count);
@@ -840,7 +868,7 @@ TEST(ApiTest, GetTopologyAttributes_OnResultFile_ShouldGetTopologyAttributes)
     right_trim_string_vector(names);
 
     std::unique_ptr<char> const topology_attributes_values(new char[attributes_count * long_names_length]);
-    error_code = ugridapi::ug_variable_get_attributes_values(file_id, topology_type, 0, topology_attributes_values.get());
+    error_code = ugridapi::ug_variable_get_attributes_values(file_id, mesh1d.name, topology_attributes_values.get());
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
     std::string topology_attributes_values_string(topology_attributes_values.get(), topology_attributes_values.get() + long_names_length * attributes_count);
@@ -873,7 +901,7 @@ TEST(ApiTest, GetTopologyAttributes_OnResultFile_ShouldGetTopologyAttributes)
     ASSERT_THAT(values, ::testing::ContainerEq(espected_values));
 }
 
-TEST(ApiTest, GetDataVariables_OnResultFile_ShouldGetDataVariables)
+TEST(ApiTest, GetTopologyDataVariables_OnResultFile_ShouldGetTopologyDataVariables)
 {
     std::string const file_path = TEST_FOLDER + "/ResultFile.nc";
 

@@ -290,7 +290,7 @@ void Mesh2D::inquire(ugridapi::Mesh2D& mesh2d) const
 
 void Mesh2D::get(ugridapi::Mesh2D& mesh2d) const
 {
-    string_to_char_array(m_entity_name, name_length, mesh2d.name);
+    string_to_char_array(m_entity_name, name_long_length, mesh2d.name);
 
     // Nodes
     if (auto const it = m_topology_attribute_variables.find("node_coordinates"); mesh2d.node_x != nullptr && it != m_topology_attribute_variables.end())

@@ -60,3 +60,21 @@ static std::vector<std::string> split_string(std::string string_value, size_t nu
     }
     return result;
 }
+
+/// @brief Performs right trim of single string
+/// @param str [in] The input string
+static void string_to_char_array(std::string const& value, char* char_array)
+{
+    if (value.empty())
+    {
+        throw std::exception("string_to_char_array: value string is empty.");
+    }
+    if (char_array == nullptr)
+    {
+        throw std::exception("string_to_char_array: char_array is nullptr ");
+    }
+    for (auto i = 0; i < value.size(); ++i)
+    {
+        char_array[i] = value[i];
+    }
+}
