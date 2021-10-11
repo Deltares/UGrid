@@ -756,8 +756,6 @@ TEST(ApiTest, DefineAndPut_OneContact_ShouldWriteAContact)
     error_code = ugridapi::ug_name_get_long_length(name_long_length);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
     ugridapi::Contacts contacts;
-
-    // Set the names
     std::unique_ptr<char> const name(new char[name_long_length]);
     string_to_char_array("2d1dlinks", name_long_length, name.get());
     contacts.name = name.get();
@@ -927,13 +925,17 @@ TEST(ApiTest, GetTopologyDataVariables_OnResultFile_ShouldGetTopologyDataVariabl
 
     // Gets a data variable
     int dimensions_count = 0;
-    std::string const variable_name_to_retrive = "mesh1d_s0";
-    error_code = ugridapi::ug_variable_count_dimensions(file_id, variable_name_to_retrive.c_str(), dimensions_count);
+    int name_long_length;
+    error_code = ugridapi::ug_name_get_long_length(name_long_length);
+    std::unique_ptr<char> const variable_name_to_retrive(new char[name_long_length]);
+    string_to_char_array("mesh1d_s0", name_long_length, variable_name_to_retrive.get());
+
+    error_code = ugridapi::ug_variable_count_dimensions(file_id, variable_name_to_retrive.get(), dimensions_count);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
     // Get the dimensions of data variable
     std::unique_ptr<int> const dimensions(new int[dimensions_count]);
-    error_code = ugridapi::ug_variable_get_data_dimensions(file_id, variable_name_to_retrive.c_str(), dimensions.get());
+    error_code = ugridapi::ug_variable_get_data_dimensions(file_id, variable_name_to_retrive.get(), dimensions.get());
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
     std::string dimension_vector(dimensions.get(), dimensions.get() + dimensions_count);
 
@@ -946,7 +948,7 @@ TEST(ApiTest, GetTopologyDataVariables_OnResultFile_ShouldGetTopologyDataVariabl
 
     // Get the data
     std::unique_ptr<double> const data(new double[total_dimension]);
-    ugridapi::ug_variable_get_data_double(file_id, variable_name_to_retrive.c_str(), data.get());
+    ugridapi::ug_variable_get_data_double(file_id, variable_name_to_retrive.get(), data.get());
 
     // Assert the first 5 values
     std::vector<double> data_vector(data.get(), data.get() + 5);
