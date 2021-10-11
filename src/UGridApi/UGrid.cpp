@@ -234,7 +234,7 @@ namespace ugridapi
         return Success;
     }
 
-    UGRID_API int ug_topology_count_attributes(int file_id, int topology_type, int topology_id, int& attributes_count)
+    UGRID_API int ug_variable_count_attributes(int file_id, int topology_type, int topology_id, int& attributes_count)
     {
         int exit_code = Success;
         try
@@ -254,7 +254,7 @@ namespace ugridapi
         return exit_code;
     }
 
-    UGRID_API int ug_topology_get_attributes_names(int file_id, int topology_type, int topology_id, char* names)
+    UGRID_API int ug_variable_get_attributes_names(int file_id, int topology_type, int topology_id, char* names)
     {
         int exit_code = Success;
         try
@@ -277,7 +277,7 @@ namespace ugridapi
         return exit_code;
     }
 
-    UGRID_API int ug_topology_get_attributes_values(int file_id, int topology_type, int topology_id, char* values)
+    UGRID_API int ug_variable_get_attributes_values(int file_id, int topology_type, int topology_id, char* values)
     {
         int exit_code = Success;
         try
@@ -352,7 +352,7 @@ namespace ugridapi
         return exit_code;
     }
 
-    UGRID_API int ug_topology_count_data_dimensions(int file_id, char const* data_variable_name, int& dimensions_count)
+    UGRID_API int ug_variable_count_dimensions(int file_id, char const* data_variable_name, int& dimensions_count)
     {
         int exit_code = Success;
         try
@@ -372,7 +372,7 @@ namespace ugridapi
             const auto it = vars.find(variable_name);
             if (it == vars.end())
             {
-                throw std::invalid_argument("ug_topology_get_data_double: The variable name is not present in the netcdf file.");
+                throw std::invalid_argument("ug_variable_count_dimensions: The variable name is not present in the netcdf file.");
             }
 
             // Get the dimensions
@@ -385,7 +385,7 @@ namespace ugridapi
         return exit_code;
     }
 
-    UGRID_API int ug_topology_get_data_dimensions(int file_id, char const* data_variable_name, int* dimension_vec)
+    UGRID_API int ug_variable_get_data_dimensions(int file_id, char const* data_variable_name, int* dimension_vec)
     {
         int exit_code = Success;
         try
@@ -405,7 +405,7 @@ namespace ugridapi
             const auto it = vars.find(variable_name);
             if (it == vars.end())
             {
-                throw std::invalid_argument("ug_topology_get_data_double: The variable name is not present in the netcdf file.");
+                throw std::invalid_argument("ug_variable_get_data_dimensions: The variable name is not present in the netcdf file.");
             }
 
             // Get the dimensions
@@ -422,7 +422,7 @@ namespace ugridapi
         return exit_code;
     }
 
-    UGRID_API int ug_topology_get_data_double(int file_id, char const* data_variable_name, double* data)
+    UGRID_API int ug_variable_get_data_double(int file_id, char const* data_variable_name, double* data)
     {
         int exit_code = Success;
         try
@@ -441,7 +441,7 @@ namespace ugridapi
         return exit_code;
     }
 
-    UGRID_API int ug_topology_get_data_int(int file_id, char const* data_variable_name, int* data)
+    UGRID_API int ug_variable_get_data_int(int file_id, char const* data_variable_name, int* data)
     {
         int exit_code = Success;
         try
@@ -451,7 +451,7 @@ namespace ugridapi
                 throw std::invalid_argument("UGrid: The selected file_id does not exist.");
             }
 
-            get_data_array(file_id, data_variable_name, data);
+            get_data_array(file_id, data_variable_name, *data);
         }
         catch (...)
         {
@@ -460,7 +460,7 @@ namespace ugridapi
         return exit_code;
     }
 
-    UGRID_API int ug_topology_get_data_char(int file_id, char const* data_variable_name, char* data)
+    UGRID_API int ug_variable_get_data_char(int file_id, char const* data_variable_name, char* data)
     {
         int exit_code = Success;
         try
@@ -470,7 +470,7 @@ namespace ugridapi
                 throw std::invalid_argument("UGrid: The selected file_id does not exist.");
             }
 
-            get_data_array(file_id, data_variable_name, data);
+            get_data_array(file_id, data_variable_name, *data);
         }
         catch (...)
         {

@@ -824,7 +824,7 @@ TEST(ApiTest, GetTopologyAttributes_OnResultFile_ShouldGetTopologyAttributes)
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
     int attributes_count = 0;
-    error_code = ugridapi::ug_topology_count_attributes(file_id, topology_type, 0, attributes_count);
+    error_code = ugridapi::ug_variable_count_attributes(file_id, topology_type, 0, attributes_count);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
     int long_names_length;
@@ -832,7 +832,7 @@ TEST(ApiTest, GetTopologyAttributes_OnResultFile_ShouldGetTopologyAttributes)
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
     std::unique_ptr<char> const topology_attributes_names(new char[attributes_count * long_names_length]);
-    error_code = ugridapi::ug_topology_get_attributes_names(file_id, topology_type, 0, topology_attributes_names.get());
+    error_code = ugridapi::ug_variable_get_attributes_names(file_id, topology_type, 0, topology_attributes_names.get());
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
     std::string topology_attributes_names_string(topology_attributes_names.get(), topology_attributes_names.get() + long_names_length * attributes_count);
@@ -840,7 +840,7 @@ TEST(ApiTest, GetTopologyAttributes_OnResultFile_ShouldGetTopologyAttributes)
     right_trim_string_vector(names);
 
     std::unique_ptr<char> const topology_attributes_values(new char[attributes_count * long_names_length]);
-    error_code = ugridapi::ug_topology_get_attributes_values(file_id, topology_type, 0, topology_attributes_values.get());
+    error_code = ugridapi::ug_variable_get_attributes_values(file_id, topology_type, 0, topology_attributes_values.get());
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
     std::string topology_attributes_values_string(topology_attributes_values.get(), topology_attributes_values.get() + long_names_length * attributes_count);
@@ -897,27 +897,15 @@ TEST(ApiTest, GetDataVariables_OnResultFile_ShouldGetDataVariables)
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
     ASSERT_EQ(14, data_variable_count);
 
-    // Get the data variables names for the topology type, topology_id and location
-    int long_names_length;
-    error_code = ugridapi::ug_name_get_long_length(long_names_length);
-    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
-
-    int topology_id = 0;
-    std::unique_ptr<char> const data_variables_names(new char[data_variable_count * long_names_length]);
-    ugridapi::ug_topology_get_data_variables_names(file_id, topology_type, topology_id, location, data_variables_names.get());
-
-    std::string data_variables_names_string(data_variables_names.get(), data_variables_names.get() + long_names_length * data_variable_count);
-    auto const names = split_string(data_variables_names_string, data_variable_count, long_names_length);
-    ASSERT_EQ(14, names.size());
-
+    // Gets a data variable
     int dimensions_count = 0;
-    std::string const variable_name_to_retrive = names[7];
-    error_code = ugridapi::ug_topology_count_data_dimensions(file_id, variable_name_to_retrive.c_str(), dimensions_count);
+    std::string const variable_name_to_retrive = "mesh1d_s0";
+    error_code = ugridapi::ug_variable_count_dimensions(file_id, variable_name_to_retrive.c_str(), dimensions_count);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
     // Get the dimensions of data variable
     std::unique_ptr<int> const dimensions(new int[dimensions_count]);
-    error_code = ugridapi::ug_topology_get_data_dimensions(file_id, variable_name_to_retrive.c_str(), dimensions.get());
+    error_code = ugridapi::ug_variable_get_data_dimensions(file_id, variable_name_to_retrive.c_str(), dimensions.get());
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
     std::string dimension_vector(dimensions.get(), dimensions.get() + dimensions_count);
 
@@ -930,7 +918,7 @@ TEST(ApiTest, GetDataVariables_OnResultFile_ShouldGetDataVariables)
 
     // Get the data
     std::unique_ptr<double> const data(new double[total_dimension]);
-    ugridapi::ug_topology_get_data_double(file_id, variable_name_to_retrive.c_str(), data.get());
+    ugridapi::ug_variable_get_data_double(file_id, variable_name_to_retrive.c_str(), data.get());
 
     // Assert the first 5 values
     std::vector<double> data_vector(data.get(), data.get() + 5);
