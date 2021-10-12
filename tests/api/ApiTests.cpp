@@ -595,19 +595,25 @@ TEST(ApiTest, DefineAndPut_OneMesh1D_ShouldWriteData)
                                                      23, 24});
     mesh1d.edge_node = edges_nodes.get();
 
-    std::stringstream meshnodesids;
-    std::stringstream meshnodelongnames;
+    std::vector<std::string> ids;
+    std::vector<std::string> long_names;
     for (auto i = 0; i < mesh1d.num_nodes; ++i)
     {
-        meshnodesids << "meshnodeids                             ";
-        meshnodelongnames << "meshnodelongnames                                                               ";
+        ids.emplace_back("meshnodeids");
+        long_names.emplace_back("meshnodelongnames");
     }
 
-    std::unique_ptr<char> const node_name_id(strdup(meshnodesids.str().c_str()));
+    int name_length;
+    error_code = ugridapi::ug_name_get_long_length(name_length);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+
+    std::unique_ptr<char> const node_name_id(new char[mesh1d.num_nodes * name_length]);
+    vector_of_strings_to_char_array(ids, name_length, node_name_id.get());
     mesh1d.node_name_id = node_name_id.get();
 
-    std::unique_ptr<char> const node_name_long(strdup(meshnodelongnames.str().c_str()));
-    mesh1d.node_name_long = node_name_long.get();
+    std::unique_ptr<char> contact_name_long(new char[mesh1d.num_nodes * name_long_length]);
+    vector_of_strings_to_char_array(long_names, name_long_length, contact_name_long.get());
+    mesh1d.node_name_long = contact_name_long.get();
 
     int topology_id = -1;
     error_code = ug_mesh1d_def(file_id, mesh1d, topology_id);
@@ -763,7 +769,7 @@ TEST(ApiTest, DefineAndPut_OneContact_ShouldWriteAContact)
     string_to_char_array("mesh2d", name_long_length, mesh_from_name.get());
     contacts.mesh_from_name = mesh_from_name.get();
     std::unique_ptr<char> const mesh_to_name(new char[name_long_length]);
-    string_to_char_array("mesh1d", name_long_length, mesh_from_name.get());
+    string_to_char_array("mesh1d", name_long_length, mesh_to_name.get());
     contacts.mesh_to_name = mesh_to_name.get();
 
     int face_location_enum;
@@ -804,18 +810,24 @@ TEST(ApiTest, DefineAndPut_OneContact_ShouldWriteAContact)
     contacts.edges = edges.get();
     contacts.num_contacts = 23;
 
-    std::stringstream ids;
-    std::stringstream long_names;
+    std::vector<std::string> ids;
+    std::vector<std::string> long_names;
     for (auto i = 0; i < contacts.num_contacts; ++i)
     {
-        ids << "linkid                                  ";
-        long_names << "linklongname                                                                    ";
+        ids.emplace_back("linkid");
+        long_names.emplace_back("linklongname");
     }
 
-    std::unique_ptr<char> const contact_name_id(strdup(ids.str().c_str()));
+    int name_length;
+    error_code = ugridapi::ug_name_get_long_length(name_length);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+
+    std::unique_ptr<char> contact_name_id(new char[contacts.num_contacts * name_length]);
+    vector_of_strings_to_char_array(ids, name_length, contact_name_id.get());
     contacts.contact_name_id = contact_name_id.get();
 
-    std::unique_ptr<char> const contact_name_long(strdup(long_names.str().c_str()));
+    std::unique_ptr<char> contact_name_long(new char[contacts.num_contacts * name_long_length]);
+    vector_of_strings_to_char_array(long_names, name_long_length, contact_name_long.get());
     contacts.contact_name_long = contact_name_long.get();
 
     int topology_id = -1;
@@ -831,7 +843,7 @@ TEST(ApiTest, DefineAndPut_OneContact_ShouldWriteAContact)
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 }
 
-TEST(ApiTest, GetVariableAttributes_OnResultFile_ShouldGetVariableAttributes)
+TEST(ApiTest, GetTopologyAttributesNamesAndValues_OnResultFile_ShouldGetTopologyAttributesNamesAndValues)
 {
     std::string const file_path = TEST_FOLDER + "/ResultFile.nc";
 
@@ -886,7 +898,7 @@ TEST(ApiTest, GetVariableAttributes_OnResultFile_ShouldGetVariableAttributes)
         "topology_dimension"};
     ASSERT_THAT(names, ::testing::ContainerEq(expected_names));
 
-    std::vector<std::string> espected_values{
+    std::vector<std::string> expected_values{
         "mesh_topology",
         "mesh1d_edge_x mesh1d_edge_y",
         "nmesh1d_edge",
@@ -896,10 +908,10 @@ TEST(ApiTest, GetVariableAttributes_OnResultFile_ShouldGetVariableAttributes)
         "mesh1d_node_x mesh1d_node_y",
         "nmesh1d_node",
         "1"};
-    ASSERT_THAT(values, ::testing::ContainerEq(espected_values));
+    ASSERT_THAT(values, ::testing::ContainerEq(expected_values));
 }
 
-TEST(ApiTest, GetTopologyDataVariables_OnResultFile_ShouldGetTopologyDataVariables)
+TEST(ApiTest, GetVariableAttributesNamesAndValues_OnResultFile_ShouldGetVariableAttributesNamesAndValues)
 {
     std::string const file_path = TEST_FOLDER + "/ResultFile.nc";
 
@@ -911,17 +923,73 @@ TEST(ApiTest, GetTopologyDataVariables_OnResultFile_ShouldGetTopologyDataVariabl
     error_code = ugridapi::ug_file_open(file_path.c_str(), file_mode, file_id);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
-    // Count the number of data variables on a specific topology and location
-    int topology_type;
-    error_code = ugridapi::ug_topology_get_mesh1d_enum(topology_type);
+    // Set the mesh2d_edge_type variable name
+    int long_names_length;
+    error_code = ugridapi::ug_name_get_long_length(long_names_length);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
-    int location;
-    error_code = ugridapi::ug_entity_get_node_location_enum(location);
+    std::unique_ptr<char> const variable_name(new char[long_names_length]);
+    string_to_char_array("mesh2d_edge_type", long_names_length, variable_name.get());
+
+    // Allocate arrays to get data names and variables
+    int attributes_count = 0;
+    error_code = ugridapi::ug_variable_count_attributes(file_id, variable_name.get(), attributes_count);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
-    int data_variable_count = 0;
-    error_code = ugridapi::ug_topology_count_data_variables(file_id, topology_type, 0, location, data_variable_count);
+
+    std::unique_ptr<char> const attributes_names(new char[attributes_count * long_names_length]);
+    error_code = ugridapi::ug_variable_get_attributes_names(file_id, variable_name.get(), attributes_names.get());
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
-    ASSERT_EQ(14, data_variable_count);
+
+    std::string topology_attributes_names_string(attributes_names.get(), attributes_names.get() + long_names_length * attributes_count);
+    auto names = split_string(topology_attributes_names_string, attributes_count, long_names_length);
+    right_trim_string_vector(names);
+
+    std::unique_ptr<char> const attributes_values(new char[attributes_count * long_names_length]);
+    error_code = ugridapi::ug_variable_get_attributes_values(file_id, variable_name.get(), attributes_values.get());
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+
+    std::string topology_attributes_values_string(attributes_values.get(), attributes_values.get() + long_names_length * attributes_count);
+    auto values = split_string(topology_attributes_values_string, attributes_count, long_names_length);
+    right_trim_string_vector(values);
+
+    // Assert
+    std::vector<std::string> expected_names{
+        "_FillValue",
+        "cell_methods",
+        "coordinates",
+        "flag_meanings",
+        "flag_values",
+        "location",
+        "long_name",
+        "mesh",
+        "standard_name",
+        "units"};
+    ASSERT_THAT(names, ::testing::ContainerEq(expected_names));
+
+    std::vector<std::string> expected_values{
+        "-999",
+        "nmesh2d_edge: mean",
+        "mesh2d_edge_x mesh2d_edge_y",
+        "internal_closed internal boundary boundary_closed",
+        "0 1 2 3",
+        "edge",
+        "edge type (relation between edge and flow geometry",
+        "mesh2d",
+        "",
+        ""};
+    ASSERT_THAT(values, ::testing::ContainerEq(expected_values));
+}
+
+TEST(ApiTest, GetDataVariables_OnResultFile_ShouldGetDataVariables)
+{
+    std::string const file_path = TEST_FOLDER + "/ResultFile.nc";
+
+    // Open a file
+    int file_id = 0;
+    int file_mode = 0;
+    auto error_code = ugridapi::ug_file_read_mode(file_mode);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+    error_code = ugridapi::ug_file_open(file_path.c_str(), file_mode, file_id);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
     // Gets a data variable
     int dimensions_count = 0;

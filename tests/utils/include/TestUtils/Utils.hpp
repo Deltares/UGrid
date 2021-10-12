@@ -61,8 +61,10 @@ static std::vector<std::string> split_string(std::string string_value, size_t nu
     return result;
 }
 
-/// @brief Performs right trim of single string
-/// @param str [in] The input string
+/// @brief Puts the content of a string into a char array and adds null termination
+/// @param value [in] The input string
+/// @param len [in] The array length
+/// @param char_array [out] The output char array
 static void string_to_char_array(std::string const& value, size_t len, char* char_array)
 {
     if (value.empty())
@@ -71,7 +73,7 @@ static void string_to_char_array(std::string const& value, size_t len, char* cha
     }
     if (char_array == nullptr)
     {
-        throw std::exception("string_to_char_array: char_array is nullptr ");
+        throw std::exception("string_to_char_array: char_array is nullptr.");
     }
     for (auto i = 0; i < value.size(); ++i)
     {
@@ -83,4 +85,34 @@ static void string_to_char_array(std::string const& value, size_t len, char* cha
     }
     // null terminate
     char_array[len - 1] = '\0';
+}
+
+/// @brief Puts the content of a vector of strings into a char array and adds null termination
+/// @param value [in] The input string
+/// @param len [in] The length of each entry in char_array
+/// @param char_array [out] The output char array
+static void vector_of_strings_to_char_array(std::vector<std::string> const& values, size_t len, char* char_array)
+{
+    if (char_array == nullptr || values.empty())
+    {
+        return;
+    }
+
+    size_t char_array_position = 0;
+    for (auto i = 0; i < values.size(); ++i)
+    {
+        for (auto j = 0; j < values[i].size(); ++j)
+        {
+            char_array[char_array_position] = values[i][j];
+            char_array_position++;
+        }
+        for (auto j = values[i].size(); j < len; ++j)
+        {
+            char_array[char_array_position] = ' ';
+            char_array_position++;
+        }
+    }
+
+    // null terminate
+    char_array[char_array_position - 1] = '\0';
 }

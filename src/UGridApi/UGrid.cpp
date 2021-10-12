@@ -36,6 +36,7 @@
 #endif
 
 #include <map>
+#include <sstream>
 #include <vector>
 
 #include <ncFile.h>
@@ -110,19 +111,29 @@ namespace ugridapi
     {
         std::vector<std::string> result;
         auto const attributes = nc_var.getAtts();
-        for (auto const& att : attributes)
+        for (auto const& [name, value] : attributes)
         {
-            if (att.second.getType() == netCDF::NcType::nc_INT)
+            if (value.getType() == netCDF::NcType::nc_INT)
             {
-                int value;
-                att.second.getValues(&value);
-                result.emplace_back(std::to_string(value));
+                auto const attribute_length = value.getAttLength();
+                std::vector<int> items(attribute_length);
+                value.getValues(&items[0]);
+                std::stringstream os;
+                for (auto const& item : items)
+                {
+                    os << item << " ";
+                }
+                result.emplace_back(os.str());
             }
-            if (att.second.getType() == netCDF::NcType::nc_CHAR)
+            else if (value.getType() == netCDF::NcType::nc_CHAR)
             {
-                std::string value;
-                att.second.getValues(value);
-                result.emplace_back(value);
+                std::string item;
+                value.getValues(item);
+                result.emplace_back(item);
+            }
+            else
+            {
+                throw std::invalid_argument("get_attributes_values_as_strings: Invalid attribute value type.");
             }
         }
         return result;
