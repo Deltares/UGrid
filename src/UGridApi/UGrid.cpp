@@ -88,22 +88,6 @@ namespace ugridapi
         }
     }
 
-    /// @brief Gets all attributes names of a netCDF variable
-    /// @param nc_var [in] The netCDF variable
-    /// @return The attributes names
-    static std::vector<std::string> get_attributes_names(netCDF::NcVar const& nc_var)
-    {
-
-        std::vector<std::string> result;
-        auto const attributes = nc_var.getAtts();
-        result.reserve(attributes.size());
-        for (auto const& att : attributes)
-        {
-            result.emplace_back(att.first);
-        }
-        return result;
-    }
-
     /// @brief Gets all attributes values of a netCDF variable
     /// @param nc_var [in] The netCDF variable
     /// @return The attributes values
@@ -354,7 +338,6 @@ namespace ugridapi
             }
 
             // Get the attribute values
-
             auto const attribute_values = get_attributes_values_as_strings(it->second);
             ugrid::vector_of_strings_to_char_array(attribute_values, ugrid::name_long_length, values);
         }
