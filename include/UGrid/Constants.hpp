@@ -85,12 +85,18 @@ namespace ugrid
 
     // define topology variable aliases
     static const std::map<std::string, std::vector<std::string>> attribute_aliases{
+        // nodes
         {"node_id", {"node_id", "node_ids"}},
         {"node_long_name", {"node_long_name", "node_long_names"}},
-        {"branch_id", {"branch_id", "branch_ids"}},
-        {"branch_long_name", {"branch_long_name", "branch_long_names"}},
+        // edges
+        {"edge_id", {"edge_id", "branch_id", "branch_ids"}},
+        {"edge_long_name", {"branch_long_name", "branch_long_names", "edge_long_name"}},
+        // contacts
         {"contact_id", {"contact_id", "contact_ids"}},
         {"contact_long_name", {"contact_long_name", "contact_long_names"}},
-        {"branch_length", {"branch_length", "branch_lengths"}}};
+        // edge
+        {"edge_length", {"edge_length", "branch_length", "branch_lengths"}},
+        {"node_edge_id", {"branch_id", "branch_ids", "edge_id", "node_edge_id"}},
+    };
 
 } // namespace ugrid

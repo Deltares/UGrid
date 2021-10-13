@@ -42,25 +42,25 @@ namespace ugridapi
         double* node_y = nullptr;
 
         /// @brief The node name
-        char* node_name_id = nullptr;
+        char* node_id = nullptr;
 
         /// @brief The node long name
-        char* node_name_long = nullptr;
+        char* node_long_name = nullptr;
 
-        /// @brief The node defining each branch (also called node edge connectivity)
-        int* branch_node = nullptr;
+        /// @brief The node defining each edge
+        int* edge_node = nullptr;
 
-        /// @brief The branch lengths
-        double* branch_length = nullptr;
+        /// @brief The edge lengths
+        double* edge_length = nullptr;
 
-        /// @brief The order of the branches
-        int* branch_order = nullptr;
+        /// @brief The edge order
+        int* edge_order = nullptr;
 
-        /// @brief The name of the branches
-        char* branch_name_id = nullptr;
+        /// @brief The name of the edge
+        char* edge_id = nullptr;
 
-        /// @brief The long name of the branches
-        char* branch_name_long = nullptr;
+        /// @brief The long name of the edge
+        char* edge_long_name = nullptr;
 
         /// @brief The geometry node x coordinates
         double* geometry_nodes_x = nullptr;
@@ -68,8 +68,8 @@ namespace ugridapi
         /// @brief The geometry node y coordinates
         double* geometry_nodes_y = nullptr;
 
-        /// @brief The number of geometry node on each branch
-        int* num_branch_geometry_nodes = nullptr;
+        /// @brief The number of geometry node on each edge
+        int* num_edge_geometry_nodes = nullptr;
 
         /// @brief The number of geometry node
         int num_geometry_nodes = 0;
@@ -78,12 +78,12 @@ namespace ugridapi
         int num_nodes = 0;
 
         /// @brief The number of network1d branches
-        int num_branches = 0;
+        int num_edges = 0;
 
         /// @brief 1 If the coordinates are in a spherical system, 0 otherwise
         int is_spherical = 0;
 
-        /// @brief The start index used in arrays using indices, such as in the branch_node array
+        /// @brief The start index used in arrays using indices, such as in the edge_node array
         int start_index = 0;
     };
 } // namespace ugridapi

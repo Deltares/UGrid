@@ -103,7 +103,7 @@ namespace ugridapi
         /// @brief The number of layers
         int num_layers = 0;
 
-        /// @brief The start index used in arrays using indices, such as branch_node
+        /// @brief The start index used in arrays using indices, such as edge_node
         int start_index = 0;
 
         /// @brief The maximum number of face node

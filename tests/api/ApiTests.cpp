@@ -284,8 +284,8 @@ TEST(ApiTest, InquireAndGet_OneNetwork1D_ShouldReadNetwork1D)
     std::unique_ptr<double> const node_y(new double[network1d.num_nodes]);
     network1d.node_y = node_y.get();
 
-    std::unique_ptr<int> const branch_node(new int[network1d.num_branches * 2]);
-    network1d.branch_node = branch_node.get();
+    std::unique_ptr<int> const edge_node(new int[network1d.num_edges * 2]);
+    network1d.edge_node = edge_node.get();
 
     std::unique_ptr<double> const geometry_nodes_x(new double[network1d.num_geometry_nodes]);
     network1d.geometry_nodes_x = geometry_nodes_x.get();
@@ -293,30 +293,30 @@ TEST(ApiTest, InquireAndGet_OneNetwork1D_ShouldReadNetwork1D)
     std::unique_ptr<double> const geometry_nodes_y(new double[network1d.num_geometry_nodes]);
     network1d.geometry_nodes_y = geometry_nodes_y.get();
 
-    std::unique_ptr<int> const geometry_nodes_count(new int[network1d.num_branches]);
-    network1d.num_branch_geometry_nodes = geometry_nodes_count.get();
+    std::unique_ptr<int> const geometry_nodes_count(new int[network1d.num_edges]);
+    network1d.num_edge_geometry_nodes = geometry_nodes_count.get();
 
     std::unique_ptr<char> const node_id(new char[name_length * network1d.num_nodes]);
-    network1d.node_name_id = node_id.get();
+    network1d.node_id = node_id.get();
 
     std::unique_ptr<char> const node_long_name(new char[long_names_length * network1d.num_nodes]);
-    network1d.node_name_long = node_long_name.get();
+    network1d.node_long_name = node_long_name.get();
 
-    std::unique_ptr<char> const branch_id(new char[name_length * network1d.num_nodes]);
-    network1d.branch_name_id = branch_id.get();
+    std::unique_ptr<char> const edge_id(new char[name_length * network1d.num_nodes]);
+    network1d.edge_id = edge_id.get();
 
-    std::unique_ptr<char> const branch_long_name(new char[long_names_length * network1d.num_nodes]);
-    network1d.branch_name_long = branch_long_name.get();
+    std::unique_ptr<char> const edge_long_name(new char[long_names_length * network1d.num_nodes]);
+    network1d.edge_long_name = edge_long_name.get();
 
-    std::unique_ptr<double> const branch_lengths(new double[network1d.num_branches]);
-    network1d.branch_length = branch_lengths.get();
+    std::unique_ptr<double> const edge_lengths(new double[network1d.num_edges]);
+    network1d.edge_length = edge_lengths.get();
 
     // get the data
     error_code = ug_network1d_get(file_id, 0, network1d);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
     //// Asserts
-    ASSERT_EQ(network1d.num_branch_geometry_nodes[0], 25);
+    ASSERT_EQ(network1d.num_edge_geometry_nodes[0], 25);
     std::string node_ids_string(node_id.get(), node_id.get() + name_length * network1d.num_nodes);
     std::string node_long_names_string(node_long_name.get(), node_long_name.get() + long_names_length * network1d.num_nodes);
     for (auto i = 0; i < network1d.num_nodes; ++i)
@@ -329,16 +329,16 @@ TEST(ApiTest, InquireAndGet_OneNetwork1D_ShouldReadNetwork1D)
         ASSERT_EQ("nodeslongNames", node_long_name_string);
     }
 
-    std::string branch_ids_string(branch_id.get(), branch_id.get() + name_length * network1d.num_branches);
-    std::string branch_long_names_string(branch_long_name.get(), branch_long_name.get() + long_names_length * network1d.num_branches);
-    for (auto i = 0; i < network1d.num_branches; ++i)
+    std::string edge_ids_string(edge_id.get(), edge_id.get() + name_length * network1d.num_edges);
+    std::string edge_long_names_string(edge_long_name.get(), edge_long_name.get() + long_names_length * network1d.num_edges);
+    for (auto i = 0; i < network1d.num_edges; ++i)
     {
-        std::string branch_id_string = branch_ids_string.substr(i * name_length, name_length);
-        right_trim_string(branch_id_string);
-        std::string branch_long_name_string = branch_long_names_string.substr(i * long_names_length, long_names_length);
-        right_trim_string(branch_long_name_string);
-        ASSERT_EQ("branchids", branch_id_string);
-        ASSERT_EQ("branchlongNames", branch_long_name_string);
+        std::string edge_id_string = edge_ids_string.substr(i * name_length, name_length);
+        right_trim_string(edge_id_string);
+        std::string edge_long_name_string = edge_long_names_string.substr(i * long_names_length, long_names_length);
+        right_trim_string(edge_long_name_string);
+        ASSERT_EQ("branchids", edge_id_string);
+        ASSERT_EQ("branchlongNames", edge_long_name_string);
     }
 
     std::vector<double> node_x_vector(node_x.get(), node_x.get() + network1d.num_nodes);
@@ -349,7 +349,7 @@ TEST(ApiTest, InquireAndGet_OneNetwork1D_ShouldReadNetwork1D)
     std::vector<double> node_y_vector_expected{27.48, 956.75};
     ASSERT_THAT(node_y_vector, ::testing::ContainerEq(node_y_vector_expected));
 
-    std::vector<int> edge_nodes_vector(branch_node.get(), branch_node.get() + network1d.num_branches * 2);
+    std::vector<int> edge_nodes_vector(edge_node.get(), edge_node.get() + network1d.num_edges * 2);
     std::vector<int> edge_nodes_vector_expected{0, 1};
     ASSERT_THAT(edge_nodes_vector, ::testing::ContainerEq(edge_nodes_vector_expected));
 
@@ -365,9 +365,9 @@ TEST(ApiTest, InquireAndGet_OneNetwork1D_ShouldReadNetwork1D)
                                                          643.09, 692.6, 742.02, 790.79, 838.83, 886.28, 933.33, 980.17, 956.75};
     ASSERT_THAT(geometry_nodes_y_vector, ::testing::ContainerEq(geometry_nodes_y_expected_vector));
 
-    std::vector<double> branch_lengths_vector(branch_lengths.get(), branch_lengths.get() + network1d.num_branches);
-    std::vector<double> branch_lengths_expected_vector{1165.29};
-    ASSERT_THAT(branch_lengths_vector, ::testing::ContainerEq(branch_lengths_expected_vector));
+    std::vector<double> edge_lengths_vector(edge_lengths.get(), edge_lengths.get() + network1d.num_edges);
+    std::vector<double> edge_lengths_expected_vector{1165.29};
+    ASSERT_THAT(edge_lengths_vector, ::testing::ContainerEq(edge_lengths_expected_vector));
 
     std::string network1d_name(network1d.name);
     right_trim_string(network1d_name);
@@ -403,9 +403,9 @@ TEST(ApiTest, DefineAndPut_OneNetwork1D_ShouldWriteData)
     std::unique_ptr<double> const node_y(new double[]{27.48, 956.75});
     network1d.node_y = node_y.get();
     network1d.num_nodes = 2;
-    std::unique_ptr<int> const branch_node(new int[]{0, 1});
-    network1d.branch_node = branch_node.get();
-    network1d.num_branches = 1;
+    std::unique_ptr<int> const edge_node(new int[]{0, 1});
+    network1d.edge_node = edge_node.get();
+    network1d.num_edges = 1;
 
     std::unique_ptr<double> const geometry_nodes_x(new double[]{293.78, 278.97, 265.31, 254.17, 247.44, 248.3, 259.58,
                                                                 282.24, 314.61, 354.44, 398.94, 445, 490.6, 532.84, 566.64, 589.08,
@@ -418,20 +418,20 @@ TEST(ApiTest, DefineAndPut_OneNetwork1D_ShouldWriteData)
     network1d.geometry_nodes_y = geometry_nodes_y.get();
 
     std::unique_ptr<int> const geometry_nodes_count(new int[]{25});
-    network1d.num_branch_geometry_nodes = geometry_nodes_count.get();
+    network1d.num_edge_geometry_nodes = geometry_nodes_count.get();
 
     network1d.num_geometry_nodes = 25;
 
     std::unique_ptr<char> const node_id(new char[]{"nodesids                                nodesids                                "});
-    network1d.node_name_id = node_id.get();
+    network1d.node_id = node_id.get();
     std::unique_ptr<char> const node_long_name(new char[]{"nodeslongNames                                                                  nodeslongNames                                                                  "});
-    network1d.node_name_long = node_long_name.get();
-    std::unique_ptr<char> const branch_id(new char[]{"branchids                               "});
-    network1d.branch_name_id = branch_id.get();
-    std::unique_ptr<char> const branch_long_name(new char[]{"branchlongNames                                                                 "});
-    network1d.branch_name_long = branch_long_name.get();
-    std::unique_ptr<double> const branch_lengths(new double[]{1165.29});
-    network1d.branch_length = branch_lengths.get();
+    network1d.node_long_name = node_long_name.get();
+    std::unique_ptr<char> const edge_id(new char[]{"branchids                               "});
+    network1d.edge_id = edge_id.get();
+    std::unique_ptr<char> const edge_long_name(new char[]{"branchlongNames                                                                 "});
+    network1d.edge_long_name = edge_long_name.get();
+    std::unique_ptr<double> const edge_lengths(new double[]{1165.29});
+    network1d.edge_length = edge_lengths.get();
 
     int topology_id = -1;
     error_code = ug_network1d_def(file_id, network1d, topology_id);
@@ -488,28 +488,28 @@ TEST(ApiTest, InquireAndGet_OneMesh1D_ShouldReadMesh1D)
     std::unique_ptr<char> const network_name(new char[long_names_length]);
     mesh1d.network_name = network_name.get();
 
-    std::unique_ptr<int> const branch_id(new int[mesh1d.num_nodes]);
-    mesh1d.branch_id = branch_id.get();
+    std::unique_ptr<int> const edge_id(new int[mesh1d.num_nodes]);
+    mesh1d.node_edge_id = edge_id.get();
 
-    std::unique_ptr<double> const branch_offset(new double[mesh1d.num_nodes]);
-    mesh1d.branch_offset = branch_offset.get();
+    std::unique_ptr<double> const edge_offset(new double[mesh1d.num_nodes]);
+    mesh1d.node_edge_offset = edge_offset.get();
 
     std::unique_ptr<int> const edge_nodes(new int[mesh1d.num_edges * 2]);
     mesh1d.edge_node = edge_nodes.get();
 
     std::unique_ptr<char> const node_id(new char[name_length * mesh1d.num_nodes]);
-    mesh1d.node_name_id = node_id.get();
+    mesh1d.node_id = node_id.get();
 
     std::unique_ptr<char> const node_long_name(new char[long_names_length * mesh1d.num_nodes]);
-    mesh1d.node_name_long = node_long_name.get();
+    mesh1d.node_long_name = node_long_name.get();
 
     // get the data
     error_code = ug_mesh1d_get(file_id, 0, mesh1d);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
     //// Assert
-    std::vector<int> branch_id_vector(branch_id.get(), branch_id.get() + mesh1d.num_nodes);
-    std::vector<double> branch_offset_vector(branch_offset.get(), branch_offset.get() + mesh1d.num_nodes);
+    std::vector<int> edge_id_vector(edge_id.get(), edge_id.get() + mesh1d.num_nodes);
+    std::vector<double> edge_offset_vector(edge_offset.get(), edge_offset.get() + mesh1d.num_nodes);
     std::vector<int> edge_nodes_vector(edge_nodes.get(), edge_nodes.get() + mesh1d.num_edges * 2);
 
     std::string node_ids_string(node_id.get(), node_id.get() + name_length * mesh1d.num_nodes);
@@ -557,15 +557,15 @@ TEST(ApiTest, DefineAndPut_OneMesh1D_ShouldWriteData)
     std::unique_ptr<char> const network_name(new char[]{"network1d                               "});
     mesh1d.network_name = network_name.get();
 
-    std::unique_ptr<int> const node_branch_id(new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0});
-    mesh1d.branch_id = node_branch_id.get();
+    std::unique_ptr<int> const node_edge_id(new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0});
+    mesh1d.node_edge_id = node_edge_id.get();
 
-    std::unique_ptr<double> const node_branch_offset(new double[]{
+    std::unique_ptr<double> const node_edge_offset(new double[]{
         0, 49.65, 99.29, 148.92, 198.54, 248.09,
         297.62, 347.15, 396.66, 446.19, 495.8, 545.44, 595.08, 644.63, 694.04,
         743.52, 793.07, 842.65, 892.26, 941.89, 991.53, 1041.17, 1090.82,
         1140.46, 1165.29});
-    mesh1d.branch_offset = node_branch_offset.get();
+    mesh1d.node_edge_offset = node_edge_offset.get();
 
     mesh1d.num_nodes = 25;
     mesh1d.num_edges = 24;
@@ -609,11 +609,11 @@ TEST(ApiTest, DefineAndPut_OneMesh1D_ShouldWriteData)
 
     std::unique_ptr<char> const node_name_id(new char[mesh1d.num_nodes * name_length]);
     vector_of_strings_to_char_array(ids, name_length, node_name_id.get());
-    mesh1d.node_name_id = node_name_id.get();
+    mesh1d.node_id = node_name_id.get();
 
     std::unique_ptr<char> contact_name_long(new char[mesh1d.num_nodes * name_long_length]);
     vector_of_strings_to_char_array(long_names, name_long_length, contact_name_long.get());
-    mesh1d.node_name_long = contact_name_long.get();
+    mesh1d.node_long_name = contact_name_long.get();
 
     int topology_id = -1;
     error_code = ug_mesh1d_def(file_id, mesh1d, topology_id);

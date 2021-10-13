@@ -56,13 +56,13 @@ void Mesh1D::define(ugridapi::Mesh1D const& mesh1d)
     {
         throw std::invalid_argument("Mesh1D::define mesh1d network name is empty");
     }
-    if (mesh1d.branch_id == nullptr)
+    if (mesh1d.node_edge_id == nullptr)
     {
-        throw std::invalid_argument("Mesh1D::define mesh1d branch id vector is empty");
+        throw std::invalid_argument("Mesh1D::define mesh1d node edge id is empty");
     }
-    if (mesh1d.branch_offset == nullptr)
+    if (mesh1d.node_edge_offset == nullptr)
     {
-        throw std::invalid_argument("Mesh1D::define mesh1d branch offset vector is empty");
+        throw std::invalid_argument("Mesh1D::define mesh1d node edge offset is empty");
     }
 
     UGridEntity::define(mesh1d.name, mesh1d.start_index, "Topology data of 1D mesh", 1, mesh1d.is_spherical);
@@ -82,19 +82,19 @@ void Mesh1D::define(ugridapi::Mesh1D const& mesh1d)
 
         // Define node branch and offset topology attributes
         string_builder.clear();
-        string_builder << "_node_branch " << m_entity_name << "_node_offset";
+        string_builder << "_node_edge " << m_entity_name << "_node_edge_offset";
         define_topological_attribute("node_coordinates", string_builder.str());
 
         // Define node branch variable
         define_topological_variable("node_coordinates",
-                                    "node_branch",
+                                    "node_edge",
                                     netCDF::NcType::nc_INT,
                                     {UGridFileDimensions::node},
                                     {{"long_name", "Index of branch on which mesh node are located"}});
 
         // Define node offset variable
         define_topological_variable("node_coordinates",
-                                    "node_offset",
+                                    "node_edge_offset",
                                     netCDF::NcType::nc_DOUBLE,
                                     {UGridFileDimensions::node},
                                     {{"long_name", "Offset along branch of mesh node"}});
@@ -119,7 +119,7 @@ void Mesh1D::define(ugridapi::Mesh1D const& mesh1d)
         // Define node long name attribute and variable
         define_topological_attribute("node_long_name");
         define_topological_variable("node_long_name",
-                                    "node_name_long",
+                                    "node_long_name",
                                     netCDF::NcType::nc_CHAR,
                                     {UGridFileDimensions::node, UGridFileDimensions::long_name},
                                     {{"long_name", "Long name of mesh node"}});
@@ -152,18 +152,18 @@ void Mesh1D::define(ugridapi::Mesh1D const& mesh1d)
         {
             // Define edge branch and offset attributes
             string_builder.clear();
-            string_builder << "_edge_branch " << m_entity_name << "_edge_offset";
+            string_builder << "_edge_edge " << m_entity_name << "_edge_edge_offset";
             define_topological_attribute("edge_coordinates", string_builder.str());
 
-            // Define edge_branch variable
+            // Define edge_edge variable
             define_topological_variable("edge_coordinates",
-                                        "edge_branch",
+                                        "edge_edge",
                                         netCDF::NcType::nc_INT,
                                         {UGridFileDimensions::edge},
                                         {{"long_name", "Index of branch on which mesh edge are located"}});
             // Define edge_offset variable
             define_topological_variable("edge_coordinates",
-                                        "edge_offset",
+                                        "edge_edge_offset",
                                         netCDF::NcType::nc_INT,
                                         {UGridFileDimensions::edge},
                                         {{"long_name", "Offset along branch of mesh edge"}});
@@ -185,21 +185,21 @@ void Mesh1D::put(ugridapi::Mesh1D const& mesh1d)
     {
         throw std::invalid_argument("Mesh1D::put invalid mesh name");
     }
-    if (auto const it = m_topology_attribute_variables.find("node_coordinates"); mesh1d.branch_id != nullptr && it != m_topology_attribute_variables.end())
+    if (auto const it = m_topology_attribute_variables.find("node_coordinates"); mesh1d.node_edge_id != nullptr && it != m_topology_attribute_variables.end())
     {
-        it->second.at(0).putVar(mesh1d.branch_id);
+        it->second.at(0).putVar(mesh1d.node_edge_id);
     }
-    if (auto const it = m_topology_attribute_variables.find("node_coordinates"); mesh1d.branch_offset != nullptr && it != m_topology_attribute_variables.end())
+    if (auto const it = m_topology_attribute_variables.find("node_coordinates"); mesh1d.node_edge_offset != nullptr && it != m_topology_attribute_variables.end())
     {
-        it->second.at(1).putVar(mesh1d.branch_offset);
+        it->second.at(1).putVar(mesh1d.node_edge_offset);
     }
-    if (auto const it = find_attribute_variable_name_with_aliases("node_id"); mesh1d.node_name_id != nullptr && it != m_topology_attribute_variables.end())
+    if (auto const it = find_attribute_variable_name_with_aliases("node_id"); mesh1d.node_id != nullptr && it != m_topology_attribute_variables.end())
     {
-        it->second.at(0).putVar(mesh1d.node_name_id);
+        it->second.at(0).putVar(mesh1d.node_id);
     }
-    if (auto const it = find_attribute_variable_name_with_aliases("node_long_name"); mesh1d.node_name_long != nullptr && it != m_topology_attribute_variables.end())
+    if (auto const it = find_attribute_variable_name_with_aliases("node_long_name"); mesh1d.node_long_name != nullptr && it != m_topology_attribute_variables.end())
     {
-        it->second.at(0).putVar(mesh1d.node_name_long);
+        it->second.at(0).putVar(mesh1d.node_long_name);
     }
     if (auto const it = m_topology_attribute_variables.find("edge_node_connectivity"); mesh1d.edge_node != nullptr && it != m_topology_attribute_variables.end())
     {
@@ -228,21 +228,21 @@ void Mesh1D::get(ugridapi::Mesh1D& mesh1d) const
         auto const network_name = it->second.at(0).getName();
         string_to_char_array(network_name, name_long_length, mesh1d.network_name);
     }
-    if (auto const it = m_topology_attribute_variables.find("node_coordinates"); mesh1d.branch_id != nullptr && it != m_topology_attribute_variables.end())
+    if (auto const it = m_topology_attribute_variables.find("node_coordinates"); mesh1d.node_edge_id != nullptr && it != m_topology_attribute_variables.end())
     {
-        it->second.at(0).getVar(mesh1d.branch_id);
+        it->second.at(0).getVar(mesh1d.node_edge_id);
     }
-    if (auto const it = m_topology_attribute_variables.find("node_coordinates"); mesh1d.branch_offset != nullptr && it != m_topology_attribute_variables.end())
+    if (auto const it = m_topology_attribute_variables.find("node_coordinates"); mesh1d.node_edge_offset != nullptr && it != m_topology_attribute_variables.end())
     {
-        it->second.at(1).getVar(mesh1d.branch_offset);
+        it->second.at(1).getVar(mesh1d.node_edge_offset);
     }
-    if (auto const it = find_attribute_variable_name_with_aliases("node_id"); mesh1d.node_name_id != nullptr && it != m_topology_attribute_variables.end())
+    if (auto const it = find_attribute_variable_name_with_aliases("node_id"); mesh1d.node_id != nullptr && it != m_topology_attribute_variables.end())
     {
-        it->second.at(0).getVar(mesh1d.node_name_id);
+        it->second.at(0).getVar(mesh1d.node_id);
     }
-    if (auto const it = find_attribute_variable_name_with_aliases("node_long_name"); mesh1d.node_name_long != nullptr && it != m_topology_attribute_variables.end())
+    if (auto const it = find_attribute_variable_name_with_aliases("node_long_name"); mesh1d.node_long_name != nullptr && it != m_topology_attribute_variables.end())
     {
-        it->second.at(0).getVar(mesh1d.node_name_long);
+        it->second.at(0).getVar(mesh1d.node_long_name);
     }
     if (auto const it = m_topology_attribute_variables.find("edge_node_connectivity"); mesh1d.edge_node != nullptr && it != m_topology_attribute_variables.end())
     {
