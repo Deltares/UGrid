@@ -188,9 +188,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a20dfedd9f9084a4bfcf6f6f054b2aa6c"><td class="memItemLeft" align="right" valign="top">UGRID_API int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceugridapi.html#a20dfedd9f9084a4bfcf6f6f054b2aa6c">ug_file_replace_mode</a> (int &amp;mode)</td></tr>
 <tr class="memdesc:a20dfedd9f9084a4bfcf6f6f054b2aa6c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the integer identifying the file replace mode.  <a href="namespaceugridapi.html#a20dfedd9f9084a4bfcf6f6f054b2aa6c">More...</a><br /></td></tr>
 <tr class="separator:a20dfedd9f9084a4bfcf6f6f054b2aa6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a94d224b99363fc480663cc742aa56dde"><td class="memItemLeft" align="right" valign="top">UGRID_API int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceugridapi.html#a94d224b99363fc480663cc742aa56dde">ug_file_add_coordinate_mapping</a> (int file_id, int espg)</td></tr>
-<tr class="memdesc:a94d224b99363fc480663cc742aa56dde"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes the metadata to file for identify a specific coordinate projection system.  <a href="namespaceugridapi.html#a94d224b99363fc480663cc742aa56dde">More...</a><br /></td></tr>
-<tr class="separator:a94d224b99363fc480663cc742aa56dde"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9756e8433a1717881fb3cd247be38567"><td class="memItemLeft" align="right" valign="top">UGRID_API int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceugridapi.html#a9756e8433a1717881fb3cd247be38567">ug_file_add_coordinate_reference_system</a> (char const *coordinate_reference_system)</td></tr>
+<tr class="memdesc:a9756e8433a1717881fb3cd247be38567"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes the metadata to file for identify a specific coordinate projection system.  <a href="namespaceugridapi.html#a9756e8433a1717881fb3cd247be38567">More...</a><br /></td></tr>
+<tr class="separator:a9756e8433a1717881fb3cd247be38567"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a998b9ddac6e020bb19d5d774baec3d08"><td class="memItemLeft" align="right" valign="top">UGRID_API int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceugridapi.html#a998b9ddac6e020bb19d5d774baec3d08">ug_file_open</a> (char const *file_path, int mode, int &amp;file_id)</td></tr>
 <tr class="memdesc:a998b9ddac6e020bb19d5d774baec3d08"><td class="mdescLeft">&#160;</td><td class="mdescRight">Opens a file and fills the library state.  <a href="namespaceugridapi.html#a998b9ddac6e020bb19d5d774baec3d08">More...</a><br /></td></tr>
 <tr class="separator:a998b9ddac6e020bb19d5d774baec3d08"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -245,10 +245,196 @@ Functions</h2></td></tr>
 <tr class="memitem:abee244959aec0c8476cd4d8218db7eb1"><td class="memItemLeft" align="right" valign="top">UGRID_API int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceugridapi.html#abee244959aec0c8476cd4d8218db7eb1">ug_contacts_get</a> (int file_id, int topology_id, <a class="el" href="structugridapi_1_1_contacts.html">Contacts</a> &amp;contacts_api)</td></tr>
 <tr class="memdesc:abee244959aec0c8476cd4d8218db7eb1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets contact geometrical data.  <a href="namespaceugridapi.html#abee244959aec0c8476cd4d8218db7eb1">More...</a><br /></td></tr>
 <tr class="separator:abee244959aec0c8476cd4d8218db7eb1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a530cb7e8bd85886d5cfb5174ad04516e"><td class="memItemLeft" align="right" valign="top">UGRID_API int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceugridapi.html#a530cb7e8bd85886d5cfb5174ad04516e">ug_variable_int_define</a> (int file_id, char const *variable_name)</td></tr>
+<tr class="memdesc:a530cb7e8bd85886d5cfb5174ad04516e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines a new integer variable.  <a href="namespaceugridapi.html#a530cb7e8bd85886d5cfb5174ad04516e">More...</a><br /></td></tr>
+<tr class="separator:a530cb7e8bd85886d5cfb5174ad04516e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afddb12cf3ab6a31bcc9f39556aaa5cff"><td class="memItemLeft" align="right" valign="top">UGRID_API int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceugridapi.html#afddb12cf3ab6a31bcc9f39556aaa5cff">ug_attribute_int_define</a> (int file_id, char const *variable_name, char const *attribute_name, int const *attribute_values, int num_values)</td></tr>
+<tr class="memdesc:afddb12cf3ab6a31bcc9f39556aaa5cff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add integer attributes to an existing variable.  <a href="namespaceugridapi.html#afddb12cf3ab6a31bcc9f39556aaa5cff">More...</a><br /></td></tr>
+<tr class="separator:afddb12cf3ab6a31bcc9f39556aaa5cff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ade0f3adb023efd0fd7feb4748b888ca5"><td class="memItemLeft" align="right" valign="top">UGRID_API int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceugridapi.html#ade0f3adb023efd0fd7feb4748b888ca5">ug_attribute_char_define</a> (int file_id, char const *variable_name, char const *attribute_name, char const *attribute_values, int num_values)</td></tr>
+<tr class="memdesc:ade0f3adb023efd0fd7feb4748b888ca5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a char attributes to an existing variable.  <a href="namespaceugridapi.html#ade0f3adb023efd0fd7feb4748b888ca5">More...</a><br /></td></tr>
+<tr class="separator:ade0f3adb023efd0fd7feb4748b888ca5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad2177a18aaa61386ba838b2f86ed18f3"><td class="memItemLeft" align="right" valign="top">UGRID_API int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceugridapi.html#ad2177a18aaa61386ba838b2f86ed18f3">ug_attribute_double_define</a> (int file_id, char const *variable_name, char const *attribute_name, double const *attribute_values, int num_values)</td></tr>
+<tr class="memdesc:ad2177a18aaa61386ba838b2f86ed18f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a double attributes to an existing variable.  <a href="namespaceugridapi.html#ad2177a18aaa61386ba838b2f86ed18f3">More...</a><br /></td></tr>
+<tr class="separator:ad2177a18aaa61386ba838b2f86ed18f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Contains all structs and functions exposed at the API level. </p>
 </div><h2 class="groupheader">Function Documentation</h2>
+<a id="ade0f3adb023efd0fd7feb4748b888ca5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ade0f3adb023efd0fd7feb4748b888ca5">&#9670;&nbsp;</a></span>ug_attribute_char_define()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">UGRID_API int ugridapi::ug_attribute_char_define </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>file_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char const *&#160;</td>
+          <td class="paramname"><em>variable_name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char const *&#160;</td>
+          <td class="paramname"><em>attribute_name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char const *&#160;</td>
+          <td class="paramname"><em>attribute_values</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>num_values</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Add a char attributes to an existing variable. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">file_id</td><td>[in] The file id </td></tr>
+    <tr><td class="paramname">variable_name</td><td>[in] The variable name </td></tr>
+    <tr><td class="paramname">attribute_name</td><td>[in] The attribute name </td></tr>
+    <tr><td class="paramname">attribute_values</td><td>[in] The attribute values </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Error code </dd></dl>
+
+</div>
+</div>
+<a id="ad2177a18aaa61386ba838b2f86ed18f3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad2177a18aaa61386ba838b2f86ed18f3">&#9670;&nbsp;</a></span>ug_attribute_double_define()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">UGRID_API int ugridapi::ug_attribute_double_define </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>file_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char const *&#160;</td>
+          <td class="paramname"><em>variable_name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char const *&#160;</td>
+          <td class="paramname"><em>attribute_name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double const *&#160;</td>
+          <td class="paramname"><em>attribute_values</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>num_values</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Add a double attributes to an existing variable. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">file_id</td><td>[in] The file id </td></tr>
+    <tr><td class="paramname">variable_name</td><td>[in] The variable name </td></tr>
+    <tr><td class="paramname">attribute_name</td><td>[in] The attribute name </td></tr>
+    <tr><td class="paramname">attribute_values</td><td>[in] The attribute values </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Error code </dd></dl>
+
+</div>
+</div>
+<a id="afddb12cf3ab6a31bcc9f39556aaa5cff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afddb12cf3ab6a31bcc9f39556aaa5cff">&#9670;&nbsp;</a></span>ug_attribute_int_define()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">UGRID_API int ugridapi::ug_attribute_int_define </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>file_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char const *&#160;</td>
+          <td class="paramname"><em>variable_name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char const *&#160;</td>
+          <td class="paramname"><em>attribute_name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int const *&#160;</td>
+          <td class="paramname"><em>attribute_values</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>num_values</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Add integer attributes to an existing variable. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">file_id</td><td>[in] The file id </td></tr>
+    <tr><td class="paramname">variable_name</td><td>[in] The variable name </td></tr>
+    <tr><td class="paramname">attribute_name</td><td>[in] The attribute name </td></tr>
+    <tr><td class="paramname">attribute_values</td><td>[in] The attribute values </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Error code </dd></dl>
+
+</div>
+</div>
 <a id="acab41511abb110830434651c77b9a3f2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#acab41511abb110830434651c77b9a3f2">&#9670;&nbsp;</a></span>ug_contacts_def()</h2>
 
@@ -537,28 +723,18 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a94d224b99363fc480663cc742aa56dde"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a94d224b99363fc480663cc742aa56dde">&#9670;&nbsp;</a></span>ug_file_add_coordinate_mapping()</h2>
+<a id="a9756e8433a1717881fb3cd247be38567"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9756e8433a1717881fb3cd247be38567">&#9670;&nbsp;</a></span>ug_file_add_coordinate_reference_system()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">UGRID_API int ugridapi::ug_file_add_coordinate_mapping </td>
+          <td class="memname">UGRID_API int ugridapi::ug_file_add_coordinate_reference_system </td>
           <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>file_id</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramtype">char const *&#160;</td>
+          <td class="paramname"><em>coordinate_reference_system</em></td><td>)</td>
           <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>espg</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -567,7 +743,7 @@ Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">file_id</td><td>[in] The file id </td></tr>
-    <tr><td class="paramname">espg</td><td>[in] The espg code for identify a specific coordinate projection system </td></tr>
+    <tr><td class="paramname">coordinate_reference_system</td><td>[in] The espg code for identify a specific coordinate projection system </td></tr>
   </table>
   </dd>
 </dl>
@@ -1944,6 +2120,44 @@ Error code </dd></dl>
     <tr><td class="paramname">file_id</td><td>[in] The file id </td></tr>
     <tr><td class="paramname">variable_name</td><td>[in] The variable name </td></tr>
     <tr><td class="paramname">data</td><td>[out] The variable data </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Error code </dd></dl>
+
+</div>
+</div>
+<a id="a530cb7e8bd85886d5cfb5174ad04516e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a530cb7e8bd85886d5cfb5174ad04516e">&#9670;&nbsp;</a></span>ug_variable_int_define()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">UGRID_API int ugridapi::ug_variable_int_define </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>file_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char const *&#160;</td>
+          <td class="paramname"><em>variable_name</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Defines a new integer variable. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">file_id</td><td>[in] The file id </td></tr>
+    <tr><td class="paramname">variable_name</td><td>[in] The variable name </td></tr>
   </table>
   </dd>
 </dl>
