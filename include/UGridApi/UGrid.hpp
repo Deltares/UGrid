@@ -214,9 +214,9 @@ namespace ugridapi
 
         /// @brief Writes the metadata to file for identify a specific coordinate projection system
         /// @param file_id [in] The file id
-        /// @param espg [in] The espg code for identify a specific coordinate projection system
+        /// @param coordinate_reference_system [in] The espg code for identify a specific coordinate projection system
         /// @return Error code
-        UGRID_API int ug_file_add_coordinate_mapping(int file_id, int espg);
+        UGRID_API int ug_file_add_coordinate_reference_system(char const* coordinate_reference_system);
 
         /// @brief Opens a file and fills the library state
         /// @param file_path [in] The path of the file
@@ -341,6 +341,36 @@ namespace ugridapi
         /// @param contacts_api [out] The structure containing the contact data
         /// @return Error code
         UGRID_API int ug_contacts_get(int file_id, int topology_id, Contacts& contacts_api);
+
+        /// @brief Defines a new integer variable
+        /// @param file_id [in] The file id
+        /// @param variable_name [in] The variable name
+        /// @return Error code
+        UGRID_API int ug_variable_int_define(int file_id, char const* variable_name);
+
+        /// @brief Add integer attributes to an existing variable
+        /// @param file_id [in] The file id
+        /// @param variable_name [in] The variable name
+        /// @param attribute_name [in] The attribute name
+        /// @param attribute_values [in] The attribute values
+        /// @return Error code
+        UGRID_API int ug_attribute_int_define(int file_id, char const* variable_name, char const* attribute_name, int const* attribute_values, int num_values);
+
+        /// @brief Add a char attributes to an existing variable
+        /// @param file_id [in] The file id
+        /// @param variable_name [in] The variable name
+        /// @param attribute_name [in] The attribute name
+        /// @param attribute_values [in] The attribute values
+        /// @return Error code
+        UGRID_API int ug_attribute_char_define(int file_id, char const* variable_name, char const* attribute_name, char const* attribute_values, int num_values);
+
+        /// @brief Add a double attributes to an existing variable
+        /// @param file_id [in] The file id
+        /// @param variable_name [in] The variable name
+        /// @param attribute_name [in] The attribute name
+        /// @param attribute_values [in] The attribute values
+        /// @return Error code
+        UGRID_API int ug_attribute_double_define(int file_id, char const* variable_name, char const* attribute_name, double const* attribute_values, int num_values);
 
 #ifdef __cplusplus
     }

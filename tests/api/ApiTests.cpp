@@ -10,6 +10,69 @@
 #include <TestUtils/Utils.hpp>
 #include <UGridApi/UGrid.hpp>
 
+static void define_variable_attributes(int file_id, std::string const& variable_name, std::string const& attribute_name, std::vector<int> const& attribute_values)
+{
+    // Write the char variable
+    int name_long_length;
+    auto error_code = ugridapi::ug_name_get_long_length(name_long_length);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+
+    std::unique_ptr<char> const variable_name_ptr(new char[name_long_length]);
+    string_to_char_array(variable_name, name_long_length, variable_name_ptr.get());
+
+    std::unique_ptr<char> const attribute_name_ptr(new char[name_long_length]);
+    string_to_char_array(attribute_name, name_long_length, attribute_name_ptr.get());
+
+    error_code = ugridapi::ug_attribute_int_define(file_id,
+                                                   variable_name_ptr.get(),
+                                                   attribute_name_ptr.get(),
+                                                   &attribute_values[0],
+                                                   attribute_values.size());
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+}
+
+static void define_variable_attributes(int file_id, std::string const& variable_name, std::string const& attribute_name, std::vector<double> const& attribute_values)
+{
+    // Write the char variable
+    int name_long_length;
+    auto error_code = ugridapi::ug_name_get_long_length(name_long_length);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+
+    std::unique_ptr<char> const variable_name_ptr(new char[name_long_length]);
+    string_to_char_array(variable_name, name_long_length, variable_name_ptr.get());
+
+    std::unique_ptr<char> const attribute_name_ptr(new char[name_long_length]);
+    string_to_char_array(attribute_name, name_long_length, attribute_name_ptr.get());
+
+    error_code = ugridapi::ug_attribute_double_define(file_id,
+                                                      variable_name_ptr.get(),
+                                                      attribute_name_ptr.get(),
+                                                      &attribute_values[0],
+                                                      attribute_values.size());
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+}
+
+static void define_variable_attributes(int file_id, std::string const& variable_name, std::string const& attribute_name, std::string const& attribute_value)
+{
+    // Write the char variable
+    int name_long_length;
+    auto error_code = ugridapi::ug_name_get_long_length(name_long_length);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+
+    std::unique_ptr<char> const variable_name_ptr(new char[name_long_length]);
+    string_to_char_array(variable_name, name_long_length, variable_name_ptr.get());
+
+    std::unique_ptr<char> const attribute_name_ptr(new char[name_long_length]);
+    string_to_char_array(attribute_name, name_long_length, attribute_name_ptr.get());
+
+    error_code = ugridapi::ug_attribute_char_define(file_id,
+                                                    variable_name_ptr.get(),
+                                                    attribute_name_ptr.get(),
+                                                    attribute_value.c_str(),
+                                                    attribute_value.length());
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+}
+
 TEST(ApiTest, InquireAndGet_OneMesh2D_ShouldReadMesh2d)
 {
     // Prepare
@@ -909,6 +972,9 @@ TEST(ApiTest, GetTopologyAttributesNamesAndValues_OnResultFile_ShouldGetTopology
         "nmesh1d_node",
         "1"};
     ASSERT_THAT(values, ::testing::ContainerEq(expected_values));
+
+    error_code = ugridapi::ug_file_close(file_id);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 }
 
 TEST(ApiTest, GetVariableAttributesNamesAndValues_OnResultFile_ShouldGetVariableAttributesNamesAndValues)
@@ -977,6 +1043,9 @@ TEST(ApiTest, GetVariableAttributesNamesAndValues_OnResultFile_ShouldGetVariable
         "",
         ""};
     ASSERT_THAT(values, ::testing::ContainerEq(expected_values));
+
+    error_code = ugridapi::ug_file_close(file_id);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 }
 
 TEST(ApiTest, GetDataVariables_OnResultFile_ShouldGetDataVariables)
@@ -1028,4 +1097,43 @@ TEST(ApiTest, GetDataVariables_OnResultFile_ShouldGetDataVariables)
         -5.0,
     };
     ASSERT_THAT(data_vector, ::testing::ContainerEq(data_expected_vector));
+
+    error_code = ugridapi::ug_file_close(file_id);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+}
+
+TEST(ApiTest, DefineCoordinateReferenceSystem_OnExistingFile_ShouldDefineCoordinateReferenceSystem)
+{
+    std::string const file_path = TEST_FOLDER + "/CoordinateReferenceSystem.nc";
+
+    // Open a file
+    int file_id = 0;
+    int file_mode = 0;
+    auto error_code = ugridapi::ug_file_replace_mode(file_mode);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+    error_code = ugridapi::ug_file_open(file_path.c_str(), file_mode, file_id);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+
+    // Write a projected_coordinate_system variable
+    int name_long_length;
+    error_code = ugridapi::ug_name_get_long_length(name_long_length);
+    std::unique_ptr<char> const variable_name(new char[name_long_length]);
+    string_to_char_array("projected_coordinate_system", name_long_length, variable_name.get());
+
+    error_code = ugridapi::ug_variable_int_define(file_id, variable_name.get());
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+
+    //// Add coordinate reference system
+    define_variable_attributes(file_id, "projected_coordinate_system", "name", "Unknown projected");
+    define_variable_attributes(file_id, "projected_coordinate_system", "epsg", std::vector<int>{0});
+    define_variable_attributes(file_id, "projected_coordinate_system", "grid_mapping_name", "Unknown projected");
+    define_variable_attributes(file_id, "projected_coordinate_system", "longitude_of_prime_meridian", std::vector<double>{0.0});
+    define_variable_attributes(file_id, "projected_coordinate_system", "semi_major_axis", std::vector<double>{6378137.0});
+    define_variable_attributes(file_id, "projected_coordinate_system", "semi_minor_axis", std::vector<double>{6356752.314245});
+    define_variable_attributes(file_id, "projected_coordinate_system", "inverse_flattening", std::vector<double>{6356752.314245});
+    define_variable_attributes(file_id, "projected_coordinate_system", "EPSG_code", "EPSG:0");
+    define_variable_attributes(file_id, "projected_coordinate_system", "value", "value is equal to EPSG code");
+
+    error_code = ugridapi::ug_file_close(file_id);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 }

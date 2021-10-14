@@ -148,6 +148,21 @@ namespace ugridapi
         it->second.getVar(&data);
     }
 
+    static auto get_variable(int file_id, std::string const& name)
+    {
+        // Get all variables
+        const auto vars = ugrid_states[file_id].m_ncFile->getVars();
+
+        // Find the variable name
+        const auto it = vars.find(name);
+        if (it == vars.end())
+        {
+            throw std::invalid_argument("ug_variable_count_dimensions: The variable name is not present in the netcdf file.");
+        }
+
+        return it->second;
+    }
+
     UGRID_API int ug_error_get(const char*& error_message)
     {
         error_message = exceptionMessage;
@@ -532,12 +547,12 @@ namespace ugridapi
         return Success;
     }
 
-    UGRID_API int ug_file_add_coordinate_mapping(int file_id, int espg)
+    UGRID_API int ug_file_add_coordinate_reference_system(char const* coordinate_reference_system)
     {
         int exit_code = Success;
         try
         {
-            //TODO: add a method for adding coordinate mappings
+            //Check if the variable is already present
         }
         catch (...)
         {
@@ -893,6 +908,113 @@ namespace ugridapi
             }
 
             ugrid_states[file_id].m_contacts[topology_id].get(contacts_api);
+        }
+        catch (...)
+        {
+            exit_code = HandleExceptions(std::current_exception());
+        }
+        return exit_code;
+    }
+
+    UGRID_API int ug_variable_int_define(int file_id, char const* variable_name)
+    {
+        int exit_code = Success;
+        try
+        {
+            if (ugrid_states.count(file_id) == 0)
+            {
+                throw std::invalid_argument("UGrid: The selected file_id does not exist.");
+            }
+
+            auto const var_name = ugrid::char_array_to_string(variable_name, ugrid::name_long_length);
+            ugrid_states[file_id].m_ncFile->addVar(var_name, netCDF::NcType::nc_INT);
+        }
+        catch (...)
+        {
+            exit_code = HandleExceptions(std::current_exception());
+        }
+        return exit_code;
+    }
+
+    UGRID_API int ug_attribute_int_define(int file_id, char const* variable_name, char const* att_name, int const* attribute_values, int num_values)
+    {
+        int exit_code = Success;
+        try
+        {
+            if (ugrid_states.count(file_id) == 0)
+            {
+                throw std::invalid_argument("UGrid: The selected file_id does not exist.");
+            }
+
+            // Get the variable name
+            const auto name = ugrid::char_array_to_string(variable_name, ugrid::name_long_length);
+
+            // Get the variable
+            auto const variable = get_variable(file_id, name);
+
+            // Get the attribute name
+            const auto attribute_name = ugrid::char_array_to_string(att_name, ugrid::name_long_length);
+
+            // Put the attribute values
+            variable.putAtt(attribute_name, netCDF::NcType::nc_INT, num_values, attribute_values);
+        }
+        catch (...)
+        {
+            exit_code = HandleExceptions(std::current_exception());
+        }
+        return exit_code;
+    }
+
+    UGRID_API int ug_attribute_char_define(int file_id, char const* variable_name, char const* att_name, char const* attribute_values, int num_values)
+    {
+        int exit_code = Success;
+        try
+        {
+            if (ugrid_states.count(file_id) == 0)
+            {
+                throw std::invalid_argument("UGrid: The selected file_id does not exist.");
+            }
+
+            // Get the variable name
+            const auto name = ugrid::char_array_to_string(variable_name, ugrid::name_long_length);
+
+            // Get the variable
+            auto const variable = get_variable(file_id, name);
+
+            // Get the attribute name
+            const auto attribute_name = ugrid::char_array_to_string(att_name, ugrid::name_long_length);
+
+            // Put the attribute values
+            variable.putAtt(attribute_name, netCDF::NcType::nc_CHAR, num_values, attribute_values);
+        }
+        catch (...)
+        {
+            exit_code = HandleExceptions(std::current_exception());
+        }
+        return exit_code;
+    }
+
+    UGRID_API int ug_attribute_double_define(int file_id, char const* variable_name, char const* att_name, double const* attribute_values, int num_values)
+    {
+        int exit_code = Success;
+        try
+        {
+            if (ugrid_states.count(file_id) == 0)
+            {
+                throw std::invalid_argument("UGrid: The selected file_id does not exist.");
+            }
+
+            // Get the variable name
+            const auto name = ugrid::char_array_to_string(variable_name, ugrid::name_long_length);
+
+            // Get the variable
+            auto const variable = get_variable(file_id, name);
+
+            // Get the attribute name
+            const auto attribute_name = ugrid::char_array_to_string(att_name, ugrid::name_long_length);
+
+            // Put the attribute values
+            variable.putAtt(attribute_name, netCDF::NcType::nc_DOUBLE, num_values, attribute_values);
         }
         catch (...)
         {
