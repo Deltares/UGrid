@@ -1154,7 +1154,7 @@ TEST(ApiTest, DefineCoordinateReferenceSystem_OnExistingFile_ShouldDefineCoordin
 
 TEST(ApiTest, DefineGlobalAttributes_OnExistingFile_ShouldDefineGlobalAttributes)
 {
-    std::string const file_path = TEST_WRITE_FOLDER + "/GlobalAttributes.nc";
+    std::string const file_path = TEST_WRITE_FOLDER + "/Conventions.nc";
 
     // Open a file
     int file_id = 0;

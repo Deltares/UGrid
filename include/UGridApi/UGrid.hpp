@@ -353,6 +353,7 @@ namespace ugridapi
         /// @param variable_name [in] The variable name
         /// @param attribute_name [in] The attribute name
         /// @param attribute_values [in] The attribute values
+        /// @param num_values [in] The number of attribute values
         /// @return Error code
         UGRID_API int ug_attribute_int_define(int file_id, char const* variable_name, char const* attribute_name, int const* attribute_values, int num_values);
 
@@ -361,6 +362,7 @@ namespace ugridapi
         /// @param variable_name [in] The variable name
         /// @param attribute_name [in] The attribute name
         /// @param attribute_values [in] The attribute values
+        /// @param num_values [in] The number of attribute values
         /// @return Error code
         UGRID_API int ug_attribute_char_define(int file_id, char const* variable_name, char const* attribute_name, char const* attribute_values, int num_values);
 
@@ -369,6 +371,7 @@ namespace ugridapi
         /// @param variable_name [in] The variable name
         /// @param attribute_name [in] The attribute name
         /// @param attribute_values [in] The attribute values
+        /// @param num_values [in] The number of attribute values
         /// @return Error code
         UGRID_API int ug_attribute_double_define(int file_id, char const* variable_name, char const* attribute_name, double const* attribute_values, int num_values);
 
