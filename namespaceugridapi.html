@@ -257,6 +257,9 @@ Functions</h2></td></tr>
 <tr class="memitem:ad2177a18aaa61386ba838b2f86ed18f3"><td class="memItemLeft" align="right" valign="top">UGRID_API int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceugridapi.html#ad2177a18aaa61386ba838b2f86ed18f3">ug_attribute_double_define</a> (int file_id, char const *variable_name, char const *attribute_name, double const *attribute_values, int num_values)</td></tr>
 <tr class="memdesc:ad2177a18aaa61386ba838b2f86ed18f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a double attributes to an existing variable.  <a href="namespaceugridapi.html#ad2177a18aaa61386ba838b2f86ed18f3">More...</a><br /></td></tr>
 <tr class="separator:ad2177a18aaa61386ba838b2f86ed18f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4895c6119e0958eef9e0c9ffff88a6f0"><td class="memItemLeft" align="right" valign="top">UGRID_API int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceugridapi.html#a4895c6119e0958eef9e0c9ffff88a6f0">ug_attribute_global_char_define</a> (int file_id, char const *att_name, char const *attribute_values, int num_values)</td></tr>
+<tr class="memdesc:a4895c6119e0958eef9e0c9ffff88a6f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a char attributes as global and not related to a variable.  <a href="namespaceugridapi.html#a4895c6119e0958eef9e0c9ffff88a6f0">More...</a><br /></td></tr>
+<tr class="separator:a4895c6119e0958eef9e0c9ffff88a6f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Contains all structs and functions exposed at the API level. </p>
@@ -370,6 +373,58 @@ Functions</h2></td></tr>
     <tr><td class="paramname">variable_name</td><td>[in] The variable name </td></tr>
     <tr><td class="paramname">attribute_name</td><td>[in] The attribute name </td></tr>
     <tr><td class="paramname">attribute_values</td><td>[in] The attribute values </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Error code </dd></dl>
+
+</div>
+</div>
+<a id="a4895c6119e0958eef9e0c9ffff88a6f0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4895c6119e0958eef9e0c9ffff88a6f0">&#9670;&nbsp;</a></span>ug_attribute_global_char_define()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">UGRID_API int ugridapi::ug_attribute_global_char_define </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>file_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char const *&#160;</td>
+          <td class="paramname"><em>att_name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char const *&#160;</td>
+          <td class="paramname"><em>attribute_values</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>num_values</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Add a char attributes as global and not related to a variable. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">file_id</td><td>[in] The file id </td></tr>
+    <tr><td class="paramname">att_name</td><td>[in] The attribute name </td></tr>
+    <tr><td class="paramname">attribute_values</td><td>[in] The attribute values </td></tr>
+    <tr><td class="paramname">num_values</td><td>[in] The number of values </td></tr>
   </table>
   </dd>
 </dl>
