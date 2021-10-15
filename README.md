@@ -8,7 +8,7 @@ The library also offers APIs for:
 
 Network1d, Mesh1d, and Contacts concern Deltares extensions to UGrid, which will be submitted to the UGrid community. 
 
-For more information about Ugrid conventions:
+For more information about UGrid conventions:
 
 https://ugrid-conventions.github.io/ugrid-conventions/
 
