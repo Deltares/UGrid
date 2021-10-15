@@ -73,6 +73,20 @@ static void define_variable_attributes(int file_id, std::string const& variable_
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 }
 
+static void define_global_attributes(int file_id, std::string const& attribute_name, std::string const& attribute_value)
+{
+    // Write the char variable
+    int name_long_length;
+    auto error_code = ugridapi::ug_name_get_long_length(name_long_length);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+
+    std::unique_ptr<char> const attribute_name_ptr(new char[name_long_length]);
+    string_to_char_array(attribute_name, name_long_length, attribute_name_ptr.get());
+
+    error_code = ugridapi::ug_attribute_global_char_define(file_id, attribute_name_ptr.get(), attribute_value.c_str(), attribute_value.length());
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+}
+
 TEST(ApiTest, InquireAndGet_OneMesh2D_ShouldReadMesh2d)
 {
     // Prepare
@@ -1104,7 +1118,7 @@ TEST(ApiTest, GetDataVariables_OnResultFile_ShouldGetDataVariables)
 
 TEST(ApiTest, DefineCoordinateReferenceSystem_OnExistingFile_ShouldDefineCoordinateReferenceSystem)
 {
-    std::string const file_path = TEST_FOLDER + "/CoordinateReferenceSystem.nc";
+    std::string const file_path = TEST_WRITE_FOLDER + "/CoordinateReferenceSystem.nc";
 
     // Open a file
     int file_id = 0;
@@ -1133,6 +1147,29 @@ TEST(ApiTest, DefineCoordinateReferenceSystem_OnExistingFile_ShouldDefineCoordin
     define_variable_attributes(file_id, "projected_coordinate_system", "inverse_flattening", std::vector<double>{6356752.314245});
     define_variable_attributes(file_id, "projected_coordinate_system", "EPSG_code", "EPSG:0");
     define_variable_attributes(file_id, "projected_coordinate_system", "value", "value is equal to EPSG code");
+
+    error_code = ugridapi::ug_file_close(file_id);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+}
+
+TEST(ApiTest, DefineGlobalAttributes_OnExistingFile_ShouldDefineGlobalAttributes)
+{
+    std::string const file_path = TEST_WRITE_FOLDER + "/GlobalAttributes.nc";
+
+    // Open a file
+    int file_id = 0;
+    int file_mode = 0;
+    auto error_code = ugridapi::ug_file_replace_mode(file_mode);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+    error_code = ugridapi::ug_file_open(file_path.c_str(), file_mode, file_id);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+
+    // Write global attributes
+    define_global_attributes(file_id, "institution", "Deltares");
+    define_global_attributes(file_id, "references", "Unknown");
+    define_global_attributes(file_id, "source", "Unknown Unknown. Model: Unknown");
+    define_global_attributes(file_id, "history", "Created on 2017-11-27T18:05:09+0100, Unknown");
+    define_global_attributes(file_id, "Conventions", "CF-1.6 UGRID-1.0/Deltares-0.8");
 
     error_code = ugridapi::ug_file_close(file_id);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);

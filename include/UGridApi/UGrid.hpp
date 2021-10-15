@@ -372,6 +372,14 @@ namespace ugridapi
         /// @return Error code
         UGRID_API int ug_attribute_double_define(int file_id, char const* variable_name, char const* attribute_name, double const* attribute_values, int num_values);
 
+        /// @brief Add a char attributes as global and not related to a variable
+        /// @param file_id [in] The file id
+        /// @param att_name [in] The attribute name
+        /// @param attribute_values [in] The attribute values
+        /// @param num_values [in] The number of values
+        /// @return Error code
+        UGRID_API int ug_attribute_global_char_define(int file_id, char const* att_name, char const* attribute_values, int num_values);
+
 #ifdef __cplusplus
     }
 #endif

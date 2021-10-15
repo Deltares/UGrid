@@ -1023,4 +1023,27 @@ namespace ugridapi
         return exit_code;
     }
 
+    UGRID_API int ug_attribute_global_char_define(int file_id, char const* att_name, char const* attribute_values, int num_values)
+    {
+        int exit_code = Success;
+        try
+        {
+            if (ugrid_states.count(file_id) == 0)
+            {
+                throw std::invalid_argument("UGrid: The selected file_id does not exist.");
+            }
+
+            // Get the attribute name
+            const auto attribute_name = ugrid::char_array_to_string(att_name, ugrid::name_long_length);
+
+            // Put the attribute values
+            ugrid_states[file_id].m_ncFile->putAtt(attribute_name, netCDF::NcType::nc_CHAR, num_values, attribute_values);
+        }
+        catch (...)
+        {
+            exit_code = HandleExceptions(std::current_exception());
+        }
+        return exit_code;
+    }
+
 } // namespace ugridapi
