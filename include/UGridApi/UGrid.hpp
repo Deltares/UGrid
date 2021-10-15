@@ -212,12 +212,6 @@ namespace ugridapi
         /// @return Error code
         UGRID_API int ug_file_replace_mode(int& mode);
 
-        /// @brief Writes the metadata to file for identify a specific coordinate projection system
-        /// @param file_id [in] The file id
-        /// @param coordinate_reference_system [in] The espg code for identify a specific coordinate projection system
-        /// @return Error code
-        UGRID_API int ug_file_add_coordinate_reference_system(char const* coordinate_reference_system);
-
         /// @brief Opens a file and fills the library state
         /// @param file_path [in] The path of the file
         /// @param mode [in] The opening mode

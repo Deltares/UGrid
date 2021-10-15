@@ -547,20 +547,6 @@ namespace ugridapi
         return Success;
     }
 
-    UGRID_API int ug_file_add_coordinate_reference_system(char const* coordinate_reference_system)
-    {
-        int exit_code = Success;
-        try
-        {
-            //Check if the variable is already present
-        }
-        catch (...)
-        {
-            exit_code = HandleExceptions(std::current_exception());
-        }
-        return exit_code;
-    }
-
     UGRID_API int ug_file_open(char const* file_path, int mode, int& file_id)
     {
         int exit_code = Success;
