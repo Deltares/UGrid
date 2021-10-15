@@ -188,9 +188,6 @@ Functions</h2></td></tr>
 <tr class="memitem:a20dfedd9f9084a4bfcf6f6f054b2aa6c"><td class="memItemLeft" align="right" valign="top">UGRID_API int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceugridapi.html#a20dfedd9f9084a4bfcf6f6f054b2aa6c">ug_file_replace_mode</a> (int &amp;mode)</td></tr>
 <tr class="memdesc:a20dfedd9f9084a4bfcf6f6f054b2aa6c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the integer identifying the file replace mode.  <a href="namespaceugridapi.html#a20dfedd9f9084a4bfcf6f6f054b2aa6c">More...</a><br /></td></tr>
 <tr class="separator:a20dfedd9f9084a4bfcf6f6f054b2aa6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9756e8433a1717881fb3cd247be38567"><td class="memItemLeft" align="right" valign="top">UGRID_API int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceugridapi.html#a9756e8433a1717881fb3cd247be38567">ug_file_add_coordinate_reference_system</a> (char const *coordinate_reference_system)</td></tr>
-<tr class="memdesc:a9756e8433a1717881fb3cd247be38567"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes the metadata to file for identify a specific coordinate projection system.  <a href="namespaceugridapi.html#a9756e8433a1717881fb3cd247be38567">More...</a><br /></td></tr>
-<tr class="separator:a9756e8433a1717881fb3cd247be38567"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a998b9ddac6e020bb19d5d774baec3d08"><td class="memItemLeft" align="right" valign="top">UGRID_API int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceugridapi.html#a998b9ddac6e020bb19d5d774baec3d08">ug_file_open</a> (char const *file_path, int mode, int &amp;file_id)</td></tr>
 <tr class="memdesc:a998b9ddac6e020bb19d5d774baec3d08"><td class="mdescLeft">&#160;</td><td class="mdescRight">Opens a file and fills the library state.  <a href="namespaceugridapi.html#a998b9ddac6e020bb19d5d774baec3d08">More...</a><br /></td></tr>
 <tr class="separator:a998b9ddac6e020bb19d5d774baec3d08"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -774,34 +771,6 @@ Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[out]</td><td class="paramname">error_message</td><td>The pointer to the latest error message </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>Error code </dd></dl>
-
-</div>
-</div>
-<a id="a9756e8433a1717881fb3cd247be38567"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9756e8433a1717881fb3cd247be38567">&#9670;&nbsp;</a></span>ug_file_add_coordinate_reference_system()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">UGRID_API int ugridapi::ug_file_add_coordinate_reference_system </td>
-          <td>(</td>
-          <td class="paramtype">char const *&#160;</td>
-          <td class="paramname"><em>coordinate_reference_system</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Writes the metadata to file for identify a specific coordinate projection system. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">file_id</td><td>[in] The file id </td></tr>
-    <tr><td class="paramname">coordinate_reference_system</td><td>[in] The espg code for identify a specific coordinate projection system </td></tr>
   </table>
   </dd>
 </dl>
