@@ -28,6 +28,17 @@ endif()
 # Link shared lib to static lib, but don't expose it
 target_link_libraries(UGridApi LINK_PUBLIC UGrid netcdf-cxx "${NETCDF_PATH}/lib/netcdf.lib")
 
+# Add precompiled header
+target_precompile_headers(UGridApi PRIVATE <map> 
+                                        <string> 
+                                        <unordered_map> 
+                                        <vector> 
+                                        <memory>
+                                        <sstream>
+                                        <ncDim.h> 
+                                        <ncVar.h> 
+                                        <ncFile.h>)
+
 # IDEs should put the headers in a nice place
 source_group(
   TREE "${PROJECT_SOURCE_DIR}/include/UGridApi"

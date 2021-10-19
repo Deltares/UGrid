@@ -27,12 +27,6 @@
 
 #pragma once
 
-#include <map>
-#include <ncFile.h>
-#include <ncVar.h>
-#include <string>
-#include <vector>
-
 #include <UGrid/Constants.hpp>
 #include <UGrid/Operations.hpp>
 

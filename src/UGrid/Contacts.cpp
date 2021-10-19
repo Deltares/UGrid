@@ -25,9 +25,6 @@
 //
 //------------------------------------------------------------------------------
 
-#include <ncFile.h>
-#include <ncVar.h>
-
 #include <UGrid/Contacts.hpp>
 #include <UGrid/Operations.hpp>
 #include <UGrid/UGridVarAttributeStringBuilder.hpp>

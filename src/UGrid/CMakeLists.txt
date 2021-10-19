@@ -29,6 +29,17 @@ target_include_directories(UGrid PUBLIC "${PROJECT_SOURCE_DIR}/include" "${NETCD
 # Add target link dependencies
 target_link_libraries(UGrid LINK_PUBLIC netcdf-cxx  "${NETCDF_PATH}/lib/netcdf.lib")
 
+# Add precompiled header 
+target_precompile_headers(UGrid PRIVATE <map> 
+                                        <string> 
+                                        <unordered_map> 
+                                        <vector> 
+                                        <memory>
+                                        <sstream>
+                                        <ncDim.h> 
+                                        <ncVar.h> 
+                                        <ncFile.h>)
+
 # IDEs should put the headers in a nice place
 source_group(
   TREE "${PROJECT_SOURCE_DIR}/include/UGrid"

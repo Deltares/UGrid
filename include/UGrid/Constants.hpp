@@ -26,8 +26,6 @@
 //------------------------------------------------------------------------------
 
 #pragma once
-#include <map>
-#include <string>
 
 /// \namespace ugrid
 /// @brief Contains the logic of the C++ static library

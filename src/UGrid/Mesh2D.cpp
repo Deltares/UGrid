@@ -25,10 +25,6 @@
 //
 //------------------------------------------------------------------------------
 
-#include <ncDim.h>
-#include <ncFile.h>
-#include <ncVar.h>
-
 #include <UGrid/Mesh2D.hpp>
 #include <UGrid/Operations.hpp>
 #include <UGrid/UGridVarAttributeStringBuilder.hpp>
@@ -125,7 +121,7 @@ void Mesh2D::define(ugridapi::Mesh2D const& mesh2d)
     {
         // Define face dimensions
         string_builder.clear();
-        string_builder << "_nFace";
+        string_builder << "_nFaces";
         m_dimensions.insert({UGridFileDimensions::face, m_nc_file->addDim(string_builder.str(), mesh2d.num_faces)});
         define_topological_attribute("face_dimension", string_builder.str());
 

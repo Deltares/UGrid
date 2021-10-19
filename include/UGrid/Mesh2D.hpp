@@ -27,12 +27,6 @@
 
 #pragma once
 
-#include <string>
-#include <unordered_map>
-#include <vector>
-
-#include <ncVar.h>
-
 #include <UGridApi/Mesh2D.hpp>
 
 #include <UGrid/UGridEntity.hpp>

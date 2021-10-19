@@ -27,15 +27,10 @@
 
 #pragma once
 
-#include <string>
-
 #include <boost/algorithm/string.hpp>
 #include <boost/algorithm/string/split.hpp>
 
 #include <UGrid/Constants.hpp>
-
-// required header
-#include <ncDim.h>
 
 /// \namespace ugrid
 /// @brief Contains the logic of the C++ static library

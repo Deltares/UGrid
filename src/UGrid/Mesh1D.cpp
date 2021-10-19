@@ -25,10 +25,6 @@
 //
 //------------------------------------------------------------------------------
 
-#include <ncDim.h>
-#include <ncFile.h>
-#include <ncVar.h>
-
 #include <UGrid/Mesh1D.hpp>
 #include <UGrid/Operations.hpp>
 #include <UGrid/UGridVarAttributeStringBuilder.hpp>

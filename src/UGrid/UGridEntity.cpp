@@ -29,13 +29,6 @@
 
 #include <boost/format.hpp>
 
-#include <map>
-#include <string>
-#include <vector>
-
-#include <ncFile.h>
-#include <ncVar.h>
-
 #include <UGrid/Constants.hpp>
 #include <UGrid/Operations.hpp>
 #include <UGrid/UGridEntity.hpp>
@@ -170,7 +163,6 @@ UGridEntity::get_location_variable_names(std::string const& location, std::strin
     std::string units_x;
     std::string units_y;
 
-    std::string topology_attribute_name = location + "_coordinates";
     UGridVarAttributeStringBuilder string_builder(m_entity_name);
 
     if (!m_spherical_coordinates)

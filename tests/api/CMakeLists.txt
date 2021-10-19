@@ -7,6 +7,17 @@ add_executable(UGridApiTests ${API_TEST_LIST})
 # Add a dependency to ensure the correct build order
 add_dependencies(UGridApiTests UGridApi)
 
+# Add precompiled header 
+target_precompile_headers(UGridApiTests PRIVATE <map> 
+                                        <string> 
+                                        <exception>
+                                        <unordered_map> 
+                                        <vector> 
+                                        <memory>
+                                        <sstream>
+                                        <ncDim.h> 
+                                        <ncVar.h> 
+                                        <ncFile.h>)
 # Should be linked to the main library, as well as the google test library
 target_link_libraries(UGridApiTests PRIVATE UGridApi UtilsStatic
                                                  gtest_main gmock)

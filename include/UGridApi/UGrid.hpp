@@ -210,7 +210,7 @@ namespace ugridapi
         /// @brief Gets the integer identifying the file replace mode
         /// @param mode [out] The integer identifying the file replace mode
         /// @return Error code
-        UGRID_API int ug_file_replace_mode(int& mode);
+        UGRID_API int ug_file_replace_mode(int& mode) noexcept;
 
         /// @brief Opens a file and fills the library state
         /// @param file_path [in] The path of the file

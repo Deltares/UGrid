@@ -1,8 +1,3 @@
-#include <exception>
-#include <memory>
-#include <string.h>
-#include <string>
-
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 

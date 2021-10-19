@@ -541,7 +541,7 @@ namespace ugridapi
         return Success;
     }
 
-    UGRID_API int ug_file_replace_mode(int& mode)
+    UGRID_API int ug_file_replace_mode(int& mode) noexcept
     {
         mode = static_cast<int>(netCDF::NcFile::replace);
         return Success;

@@ -27,9 +27,6 @@
 
 #pragma once
 
-#include <sstream>
-#include <string>
-
 /// \namespace ugrid
 /// @brief Contains the logic of the C++ static library
 namespace ugrid
