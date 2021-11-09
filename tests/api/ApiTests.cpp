@@ -87,8 +87,8 @@ TEST(ApiTest, InquireAndGet_OneMesh2D_ShouldReadMesh2d)
     // Prepare
     // Open a file
     std::string const file_path = TEST_FOLDER + "/OneMesh2D.nc";
-    int file_id = 0;
-    int file_mode = 0;
+    int file_id = -1;
+    int file_mode = -1;
     auto error_code = ugridapi::ug_file_read_mode(file_mode);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
     error_code = ugridapi::ug_file_open(file_path.c_str(), file_mode, file_id);
@@ -203,8 +203,8 @@ TEST(ApiTest, DefineAndPut_OneMesh2D_ShouldWriteData)
     // Prepare
     // Open a file
     std::string const file_path = TEST_WRITE_FOLDER + "/Mesh2DWrite.nc";
-    int file_id = 0;
-    int file_mode = 0;
+    int file_id = -1;
+    int file_mode = -1;
     auto error_code = ugridapi::ug_file_replace_mode(file_mode);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
     error_code = ugridapi::ug_file_open(file_path.c_str(), file_mode, file_id);
@@ -317,11 +317,11 @@ TEST(ApiTest, InquireAndGet_OneNetwork1D_ShouldReadNetwork1D)
     // Open a file
     std::string const file_path = TEST_FOLDER + "/AllUGridEntities.nc";
 
-    int file_mode = 0;
+    int file_mode = -1;
     auto error_code = ugridapi::ug_file_read_mode(file_mode);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
-    int file_id = 0;
+    int file_id = -1;
     error_code = ugridapi::ug_file_open(file_path.c_str(), file_mode, file_id);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
@@ -455,8 +455,8 @@ TEST(ApiTest, DefineAndPut_OneNetwork1D_ShouldWriteData)
     std::string const file_path = TEST_WRITE_FOLDER + "/Network1DWrite.nc";
 
     // Open a file
-    int file_id = 0;
-    int file_mode = 0;
+    int file_id = -1;
+    int file_mode = -1;
     auto error_code = ugridapi::ug_file_replace_mode(file_mode);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
     error_code = ugridapi::ug_file_open(file_path.c_str(), file_mode, file_id);
@@ -523,8 +523,8 @@ TEST(ApiTest, InquireAndGet_OneMesh1D_ShouldReadMesh1D)
     std::string const file_path = TEST_FOLDER + "/AllUGridEntities.nc";
 
     // Open a file
-    int file_id = 0;
-    int file_mode = 0;
+    int file_id = -1;
+    int file_mode = -1;
     auto error_code = ugridapi::ug_file_read_mode(file_mode);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
     error_code = ugridapi::ug_file_open(file_path.c_str(), file_mode, file_id);
@@ -610,8 +610,8 @@ TEST(ApiTest, DefineAndPut_OneMesh1D_ShouldWriteData)
     std::string const file_path = TEST_WRITE_FOLDER + "/Mesh1DWrite.nc";
 
     // Open a file
-    int file_id = 0;
-    int file_mode = 0;
+    int file_id = -1;
+    int file_mode = -1;
     auto error_code = ugridapi::ug_file_replace_mode(file_mode);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
     error_code = ugridapi::ug_file_open(file_path.c_str(), file_mode, file_id);
@@ -705,8 +705,8 @@ TEST(ApiTest, InquireAndGet_OneContact_ShouldReadContact)
     std::string const file_path = TEST_FOLDER + "/AllUGridEntities.nc";
 
     // Open a file
-    int file_id = 0;
-    int file_mode = 0;
+    int file_id = -1;
+    int file_mode = -1;
     auto error_code = ugridapi::ug_file_read_mode(file_mode);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
@@ -822,8 +822,8 @@ TEST(ApiTest, DefineAndPut_OneContact_ShouldWriteAContact)
     std::string const file_path = TEST_WRITE_FOLDER + "/ContactsWrite.nc";
 
     // Open a file
-    int file_id = 0;
-    int file_mode = 0;
+    int file_id = -1;
+    int file_mode = -1;
     auto error_code = ugridapi::ug_file_replace_mode(file_mode);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
     error_code = ugridapi::ug_file_open(file_path.c_str(), file_mode, file_id);
@@ -920,8 +920,8 @@ TEST(ApiTest, GetTopologyAttributesNamesAndValues_OnResultFile_ShouldGetTopology
     std::string const file_path = TEST_FOLDER + "/ResultFile.nc";
 
     // Open a file
-    int file_id = 0;
-    int file_mode = 0;
+    int file_id = -1;
+    int file_mode = -1;
     auto error_code = ugridapi::ug_file_read_mode(file_mode);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
     error_code = ugridapi::ug_file_open(file_path.c_str(), file_mode, file_id);
@@ -991,8 +991,8 @@ TEST(ApiTest, GetVariableAttributesNamesAndValues_OnResultFile_ShouldGetVariable
     std::string const file_path = TEST_FOLDER + "/ResultFile.nc";
 
     // Open a file
-    int file_id = 0;
-    int file_mode = 0;
+    int file_id = -1;
+    int file_mode = -1;
     auto error_code = ugridapi::ug_file_read_mode(file_mode);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
     error_code = ugridapi::ug_file_open(file_path.c_str(), file_mode, file_id);
@@ -1062,8 +1062,8 @@ TEST(ApiTest, GetDataVariables_OnResultFile_ShouldGetDataVariables)
     std::string const file_path = TEST_FOLDER + "/ResultFile.nc";
 
     // Open a file
-    int file_id = 0;
-    int file_mode = 0;
+    int file_id = -1;
+    int file_mode = -1;
     auto error_code = ugridapi::ug_file_read_mode(file_mode);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
     error_code = ugridapi::ug_file_open(file_path.c_str(), file_mode, file_id);
@@ -1116,8 +1116,8 @@ TEST(ApiTest, DefineCoordinateReferenceSystem_OnExistingFile_ShouldDefineCoordin
     std::string const file_path = TEST_WRITE_FOLDER + "/CoordinateReferenceSystem.nc";
 
     // Open a file
-    int file_id = 0;
-    int file_mode = 0;
+    int file_id = -1;
+    int file_mode = -1;
     auto error_code = ugridapi::ug_file_replace_mode(file_mode);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
     error_code = ugridapi::ug_file_open(file_path.c_str(), file_mode, file_id);
@@ -1152,8 +1152,8 @@ TEST(ApiTest, DefineGlobalAttributes_OnExistingFile_ShouldDefineGlobalAttributes
     std::string const file_path = TEST_WRITE_FOLDER + "/Conventions.nc";
 
     // Open a file
-    int file_id = 0;
-    int file_mode = 0;
+    int file_id = -1;
+    int file_mode = -1;
     auto error_code = ugridapi::ug_file_replace_mode(file_mode);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
     error_code = ugridapi::ug_file_open(file_path.c_str(), file_mode, file_id);
