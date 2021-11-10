@@ -112,27 +112,15 @@ namespace ugrid
         }
     }
 
-    static bool fill_ugrid_entity_dimension(std::multimap<std::string, netCDF::NcDim> const& dimensions,
-                                            std::string const& attribute_key_string,
-                                            std::string const& attribute_value_string,
-                                            std::map<UGridFileDimensions, netCDF::NcDim>& entity_dimensions)
+    static bool is_dimension_variable(std::multimap<std::string, netCDF::NcDim> const& dimensions,
+                                      std::string const& attribute_value_string)
     {
-        bool isDimensionVariable = false;
-        auto const it = dimensions.find(attribute_key_string);
-        if (it == dimensions.end())
+        if (dimensions.find(attribute_value_string) == dimensions.end())
         {
-            return isDimensionVariable;
+            return false;
+            std::string attribute_value_string;
         }
-
-        if (attribute_value_string.find("_dimension") != std::string::npos)
-        {
-            isDimensionVariable = true;
-            auto const substring_dimension_pos = attribute_value_string.find("_dimension");
-            std::string const location_name = attribute_value_string.substr(0, substring_dimension_pos);
-            auto const dimension_enum = from_dimension_string_to_dimension_enum(location_name);
-            entity_dimensions.insert({dimension_enum, it->second});
-        }
-        return isDimensionVariable;
+        return true;
     }
 
     static std::tuple<std::map<std::string, std::vector<netCDF::NcVar>>,
@@ -158,11 +146,7 @@ namespace ugrid
             attribute.second.getValues(attribute_value_string);
 
             // check if it is a dimension variable
-            auto const is_dimension_variable = fill_ugrid_entity_dimension(file_dimensions,
-                                                                           attribute_value_string,
-                                                                           attribute_key_string,
-                                                                           entity_dimensions);
-            if (is_dimension_variable)
+            if (is_dimension_variable(file_dimensions, attribute_value_string))
             {
                 continue;
             }
@@ -187,6 +171,29 @@ namespace ugrid
             }
             entity_attribute_names.insert({attribute_key_string, attribute_value_string_tokens});
         }
+
+        // get the dimensions from the attributes
+        auto variable_value = entity_attribute_variables.find("node_coordinates");
+        if (variable_value != entity_attribute_variables.end())
+        {
+            entity_dimensions[UGridFileDimensions::node] = variable_value->second[0].getDims()[0];
+        }
+        variable_value = entity_attribute_variables.find("edge_node_connectivity");
+        if (variable_value != entity_attribute_variables.end())
+        {
+            entity_dimensions[UGridFileDimensions::edge] = variable_value->second[0].getDims()[0];
+        }
+        variable_value = entity_attribute_variables.find("face_coordinates");
+        if (variable_value != entity_attribute_variables.end())
+        {
+            entity_dimensions[UGridFileDimensions::face] = variable_value->second[0].getDims()[0];
+        }
+        variable_value = entity_attribute_variables.find("face_node_connectivity");
+        if (variable_value != entity_attribute_variables.end())
+        {
+            entity_dimensions[UGridFileDimensions::max_face_node] = variable_value->second[0].getDims()[1];
+        }
+
         return {entity_attribute_variables, entity_attribute_names, entity_dimensions};
     }
 
