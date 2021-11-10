@@ -172,7 +172,7 @@ namespace ugrid
             entity_attribute_names.insert({attribute_key_string, attribute_value_string_tokens});
         }
 
-        // get the dimensions from the attributes
+        // get the dimensions from the variable dimensions
         auto variable_value = entity_attribute_variables.find("node_coordinates");
         if (variable_value != entity_attribute_variables.end())
         {
