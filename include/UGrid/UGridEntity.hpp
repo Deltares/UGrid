@@ -202,7 +202,7 @@ namespace ugrid
         int m_start_index = 0;                          ///< The start index
         int m_int_fill_value = int_missing_value;       ///< The fill value for arrays of int
         int m_double_fill_value = double_missing_value; ///< The fill value for arrays of double
-        int m_espg_code = 0;                            ///< The espg code
+        int m_epsg_code = 0;                            ///< The epsg code
 
     private:
         /// @brief Produces the attribute variables related to coordinate locations
