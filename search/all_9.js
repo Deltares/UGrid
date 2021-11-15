@@ -5,7 +5,7 @@ var searchData=
   ['m_5fdimensions_54',['m_dimensions',['../classugrid_1_1_u_grid_entity.html#ac5c77d56f43e2277b14a2a339b6f2168',1,'ugrid::UGridEntity']]],
   ['m_5fdouble_5ffill_5fvalue_55',['m_double_fill_value',['../classugrid_1_1_u_grid_entity.html#a252a9767eaffa24d6b7ef3a2c461500a',1,'ugrid::UGridEntity']]],
   ['m_5fentity_5fname_56',['m_entity_name',['../classugrid_1_1_u_grid_entity.html#aa0ce3e78f7f10252926d1ff14c8d6751',1,'ugrid::UGridEntity']]],
-  ['m_5fespg_5fcode_57',['m_espg_code',['../classugrid_1_1_u_grid_entity.html#a6d6dc20f97f4fad9d37b711d988da793',1,'ugrid::UGridEntity']]],
+  ['m_5fepsg_5fcode_57',['m_epsg_code',['../classugrid_1_1_u_grid_entity.html#a6348b4a930ca6cdacb1d4e890e8ba888',1,'ugrid::UGridEntity']]],
   ['m_5fint_5ffill_5fvalue_58',['m_int_fill_value',['../classugrid_1_1_u_grid_entity.html#ac173285b428331d16cc66abc44f15171',1,'ugrid::UGridEntity']]],
   ['m_5fmesh1d_59',['m_mesh1d',['../structugridapi_1_1_u_grid_state.html#a9d592fcf03c6c9804a3e4848d5d6708d',1,'ugridapi::UGridState']]],
   ['m_5fmesh2d_60',['m_mesh2d',['../structugridapi_1_1_u_grid_state.html#aacf40ddbe8c489416aa2e600dd903052',1,'ugridapi::UGridState']]],
