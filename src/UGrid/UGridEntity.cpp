@@ -351,14 +351,14 @@ void UGridEntity::define_topology_related_variables(std::string const& variable,
     m_related_variables.insert({variable, {topology_related_variable}});
 }
 
-void UGridEntity::define(char* entity_name, int start_index, std::string const& long_name, int topology_dimension, int is_spherical)
+void UGridEntity::define(std::string const& entity_name, int start_index, std::string const& long_name, int topology_dimension, int is_spherical)
 {
     m_start_index = start_index;
-    m_entity_name = char_array_to_string(entity_name, name_length);
+    m_entity_name = entity_name;
     m_spherical_coordinates = is_spherical == 0 ? false : true;
 
     // Topology name
-    m_topology_variable = m_nc_file->addVar(m_entity_name, netCDF::NcType::nc_CHAR);
+    m_topology_variable = m_nc_file->addVar(m_entity_name, netCDF::NcType::nc_STRING);
 
     // Topology attributes
     define_topological_attribute("cf_role", "mesh_topology");

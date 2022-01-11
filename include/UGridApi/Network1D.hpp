@@ -33,43 +33,43 @@ namespace ugridapi
     struct Network1D
     {
         /// @brief The name of the network
-        char* name = nullptr;
+        std::string name;
 
         /// @brief The node x coordinates
-        double* node_x = nullptr;
+        std::vector<double> node_x;
 
         /// @brief The node y coordinates
-        double* node_y = nullptr;
+        std::vector<double> node_y;
 
         /// @brief The node name
-        char* node_id = nullptr;
+        std::string node_id;
 
         /// @brief The node long name
-        char* node_long_name = nullptr;
+        std::string node_long_name;
 
         /// @brief The node defining each edge
-        int* edge_node = nullptr;
+        std::vector<int> edge_node;
 
         /// @brief The edge lengths
-        double* edge_length = nullptr;
+        std::vector<double> edge_length;
 
         /// @brief The edge order
-        int* edge_order = nullptr;
+        std::vector<int> edge_order;
 
         /// @brief The name of the edge
-        char* edge_id = nullptr;
+        std::string edge_id;
 
         /// @brief The long name of the edge
-        char* edge_long_name = nullptr;
+        std::string edge_long_name;
 
         /// @brief The geometry node x coordinates
-        double* geometry_nodes_x = nullptr;
+        std::vector<double> geometry_nodes_x;
 
         /// @brief The geometry node y coordinates
-        double* geometry_nodes_y = nullptr;
+        std::vector<double> geometry_nodes_y;
 
         /// @brief The number of geometry node on each edge
-        int* num_edge_geometry_nodes = nullptr;
+        std::vector<int> num_edge_geometry_nodes;
 
         /// @brief The number of geometry node
         int num_geometry_nodes = 0;
@@ -81,9 +81,9 @@ namespace ugridapi
         int num_edges = 0;
 
         /// @brief 1 If the coordinates are in a spherical system, 0 otherwise
-        int is_spherical = 0;
+        int is_spherical = -1;
 
         /// @brief The start index used in arrays using indices, such as in the edge_node array
-        int start_index = 0;
+        int start_index = -1;
     };
 } // namespace ugridapi

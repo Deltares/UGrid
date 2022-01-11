@@ -33,25 +33,25 @@ namespace ugridapi
     struct Contacts
     {
         /// @brief The name of the contact entity
-        char* name = nullptr;
+        std::string name;
 
         /// @brief The actual contact, expressed as pair of indices from a mesh index to another mesh index
-        int* edges = nullptr;
+        std::vector<int> edges;
 
         /// @brief For each contact its type
-        int* contact_type = nullptr;
+        std::vector<int> contact_type;
 
         /// @brief The name of each contact
-        char* contact_name_id = nullptr;
+        std::string contact_name_id;
 
         /// @brief The long name of each contact
-        char* contact_name_long = nullptr;
+        std::string contact_name_long ;
 
         /// @brief The name of the mesh where the contact start
-        char* mesh_from_name = nullptr;
+        std::string mesh_from_name;
 
         /// @brief The name of the mesh where the contact ends
-        char* mesh_to_name = nullptr;
+        std::string mesh_to_name;
 
         /// @brief The location type (node, edge or face) at the contact start
         int mesh_from_location = 0;

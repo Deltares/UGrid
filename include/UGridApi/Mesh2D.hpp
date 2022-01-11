@@ -35,61 +35,61 @@ namespace ugridapi
     struct Mesh2D
     {
         /// @brief The mesh2d name
-        char* name = nullptr;
+        std::string name;
 
         /// @brief The edge node connectivity
-        int* edge_node = nullptr;
+        std::vector<int> edge_node;
 
         /// @brief The node composing each face
-        int* face_node = nullptr;
+        std::vector<int> face_node;
 
         /// @brief The node x coordinates
-        double* node_x = nullptr;
+        std::vector<double> node_x;
 
         /// @brief The node y coordinates
-        double* node_y = nullptr;
+        std::vector<double> node_y;
 
         /// @brief The edge x coordinate
-        double* edge_x = nullptr;
+        std::vector<double> edge_x;
 
         /// @brief The edge y coordinate
-        double* edge_y = nullptr;
+        std::vector<double> edge_y;
 
         /// @brief The face x coordinates
-        double* face_x = nullptr;
+        std::vector<double> face_x;
 
         /// @brief The face y coordinates
-        double* face_y = nullptr;
+        std::vector<double> face_y;
 
         /// @brief The edge composing each face
-        int* edge_face = nullptr;
+        std::vector<int> edge_face;
 
         /// @brief For each face, the edge composing it
-        int* face_edge = nullptr;
+        std::vector<int> face_edge;
 
         /// @brief For each face, the neighboring face
-        int* face_face = nullptr;
+        std::vector<int> face_face;
 
         /// @brief The node z coordinates
-        double* node_z = nullptr;
+        std::vector<double> node_z;
 
         /// @brief The edge z coordinates
-        double* edge_z = nullptr;
+        std::vector<double> edge_z;
 
         /// @brief The face z coordinates
-        double* face_z = nullptr;
+        std::vector<double> face_z;
 
         /// @brief The z coordinates of a layer
-        double* layer_zs = nullptr;
+        std::vector<double> layer_zs;
 
         /// @brief The z coordinates of a layer interface
-        double* interface_zs = nullptr;
+        std::vector<double> interface_zs;
 
         /// @brief TODO to be detailed
-        double* boundary_node_connectivity = nullptr;
+        std::vector<double> boundary_node_connectivity;
 
         /// @brief TODO to be detailed
-        double* volume_coordinates = nullptr;
+        std::vector<double> volume_coordinates;
 
         /// @brief The number of node
         int num_nodes = 0;
@@ -104,13 +104,13 @@ namespace ugridapi
         int num_layers = 0;
 
         /// @brief The start index used in arrays using indices, such as edge_node
-        int start_index = 0;
+        int start_index = -1;
 
         /// @brief The maximum number of face node
-        int num_face_nodes_max = 4;
+        int num_face_nodes_max = 0;
 
         /// @brief 1 if coordinates are in a spherical system, 0 otherwise
-        int is_spherical = 0;
+        int is_spherical = -1;
 
         /// @brief The fill value for array of doubles
         double double_fill_value = ugrid::double_missing_value;

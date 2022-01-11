@@ -128,7 +128,7 @@ namespace ugrid
         /// @param long_name [in] The entity long name
         /// @param topology_dimension [in] The dimension of the topology
         /// @param is_spherical [in] 1 if coordinates are in a spherical system, 0 otherwise
-        void define(char* entity_name, int start_index, std::string const& long_name, int topology_dimension, int is_spherical);
+        void define(std::string const& entity_name, int start_index, std::string const& long_name, int topology_dimension, int is_spherical);
 
         /// @brief A function to determine if a variable is a topology variable (this function migh get overwritten in derived if necessary)
         /// @param attributes [in] The variable attributes

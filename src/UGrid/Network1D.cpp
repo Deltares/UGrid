@@ -69,19 +69,19 @@ Network1D::Network1D(std::shared_ptr<netCDF::NcFile> nc_file,
 
 void Network1D::define(ugridapi::Network1D const& network1d)
 {
-    if (network1d.name == nullptr)
+    if (network1d.name.size() == 0)
     {
         throw std::invalid_argument("Network1D::define mesh name field is empty");
     }
-    if (network1d.node_x == nullptr || network1d.node_y == nullptr)
+    if (network1d.node_x.size() == 0 || network1d.node_y.size() == 0)
     {
         throw std::invalid_argument("Network1D::define network node coordinates missing");
     }
-    if (network1d.edge_node == nullptr)
+    if (network1d.edge_node.size() == 0)
     {
         throw std::invalid_argument("Network1D::define network edge (branches) missing");
     }
-    if (network1d.geometry_nodes_x == nullptr || network1d.geometry_nodes_y == nullptr)
+    if (network1d.geometry_nodes_x.size() == 0 || network1d.geometry_nodes_y.size() == 0)
     {
         throw std::invalid_argument("Network1D::define network geometry coordinates missing");
     }
@@ -243,67 +243,67 @@ void Network1D::define(ugridapi::Network1D const& network1d)
 
 void Network1D::put(ugridapi::Network1D const& network1d)
 {
-    if (network1d.name == nullptr)
+    if (network1d.name.size() == 0)
     {
         throw std::invalid_argument("Network1D::put invalid mesh name");
     }
 
-    if (auto const it = m_topology_attribute_variables.find("node_coordinates"); network1d.node_x != nullptr && it != m_topology_attribute_variables.end())
+    if (auto const it = m_topology_attribute_variables.find("node_coordinates"); network1d.node_x.size() != 0 && it != m_topology_attribute_variables.end())
     {
-        it->second.at(0).putVar(network1d.node_x);
+        it->second.at(0).putVar(network1d.node_x.data());
     }
-    if (auto const it = m_topology_attribute_variables.find("node_coordinates"); network1d.node_y != nullptr && it != m_topology_attribute_variables.end())
+    if (auto const it = m_topology_attribute_variables.find("node_coordinates"); network1d.node_y.size() != 0 && it != m_topology_attribute_variables.end())
     {
-        it->second.at(1).putVar(network1d.node_y);
+        it->second.at(1).putVar(network1d.node_y.data());
     }
-    if (auto const it = find_attribute_variable_name_with_aliases("node_id"); network1d.node_id != nullptr && it != m_topology_attribute_variables.end())
+    if (auto const it = find_attribute_variable_name_with_aliases("node_id"); network1d.node_id.size() != 0 && it != m_topology_attribute_variables.end())
     {
-        it->second.at(0).putVar(network1d.node_id);
-    }
-
-    if (auto const it = find_attribute_variable_name_with_aliases("node_long_name"); network1d.node_long_name != nullptr && it != m_topology_attribute_variables.end())
-    {
-        it->second.at(0).putVar(network1d.node_long_name);
+        it->second.at(0).putVar(network1d.node_id.data());
     }
 
-    if (auto const it = m_topology_attribute_variables.find("edge_node_connectivity"); network1d.edge_node != nullptr && it != m_topology_attribute_variables.end())
+    if (auto const it = find_attribute_variable_name_with_aliases("node_long_name"); network1d.node_long_name.size() != 0 && it != m_topology_attribute_variables.end())
     {
-        it->second.at(0).putVar(network1d.edge_node);
+        it->second.at(0).putVar(network1d.node_long_name.data());
     }
 
-    if (auto const it = m_topology_attribute_variables.find("edge_length"); network1d.edge_length != nullptr && it != m_topology_attribute_variables.end())
+    if (auto const it = m_topology_attribute_variables.find("edge_node_connectivity"); network1d.edge_node.size() != 0 && it != m_topology_attribute_variables.end())
     {
-        it->second.at(0).putVar(network1d.edge_length);
+        it->second.at(0).putVar(network1d.edge_node.data());
     }
 
-    if (auto const it = m_related_variables.find("edge_order"); network1d.edge_order != nullptr && it != m_related_variables.end())
+    if (auto const it = m_topology_attribute_variables.find("edge_length"); network1d.edge_length.size() != 0 && it != m_topology_attribute_variables.end())
     {
-        it->second.putVar(network1d.edge_order);
+        it->second.at(0).putVar(network1d.edge_length.data());
     }
 
-    if (auto const it = find_attribute_variable_name_with_aliases("edge_id"); network1d.edge_id != nullptr && it != m_topology_attribute_variables.end())
+    if (auto const it = m_related_variables.find("edge_order"); network1d.edge_order.size() != 0 && it != m_related_variables.end())
     {
-        it->second.at(0).putVar(network1d.edge_id);
+        it->second.putVar(network1d.edge_order.data());
     }
 
-    if (auto const it = find_attribute_variable_name_with_aliases("edge_long_name"); network1d.edge_long_name != nullptr && it != m_topology_attribute_variables.end())
+    if (auto const it = find_attribute_variable_name_with_aliases("edge_id"); network1d.edge_id.size() != 0 && it != m_topology_attribute_variables.end())
     {
-        it->second.at(0).putVar(network1d.edge_long_name);
+        it->second.at(0).putVar(network1d.edge_id.data());
     }
 
-    if (auto const it = m_network_geometry_attribute_variables.find("node_coordinates"); network1d.geometry_nodes_x != nullptr && it != m_network_geometry_attribute_variables.end())
+    if (auto const it = find_attribute_variable_name_with_aliases("edge_long_name"); network1d.edge_long_name.size() != 0 && it != m_topology_attribute_variables.end())
     {
-        it->second.at(0).putVar(network1d.geometry_nodes_x);
+        it->second.at(0).putVar(network1d.edge_long_name.data());
     }
 
-    if (auto const it = m_network_geometry_attribute_variables.find("node_coordinates"); network1d.geometry_nodes_y != nullptr && it != m_network_geometry_attribute_variables.end())
+    if (auto const it = m_network_geometry_attribute_variables.find("node_coordinates"); network1d.geometry_nodes_x.size() != 0 && it != m_network_geometry_attribute_variables.end())
     {
-        it->second.at(1).putVar(network1d.geometry_nodes_y);
+        it->second.at(0).putVar(network1d.geometry_nodes_x.data());
     }
 
-    if (auto const it = m_network_geometry_attribute_variables.find("part_node_count"); network1d.num_edge_geometry_nodes != nullptr && it != m_network_geometry_attribute_variables.end())
+    if (auto const it = m_network_geometry_attribute_variables.find("node_coordinates"); network1d.geometry_nodes_y.size() != 0 && it != m_network_geometry_attribute_variables.end())
     {
-        it->second.at(0).putVar(network1d.num_edge_geometry_nodes);
+        it->second.at(1).putVar(network1d.geometry_nodes_y.data());
+    }
+
+    if (auto const it = m_network_geometry_attribute_variables.find("part_node_count"); network1d.num_edge_geometry_nodes.size() != 0 && it != m_network_geometry_attribute_variables.end())
+    {
+        it->second.at(0).putVar(network1d.num_edge_geometry_nodes.data());
     }
 }
 
@@ -327,61 +327,61 @@ void Network1D::inquire(ugridapi::Network1D& network1d) const
 void Network1D::get(ugridapi::Network1D& network1d) const
 {
 
-    string_to_char_array(m_entity_name, name_long_length, network1d.name);
+    network1d.name = m_entity_name;
 
-    if (auto const it = m_topology_attribute_variables.find("node_coordinates"); network1d.node_x != nullptr && it != m_topology_attribute_variables.end())
+    if (auto const it = m_topology_attribute_variables.find("node_coordinates"); network1d.node_x.size() != 0 && it != m_topology_attribute_variables.end())
     {
-        it->second.at(0).getVar(network1d.node_x);
+        it->second.at(0).getVar(network1d.node_x.data());
     }
 
-    if (auto const it = m_topology_attribute_variables.find("node_coordinates"); network1d.node_y != nullptr && it != m_topology_attribute_variables.end())
+    if (auto const it = m_topology_attribute_variables.find("node_coordinates"); network1d.node_y.size() != 0 && it != m_topology_attribute_variables.end())
     {
-        it->second.at(1).getVar(network1d.node_y);
+        it->second.at(1).getVar(network1d.node_y.data());
     }
 
-    if (auto const it = m_topology_attribute_variables.find("edge_node_connectivity"); network1d.edge_node != nullptr && it != m_topology_attribute_variables.end())
+    if (auto const it = m_topology_attribute_variables.find("edge_node_connectivity"); network1d.edge_node.size() != 0 && it != m_topology_attribute_variables.end())
     {
-        it->second.at(0).getVar(network1d.edge_node);
+        it->second.at(0).getVar(network1d.edge_node.data());
     }
 
-    if (auto const it = find_attribute_variable_name_with_aliases("node_id"); network1d.node_id != nullptr && it != m_topology_attribute_variables.end())
+    if (auto const it = find_attribute_variable_name_with_aliases("node_id"); network1d.node_id.size() != 0 && it != m_topology_attribute_variables.end())
     {
-        it->second.at(0).getVar(network1d.node_id);
+        it->second.at(0).getVar(network1d.node_id.data());
     }
 
-    if (auto const it = find_attribute_variable_name_with_aliases("node_long_name"); network1d.node_long_name != nullptr && it != m_topology_attribute_variables.end())
+    if (auto const it = find_attribute_variable_name_with_aliases("node_long_name"); network1d.node_long_name.size() != 0 && it != m_topology_attribute_variables.end())
     {
-        it->second.at(0).getVar(network1d.node_long_name);
+        it->second.at(0).getVar(network1d.node_long_name.data());
     }
 
-    if (auto const it = find_attribute_variable_name_with_aliases("edge_id"); network1d.edge_id != nullptr && it != m_topology_attribute_variables.end())
+    if (auto const it = find_attribute_variable_name_with_aliases("edge_id"); network1d.edge_id.size() != 0 && it != m_topology_attribute_variables.end())
     {
-        it->second.at(0).getVar(network1d.edge_id);
+        it->second.at(0).getVar(network1d.edge_id.data());
     }
 
-    if (auto const it = find_attribute_variable_name_with_aliases("edge_long_name"); network1d.edge_long_name != nullptr && it != m_topology_attribute_variables.end())
+    if (auto const it = find_attribute_variable_name_with_aliases("edge_long_name"); network1d.edge_long_name.size() != 0 && it != m_topology_attribute_variables.end())
     {
-        it->second.at(0).getVar(network1d.edge_long_name);
+        it->second.at(0).getVar(network1d.edge_long_name.data());
     }
 
-    if (auto const it = find_attribute_variable_name_with_aliases("edge_length"); network1d.edge_length != nullptr && it != m_topology_attribute_variables.end())
+    if (auto const it = find_attribute_variable_name_with_aliases("edge_length"); network1d.edge_length.size() != 0 && it != m_topology_attribute_variables.end())
     {
-        it->second.at(0).getVar(network1d.edge_length);
+        it->second.at(0).getVar(network1d.edge_length.data());
     }
 
     // Network geometry
-    if (auto const it = m_network_geometry_attribute_variables.find("node_coordinates"); network1d.geometry_nodes_x != nullptr && it != m_network_geometry_attribute_variables.end())
+    if (auto const it = m_network_geometry_attribute_variables.find("node_coordinates"); network1d.geometry_nodes_x.size() != 0 && it != m_network_geometry_attribute_variables.end())
     {
-        it->second.at(0).getVar(network1d.geometry_nodes_x);
+        it->second.at(0).getVar(network1d.geometry_nodes_x.data());
     }
 
-    if (auto const it = m_network_geometry_attribute_variables.find("node_coordinates"); network1d.geometry_nodes_y != nullptr && it != m_network_geometry_attribute_variables.end())
+    if (auto const it = m_network_geometry_attribute_variables.find("node_coordinates"); network1d.geometry_nodes_y.size() != 0 && it != m_network_geometry_attribute_variables.end())
     {
-        it->second.at(1).getVar(network1d.geometry_nodes_y);
+        it->second.at(1).getVar(network1d.geometry_nodes_y.data());
     }
-    if (auto const it = m_network_geometry_attribute_variables.find("part_node_count"); network1d.num_edge_geometry_nodes != nullptr && it != m_network_geometry_attribute_variables.end())
+    if (auto const it = m_network_geometry_attribute_variables.find("part_node_count"); network1d.num_edge_geometry_nodes.size() != 0 && it != m_network_geometry_attribute_variables.end())
     {
-        it->second.at(0).getVar(network1d.num_edge_geometry_nodes);
+        it->second.at(0).getVar(network1d.num_edge_geometry_nodes.data());
     }
 }
 

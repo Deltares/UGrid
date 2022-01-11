@@ -35,43 +35,43 @@ namespace ugridapi
     struct Mesh1D
     {
         /// @brief The mesh1d name
-        char* name = nullptr;
+        std::string name;
 
         /// @brief The network name
-        char* network_name = nullptr;
+        std::string network_name;
 
         /// @brief The node x coordinate
-        double* node_x = nullptr;
+        std::vector<double> node_x;
 
         /// @brief The node y coordinate
-        double* node_y = nullptr;
+        std::vector<double> node_y;
 
         /// @brief The edge node connectivity
-        int* edge_node = nullptr;
+        std::vector<int> edge_node;
 
         /// @brief The network edge id where every node lies
-        int* node_edge_id = nullptr;
+        std::vector<int> node_edge_id;
 
         /// @brief The offset of each node on the network branch
-        double* node_edge_offset = nullptr;
+        std::vector<double> node_edge_offset;
 
         /// @brief The node name
-        char* node_id = nullptr;
+        std::string node_id;
 
         /// @brief The node long name
-        char* node_long_name = nullptr;
+        std::string node_long_name;
 
         /// @brief The network edge id where every edge lies
-        int* edge_edge_id = nullptr;
+        std::vector<int> edge_edge_id;
 
         /// @brief The offset of each edge on the network branch
-        double* edge_edge_offset = nullptr;
+        std::vector<double> edge_edge_offset;
 
         /// @brief The edge x coordinate
-        double* edge_x = nullptr;
+        std::vector<double> edge_x;
 
         /// @brief The edge y coordinate
-        double* edge_y = nullptr;
+        std::vector<double> edge_y;
 
         /// @brief The number of node
         int num_nodes = 0;
@@ -80,10 +80,10 @@ namespace ugridapi
         int num_edges = 0;
 
         /// @brief 1 If coordinates are in a spherical system, 0 otherwise
-        int is_spherical = 0;
+        int is_spherical = -1;
 
         /// @brief The start index used in arrays using indices, such as edge_node
-        int start_index = 0;
+        int start_index = -1;
 
         /// @brief The fill value for array of doubles
         double double_fill_value = ugrid::double_missing_value;

@@ -77,19 +77,19 @@ bool Contacts::is_topology_variable(std::map<std::string, netCDF::NcVarAtt> cons
 
 void Contacts::define(ugridapi::Contacts const& contacts)
 {
-    if (contacts.name == nullptr)
+    if (contacts.name.size() == 0)
     {
         throw std::invalid_argument("Contacts::define contact name field is empty");
     }
-    if (contacts.mesh_from_name == nullptr)
+    if (contacts.mesh_from_name.size() == 0)
     {
         throw std::invalid_argument("Contacts::define from mesh name is empty");
     }
-    if (contacts.mesh_to_name == nullptr)
+    if (contacts.mesh_to_name.size() == 0)
     {
         throw std::invalid_argument("Contacts::define to mesh to name is empty");
     }
-    if (contacts.name == nullptr)
+    if (contacts.name.size() == 0)
     {
         throw std::invalid_argument("Mesh2D::define mesh name field is empty");
     }
@@ -170,25 +170,25 @@ void Contacts::define(ugridapi::Contacts const& contacts)
 
 void Contacts::put(ugridapi::Contacts const& contacts)
 {
-    if (contacts.name == nullptr)
+    if (contacts.name.size() == 0)
     {
         throw std::invalid_argument("Contacts::put invalid mesh name");
     }
-    if (contacts.edges != nullptr)
+    if (contacts.edges.size() != 0)
     {
-        m_topology_variable.putVar(contacts.edges);
+        m_topology_variable.putVar(contacts.edges.data());
     }
-    if (auto const it = find_attribute_variable_name_with_aliases("contact_id"); contacts.contact_name_id != nullptr && it != m_topology_attribute_variables.end())
+    if (auto const it = find_attribute_variable_name_with_aliases("contact_id"); contacts.contact_name_id.size() != 0 && it != m_topology_attribute_variables.end())
     {
-        it->second.at(0).putVar(contacts.contact_name_id);
+        it->second.at(0).putVar(contacts.contact_name_id.data());
     }
-    if (auto const it = find_attribute_variable_name_with_aliases("contact_long_name"); contacts.contact_name_long != nullptr && it != m_topology_attribute_variables.end())
+    if (auto const it = find_attribute_variable_name_with_aliases("contact_long_name"); contacts.contact_name_long.size() != 0 && it != m_topology_attribute_variables.end())
     {
-        it->second.at(0).putVar(contacts.contact_name_long);
+        it->second.at(0).putVar(contacts.contact_name_long.data());
     }
-    if (auto const it = m_topology_attribute_variables.find("contact_type"); contacts.contact_type != nullptr && it != m_topology_attribute_variables.end())
+    if (auto const it = m_topology_attribute_variables.find("contact_type"); contacts.contact_type.size() != 0 && it != m_topology_attribute_variables.end())
     {
-        it->second.at(0).putVar(contacts.contact_type);
+        it->second.at(0).putVar(contacts.contact_type.data());
     }
 }
 
@@ -198,33 +198,42 @@ void Contacts::inquire(ugridapi::Contacts& contacts) const
     {
         contacts.num_contacts = it->second.at(0).getDim(0).getSize();
     }
+    if (contacts.num_contacts == 0)  // try to get dimension via variable name
+    {
+        for (auto it = m_topology_attribute_variables.begin(); it != m_topology_attribute_variables.end(); it++)
+        {
+            if (it->first == "contact")
+            {
+                auto f = get_topology_variable();
+                contacts.num_contacts = f.getDim(0).getSize();
+            }
+        }
+    }
 }
 
 void Contacts::get(ugridapi::Contacts& contacts) const
 {
-    string_to_char_array(m_entity_name, name_long_length, contacts.name);
+    contacts.name = m_entity_name;
+    contacts.mesh_from_name = m_entity_from_name;
+    contacts.mesh_to_name = m_entity_to_name;
 
-    string_to_char_array(m_entity_from_name, name_long_length, contacts.mesh_from_name);
-
-    string_to_char_array(m_entity_to_name, name_long_length, contacts.mesh_to_name);
-
-    if (contacts.edges != nullptr)
+    if (contacts.edges.size() != 0)
     {
-        m_topology_variable.getVar(contacts.edges);
+        m_topology_variable.getVar(contacts.edges.data());
     }
 
-    if (auto const it = find_attribute_variable_name_with_aliases("contact_id"); contacts.contact_name_id != nullptr && it != m_topology_attribute_variables.end())
+    if (auto const it = find_attribute_variable_name_with_aliases("contact_id"); contacts.contact_name_id.size() != 0 && it != m_topology_attribute_variables.end())
     {
-        it->second.at(0).getVar(contacts.contact_name_id);
+        it->second.at(0).getVar(contacts.contact_name_id.data());
     }
 
-    if (auto const it = find_attribute_variable_name_with_aliases("contact_long_name"); contacts.contact_name_long != nullptr && it != m_topology_attribute_variables.end())
+    if (auto const it = find_attribute_variable_name_with_aliases("contact_long_name"); contacts.contact_name_long.size() != 0 && it != m_topology_attribute_variables.end())
     {
-        it->second.at(0).getVar(contacts.contact_name_long);
+        it->second.at(0).getVar(contacts.contact_name_long.data());
     }
 
-    if (auto const it = m_topology_attribute_variables.find("contact_type"); contacts.contact_type != nullptr && it != m_topology_attribute_variables.end())
+    if (auto const it = m_topology_attribute_variables.find("contact_type"); contacts.contact_type.size() != 0 && it != m_topology_attribute_variables.end())
     {
-        it->second.at(0).getVar(contacts.contact_type);
+        it->second.at(0).getVar(contacts.contact_type.data());
     }
 }

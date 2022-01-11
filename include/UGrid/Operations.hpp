@@ -152,7 +152,18 @@ namespace ugrid
             }
 
             std::vector<std::string> attribute_value_string_tokens;
+            // strip ":" from tokens
+            for (size_t i = 0; i < attribute_value_string.size(); ++i)
+            {
+                if (attribute_value_string[i] == ':')
+                {
+                    attribute_value_string.replace(i, 1, " ");
+                }
+            }
+
+            boost::replace_all(attribute_value_string, "  ", " ");
             split(attribute_value_string_tokens, attribute_value_string, boost::is_any_of(" "));
+
             std::vector<std::string> valid_variable_names;
             std::vector<netCDF::NcVar> valid_attribute_variables;
             for (auto const& token : attribute_value_string_tokens)
