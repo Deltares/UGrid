@@ -358,7 +358,7 @@ void UGridEntity::define(std::string const& entity_name, int start_index, std::s
     m_spherical_coordinates = is_spherical == 0 ? false : true;
 
     // Topology name
-    m_topology_variable = m_nc_file->addVar(m_entity_name, netCDF::NcType::nc_STRING);
+    m_topology_variable = m_nc_file->addVar(m_entity_name, NC_CHAR);
 
     // Topology attributes
     define_topological_attribute("cf_role", "mesh_topology");

@@ -5,7 +5,7 @@
 #include <TestUtils/Utils.hpp>
 #include <UGridApi/UGrid.hpp>
 
-std::vector<std::string> tokenize(std::string, int );
+std::vector<std::string> tokenize(const std::string&, std::size_t);
 
     static void define_variable_attributes(int file_id, std::string const& variable_name, std::string const& attribute_name, std::vector<int> const& attribute_values)
 {
@@ -195,6 +195,7 @@ TEST(ApiTest, DefineAndPut_OneMesh2D_ShouldWriteData)
     int file_mode = -1;
     auto error_code = ugridapi::ug_file_replace_mode(file_mode);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+
     error_code = ugridapi::ug_file_open(file_path.c_str(), file_mode, file_id);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
@@ -202,18 +203,14 @@ TEST(ApiTest, DefineAndPut_OneMesh2D_ShouldWriteData)
     int name_long_length;
     error_code = ugridapi::ug_name_get_long_length(name_long_length);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+
     ugridapi::Mesh2D mesh2d;
-    std::unique_ptr<char> const name(new char[name_long_length]);
-    string_to_char_array("mesh2d", name_long_length, name.get());
-    mesh2d.name = name.get();
-    std::unique_ptr<double> const node_x(new double[]{0, 1, 0, 1, 0, 1, 0, 1, 2, 2, 2, 2, 3, 3, 3, 3});
+    mesh2d.name = "mesh2d";
+    mesh2d.node_x = {0, 1, 0, 1, 0, 1, 0, 1, 2, 2, 2, 2, 3, 3, 3, 3};
+    mesh2d.node_y = {0, 0, 1, 1, 2, 2, 3, 3, 0, 1, 2, 3, 0, 1, 2, 3};
 
-    //mesh2d.node_x = node_x.get();
-    std::unique_ptr<double> const node_y(new double[]{0, 0, 1, 1, 2, 2, 3, 3, 0, 1, 2, 3, 0, 1, 2, 3});
-
-    //mesh2d.node_y = node_y.get();
     mesh2d.num_nodes = 16;
-    std::unique_ptr<int> const edge_nodes(new int[]{
+    std::vector<int> edge_nodes{
         1,
         2,
         3,
@@ -262,15 +259,13 @@ TEST(ApiTest, DefineAndPut_OneMesh2D_ShouldWriteData)
         15,
         15,
         16,
-    });
+    };
     mesh2d.num_edges = 23;
 
-    std::unique_ptr<double> const face_x(new double[]{0.5, 0.5, 0.5, 1.5, 1.5, 1.5, 2.5, 2.5, 2.5});
-    //mesh2d.face_x = face_x.get();
-    std::unique_ptr<double> const face_y(new double[]{0, 0, 1, 1, 2, 2, 3, 3, 0, 1, 2, 3, 0, 1, 2, 3});
-    //mesh2d.face_y = face_y.get();
+    mesh2d.face_x = {0.5, 0.5, 0.5, 1.5, 1.5, 1.5, 2.5, 2.5, 2.5};
+    mesh2d.face_y = {0, 0, 1, 1, 2, 2, 3, 3, 0, 1, 2, 3, 0, 1, 2, 3};
     mesh2d.num_faces = 9;
-    std::unique_ptr<int> const face_nodes(new int[]{
+    std::vector<int> face_nodes{
         1, 2, 4, 3,
         3, 4, 6, 5,
         5, 6, 8, 7,
@@ -279,7 +274,7 @@ TEST(ApiTest, DefineAndPut_OneMesh2D_ShouldWriteData)
         6, 11, 12, 8,
         9, 13, 14, 10,
         10, 14, 15, 11,
-        11, 15, 16, 12});
+        11, 15, 16, 12};
     mesh2d.num_face_nodes_max = 4;
 
     // Execute
@@ -341,18 +336,18 @@ TEST(ApiTest, InquireAndGet_OneNetwork1D_ShouldReadNetwork1D)
     network1d.geometry_nodes_y.resize(network1d.num_geometry_nodes);
     network1d.num_edge_geometry_nodes.resize(network1d.num_edges);
     network1d.node_id.resize(name_length * network1d.num_nodes);
-    network1d.node_long_name.resize(name_length * network1d.num_nodes);
+    network1d.node_long_name.resize(long_names_length * network1d.num_nodes);
     network1d.edge_id.resize(name_length * network1d.num_edges);
-    network1d.edge_long_name.resize(name_length * network1d.num_edges);
-    network1d.edge_length.resize(name_length * network1d.num_edges);
+    network1d.edge_long_name.resize(long_names_length * network1d.num_edges);
+    network1d.edge_length.resize(network1d.num_edges);
 
     // get the data
     error_code = ug_network1d_get(file_id, 0, network1d);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
-    std::vector<std::string> node_ids = tokenize(network1d.node_id, name_length);
-    std::vector<std::string> node_long_names = tokenize(network1d.node_long_name, name_length);
-    std::vector<std::string> edge_ids = tokenize(network1d.edge_id, name_length);
-    std::vector<std::string> edge_long_names = tokenize(network1d.edge_long_name, name_length);
+    std::vector<std::string> node_ids = tokenize(network1d.node_id, network1d.node_id.size() / network1d.num_nodes);
+    std::vector<std::string> node_long_names = tokenize(network1d.node_long_name, network1d.node_long_name.size() / network1d.num_nodes);
+    std::vector<std::string> edge_ids = tokenize(network1d.edge_id, network1d.edge_id.size() / network1d.num_edges);
+    std::vector<std::string> edge_long_names = tokenize(network1d.edge_long_name, network1d.edge_long_name.size() / network1d.num_edges);
     //// Asserts
     ASSERT_EQ(network1d.num_edge_geometry_nodes[0], 25);
     for (auto i = 0; i < network1d.num_nodes; ++i)
@@ -417,10 +412,9 @@ TEST(ApiTest, DefineAndPut_OneNetwork1D_ShouldWriteData)
     int name_long_length;
     error_code = ugridapi::ug_name_get_long_length(name_long_length);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+
     ugridapi::Network1D network1d;
-    std::unique_ptr<char> const name(new char[name_long_length]);
-    string_to_char_array("network1d", name_long_length, name.get());
-    network1d.name = name.get();
+    network1d.name = "network1d";
     network1d.node_x = {293.78, 538.89};
     network1d.node_y = {27.48, 956.75};
     network1d.num_nodes = 2;
@@ -508,11 +502,13 @@ TEST(ApiTest, InquireAndGet_OneMesh1D_ShouldReadMesh1D)
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
     //// Assert
-    std::vector<std::string> node_id = tokenize(mesh1d.node_id, name_length);
-    std::vector<std::string> node_long_name = tokenize(mesh1d.node_long_name, long_names_length);
+    std::vector<std::string> node_id = tokenize(mesh1d.node_id, mesh1d.node_id.size() / mesh1d.num_nodes);
+    std::vector<std::string> node_long_name = tokenize(mesh1d.node_long_name, mesh1d.node_long_name.size() / mesh1d.num_nodes);
 
     for (auto i = 0; i < mesh1d.num_nodes; ++i)
     {
+        right_trim_string(node_id[i]);
+        right_trim_string(node_long_name[i]);
         ASSERT_EQ("meshnodeids", node_id[i]);
         ASSERT_EQ("meshnodelongnames", node_long_name[i]);
     }
@@ -543,11 +539,9 @@ TEST(ApiTest, DefineAndPut_OneMesh1D_ShouldWriteData)
     error_code = ugridapi::ug_name_get_long_length(name_long_length);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
     ugridapi::Mesh1D mesh1d;
-    std::unique_ptr<char> const name(new char[name_long_length]);
-    string_to_char_array("mesh1d", name_long_length, name.get());
-    mesh1d.name = name.get();
 
-    mesh1d.network_name = {"network1d                               "};
+    mesh1d.name = "mesh1d";
+    mesh1d.network_name = "network1d";
     mesh1d.node_edge_id = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     mesh1d.node_edge_offset = {
         0, 49.65, 99.29, 148.92, 198.54, 248.09,
@@ -557,30 +551,30 @@ TEST(ApiTest, DefineAndPut_OneMesh1D_ShouldWriteData)
 
     mesh1d.num_nodes = 25;
     mesh1d.num_edges = 24;
-    std::unique_ptr<int> const edges_nodes(new int[]{0, 1,
-                                                     1, 2,
-                                                     2, 3,
-                                                     3, 4,
-                                                     4, 5,
-                                                     5, 6,
-                                                     6, 7,
-                                                     7, 8,
-                                                     8, 9,
-                                                     9, 10,
-                                                     10, 11,
-                                                     11, 12,
-                                                     12, 13,
-                                                     13, 14,
-                                                     14, 15,
-                                                     15, 16,
-                                                     16, 17,
-                                                     17, 18,
-                                                     18, 19,
-                                                     19, 20,
-                                                     20, 21,
-                                                     21, 22,
-                                                     22, 23,
-                                                     23, 24});
+    mesh1d.edge_node = { 0, 1,
+                        1, 2,
+                        2, 3,
+                        3, 4,
+                        4, 5,
+                        5, 6,
+                        6, 7,
+                        7, 8,
+                        8, 9,
+                        9, 10,
+                        10, 11,
+                        11, 12,
+                        12, 13,
+                        13, 14,
+                        14, 15,
+                        15, 16,
+                        16, 17,
+                        17, 18,
+                        18, 19,
+                        19, 20,
+                        20, 21,
+                        21, 22,
+                        22, 23,
+                        23, 24};
     std::vector<std::string> ids;
     std::vector<std::string> long_names;
     for (auto i = 0; i < mesh1d.num_nodes; ++i)
@@ -593,13 +587,8 @@ TEST(ApiTest, DefineAndPut_OneMesh1D_ShouldWriteData)
     error_code = ugridapi::ug_name_get_long_length(name_length);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
-    std::unique_ptr<char> const node_name_id(new char[mesh1d.num_nodes * name_length]);
-    vector_of_strings_to_char_array(ids, name_length, node_name_id.get());
-    mesh1d.node_id = node_name_id.get();
-
-    std::unique_ptr<char> contact_name_long(new char[mesh1d.num_nodes * name_long_length]);
-    vector_of_strings_to_char_array(long_names, name_long_length, contact_name_long.get());
-    mesh1d.node_long_name = contact_name_long.get();
+    mesh1d.node_id.resize(mesh1d.num_nodes * name_length);
+    mesh1d.node_long_name.resize(mesh1d.num_nodes * name_long_length);
 
     int topology_id = -1;
     error_code = ug_mesh1d_def(file_id, mesh1d, topology_id);
@@ -671,11 +660,13 @@ TEST(ApiTest, InquireAndGet_OneContact_ShouldReadContact)
     right_trim_string(mesh_to_name_string);
     ASSERT_EQ("1dmesh", mesh_to_name_string);
 
-    std::vector<std::string> contact_ids = tokenize(contacts.contact_name_id, name_length);
-    std::vector<std::string> contacts_long_names = tokenize(contacts.contact_name_long, long_names_length);
+    std::vector<std::string> contact_ids = tokenize(contacts.contact_name_id, contacts.contact_name_id.size() / contacts.num_contacts);
+    std::vector<std::string> contacts_long_names = tokenize(contacts.contact_name_long, contacts.contact_name_long.size() / contacts.num_contacts);
     
     for (auto i = 0; i < contacts.num_contacts; ++i)
     {
+        right_trim_string(contact_ids[i]);
+        right_trim_string(contacts_long_names[i]);
         ASSERT_EQ("linkid", contact_ids[i]);
         ASSERT_EQ("linklongname", contacts_long_names[i]);
     }
@@ -1056,22 +1047,37 @@ TEST(ApiTest, DefineGlobalAttributes_OnExistingFile_ShouldDefineGlobalAttributes
     error_code = ugridapi::ug_file_close(file_id);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 }
-std::vector<std::string> tokenize(std::string names, int str_len)
+//------------------------------------------------------------------------------
+std::vector<std::string> tokenize(const std::string& str, std::size_t count)
 {
-    int tot_len = names.size();
-    int nparts = tot_len / str_len;
-    std::vector<std::string> name;
-
-    if (tot_len % str_len != 0)
+    std::vector<std::string> tokens;
+    if (str.size() == 0)
     {
-        std::cout << "Can't divide string into equal parts" << std::endl;
-        return name;
+        return tokens;
     }
-
-    for (int i = 0; i < nparts; i++)
+    size_t parts = str.size() / count;
+    for (size_t i = 0, offset = 0; i < parts; ++i)
     {
-        std::string str = names.substr(i * str_len, str_len);
-        name.push_back(str);
+        size_t size = count;
+        if ((offset + size) < str.size())
+        {
+            std::string tmp_str = str.substr(offset, size);
+
+            auto end = std::remove(tmp_str.begin(), tmp_str.end(), '\0');
+            tmp_str.erase(end, tmp_str.end());
+
+            tokens.push_back(tmp_str);
+        }
+        else
+        {
+            std::string tmp_str = str.substr(offset, str.size() - offset);
+
+            auto end = std::remove(tmp_str.begin(), tmp_str.end(), '\0');
+            tmp_str.erase(end, tmp_str.end());
+
+            tokens.push_back(tmp_str);
+        }
+        offset += size;
     }
-    return name;
+    return tokens;
 }
