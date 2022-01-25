@@ -130,10 +130,8 @@ namespace ugridapi
     /// @param data_variable_name The name of the data variable
     /// @param data The retrieved data
     template <typename T>
-    void get_data_array(int file_id, const char* data_variable_name, T& data)
+    void get_data_array(int file_id, std::string variable_name, T& data)
     {
-        // Gets the variable name
-        const auto variable_name = ugrid::char_array_to_string(data_variable_name, ugrid::name_long_length);
 
         // Gets all variables
         const auto vars = ugrid_states[file_id].m_ncFile->getVars();
@@ -146,7 +144,7 @@ namespace ugridapi
         }
 
         // Gets the data for all time steps
-        it->second.getVar(&data);
+        it->second.getVar(data.data());
     }
 
     static auto get_variable(int file_id, std::string const& name)
@@ -391,7 +389,7 @@ namespace ugridapi
         return exit_code;
     }
 
-    UGRID_API int ug_variable_count_dimensions(int file_id, char const* variable_name, int& dimensions_count)
+    UGRID_API int ug_variable_count_dimensions(int file_id, std::string & variable_name, int& dimensions_count)
     {
         int exit_code = Success;
         try
@@ -401,14 +399,11 @@ namespace ugridapi
                 throw std::invalid_argument("UGrid: The selected file_id does not exist.");
             }
 
-            // Get the variable name
-            const auto name = ugrid::char_array_to_string(variable_name, ugrid::name_long_length);
-
             // Get all variables
             const auto vars = ugrid_states[file_id].m_ncFile->getVars();
 
             // Find the variable name
-            const auto it = vars.find(name);
+            const auto it = vars.find(variable_name);
             if (it == vars.end())
             {
                 throw std::invalid_argument("ug_variable_count_dimensions: The variable name is not present in the netcdf file.");
@@ -424,7 +419,7 @@ namespace ugridapi
         return exit_code;
     }
 
-    UGRID_API int ug_variable_get_data_dimensions(int file_id, char const* variable_name, int* dimension_vec)
+    UGRID_API int ug_variable_get_data_dimensions(int file_id, std::string variable_name, std::vector<int> & dimension_vec)
     {
         int exit_code = Success;
         try
@@ -434,14 +429,11 @@ namespace ugridapi
                 throw std::invalid_argument("UGrid: The selected file_id does not exist.");
             }
 
-            // Get the variable name
-            const auto name = ugrid::char_array_to_string(variable_name, ugrid::name_long_length);
-
             // Get all variables
             const auto vars = ugrid_states[file_id].m_ncFile->getVars();
 
             // Find the variable name
-            const auto it = vars.find(name);
+            const auto it = vars.find(variable_name);
             if (it == vars.end())
             {
                 throw std::invalid_argument("ug_variable_get_data_dimensions: The variable name is not present in the netcdf file.");
@@ -461,7 +453,7 @@ namespace ugridapi
         return exit_code;
     }
 
-    UGRID_API int ug_variable_get_data_double(int file_id, char const* variable_name, double* data)
+    UGRID_API int ug_variable_get_data_double(int file_id, std::string variable_name, std::vector<double>& data)
     {
         int exit_code = Success;
         try
@@ -471,7 +463,7 @@ namespace ugridapi
                 throw std::invalid_argument("UGrid: The selected file_id does not exist.");
             }
 
-            get_data_array(file_id, variable_name, *data);
+            get_data_array(file_id, variable_name, data);
         }
         catch (...)
         {
@@ -480,7 +472,7 @@ namespace ugridapi
         return exit_code;
     }
 
-    UGRID_API int ug_variable_get_data_int(int file_id, char const* variable_name, int* data)
+    UGRID_API int ug_variable_get_data_int(int file_id, std::string variable_name, std::vector<int>& data)
     {
         int exit_code = Success;
         try
@@ -490,7 +482,7 @@ namespace ugridapi
                 throw std::invalid_argument("UGrid: The selected file_id does not exist.");
             }
 
-            get_data_array(file_id, variable_name, *data);
+            get_data_array(file_id, variable_name, data);
         }
         catch (...)
         {
@@ -499,7 +491,7 @@ namespace ugridapi
         return exit_code;
     }
 
-    UGRID_API int ug_variable_get_data_char(int file_id, char const* variable_name, char* data)
+    UGRID_API int ug_variable_get_data_char(int file_id, std::string variable_name, std::vector<std::string> & data)
     {
         int exit_code = Success;
         try
@@ -509,7 +501,7 @@ namespace ugridapi
                 throw std::invalid_argument("UGrid: The selected file_id does not exist.");
             }
 
-            get_data_array(file_id, variable_name, *data);
+            get_data_array(file_id, variable_name, data);
         }
         catch (...)
         {

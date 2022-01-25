@@ -167,21 +167,21 @@ namespace ugridapi
         /// @param variable_name [in] The variable name
         /// @param dimensions_count [in] The number of dimensions
         /// @return Error code
-        UGRID_API int ug_variable_count_dimensions(int file_id, char const* variable_name, int& dimensions_count);
+        UGRID_API int ug_variable_count_dimensions(int file_id, std::string & variable_name, int& dimensions_count);
 
         /// @brief Get the dimension values of a specific variable
         /// @param file_id [in] The file id
         /// @param variable_name [in] The variable name
         /// @param dimension_vec [in] The dimension values associated with the variable name
         /// @return Error code
-        UGRID_API int ug_variable_get_data_dimensions(int file_id, char const* variable_name, int* dimension_vec);
+        UGRID_API int ug_variable_get_data_dimensions(int file_id, std::string variable_name, std::vector<int>& dimension_vec);
 
         /// @brief Get the variable data as a flat array of doubles. This might be large, because the arrays can have a large dimensionality
         /// @param file_id [in] The file id
         /// @param variable_name [in] The variable name
         /// @param data [out] The variable data
         /// @return Error code
-        UGRID_API int ug_variable_get_data_double(int file_id, char const* variable_name, double* data);
+        UGRID_API int ug_variable_get_data_double(int file_id, std::string variable_name, std::vector<double>& data);
 
         /// @brief Get the variable data as a flat array of int. This might be large, because the arrays can have a large dimensionality
         /// @param file_id [in] The file id

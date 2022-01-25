@@ -872,8 +872,6 @@ TEST(ApiTest, GetVariableAttributesNamesAndValues_OnResultFile_ShouldGetVariable
     int long_names_length;
     error_code = ugridapi::ug_name_get_long_length(long_names_length);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
-    std::unique_ptr<char> const variable_name(new char[long_names_length]);
-    string_to_char_array("mesh2d_edge_type", long_names_length, variable_name.get());
 
     std::string var_name{"mesh2d_edge_type"};
     // Allocate arrays to get data names and variables
@@ -940,12 +938,12 @@ TEST(ApiTest, GetDataVariables_OnResultFile_ShouldGetDataVariables)
     std::string variable_name_to_retrive;
     variable_name_to_retrive.resize(name_long_length);
     variable_name_to_retrive = "mesh1d_s0";
-    error_code = ugridapi::ug_variable_count_dimensions(file_id, variable_name_to_retrive.c_str(), dimensions_count);
+    error_code = ugridapi::ug_variable_count_dimensions(file_id, variable_name_to_retrive, dimensions_count);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
     // Get the dimensions of data variable
     std::vector<int> dimension_vector(dimensions_count);
-    error_code = ugridapi::ug_variable_get_data_dimensions(file_id, variable_name_to_retrive.c_str(), dimension_vector.data());
+    error_code = ugridapi::ug_variable_get_data_dimensions(file_id, variable_name_to_retrive, dimension_vector);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
     // Compute the total dimension
@@ -958,7 +956,7 @@ TEST(ApiTest, GetDataVariables_OnResultFile_ShouldGetDataVariables)
     // Get the data
     std::vector<double> data_vector;
     data_vector.resize(total_dimension);
-    ugridapi::ug_variable_get_data_double(file_id, variable_name_to_retrive.c_str(), data_vector.data());
+    ugridapi::ug_variable_get_data_double(file_id, variable_name_to_retrive, data_vector);
 
     std::vector<double> data;
     data.resize(5);
