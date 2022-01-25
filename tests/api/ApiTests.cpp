@@ -816,24 +816,16 @@ TEST(ApiTest, GetTopologyAttributesNamesAndValues_OnResultFile_ShouldGetTopology
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
     int attributes_count = 0;
-    error_code = ugridapi::ug_variable_count_attributes(file_id, mesh1d.name.c_str(), attributes_count);
+    error_code = ugridapi::ug_variable_count_attributes(file_id, mesh1d.name, attributes_count);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
-    std::string topology_attributes_names;
-    topology_attributes_names.resize(attributes_count * long_names_length);
-    error_code = ugridapi::ug_variable_get_attributes_names(file_id, mesh1d.name.c_str(), topology_attributes_names.data());
+    std::vector<std::string> topology_attribute_names;
+    error_code = ugridapi::ug_variable_get_attributes_names(file_id, mesh1d.name, topology_attribute_names);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
-    auto names = tokenize(topology_attributes_names, topology_attributes_names.size() / attributes_count);
-    right_trim_string_vector(names);
-
-    std::string topology_attributes_values;
-    topology_attributes_values.resize(attributes_count * long_names_length);
-    error_code = ugridapi::ug_variable_get_attributes_values(file_id, mesh1d.name.c_str(), topology_attributes_values.data());
+    std::vector<std::string> topology_attribute_values;
+    error_code = ugridapi::ug_variable_get_attributes_values(file_id, mesh1d.name, topology_attribute_values);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
-
-    auto values = tokenize(topology_attributes_values, topology_attributes_values.size() / attributes_count);
-    right_trim_string_vector(values);
 
     // Assert
     std::vector<std::string> expected_names{
@@ -846,7 +838,7 @@ TEST(ApiTest, GetTopologyAttributesNamesAndValues_OnResultFile_ShouldGetTopology
         "node_coordinates",
         "node_dimension",
         "topology_dimension"};
-    ASSERT_THAT(names, ::testing::ContainerEq(expected_names));
+    ASSERT_THAT(topology_attribute_names, ::testing::ContainerEq(expected_names));
 
     std::vector<std::string> expected_values{
         "mesh_topology",
@@ -858,7 +850,7 @@ TEST(ApiTest, GetTopologyAttributesNamesAndValues_OnResultFile_ShouldGetTopology
         "mesh1d_node_x mesh1d_node_y",
         "nmesh1d_node",
         "1"};
-    ASSERT_THAT(values, ::testing::ContainerEq(expected_values));
+   ASSERT_THAT(topology_attribute_values, ::testing::ContainerEq(expected_values));
 
     error_code = ugridapi::ug_file_close(file_id);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
@@ -883,26 +875,19 @@ TEST(ApiTest, GetVariableAttributesNamesAndValues_OnResultFile_ShouldGetVariable
     std::unique_ptr<char> const variable_name(new char[long_names_length]);
     string_to_char_array("mesh2d_edge_type", long_names_length, variable_name.get());
 
+    std::string var_name{"mesh2d_edge_type"};
     // Allocate arrays to get data names and variables
     int attributes_count = 0;
-    error_code = ugridapi::ug_variable_count_attributes(file_id, variable_name.get(), attributes_count);
+    error_code = ugridapi::ug_variable_count_attributes(file_id, var_name, attributes_count);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
-    std::unique_ptr<char> const attributes_names(new char[attributes_count * long_names_length]);
-    error_code = ugridapi::ug_variable_get_attributes_names(file_id, variable_name.get(), attributes_names.get());
+    std::vector<std::string> attribute_names;
+    error_code = ugridapi::ug_variable_get_attributes_names(file_id, var_name, attribute_names);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
-    std::string topology_attributes_names_string(attributes_names.get(), attributes_names.get() + long_names_length * attributes_count);
-    auto names = split_string(topology_attributes_names_string, attributes_count, long_names_length);
-    right_trim_string_vector(names);
-
-    std::unique_ptr<char> const attributes_values(new char[attributes_count * long_names_length]);
-    error_code = ugridapi::ug_variable_get_attributes_values(file_id, variable_name.get(), attributes_values.get());
+    std::vector<std::string> attribute_values;
+    error_code = ugridapi::ug_variable_get_attributes_values(file_id, var_name, attribute_values);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
-
-    std::string topology_attributes_values_string(attributes_values.get(), attributes_values.get() + long_names_length * attributes_count);
-    auto values = split_string(topology_attributes_values_string, attributes_count, long_names_length);
-    right_trim_string_vector(values);
 
     // Assert
     std::vector<std::string> expected_names{
@@ -916,7 +901,7 @@ TEST(ApiTest, GetVariableAttributesNamesAndValues_OnResultFile_ShouldGetVariable
         "mesh",
         "standard_name",
         "units"};
-    ASSERT_THAT(names, ::testing::ContainerEq(expected_names));
+    ASSERT_THAT(attribute_names, ::testing::ContainerEq(expected_names));
 
     std::vector<std::string> expected_values{
         "-999",
@@ -925,11 +910,11 @@ TEST(ApiTest, GetVariableAttributesNamesAndValues_OnResultFile_ShouldGetVariable
         "internal_closed internal boundary boundary_closed",
         "0 1 2 3",
         "edge",
-        "edge type (relation between edge and flow geometry",
+        "edge type (relation between edge and flow geometry)",
         "mesh2d",
         "",
         ""};
-    ASSERT_THAT(values, ::testing::ContainerEq(expected_values));
+    ASSERT_THAT(attribute_values, ::testing::ContainerEq(expected_values));
 
     error_code = ugridapi::ug_file_close(file_id);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);

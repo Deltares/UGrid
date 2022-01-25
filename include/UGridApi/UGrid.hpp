@@ -146,21 +146,21 @@ namespace ugridapi
         /// @param variable_name [in] The variable name
         /// @param attributes_count [out] The number of attributes
         /// @return Error code
-        UGRID_API int ug_variable_count_attributes(int file_id, char const* variable_name, int& attributes_count);
+        UGRID_API int ug_variable_count_attributes(int file_id, std::string variable_name, int& attributes_count);
 
         /// @brief Get the attributes values of a specific variable
         /// @param file_id [in] The file id
         /// @param variable_name [in] The variable name
         /// @param values [out] The attribute values
         /// @return Error code
-        UGRID_API int ug_variable_get_attributes_values(int file_id, char const* variable_name, char* values);
+        UGRID_API int ug_variable_get_attributes_values(int file_id, std::string variable_name, std::vector<std::string> & att_values);
 
         /// @brief Get the attributes names of a specific variable
         /// @param file_id [in] The file id
         /// @param variable_name [in] The variable name
         /// @param names [out] The attribute names
         /// @return Error code
-        UGRID_API int ug_variable_get_attributes_names(int file_id, char const* variable_name, char* names);
+        UGRID_API int ug_variable_get_attributes_names(int file_id, std::string variable_name, std::vector<std::string> & names);
 
         /// @brief Get the number of dimensions of a specific variable
         /// @param file_id [in] The file id
