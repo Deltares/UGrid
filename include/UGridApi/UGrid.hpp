@@ -132,6 +132,14 @@ namespace ugridapi
         /// @return Error code
         UGRID_API int ug_topology_count_data_variables(int file_id, int topology_type, int topology_id, int location, int& data_variable_count);
 
+        /// @brief Get the names of data variables for a specific topology
+        /// @param file_id [in] The file id
+        /// @param topology_type [in] The topology type
+        /// @param topology_id [in] The topology id
+        /// @param data_variables_names_result [out]
+        /// @return Error code
+        UGRID_API int ug_topology_get_data_variables_names(int file_id, int topology_type, int topology_id, std::vector<std::string>& vector_data_variables_names);
+
         /// @brief Get the names of data variables for a specific topology on a specific location
         /// @param file_id [in] The file id
         /// @param topology_type [in] The topology type
@@ -139,7 +147,7 @@ namespace ugridapi
         /// @param location [in] The location on the topology (e.g. node, edge or face)
         /// @param data_variables_names_result [out]
         /// @return Error code
-        UGRID_API int ug_topology_get_data_variables_names(int file_id, int topology_type, int topology_id, int location, char* data_variables_names_result);
+        UGRID_API int ug_topology_get_data_variable_on_location(int file_id, int topology_type, int topology_id, int location, std::vector<std::string>& vector_data_variables_names);
 
         /// @brief Get the number of attributes of a specific variable
         /// @param file_id [in] The file id
@@ -147,6 +155,14 @@ namespace ugridapi
         /// @param attributes_count [out] The number of attributes
         /// @return Error code
         UGRID_API int ug_variable_count_attributes(int file_id, std::string variable_name, int& attributes_count);
+
+        /// @brief Get the attributes values of a specific variable
+        /// @param file_id [in] The file id
+        /// @param variable_name [in] The variable name
+        /// @param attribute_name [in] The attribute name
+        /// @param value [out] The attribute value
+        /// @return Error code
+        UGRID_API int ug_variable_get_attribute_value(int file_id, std::string variable_name, std::string att_name, std::string & att_value);
 
         /// @brief Get the attributes values of a specific variable
         /// @param file_id [in] The file id

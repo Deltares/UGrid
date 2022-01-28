@@ -91,6 +91,46 @@ namespace ugridapi
     /// @brief Gets all attributes values of a netCDF variable
     /// @param nc_var [in] The netCDF variable
     /// @return The attributes values
+    static std::string get_attribute_value_as_string(netCDF::NcVar const& nc_var, std::string att_name)
+    {
+        std::string result;
+        auto const attributes = nc_var.getAtts();
+        for (auto const& [name, value] : attributes)
+        {
+            if (att_name == name)
+            {
+                if (value.getType() == netCDF::NcType::nc_INT)
+                {
+                    auto const attribute_length = value.getAttLength();
+                    std::vector<int> items(attribute_length);
+                    value.getValues(&items[0]);
+                    std::stringstream os;
+                    os << items[0];
+                    for (int i = 1; i < attribute_length; ++i)
+                    {
+                        os << " " << items[i];
+                    }
+                    result = os.str();
+                }
+                else if (value.getType() == netCDF::NcType::nc_CHAR)
+                {
+                    std::string item;
+                    value.getValues(item);
+                    result = item;
+                }
+                else
+                {
+                    throw std::invalid_argument("get_attributes_values_as_strings: Invalid attribute value type.");
+                }
+                break;
+            }
+        }
+        return result;
+    }
+
+    /// @brief Gets all attributes values of a netCDF variable
+    /// @param nc_var [in] The netCDF variable
+    /// @return The attributes values
     static std::vector<std::string> get_attributes_values_as_strings(netCDF::NcVar const& nc_var)
     {
         std::vector<std::string> result;
@@ -257,7 +297,7 @@ namespace ugridapi
 
             auto const location_string = ugrid::from_location_integer_to_location_string(location);
 
-            auto const data_variables_names = topology->get_data_variables_names(location_string);
+            auto const data_variables_names = topology->get_data_variables_name_on_location(location_string);
 
             // count data variables
             data_variable_count = data_variables_names.size();
@@ -269,7 +309,29 @@ namespace ugridapi
         return exit_code;
     }
 
-    UGRID_API int ug_topology_get_data_variables_names(int file_id, int topology_type, int topology_id, int location, char* data_variables_names_result)
+    UGRID_API int ug_topology_get_data_variables_names(int file_id, int topology_type, int topology_id, std::vector<std::string>& data_variables_names)
+    {
+
+        int exit_code = Success;
+        try
+        {
+            if (ugrid_states.count(file_id) == 0)
+            {
+                throw std::invalid_argument("UGrid: The selected file_id does not exist.");
+            }
+
+            auto const topology = get_topology(file_id, topology_id, topology_type);
+
+            data_variables_names = topology->get_data_variables_names();
+        }
+        catch (...)
+        {
+            exit_code = HandleExceptions(std::current_exception());
+        }
+        return exit_code;
+    }
+
+    UGRID_API int ug_topology_get_data_variable_on_location(int file_id, int topology_type, int topology_id, int location, std::vector<std::string>& data_variables_names)
     {
 
         int exit_code = Success;
@@ -284,9 +346,8 @@ namespace ugridapi
 
             auto const location_string = ugrid::from_location_integer_to_location_string(location);
 
-            auto const data_variables_names = topology->get_data_variables_names(location_string);
+            data_variables_names = topology->get_data_variables_name_on_location(location_string);
 
-            ugrid::vector_of_strings_to_char_array(data_variables_names, ugrid::name_long_length, data_variables_names_result);
         }
         catch (...)
         {
@@ -317,6 +378,36 @@ namespace ugridapi
 
             // Get the dimensions
             attributes_count = it->second.getAtts().size();
+        }
+        catch (...)
+        {
+            exit_code = HandleExceptions(std::current_exception());
+        }
+        return exit_code;
+    }
+
+    UGRID_API int ug_variable_get_attribute_value(int file_id, std::string variable_name, std::string att_name, std::string& attribute_value)
+    {
+        int exit_code = Success;
+        try
+        {
+            if (ugrid_states.count(file_id) == 0)
+            {
+                throw std::invalid_argument("UGrid: The selected file_id does not exist.");
+            }
+
+            // Get all variables
+            const auto vars = ugrid_states[file_id].m_ncFile->getVars();
+
+            // Find the variable name
+            const auto it = vars.find(variable_name);
+            if (it == vars.end())
+            {
+                throw std::invalid_argument("ug_variable_get_attributes_values: The variable name is not present in the netcdf file.");
+            }
+
+            // Get the attribute values
+            attribute_value = get_attribute_value_as_string(it->second, att_name);
         }
         catch (...)
         {

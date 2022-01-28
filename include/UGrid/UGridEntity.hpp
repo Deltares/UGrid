@@ -116,10 +116,14 @@ namespace ugrid
             return m_entity_name;
         }
 
+        /// @brief Gets the names of all data variables
+        /// @return The variables names
+        [[nodiscard]] std::vector<std::string> get_data_variables_names();
+
         /// @brief Gets the names of all data variables associated with a specific location
         /// @param location_string The location string (e.g. node, edge or face)
         /// @return The variables names
-        [[nodiscard]] std::vector<std::string> get_data_variables_names(std::string const& location_string);
+        [[nodiscard]] std::vector<std::string> get_data_variables_name_on_location(std::string const& location_string);
 
     protected:
         /// @brief Method collecting common operations for defining a UGrid entity to file

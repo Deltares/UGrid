@@ -113,7 +113,35 @@ std::string UGridEntity::get_location_attribute_value(std::string const& locatio
     return string_builder.str();
 }
 
-std::vector<std::string> UGridEntity::get_data_variables_names(std::string const& location_string)
+std::vector<std::string> UGridEntity::get_data_variables_names()
+{
+    auto const variables = m_nc_file->getVars();
+
+    std::string const mesh_attribute_name = "mesh";
+    std::vector<std::string> variable_names;
+    for (auto const& v : variables)
+    {
+        auto const variable_attributes = v.second.getAtts();
+        auto const mesh_it = variable_attributes.find(mesh_attribute_name);
+
+        if (mesh_it == variable_attributes.end())
+        {
+            continue;
+        }
+
+        std::string variable_location_type;
+        std::string variable_mesh_name;
+        mesh_it->second.getValues(variable_mesh_name);
+
+        if (variable_mesh_name == m_entity_name)
+        {
+            variable_names.emplace_back(v.first);
+        }
+    }
+    return variable_names;
+}
+
+std::vector<std::string> UGridEntity::get_data_variables_name_on_location(std::string const& location_string)
 {
     auto const variables = m_nc_file->getVars();
 
