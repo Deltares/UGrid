@@ -942,13 +942,14 @@ TEST(ApiTest, GetDataVariables_OnResultFile_ShouldGetDataVariables)
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
     // Get the dimensions of data variable
-    std::vector<int> dimension_vector(dimensions_count);
-    error_code = ugridapi::ug_variable_get_data_dimensions(file_id, variable_name_to_retrive, dimension_vector);
+    std::vector<int> dimension_value;
+    std::vector<std::string> dimension_name;
+    error_code = ugridapi::ug_variable_get_data_dimensions(file_id, variable_name_to_retrive, dimension_name, dimension_value);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
     // Compute the total dimension
     int total_dimension = 1;
-    for (auto const& d : dimension_vector)
+    for (auto const& d : dimension_value)
     {
         total_dimension *= d; 
     }

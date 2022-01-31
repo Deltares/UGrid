@@ -149,6 +149,13 @@ namespace ugridapi
         /// @return Error code
         UGRID_API int ug_topology_get_data_variable_on_location(int file_id, int topology_type, int topology_id, int location, std::vector<std::string>& vector_data_variables_names);
 
+        /// @brief Get all the variable names
+        /// @param file_id [in] The file id
+        /// @param variable_name [in] The variable name
+        /// @param attributes_count [out] The number of attributes
+        /// @return Error code
+        UGRID_API int ug_variable_get_all_names(int file_id, std::vector<std::string>& variable_names);
+
         /// @brief Get the number of attributes of a specific variable
         /// @param file_id [in] The file id
         /// @param variable_name [in] The variable name
@@ -190,7 +197,7 @@ namespace ugridapi
         /// @param variable_name [in] The variable name
         /// @param dimension_vec [in] The dimension values associated with the variable name
         /// @return Error code
-        UGRID_API int ug_variable_get_data_dimensions(int file_id, std::string variable_name, std::vector<int>& dimension_vec);
+        UGRID_API int ug_variable_get_data_dimensions(int file_id, std::string variable_name, std::vector<std::string>& dimension_name, std::vector<int>& dimension_value);
 
         /// @brief Get the variable data as a flat array of doubles. This might be large, because the arrays can have a large dimensionality
         /// @param file_id [in] The file id

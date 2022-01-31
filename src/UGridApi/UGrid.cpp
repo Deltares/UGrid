@@ -356,6 +356,32 @@ namespace ugridapi
         return exit_code;
     }
 
+    UGRID_API int ug_variable_get_all_names(int file_id, std::vector<std::string>& variable_names)
+    {
+        int exit_code = Success;
+        try
+        {
+            if (ugrid_states.count(file_id) == 0)
+            {
+                throw std::invalid_argument("UGrid: The selected file_id does not exist.");
+            }
+
+            // Get all variables
+            std::multimap<std::string, netCDF::NcVar>::iterator it;
+            std::multimap<std::string, netCDF::NcVar> vars = ugrid_states[file_id].m_ncFile->getVars();
+            for (it = vars.begin(); it != vars.end(); ++it)
+            {
+                variable_names.emplace_back((*it).first);
+            }
+
+        }
+        catch (...)
+        {
+            exit_code = HandleExceptions(std::current_exception());
+        }
+        return exit_code;
+    }
+
     UGRID_API int ug_variable_count_attributes(int file_id, std::string variable_name, int& attributes_count)
     {
         int exit_code = Success;
@@ -510,7 +536,7 @@ namespace ugridapi
         return exit_code;
     }
 
-    UGRID_API int ug_variable_get_data_dimensions(int file_id, std::string variable_name, std::vector<int> & dimension_vec)
+    UGRID_API int ug_variable_get_data_dimensions(int file_id, std::string variable_name, std::vector<std::string>& dimension_name, std::vector<int>& dimension_value)
     {
         int exit_code = Success;
         try
@@ -534,7 +560,8 @@ namespace ugridapi
             auto const dimensions = it->second.getDims();
             for (auto i = 0; i < dimensions.size(); ++i)
             {
-                dimension_vec[i] = dimensions[i].getSize();
+                dimension_value.emplace_back(dimensions[i].getSize());
+                dimension_name.emplace_back(dimensions[i].getName());
             }
         }
         catch (...)
