@@ -399,7 +399,7 @@ namespace ugridapi
             const auto it = vars.find(variable_name);
             if (it == vars.end())
             {
-                throw std::invalid_argument("ug_variable_count_dimensions: The variable name is not present in the netcdf file.");
+                throw std::invalid_argument("ug_variable_count_attributes: The variable name is not present in the netcdf file.");
             }
 
             // Get the dimensions
