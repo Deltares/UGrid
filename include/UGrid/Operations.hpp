@@ -118,7 +118,6 @@ namespace ugrid
         if (dimensions.find(attribute_value_string) == dimensions.end())
         {
             return false;
-            std::string attribute_value_string;
         }
         return true;
     }

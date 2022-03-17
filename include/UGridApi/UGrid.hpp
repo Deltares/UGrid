@@ -65,6 +65,21 @@ namespace ugridapi
             Exception = 1,
         };
 
+        /// @brief MeshLocations locations
+        enum class MeshLocations
+        {
+            Faces = 0, ///< Faces
+            Nodes = 1, ///< Nodes
+            Edges = 2, ///< Edges
+        };
+
+        static std::unordered_map<MeshLocations, std::string> locations_attribute_names{
+            {MeshLocations::Faces, "face"},
+            {MeshLocations::Nodes, "node"},
+            {MeshLocations::Edges, "edge"},
+
+        };
+
         /// @brief Gets pointer to the exception message.
         /// @param[out] error_message The pointer to the latest error message
         /// @returns Error code
@@ -140,6 +155,15 @@ namespace ugridapi
         /// @param data_variables_names_result [out]
         /// @return Error code
         UGRID_API int ug_topology_get_data_variables_names(int file_id, int topology_type, int topology_id, int location, char* data_variables_names_result);
+
+        /// @brief Get the names of data variables for a specific topology on a specific location
+        /// @param file_id [in] The file id
+        /// @param topology_type [in] The topology type
+        /// @param topology_id [in] The topology id
+        /// @param location [in] The location on the topology (e.g. node, edge or face)
+        /// @param variable_name [in] The variable name
+        /// @return Error code
+        UGRID_API int ug_topology_define_double_variable_on_location(int file_id, int topology_type, int topology_id, int location, char const* variable_name);
 
         /// @brief Get the number of attributes of a specific variable
         /// @param file_id [in] The file id
@@ -308,6 +332,9 @@ namespace ugridapi
         /// @return Error code
         UGRID_API int ug_mesh2d_get(int file_id, int topology_id, Mesh2D& mesh2d_api);
 
+        /// TODO: DOCUMENT ME
+        UGRID_API int ug_mesh2d_variable_double_on_location_define(int file_id, int topology_id, int location, char const* variable_name, char const* att_name, int const* attribute_values, int num_values);
+
         /// @brief Defines a new contact topology
         /// @param file_id [in] The file id
         /// @param contacts_api [in] The structure containing the contact data
@@ -376,6 +403,21 @@ namespace ugridapi
         /// @param num_values [in] The number of values
         /// @return Error code
         UGRID_API int ug_attribute_global_char_define(int file_id, char const* att_name, char const* attribute_values, int num_values);
+
+        /// @brief Gets an int indicating the edge location type
+        /// @param[out] type The int indicating the edge location type
+        /// @returns Error code
+        UGRID_API int ug_get_edges_location_type(int& type);
+
+        /// @brief Gets an int indicating the node location type
+        /// @param[out] type The int indicating the node location type
+        /// @returns Error code
+        UGRID_API int ug_get_nodes_location_type(int& type);
+
+        /// @brief Gets an int indicating the faces location type
+        /// @param[out] type The int indicating the face location type
+        /// @returns Error code
+        UGRID_API int ug_get_faces_location_type(int& type);
 
 #ifdef __cplusplus
     }
