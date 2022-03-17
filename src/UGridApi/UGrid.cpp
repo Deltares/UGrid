@@ -163,6 +163,20 @@ namespace ugridapi
         return it->second;
     }
 
+    static auto get_coordinate_variable_string(int file_id, int topology_id, int topology_type, std::string const& var_name)
+    {
+        auto topology = get_topology(file_id, topology_id, topology_type);
+
+        auto coordinates_vector_variables = topology->get_topology_attribute_variable(var_name);
+        std::string result;
+        for (auto i = 0; i < coordinates_vector_variables.size() - 1; ++i)
+        {
+            result += coordinates_vector_variables[i].getName() + " ";
+        }
+        result += coordinates_vector_variables.back().getName();
+        return result;
+    }
+
     UGRID_API int ug_error_get(const char*& error_message)
     {
         error_message = exceptionMessage;
@@ -288,6 +302,56 @@ namespace ugridapi
             auto const data_variables_names = topology->get_data_variables_names(location_string);
 
             ugrid::vector_of_strings_to_char_array(data_variables_names, ugrid::name_long_length, data_variables_names_result);
+        }
+        catch (...)
+        {
+            exit_code = HandleExceptions(std::current_exception());
+        }
+        return exit_code;
+    }
+
+    UGRID_API int ug_topology_define_double_variable_on_location(int file_id, int topology_id, int topology_type, int mesh_location, char const* variable_name)
+    {
+        int exit_code = Success;
+        try
+        {
+            if (ugrid_states.count(file_id) == 0)
+            {
+                throw std::invalid_argument("UGrid: The selected file_id does not exist.");
+            }
+
+            const auto name = ugrid::char_array_to_string(variable_name, ugrid::name_long_length);
+
+            // Get the variable
+            auto const local_variable_name = ugrid::char_array_to_string(variable_name, ugrid::name_long_length);
+
+            auto variable = ugrid_states[file_id].m_ncFile->addVar(local_variable_name, netCDF::NcType::nc_DOUBLE);
+
+            auto topology = get_topology(file_id, topology_id, topology_type);
+
+            auto const mesh = topology->get_name();
+
+            const auto mesh_location_enum = static_cast<MeshLocations>(mesh_location);
+            auto location = std::string();
+            auto coordinates = std::string();
+            if (mesh_location_enum == MeshLocations::Faces)
+            {
+                location = "faces";
+                coordinates = get_coordinate_variable_string(file_id, topology_id, Mesh2dTopology, "face_coordinates");
+            }
+            if (mesh_location_enum == MeshLocations::Nodes)
+            {
+                coordinates = get_coordinate_variable_string(file_id, topology_id, Mesh2dTopology, "node_coordinates");
+            }
+            if (mesh_location_enum == MeshLocations::Edges)
+            {
+                location = "edges";
+                coordinates = get_coordinate_variable_string(file_id, topology_id, Mesh2dTopology, "edge_coordinates");
+            }
+
+            variable.putAtt("mesh", netCDF::NcType::nc_CHAR, mesh.size(), mesh.c_str());
+            variable.putAtt("location", netCDF::NcType::nc_CHAR, location.size(), location.c_str());
+            variable.putAtt("coordinates", netCDF::NcType::nc_CHAR, coordinates.size(), coordinates.c_str());
         }
         catch (...)
         {
@@ -1030,6 +1094,22 @@ namespace ugridapi
             exit_code = HandleExceptions(std::current_exception());
         }
         return exit_code;
+    }
+
+    UGRID_API int ug_get_edges_location_type(int& type)
+    {
+        type = static_cast<int>(MeshLocations::Edges);
+        return Success;
+    }
+    UGRID_API int ug_get_nodes_location_type(int& type)
+    {
+        type = static_cast<int>(MeshLocations::Nodes);
+        return Success;
+    }
+    UGRID_API int ug_get_faces_location_type(int& type)
+    {
+        type = static_cast<int>(MeshLocations::Faces);
+        return Success;
     }
 
 } // namespace ugridapi

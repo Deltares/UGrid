@@ -116,6 +116,14 @@ namespace ugrid
             return m_entity_name;
         }
 
+        /// @brief Gets a vector of nc variables
+        /// @param attribute_name The attribute name
+        /// @return The vector of nc variables
+        std::vector<netCDF::NcVar> get_topology_attribute_variable(const std::string& attribute_name)
+        {
+            return m_topology_attribute_variables.at(attribute_name);
+        }
+
         /// @brief Gets the names of all data variables associated with a specific location
         /// @param location_string The location string (e.g. node, edge or face)
         /// @return The variables names
