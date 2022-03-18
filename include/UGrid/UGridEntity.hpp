@@ -111,7 +111,7 @@ namespace ugrid
 
         /// @brief Gets the entity name
         /// @return The entity name
-        [[nodiscard]] std::string get_name() const
+        [[nodiscard]] auto get_name() const
         {
             return m_entity_name;
         }
@@ -119,9 +119,17 @@ namespace ugrid
         /// @brief Gets a vector of nc variables
         /// @param attribute_name The attribute name
         /// @return The vector of nc variables
-        std::vector<netCDF::NcVar> get_topology_attribute_variable(const std::string& attribute_name)
+        [[nodiscard]] auto get_topology_attribute_variable(const std::string& attribute_name) const
         {
             return m_topology_attribute_variables.at(attribute_name);
+        }
+
+        /// @brief Gets the dimension
+        /// @param[in] dimension The dimension enum defined on the entity
+        /// @return The corresponding netCDF::NcDim
+        auto get_dimension(const UGridFileDimensions& dimension) const
+        {
+            return m_dimensions.at(dimension);
         }
 
         /// @brief Gets the names of all data variables associated with a specific location

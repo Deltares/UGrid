@@ -80,6 +80,11 @@ namespace ugridapi
 
         };
 
+        static std::unordered_map<MeshLocations, ugrid::UGridFileDimensions> locations_ugrid_dimensions{
+            {MeshLocations::Faces, ugrid::UGridFileDimensions::face},
+            {MeshLocations::Nodes, ugrid::UGridFileDimensions::node},
+            {MeshLocations::Edges, ugrid::UGridFileDimensions::edge}};
+
         /// @brief Gets pointer to the exception message.
         /// @param[out] error_message The pointer to the latest error message
         /// @returns Error code
@@ -162,8 +167,16 @@ namespace ugridapi
         /// @param[in] topology_id The topology id
         /// @param[in] location The location on the topology (e.g. node, edge or face)
         /// @param[in] variable_name The variable name
+        /// @param[in] dimension_name The name of the dimension not related to a topology (e.g "numTimeSteps")
+        /// @param[in] dimension_value The dimension value
         /// @return Error code
-        UGRID_API int ug_topology_define_double_variable_on_location(int file_id, int topology_type, int topology_id, int location, char const* variable_name);
+        UGRID_API int ug_topology_define_double_variable_on_location(int file_id,
+                                                                     int topology_type,
+                                                                     int topology_id,
+                                                                     int location,
+                                                                     const char* variable_name,
+                                                                     const char* dimension_name,
+                                                                     const int dimension_value);
 
         /// @brief Get the number of attributes of a specific variable
         /// @param[in] file_id The file id
@@ -331,9 +344,6 @@ namespace ugridapi
         /// @param mesh2d_api [out] The structure containing the mesh2d data
         /// @return Error code
         UGRID_API int ug_mesh2d_get(int file_id, int topology_id, Mesh2D& mesh2d_api);
-
-        /// TODO: DOCUMENT ME
-        UGRID_API int ug_mesh2d_variable_double_on_location_define(int file_id, int topology_id, int location, char const* variable_name, char const* att_name, int const* attribute_values, int num_values);
 
         /// @brief Defines a new contact topology
         /// @param file_id [in] The file id
