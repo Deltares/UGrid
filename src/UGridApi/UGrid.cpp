@@ -320,8 +320,6 @@ namespace ugridapi
                 throw std::invalid_argument("UGrid: The selected file_id does not exist.");
             }
 
-            const auto name = ugrid::char_array_to_string(variable_name, ugrid::name_long_length);
-
             // Get the variable
             auto const local_variable_name = ugrid::char_array_to_string(variable_name, ugrid::name_long_length);
 
@@ -337,16 +335,17 @@ namespace ugridapi
             if (mesh_location_enum == MeshLocations::Faces)
             {
                 location = "faces";
-                coordinates = get_coordinate_variable_string(file_id, topology_id, Mesh2dTopology, "face_coordinates");
+                coordinates = get_coordinate_variable_string(file_id, topology_id, topology_type, "face_coordinates");
             }
             if (mesh_location_enum == MeshLocations::Nodes)
             {
-                coordinates = get_coordinate_variable_string(file_id, topology_id, Mesh2dTopology, "node_coordinates");
+                location = "nodes";
+                coordinates = get_coordinate_variable_string(file_id, topology_id, topology_type, "node_coordinates");
             }
             if (mesh_location_enum == MeshLocations::Edges)
             {
                 location = "edges";
-                coordinates = get_coordinate_variable_string(file_id, topology_id, Mesh2dTopology, "edge_coordinates");
+                coordinates = get_coordinate_variable_string(file_id, topology_id, topology_type, "edge_coordinates");
             }
 
             variable.putAtt("mesh", netCDF::NcType::nc_CHAR, mesh.size(), mesh.c_str());
@@ -616,22 +615,17 @@ namespace ugridapi
         int exit_code = Success;
         try
         {
-            if (mode == netCDF::NcFile::read)
-            {
-                auto const nc_file = std::make_shared<netCDF::NcFile>(file_path, netCDF::NcFile::read, netCDF::NcFile::classic);
-                file_id = nc_file->getId();
-                ugrid_states.insert({nc_file->getId(), UGridState(nc_file)});
+            auto local_mode = static_cast<netCDF::NcFile::FileMode>(mode);
+            auto const nc_file = std::make_shared<netCDF::NcFile>(file_path, local_mode, netCDF::NcFile::classic);
+            file_id = nc_file->getId();
+            ugrid_states.insert({nc_file->getId(), UGridState(nc_file)});
 
+            if (mode == netCDF::NcFile::read || mode == netCDF::NcFile::write)
+            {
                 ugrid_states[file_id].m_mesh2d = ugrid::UGridEntity::create<ugrid::Mesh2D>(nc_file);
                 ugrid_states[file_id].m_network1d = ugrid::Network1D::create<ugrid::Network1D>(nc_file);
                 ugrid_states[file_id].m_mesh1d = ugrid::UGridEntity::create<ugrid::Mesh1D>(nc_file);
                 ugrid_states[file_id].m_contacts = ugrid::UGridEntity::create<ugrid::Contacts>(nc_file);
-            }
-            if (mode == netCDF::NcFile::replace)
-            {
-                auto const nc_file = std::make_shared<netCDF::NcFile>(file_path, netCDF::NcFile::replace, netCDF::NcFile::classic);
-                file_id = nc_file->getId();
-                ugrid_states.insert({nc_file->getId(), UGridState(nc_file)});
             }
         }
         catch (...)

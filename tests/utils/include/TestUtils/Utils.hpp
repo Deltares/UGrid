@@ -26,6 +26,7 @@
 //------------------------------------------------------------------------------
 
 #pragma once
+#include <UGridApi/UGrid.hpp>
 
 /// @brief Performs right trim of single string
 /// @param str [in] The input string

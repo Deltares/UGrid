@@ -1169,3 +1169,137 @@ TEST(ApiTest, DefineGlobalAttributes_OnExistingFile_ShouldDefineGlobalAttributes
     error_code = ugridapi::ug_file_close(file_id);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 }
+
+TEST(ApiTest, TopologyDefineDoubleVariableOnLocation_OnExistingFile_ShouldDefineDoubleVariable)
+{
+    // Prepare
+    int name_long_length;
+    auto error_code = ugridapi::ug_name_get_long_length(name_long_length);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+    ugridapi::Mesh2D mesh2d;
+    std::unique_ptr<char> const name(new char[name_long_length]);
+    string_to_char_array("mesh2d", name_long_length, name.get());
+    mesh2d.name = name.get();
+    std::unique_ptr<double> const node_x(new double[]{0, 1, 0, 1, 0, 1, 0, 1, 2, 2, 2, 2, 3, 3, 3, 3});
+
+    mesh2d.node_x = node_x.get();
+    std::unique_ptr<double> const node_y(new double[]{0, 0, 1, 1, 2, 2, 3, 3, 0, 1, 2, 3, 0, 1, 2, 3});
+
+    mesh2d.node_y = node_y.get();
+    mesh2d.num_nodes = 16;
+    std::unique_ptr<int> const edge_nodes(new int[]{
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        2,
+        9,
+        4,
+        10,
+        6,
+        11,
+        8,
+        12,
+        9,
+        13,
+        10,
+        14,
+        11,
+        15,
+        12,
+        16,
+        1,
+        3,
+        3,
+        5,
+        5,
+        7,
+        2,
+        4,
+        4,
+        6,
+        6,
+        8,
+        9,
+        10,
+        10,
+        11,
+        11,
+        12,
+        13,
+        14,
+        14,
+        15,
+        15,
+        16,
+    });
+    mesh2d.edge_node = edge_nodes.get();
+    mesh2d.num_edges = 23;
+
+    std::unique_ptr<double> const face_x(new double[]{0.5, 0.5, 0.5, 1.5, 1.5, 1.5, 2.5, 2.5, 2.5});
+    mesh2d.face_x = face_x.get();
+    std::unique_ptr<double> const face_y(new double[]{0, 0, 1, 1, 2, 2, 3, 3, 0, 1, 2, 3, 0, 1, 2, 3});
+    mesh2d.face_y = face_y.get();
+    mesh2d.num_faces = 9;
+    std::unique_ptr<int> const face_nodes(new int[]{
+        1, 2, 4, 3,
+        3, 4, 6, 5,
+        5, 6, 8, 7,
+        2, 9, 10, 4,
+        4, 10, 11, 6,
+        6, 11, 12, 8,
+        9, 13, 14, 10,
+        10, 14, 15, 11,
+        11, 15, 16, 12});
+    mesh2d.face_node = face_nodes.get();
+    mesh2d.num_face_nodes_max = 4;
+
+    // Open file
+    std::string const file_path = TEST_WRITE_FOLDER + "/Mesh2DWriteWithAVariable.nc";
+    int file_mode = -1;
+    error_code = ugridapi::ug_file_replace_mode(file_mode);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+    int file_id = -1;
+    error_code = ugridapi::ug_file_open(file_path.c_str(), file_mode, file_id);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+
+    // Write mesh2d
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+    int topology_id = -1;
+    error_code = ug_mesh2d_def(file_id, mesh2d, topology_id);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+    ASSERT_EQ(0, topology_id);
+    error_code = ug_mesh2d_put(file_id, topology_id, mesh2d);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+
+    // Close the file
+    error_code = ugridapi::ug_file_close(file_id);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+
+    // Open the file for writing
+    error_code = ugridapi::ug_file_write_mode(file_mode);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+    error_code = ugridapi::ug_file_open(file_path.c_str(), file_mode, file_id);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+
+    // Write s0 double variable on topology
+    int topology_enum;
+    error_code = ugridapi::ug_topology_get_mesh2d_enum(topology_enum);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+    int location_enum;
+    error_code = ugridapi::ug_get_nodes_location_type(location_enum);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+
+    std::unique_ptr<char> const variable_name(new char[name_long_length]);
+    string_to_char_array("mesh2d_s0", name_long_length, variable_name.get());
+
+    error_code = ugridapi::ug_topology_define_double_variable_on_location(file_id, 0, topology_enum, location_enum, variable_name.get());
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+
+    error_code = ugridapi::ug_file_close(file_id);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+}
