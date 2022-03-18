@@ -86,179 +86,179 @@ namespace ugridapi
         UGRID_API int ug_error_get(const char*& error_message);
 
         /// @brief Gets the length of a name
-        /// @param length [out] The length of names
+        /// @param[out] length The length of names
         /// @return The length of a name
         /// @return Error code
         UGRID_API int ug_name_get_length(int& length);
 
         /// @brief Gets the length of a long name
-        /// @return length [out] The length of long names
+        /// @return[out] length The length of long names
         /// @return Error code
         UGRID_API int ug_name_get_long_length(int& length);
 
         /// @brief Gets the integer identifying a node location
-        /// @param location [out] The integer identifying a node location
+        /// @param[out] location The integer identifying a node location
         /// @return Error code
         UGRID_API int ug_entity_get_node_location_enum(int& location);
 
         /// @brief Gets the integer identifying an edge location
-        /// @param location [out] The integer identifying an edge location
+        /// @param[out] location The integer identifying an edge location
         /// @return Error code
         UGRID_API int ug_entity_get_edge_location_enum(int& location);
 
         /// @brief Gets the integer identifying an face location
-        /// @param location [out] The integer identifying a face location
+        /// @param[out] location The integer identifying a face location
         /// @return Error code
         UGRID_API int ug_entity_get_face_location_enum(int& location);
 
         /// @brief Gets the integer identifying the network topology type
-        /// @param topology_enum [out] The integer identifying the network topology type
+        /// @param[out] topology_enum The integer identifying the network topology type
         /// @return Error code
         UGRID_API int ug_topology_get_network1d_enum(int& topology_enum);
 
         /// @brief Gets the integer identifying the mesh1d topology type
-        /// @param topology_enum [out] The integer identifying the mesh1d topology type
+        /// @param[out] topology_enum The integer identifying the mesh1d topology type
         /// @return Error code
         UGRID_API int ug_topology_get_mesh1d_enum(int& topology_enum);
 
         /// @brief Gets the integer identifying the mesh2d topology type
-        /// @param topology_enum [out] The integer identifying the mesh2d topology type
+        /// @param[out] topology_enum The integer identifying the mesh2d topology type
         /// @return Error code
         UGRID_API int ug_topology_get_mesh2d_enum(int& topology_enum);
 
         /// @brief Gets the integer identifying the contact topology type
-        /// @param topology_enum [out] The integer identifying the contact topology type
+        /// @param[out] topology_enum The integer identifying the contact topology type
         /// @return Error code
         UGRID_API int ug_topology_get_contacts_enum(int& topology_enum);
 
         /// @brief Gets the number of topologies of a specific type
-        /// @param file_id [in] The file id
-        /// @param topology_type [in] The topology type
-        /// @param topology_count [out] The number of topologies of the specific type
+        /// @param[in] file_id The file id
+        /// @param[in] topology_type The topology type
+        /// @param[in] topology_count The number of topologies of the specific type
         /// @return Error code
         UGRID_API int ug_topology_get_count(int file_id, int topology_type, int& topology_count);
 
         /// @brief Get the number of data variables for a specific topology on a specific location
-        /// @param file_id [in] The file id
-        /// @param topology_type [in] The topology type
-        /// @param topology_id [in] The topology id
-        /// @param location [in] The location (node, edge, face)
-        /// @param data_variable_count [out] The number of data variables on the topology
+        /// @param[in] file_id The file id
+        /// @param[in] topology_type The topology type
+        /// @param[in] topology_id The topology id
+        /// @param[in] location The location (node, edge, face)
+        /// @param[out] data_variable_count The number of data variables on the topology
         /// @return Error code
         UGRID_API int ug_topology_count_data_variables(int file_id, int topology_type, int topology_id, int location, int& data_variable_count);
 
         /// @brief Get the names of data variables for a specific topology on a specific location
-        /// @param file_id [in] The file id
-        /// @param topology_type [in] The topology type
-        /// @param topology_id [in] The topology id
-        /// @param location [in] The location on the topology (e.g. node, edge or face)
-        /// @param data_variables_names_result [out]
+        /// @param[in] file_id  The file id
+        /// @param[in] topology_type The topology type
+        /// @param[in] topology_id The topology id
+        /// @param[in] location The location on the topology (e.g. node, edge or face)
+        /// @param[out] data_variables_names_result
         /// @return Error code
         UGRID_API int ug_topology_get_data_variables_names(int file_id, int topology_type, int topology_id, int location, char* data_variables_names_result);
 
         /// @brief Get the names of data variables for a specific topology on a specific location
-        /// @param file_id [in] The file id
-        /// @param topology_type [in] The topology type
-        /// @param topology_id [in] The topology id
-        /// @param location [in] The location on the topology (e.g. node, edge or face)
-        /// @param variable_name [in] The variable name
+        /// @param[in] file_id The file id
+        /// @param[in] topology_type The topology type
+        /// @param[in] topology_id The topology id
+        /// @param[in] location The location on the topology (e.g. node, edge or face)
+        /// @param[in] variable_name The variable name
         /// @return Error code
         UGRID_API int ug_topology_define_double_variable_on_location(int file_id, int topology_type, int topology_id, int location, char const* variable_name);
 
         /// @brief Get the number of attributes of a specific variable
-        /// @param file_id [in] The file id
-        /// @param variable_name [in] The variable name
-        /// @param attributes_count [out] The number of attributes
+        /// @param[in] file_id The file id
+        /// @param[in] variable_name The variable name
+        /// @param[out] attributes_count The number of attributes
         /// @return Error code
         UGRID_API int ug_variable_count_attributes(int file_id, char const* variable_name, int& attributes_count);
 
         /// @brief Get the attributes values of a specific variable
-        /// @param file_id [in] The file id
-        /// @param variable_name [in] The variable name
-        /// @param values [out] The attribute values
+        /// @param[in] file_id The file id
+        /// @param[in] variable_name The variable name
+        /// @param[out] values The attribute values
         /// @return Error code
         UGRID_API int ug_variable_get_attributes_values(int file_id, char const* variable_name, char* values);
 
         /// @brief Get the attributes names of a specific variable
-        /// @param file_id [in] The file id
-        /// @param variable_name [in] The variable name
-        /// @param names [out] The attribute names
+        /// @param[in] file_id The file id
+        /// @param[in] variable_name The variable name
+        /// @param[out] names The attribute names
         /// @return Error code
         UGRID_API int ug_variable_get_attributes_names(int file_id, char const* variable_name, char* names);
 
         /// @brief Get the number of dimensions of a specific variable
-        /// @param file_id [in] The file id
-        /// @param variable_name [in] The variable name
-        /// @param dimensions_count [in] The number of dimensions
+        /// @param[in] file_id The file id
+        /// @param[in] variable_name The variable name
+        /// @param[in] dimensions_count The number of dimensions
         /// @return Error code
         UGRID_API int ug_variable_count_dimensions(int file_id, char const* variable_name, int& dimensions_count);
 
         /// @brief Get the dimension values of a specific variable
-        /// @param file_id [in] The file id
-        /// @param variable_name [in] The variable name
-        /// @param dimension_vec [in] The dimension values associated with the variable name
+        /// @param[in] file_id The file id
+        /// @param[in] variable_name The variable name
+        /// @param[in] dimension_vec The dimension values associated with the variable name
         /// @return Error code
         UGRID_API int ug_variable_get_data_dimensions(int file_id, char const* variable_name, int* dimension_vec);
 
         /// @brief Get the variable data as a flat array of doubles. This might be large, because the arrays can have a large dimensionality
-        /// @param file_id [in] The file id
-        /// @param variable_name [in] The variable name
-        /// @param data [out] The variable data
+        /// @param[in] file_id The file id
+        /// @param[in] variable_name The variable name
+        /// @param[out] data The variable data
         /// @return Error code
         UGRID_API int ug_variable_get_data_double(int file_id, char const* variable_name, double* data);
 
         /// @brief Get the variable data as a flat array of int. This might be large, because the arrays can have a large dimensionality
-        /// @param file_id [in] The file id
-        /// @param variable_name [in] The variable name
-        /// @param data [out] The variable data
+        /// @param[in] file_id  The file id
+        /// @param[in] variable_name The variable name
+        /// @param[out] data The variable data
         /// @return Error code
         UGRID_API int ug_variable_get_data_int(int file_id, char const* variable_name, int* data);
 
         /// @brief Get the variable data as a flat array of char. This might be large, because the arrays can have a large dimensionality
-        /// @param file_id [in] The file id
-        /// @param variable_name [in] The variable name
-        /// @param data [out] The variable data
+        /// @param[in] file_id The file id
+        /// @param[in] variable_name The variable name
+        /// @param[out] data The variable data
         /// @return Error code
         UGRID_API int ug_variable_get_data_char(int file_id, char const* variable_name, char* data);
 
         /// @brief Gets the integer identifying the file read mode
-        /// @param mode [out] the integer identifying the file read mode
+        /// @param[out] mode the integer identifying the file read mode
         /// @return Error code
         UGRID_API int ug_file_read_mode(int& mode);
 
         /// @brief Gets the integer identifying the file write mode
-        /// @param mode [out] The integer identifying the file write mode
+        /// @param[out] mode The integer identifying the file write mode
         /// @return Error code
         UGRID_API int ug_file_write_mode(int& mode);
 
         /// @brief Gets the integer identifying the file replace mode
-        /// @param mode [out] The integer identifying the file replace mode
+        /// @param[out] mode The integer identifying the file replace mode
         /// @return Error code
         UGRID_API int ug_file_replace_mode(int& mode) noexcept;
 
         /// @brief Opens a file and fills the library state
-        /// @param file_path [in] The path of the file
-        /// @param mode [in] The opening mode
-        /// @param file_id [out] The file id
+        /// @param[in] file_path  The path of the file
+        /// @param[in] mode The opening mode
+        /// @param[out] file_id The file id
         /// @return Error code
         UGRID_API int ug_file_open(char const* file_path, int mode, int& file_id);
 
         /// @brief Closes a file
-        /// @param file_id [in] The file id
+        /// @param[in] file_id The file id
         /// @return Error code
         UGRID_API int ug_file_close(int file_id);
 
         /// @brief Defines a new network1d topology
-        /// @param file_id [in] The file id
-        /// @param network1d_api [in] The structure containing the network data
-        /// @param topology_id [out] The id of the newly created network topology
+        /// @param[in] file_id The file id
+        /// @param[in] network1d_api The structure containing the network data
+        /// @param[out] topology_id The id of the newly created network topology
         /// @return Error code
         UGRID_API int ug_network1d_def(int file_id, Network1D const& network1d_api, int& topology_id);
 
         /// @brief Writes the network1d geometrical data to file
-        /// @param file_id [in] The file id
-        /// @param topology_id [in] The topology id
-        /// @param network1d_api [in] The structure containing the network data
+        /// @param[in] file_id The file id
+        /// @param[in] topology_id The topology id
+        /// @param[in] network1d_api The structure containing the network data
         /// @return Error code
         UGRID_API int ug_network1d_put(int file_id, int topology_id, Network1D const& network1d_api);
 
