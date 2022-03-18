@@ -1303,6 +1303,11 @@ TEST(ApiTest, TopologyDefineDoubleVariableOnLocation_OnExistingFile_ShouldDefine
     error_code = ugridapi::ug_topology_define_double_variable_on_location(file_id, 0, topology_enum, location_enum, variable_name.get(), dimension_name.get(), 10);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
+    define_variable_attributes(file_id, "mesh2d_s0", "standard_name", "sea_surface_height");
+    define_variable_attributes(file_id, "mesh2d_s0", "long_name", "Water level on previous timestep");
+    define_variable_attributes(file_id, "mesh2d_s0", "units", "m");
+    define_variable_attributes(file_id, "mesh2d_s0", "_FillValue", std::vector<double>{-999.0});
+
     error_code = ugridapi::ug_file_close(file_id);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 }
