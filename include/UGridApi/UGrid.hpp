@@ -152,7 +152,7 @@ namespace ugridapi
         /// @param[in] topology_type The topology type
         /// @param[in] topology_id The topology id
         /// @param[in] location The location on the topology (e.g. node, edge or face)
-        /// @param[out] data_variables_names_result
+        /// @param[out] data_variables_names_result The names of the data variables
         /// @return Error code
         UGRID_API int ug_topology_get_data_variables_names(int file_id, int topology_type, int topology_id, int location, char* data_variables_names_result);
 
