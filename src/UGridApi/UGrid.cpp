@@ -310,7 +310,13 @@ namespace ugridapi
         return exit_code;
     }
 
-    UGRID_API int ug_topology_define_double_variable_on_location(int file_id, int topology_id, int topology_type, int mesh_location, char const* variable_name)
+    UGRID_API int ug_topology_define_double_variable_on_location(int file_id,
+                                                                 int topology_id,
+                                                                 int topology_type,
+                                                                 int mesh_location,
+                                                                 char const* variable_name,
+                                                                 char const* dimension_name,
+                                                                 const int dimension_value)
     {
         int exit_code = Success;
         try
@@ -320,34 +326,23 @@ namespace ugridapi
                 throw std::invalid_argument("UGrid: The selected file_id does not exist.");
             }
 
-            // Get the variable
-            auto const local_variable_name = ugrid::char_array_to_string(variable_name, ugrid::name_long_length);
+            const auto local_variable_name = ugrid::char_array_to_string(variable_name, ugrid::name_long_length);
 
-            auto variable = ugrid_states[file_id].m_ncFile->addVar(local_variable_name, netCDF::NcType::nc_DOUBLE);
+            const auto topology = get_topology(file_id, topology_id, topology_type);
 
-            auto topology = get_topology(file_id, topology_id, topology_type);
-
-            auto const mesh = topology->get_name();
+            const auto mesh = topology->get_name();
 
             const auto mesh_location_enum = static_cast<MeshLocations>(mesh_location);
-            auto location = std::string();
-            auto coordinates = std::string();
-            if (mesh_location_enum == MeshLocations::Faces)
-            {
-                location = "faces";
-                coordinates = get_coordinate_variable_string(file_id, topology_id, topology_type, "face_coordinates");
-            }
-            if (mesh_location_enum == MeshLocations::Nodes)
-            {
-                location = "nodes";
-                coordinates = get_coordinate_variable_string(file_id, topology_id, topology_type, "node_coordinates");
-            }
-            if (mesh_location_enum == MeshLocations::Edges)
-            {
-                location = "edges";
-                coordinates = get_coordinate_variable_string(file_id, topology_id, topology_type, "edge_coordinates");
-            }
 
+            const auto location = locations_attribute_names.at(mesh_location_enum);
+            const auto coordinates = get_coordinate_variable_string(file_id, topology_id, topology_type, location + "_coordinates");
+
+            const auto local_dimension_name = ugrid::char_array_to_string(dimension_name, ugrid::name_long_length);
+            ugrid_states[file_id].set_dimension(local_dimension_name, dimension_value);
+            auto variable_first_dimension = ugrid_states[file_id].get_dimension(local_dimension_name);
+            const auto variable_second_dimension = topology->get_dimension(locations_ugrid_dimensions.at(mesh_location_enum));
+
+            auto variable = ugrid_states[file_id].m_ncFile->addVar(local_variable_name, netCDF::NcType::nc_DOUBLE, {variable_first_dimension, variable_second_dimension});
             variable.putAtt("mesh", netCDF::NcType::nc_CHAR, mesh.size(), mesh.c_str());
             variable.putAtt("location", netCDF::NcType::nc_CHAR, location.size(), location.c_str());
             variable.putAtt("coordinates", netCDF::NcType::nc_CHAR, coordinates.size(), coordinates.c_str());

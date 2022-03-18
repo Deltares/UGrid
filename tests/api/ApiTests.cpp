@@ -1297,7 +1297,10 @@ TEST(ApiTest, TopologyDefineDoubleVariableOnLocation_OnExistingFile_ShouldDefine
     std::unique_ptr<char> const variable_name(new char[name_long_length]);
     string_to_char_array("mesh2d_s0", name_long_length, variable_name.get());
 
-    error_code = ugridapi::ug_topology_define_double_variable_on_location(file_id, 0, topology_enum, location_enum, variable_name.get());
+    std::unique_ptr<char> const dimension_name(new char[name_long_length]);
+    string_to_char_array("numTimeSteps", name_long_length, dimension_name.get());
+
+    error_code = ugridapi::ug_topology_define_double_variable_on_location(file_id, 0, topology_enum, location_enum, variable_name.get(), dimension_name.get(), 10);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
     error_code = ugridapi::ug_file_close(file_id);

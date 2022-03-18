@@ -24,5 +24,30 @@ namespace ugridapi
         std::vector<ugrid::Network1D> m_network1d; ///< A vector containing all Network1D instances
         std::vector<ugrid::Mesh2D> m_mesh2d;       ///< A vector containing all Mesh2D instances
         std::vector<ugrid::Contacts> m_contacts;   ///< A vector containing all Contacts instances
+
+        /// @brief Set netcdf dimensions not related to topology
+        /// @param dimension_name The dimension name
+        /// @param dimension_value The dimension value
+        void set_dimension(const std::string& dimension_name, const int dimension_value)
+        {
+            auto const it = m_dimensions.find(dimension_name);
+            if (it != m_dimensions.end())
+            {
+                return;
+            }
+            auto const nc_dimension = m_ncFile->addDim(dimension_name, dimension_value);
+            m_dimensions.emplace(dimension_name, nc_dimension);
+        }
+
+        /// @brief Get the nectdf dimension from its name
+        /// @param dimension_name The dimension name
+        /// @return The netcdf dimension
+        netCDF::NcDim get_dimension(const std::string& dimension_name) const
+        {
+            return m_dimensions.at(dimension_name);
+        }
+
+    private:
+        std::map<std::string, netCDF::NcDim> m_dimensions; ///< Dimensions not related to a topology
     };
 } // namespace ugridapi
