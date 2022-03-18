@@ -211,7 +211,7 @@ namespace ugridapi
         /// @param variable_name [in] The variable name
         /// @param data [out] The variable data
         /// @return Error code
-        UGRID_API int ug_variable_get_data_int(int file_id, char const* variable_name, int* data);
+        UGRID_API int ug_variable_get_data_int(int file_id, std::string variable_name, std::vector<int>& data);
 
         /// @brief Get the variable data as a flat array of char. This might be large, because the arrays can have a large dimensionality
         /// @param file_id [in] The file id
