@@ -337,9 +337,12 @@ namespace ugridapi
             const auto location = locations_attribute_names.at(mesh_location_enum);
             const auto coordinates = get_coordinate_variable_string(file_id, topology_id, topology_type, location + "_coordinates");
 
+            // Set additional variable dimension on the file
             const auto local_dimension_name = ugrid::char_array_to_string(dimension_name, ugrid::name_long_length);
             ugrid_states[file_id].set_dimension(local_dimension_name, dimension_value);
-            auto variable_first_dimension = ugrid_states[file_id].get_dimension(local_dimension_name);
+
+            // First dimension is the additional dimension on the file, the second variable is a topological variable
+            const auto variable_first_dimension = ugrid_states[file_id].get_dimension(local_dimension_name);
             const auto variable_second_dimension = topology->get_dimension(locations_ugrid_dimensions.at(mesh_location_enum));
 
             auto variable = ugrid_states[file_id].m_ncFile->addVar(local_variable_name, netCDF::NcType::nc_DOUBLE, {variable_first_dimension, variable_second_dimension});
