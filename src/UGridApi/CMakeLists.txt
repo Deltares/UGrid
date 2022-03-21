@@ -5,31 +5,27 @@ file(GLOB HEADER_LIST CONFIGURE_DEPENDS
 file(GLOB SOURCE_LIST CONFIGURE_DEPENDS
      "${PROJECT_SOURCE_DIR}/src/UGridApi/*.cpp")
 
+set(target_name UGridApi)
+
 # Make a shared library
-add_library(UGridApi SHARED ${SOURCE_LIST} ${HEADER_LIST}
-                                 ${CMAKE_BINARY_DIR}/version.rc)
+add_library(${target_name} SHARED ${SOURCE_LIST} ${HEADER_LIST} ${CMAKE_BINARY_DIR}/version.rc)
+add_dependencies(${target_name} UGrid)
 
 # Expose the interface of the shared lib
-set(NETCDF_PATH "${PROJECT_SOURCE_DIR}/extern/netcdf/netcdf_4_8_0")
-
-set(NETCDFCXX_PATH "${PROJECT_SOURCE_DIR}/extern/netcdf-cxx4")
-
-target_include_directories(UGridApi PUBLIC "${PROJECT_SOURCE_DIR}/include" "${NETCDF_PATH}/include" "${NETCDFCXX_PATH}/cxx4")
+target_include_directories(${target_name} PUBLIC "${PROJECT_SOURCE_DIR}/include" ${netCDF_INCLUDE_DIR} )
 
 # Make sure that coverage information is produced when using gcc
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-  set_target_properties(
-    UGridApi
-    PROPERTIES COMPILE_FLAGS "-fprofile-arcs -ftest-coverage -static-libgcc -static-libstdc++"
-  )
-  set_target_properties(UGridApi PROPERTIES LINK_FLAGS "-ldl -lgcov --coverage")
+   set_target_properties(${target_name} PROPERTIES COMPILE_FLAGS "-fprofile-arcs -ftest-coverage -static-libgcc -static-libstdc++")
+   set_target_properties(${target_name} PROPERTIES LINK_FLAGS "-ldl -lgcov --coverage")
 endif()
 
 # Link shared lib to static lib, but don't expose it
-target_link_libraries(UGridApi LINK_PUBLIC UGrid netcdf-cxx "${NETCDF_PATH}/lib/netcdf.lib")
+target_link_directories(${target_name} PRIVATE ${netCDF_LIB_DIR})
+target_link_libraries(${target_name} PRIVATE UGrid netCDF::netcdf-cxx4 netcdf)
 
 # Add precompiled header
-target_precompile_headers(UGridApi PRIVATE <map> 
+target_precompile_headers(${target_name} PRIVATE <map> 
                                         <string> 
                                         <unordered_map> 
                                         <vector> 

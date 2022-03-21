@@ -11,6 +11,12 @@ project(
   DESCRIPTION "Library for reading/writing UGrid files."
   LANGUAGES CXX C)
 
+# Make sure all executables and shared libraries end up in one directory,
+# otherwise the executables won't run under Windows. This will cause
+# the build to fail.
+set(LIBRARY_OUTPUT_PATH "${CMAKE_BINARY_DIR}/bin")
+set(EXECUTABLE_OUTPUT_PATH "${CMAKE_BINARY_DIR}/bin")
+
 if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
   if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -g -O2 -std=c++17")
@@ -54,14 +60,24 @@ endif()
 find_package(Boost REQUIRED COMPONENTS system filesystem)
 include_directories(${Boost_INCLUDE_DIR})
 
+# Use NetCDF-cxx
+find_package(netCDFCxx 4.3.1 REQUIRED)
+if (NetCDFCxx_FOUND)
+    message(STATUS "NetCDFCXX include dirs: ${NetCDFCxx_INCLUDE_DIRS}")
+	message(STATUS "NETCDFCXX_PATH path: ${NETCDFCXX_PATH}")
+endif()
+
+# Use NetCDF
+find_package(netCDF REQUIRED)
+if (netCDF_FOUND)
+    message(STATUS "netCDF_LIB_DIR dirs: ${netCDF_LIB_DIR}")
+endif()
+
 # FetchContent added in CMake 3.11, downloads during the configure step
 include(FetchContent)
 
 # Run packaging scripts
 add_subdirectory(package)
-
-# The external library
-add_subdirectory(extern)
 
 # The version file
 add_subdirectory(include/Version)
@@ -71,9 +87,6 @@ add_subdirectory(src/UGrid)
 
 # The dynamic library
 add_subdirectory(src/UGridApi)
-
-# The path to netcdf libraries
-set(NETCDF_PATH "${PROJECT_SOURCE_DIR}/extern/netcdf/netcdf_4_8_0")
 
 # Testing only available if this is the main app.
 if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
