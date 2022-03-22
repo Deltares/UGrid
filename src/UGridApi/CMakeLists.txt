@@ -11,6 +11,9 @@ set(target_name UGridApi)
 add_library(${target_name} SHARED ${SOURCE_LIST} ${HEADER_LIST} ${CMAKE_BINARY_DIR}/version.rc)
 add_dependencies(${target_name} UGrid)
 
+# define the public header
+set_target_properties(${target_name} PROPERTIES PUBLIC_HEADER "${HEADER_LIST}")
+
 # Expose the interface of the shared lib
 target_include_directories(${target_name} PUBLIC "${PROJECT_SOURCE_DIR}/include" ${netCDF_INCLUDE_DIR} )
 
@@ -40,3 +43,6 @@ source_group(
   TREE "${PROJECT_SOURCE_DIR}/include/UGridApi"
   PREFIX "Header Files"
   FILES ${HEADER_LIST})
+
+# define the public header
+install(TARGETS ${target_name} PUBLIC_HEADER DESTINATION "include/${target_name}")
