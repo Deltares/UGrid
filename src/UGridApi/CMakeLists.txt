@@ -5,9 +5,9 @@ file(GLOB HEADER_LIST CONFIGURE_DEPENDS
 file(GLOB SOURCE_LIST CONFIGURE_DEPENDS
      "${PROJECT_SOURCE_DIR}/src/UGridApi/*.cpp")
 
-set(target_name UGridApi)
 
 # Make a shared library
+set(target_name UGridApi)
 add_library(${target_name} SHARED ${SOURCE_LIST} ${HEADER_LIST} ${CMAKE_BINARY_DIR}/version.rc)
 add_dependencies(${target_name} UGrid)
 
