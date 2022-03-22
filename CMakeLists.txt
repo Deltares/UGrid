@@ -17,6 +17,16 @@ project(
 set(LIBRARY_OUTPUT_PATH "${CMAKE_BINARY_DIR}/bin")
 set(EXECUTABLE_OUTPUT_PATH "${CMAKE_BINARY_DIR}/bin")
 
+# Create position independent binaries
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+# Require C++17
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+# Disable compiler specific extensions
+set(CMAKE_CXX_EXTENSIONS OFF)
+# Set cmake installation prefix, so UGrid library gets installed under /UGrid
+SET(CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}/UGrid")
+
 if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
   if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -g -O2 -std=c++17")
@@ -64,7 +74,6 @@ include_directories(${Boost_INCLUDE_DIR})
 find_package(netCDFCxx 4.3.1 REQUIRED)
 if (NetCDFCxx_FOUND)
     message(STATUS "NetCDFCXX include dirs: ${NetCDFCxx_INCLUDE_DIRS}")
-	message(STATUS "NETCDFCXX_PATH path: ${NETCDFCXX_PATH}")
 endif()
 
 # Use NetCDF

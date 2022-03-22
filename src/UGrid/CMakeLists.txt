@@ -1,11 +1,13 @@
 # Set library files
-file(GLOB HEADER_LIST CONFIGURE_DEPENDS "${PROJECT_SOURCE_DIR}/include/UGrid/*.hpp")
- 
+file(GLOB HEADER_LIST CONFIGURE_DEPENDS "${PROJECT_SOURCE_DIR}/include/UGrid/*.hpp") 
 file(GLOB SOURCE_LIST CONFIGURE_DEPENDS "${PROJECT_SOURCE_DIR}/src/UGrid/*.cpp")
 
 # Create the static lib
 set(target_name UGrid)
 add_library(${target_name} STATIC ${SOURCE_LIST} ${HEADER_LIST})
+
+# define the public header
+set_target_properties(${target_name} PROPERTIES PUBLIC_HEADER "${HEADER_LIST}")
 
 # Make sure that coverage information is produced when using gcc
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
@@ -36,3 +38,5 @@ source_group(
   TREE "${PROJECT_SOURCE_DIR}/include/UGrid"
   PREFIX "Header Files"
   FILES ${HEADER_LIST})
+
+install(TARGETS ${target_name} PUBLIC_HEADER DESTINATION "include/${target_name}")
