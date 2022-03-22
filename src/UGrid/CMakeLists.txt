@@ -4,23 +4,24 @@ file(GLOB HEADER_LIST CONFIGURE_DEPENDS "${PROJECT_SOURCE_DIR}/include/UGrid/*.h
 file(GLOB SOURCE_LIST CONFIGURE_DEPENDS "${PROJECT_SOURCE_DIR}/src/UGrid/*.cpp")
 
 # Create the static lib
-add_library(UGrid STATIC ${SOURCE_LIST} ${HEADER_LIST})
+set(target_name UGrid)
+add_library(${target_name} STATIC ${SOURCE_LIST} ${HEADER_LIST})
 
 # Make sure that coverage information is produced when using gcc
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-   set_target_properties(UGrid PROPERTIES COMPILE_FLAGS "-fprofile-arcs -ftest-coverage -static-libgcc -static-libstdc++")
-   set_target_properties(UGrid PROPERTIES LINK_FLAGS "-ldl -lgcov --coverage")
+   set_target_properties(${target_name} PROPERTIES COMPILE_FLAGS "-fprofile-arcs -ftest-coverage -static-libgcc -static-libstdc++")
+   set_target_properties(${target_name} PROPERTIES LINK_FLAGS "-ldl -lgcov --coverage")
 endif()
 
 # NetCDF CPP wrapper
-target_include_directories(UGrid PUBLIC "${PROJECT_SOURCE_DIR}/include" "${netCDF_INCLUDE_DIR}" "${NETCDFCXX_PATH}/cxx4")
+target_include_directories(${target_name} PUBLIC "${PROJECT_SOURCE_DIR}/include" ${netCDF_INCLUDE_DIR} "${NETCDFCXX_PATH}/cxx4")
 
 # Add target link dependencies
-target_link_directories(UGrid PRIVATE ${netCDF_LIB_DIR})
-target_link_libraries(UGrid PRIVATE netCDF::netcdf-cxx4 netcdf)
+target_link_directories(${target_name} PRIVATE ${netCDF_LIB_DIR})
+target_link_libraries(${target_name} PRIVATE netCDF::netcdf-cxx4 netcdf)
 
 # Add precompiled header 
-target_precompile_headers(UGrid PRIVATE <map> 
+target_precompile_headers(${target_name} PRIVATE <map> 
                                         <string> 
                                         <unordered_map> 
                                         <vector> 
