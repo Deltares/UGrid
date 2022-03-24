@@ -5,8 +5,9 @@ var indexSectionsWithContent =
   2: "u",
   3: "cdfghimnopstu",
   4: "bcdefgilmnsv",
-  5: "u",
-  6: "m"
+  5: "mu",
+  6: "efn",
+  7: "m"
 };
 
 var indexSectionNames =
@@ -17,7 +18,8 @@ var indexSectionNames =
   3: "functions",
   4: "variables",
   5: "enums",
-  6: "pages"
+  6: "enumvalues",
+  7: "pages"
 };
 
 var indexSectionLabels =
@@ -28,6 +30,7 @@ var indexSectionLabels =
   3: "Functions",
   4: "Variables",
   5: "Enumerations",
-  6: "Pages"
+  6: "Enumerator",
+  7: "Pages"
 };
 

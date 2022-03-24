@@ -120,9 +120,15 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a3c22d58fb986a6b38764eb8abbca52a8"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classugrid_1_1_u_grid_entity.html#a3c22d58fb986a6b38764eb8abbca52a8">get_topology_variable</a> () const</td></tr>
 <tr class="memdesc:a3c22d58fb986a6b38764eb8abbca52a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the topology variable.  <a href="classugrid_1_1_u_grid_entity.html#a3c22d58fb986a6b38764eb8abbca52a8">More...</a><br /></td></tr>
 <tr class="separator:a3c22d58fb986a6b38764eb8abbca52a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6746d2a5a07446e49140dca5545f306b"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classugrid_1_1_u_grid_entity.html#a6746d2a5a07446e49140dca5545f306b">get_name</a> () const</td></tr>
-<tr class="memdesc:a6746d2a5a07446e49140dca5545f306b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the entity name.  <a href="classugrid_1_1_u_grid_entity.html#a6746d2a5a07446e49140dca5545f306b">More...</a><br /></td></tr>
-<tr class="separator:a6746d2a5a07446e49140dca5545f306b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a84372450f9cbc2d1c4f55b1d79c267d6"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classugrid_1_1_u_grid_entity.html#a84372450f9cbc2d1c4f55b1d79c267d6">get_name</a> () const</td></tr>
+<tr class="memdesc:a84372450f9cbc2d1c4f55b1d79c267d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the entity name.  <a href="classugrid_1_1_u_grid_entity.html#a84372450f9cbc2d1c4f55b1d79c267d6">More...</a><br /></td></tr>
+<tr class="separator:a84372450f9cbc2d1c4f55b1d79c267d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf6cffd3d5adde8498aaeafc39ab69e7"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classugrid_1_1_u_grid_entity.html#abf6cffd3d5adde8498aaeafc39ab69e7">get_topology_attribute_variable</a> (const std::string &amp;attribute_name) const</td></tr>
+<tr class="memdesc:abf6cffd3d5adde8498aaeafc39ab69e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets a vector of nc variables.  <a href="classugrid_1_1_u_grid_entity.html#abf6cffd3d5adde8498aaeafc39ab69e7">More...</a><br /></td></tr>
+<tr class="separator:abf6cffd3d5adde8498aaeafc39ab69e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac3044d07f986a94bd5af4937bcc5659f"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classugrid_1_1_u_grid_entity.html#ac3044d07f986a94bd5af4937bcc5659f">get_dimension</a> (const <a class="el" href="namespaceugrid.html#a6683ff1752ab0bcf618e39cef85b2bd3">UGridFileDimensions</a> &amp;dimension) const</td></tr>
+<tr class="memdesc:ac3044d07f986a94bd5af4937bcc5659f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the dimension.  <a href="classugrid_1_1_u_grid_entity.html#ac3044d07f986a94bd5af4937bcc5659f">More...</a><br /></td></tr>
+<tr class="separator:ac3044d07f986a94bd5af4937bcc5659f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a362f53a49372dd503a08097292871e2a"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classugrid_1_1_u_grid_entity.html#a362f53a49372dd503a08097292871e2a">get_data_variables_names</a> (std::string const &amp;location_string)</td></tr>
 <tr class="memdesc:a362f53a49372dd503a08097292871e2a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the names of all data variables associated with a specific location.  <a href="classugrid_1_1_u_grid_entity.html#a362f53a49372dd503a08097292871e2a">More...</a><br /></td></tr>
 <tr class="separator:a362f53a49372dd503a08097292871e2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -718,6 +724,41 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
+<a id="ac3044d07f986a94bd5af4937bcc5659f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac3044d07f986a94bd5af4937bcc5659f">&#9670;&nbsp;</a></span>get_dimension()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto ugrid::UGridEntity::get_dimension </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="namespaceugrid.html#a6683ff1752ab0bcf618e39cef85b2bd3">UGridFileDimensions</a> &amp;&#160;</td>
+          <td class="paramname"><em>dimension</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Gets the dimension. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">dimension</td><td>The dimension enum defined on the entity </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The corresponding netCDF::NcDim </dd></dl>
+
+</div>
+</div>
 <a id="ae0aebd840d42376176cd44facccd4297"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae0aebd840d42376176cd44facccd4297">&#9670;&nbsp;</a></span>get_location_attribute_value()</h2>
 
@@ -753,8 +794,8 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="a6746d2a5a07446e49140dca5545f306b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6746d2a5a07446e49140dca5545f306b">&#9670;&nbsp;</a></span>get_name()</h2>
+<a id="a84372450f9cbc2d1c4f55b1d79c267d6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a84372450f9cbc2d1c4f55b1d79c267d6">&#9670;&nbsp;</a></span>get_name()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -763,7 +804,7 @@ template&lt;typename T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::string ugrid::UGridEntity::get_name </td>
+          <td class="memname">auto ugrid::UGridEntity::get_name </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -806,6 +847,41 @@ template&lt;typename T &gt; </div>
 
 <p>Get the number of topological attributes. </p>
 <dl class="section return"><dt>Returns</dt><dd>The number of topological attributes </dd></dl>
+
+</div>
+</div>
+<a id="abf6cffd3d5adde8498aaeafc39ab69e7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abf6cffd3d5adde8498aaeafc39ab69e7">&#9670;&nbsp;</a></span>get_topology_attribute_variable()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto ugrid::UGridEntity::get_topology_attribute_variable </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>attribute_name</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Gets a vector of nc variables. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">attribute_name</td><td>The attribute name </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The vector of nc variables </dd></dl>
 
 </div>
 </div>

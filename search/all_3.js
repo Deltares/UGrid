@@ -11,5 +11,5 @@ var searchData=
   ['edge_5fx_23',['edge_x',['../structugridapi_1_1_mesh1_d.html#a658b0c2c136f51268a922afabc8b8da4',1,'ugridapi::Mesh1D::edge_x()'],['../structugridapi_1_1_mesh2_d.html#a07fab68ce22bf2984dec2f440f673308',1,'ugridapi::Mesh2D::edge_x()']]],
   ['edge_5fy_24',['edge_y',['../structugridapi_1_1_mesh1_d.html#a0486b690e1c63a7c6810ec2c4d4851eb',1,'ugridapi::Mesh1D::edge_y()'],['../structugridapi_1_1_mesh2_d.html#afb4fe45ada04a0f9a4c51a139e8abec4',1,'ugridapi::Mesh2D::edge_y()']]],
   ['edge_5fz_25',['edge_z',['../structugridapi_1_1_mesh2_d.html#a6c79750dc8dbc218e16d7ec0b55ed66a',1,'ugridapi::Mesh2D']]],
-  ['edges_26',['edges',['../structugridapi_1_1_contacts.html#a3a913d1687c60af3c550c2d71b204c3f',1,'ugridapi::Contacts']]]
+  ['edges_26',['edges',['../structugridapi_1_1_contacts.html#a3a913d1687c60af3c550c2d71b204c3f',1,'ugridapi::Contacts::edges()'],['../namespaceugridapi.html#abd9c0f9c340d83eb84bb5ef6176b446aa484afb8d54ec549700b1fe96417519a9',1,'ugridapi::Edges()']]]
 ];

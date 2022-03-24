@@ -113,6 +113,12 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:ad14b6cbcd1562d3cf311df2931ddd5f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enumeration for the error types. <br /></td></tr>
 <tr class="separator:ad14b6cbcd1562d3cf311df2931ddd5f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd9c0f9c340d83eb84bb5ef6176b446a"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceugridapi.html#abd9c0f9c340d83eb84bb5ef6176b446a">MeshLocations</a> { <a class="el" href="namespaceugridapi.html#abd9c0f9c340d83eb84bb5ef6176b446aa4f93ea0836ba76b6f9b81e3eee53a3af">MeshLocations::Faces</a> = 0, 
+<a class="el" href="namespaceugridapi.html#abd9c0f9c340d83eb84bb5ef6176b446aa187c6ad3a74cc93ac6c2229d398e383e">MeshLocations::Nodes</a> = 1, 
+<a class="el" href="namespaceugridapi.html#abd9c0f9c340d83eb84bb5ef6176b446aa484afb8d54ec549700b1fe96417519a9">MeshLocations::Edges</a> = 2
+ }</td></tr>
+<tr class="memdesc:abd9c0f9c340d83eb84bb5ef6176b446a"><td class="mdescLeft">&#160;</td><td class="mdescRight">MeshLocations locations.  <a href="namespaceugridapi.html#abd9c0f9c340d83eb84bb5ef6176b446a">More...</a><br /></td></tr>
+<tr class="separator:abd9c0f9c340d83eb84bb5ef6176b446a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
@@ -155,6 +161,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a1868f41ecae2d2b7ef0a2a1f2a5c45d6"><td class="memItemLeft" align="right" valign="top">UGRID_API int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceugridapi.html#a1868f41ecae2d2b7ef0a2a1f2a5c45d6">ug_topology_get_data_variables_names</a> (int file_id, int topology_type, int topology_id, int location, char *data_variables_names_result)</td></tr>
 <tr class="memdesc:a1868f41ecae2d2b7ef0a2a1f2a5c45d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the names of data variables for a specific topology on a specific location.  <a href="namespaceugridapi.html#a1868f41ecae2d2b7ef0a2a1f2a5c45d6">More...</a><br /></td></tr>
 <tr class="separator:a1868f41ecae2d2b7ef0a2a1f2a5c45d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aefd06bf847075e3658dc778e324cde82"><td class="memItemLeft" align="right" valign="top">UGRID_API int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceugridapi.html#aefd06bf847075e3658dc778e324cde82">ug_topology_define_double_variable_on_location</a> (int file_id, int topology_type, int topology_id, int location, const char *variable_name, const char *dimension_name, const int dimension_value)</td></tr>
+<tr class="memdesc:aefd06bf847075e3658dc778e324cde82"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the names of data variables for a specific topology on a specific location.  <a href="namespaceugridapi.html#aefd06bf847075e3658dc778e324cde82">More...</a><br /></td></tr>
+<tr class="separator:aefd06bf847075e3658dc778e324cde82"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a969c350b14490016f673e753008315fe"><td class="memItemLeft" align="right" valign="top">UGRID_API int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceugridapi.html#a969c350b14490016f673e753008315fe">ug_variable_count_attributes</a> (int file_id, char const *variable_name, int &amp;attributes_count)</td></tr>
 <tr class="memdesc:a969c350b14490016f673e753008315fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the number of attributes of a specific variable.  <a href="namespaceugridapi.html#a969c350b14490016f673e753008315fe">More...</a><br /></td></tr>
 <tr class="separator:a969c350b14490016f673e753008315fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -257,10 +266,52 @@ Functions</h2></td></tr>
 <tr class="memitem:a4895c6119e0958eef9e0c9ffff88a6f0"><td class="memItemLeft" align="right" valign="top">UGRID_API int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceugridapi.html#a4895c6119e0958eef9e0c9ffff88a6f0">ug_attribute_global_char_define</a> (int file_id, char const *att_name, char const *attribute_values, int num_values)</td></tr>
 <tr class="memdesc:a4895c6119e0958eef9e0c9ffff88a6f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a char attributes as global and not related to a variable.  <a href="namespaceugridapi.html#a4895c6119e0958eef9e0c9ffff88a6f0">More...</a><br /></td></tr>
 <tr class="separator:a4895c6119e0958eef9e0c9ffff88a6f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3b5910f26a8ad124ebb2005ed8f9c756"><td class="memItemLeft" align="right" valign="top">UGRID_API int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceugridapi.html#a3b5910f26a8ad124ebb2005ed8f9c756">ug_get_edges_location_type</a> (int &amp;type)</td></tr>
+<tr class="memdesc:a3b5910f26a8ad124ebb2005ed8f9c756"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets an int indicating the edge location type.  <a href="namespaceugridapi.html#a3b5910f26a8ad124ebb2005ed8f9c756">More...</a><br /></td></tr>
+<tr class="separator:a3b5910f26a8ad124ebb2005ed8f9c756"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1fa46c9f431db048b092b6f1200213cb"><td class="memItemLeft" align="right" valign="top">UGRID_API int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceugridapi.html#a1fa46c9f431db048b092b6f1200213cb">ug_get_nodes_location_type</a> (int &amp;type)</td></tr>
+<tr class="memdesc:a1fa46c9f431db048b092b6f1200213cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets an int indicating the node location type.  <a href="namespaceugridapi.html#a1fa46c9f431db048b092b6f1200213cb">More...</a><br /></td></tr>
+<tr class="separator:a1fa46c9f431db048b092b6f1200213cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad4e716cc04c77e69069a7a85f4b6d0cb"><td class="memItemLeft" align="right" valign="top">UGRID_API int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceugridapi.html#ad4e716cc04c77e69069a7a85f4b6d0cb">ug_get_faces_location_type</a> (int &amp;type)</td></tr>
+<tr class="memdesc:ad4e716cc04c77e69069a7a85f4b6d0cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets an int indicating the faces location type.  <a href="namespaceugridapi.html#ad4e716cc04c77e69069a7a85f4b6d0cb">More...</a><br /></td></tr>
+<tr class="separator:ad4e716cc04c77e69069a7a85f4b6d0cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Contains all structs and functions exposed at the API level. </p>
-</div><h2 class="groupheader">Function Documentation</h2>
+</div><h2 class="groupheader">Enumeration Type Documentation</h2>
+<a id="abd9c0f9c340d83eb84bb5ef6176b446a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abd9c0f9c340d83eb84bb5ef6176b446a">&#9670;&nbsp;</a></span>MeshLocations</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="namespaceugridapi.html#abd9c0f9c340d83eb84bb5ef6176b446a">ugridapi::MeshLocations</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>MeshLocations locations. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="abd9c0f9c340d83eb84bb5ef6176b446aa4f93ea0836ba76b6f9b81e3eee53a3af"></a>Faces&#160;</td><td class="fielddoc"><p>Faces. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="abd9c0f9c340d83eb84bb5ef6176b446aa187c6ad3a74cc93ac6c2229d398e383e"></a>Nodes&#160;</td><td class="fielddoc"><p>Nodes. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="abd9c0f9c340d83eb84bb5ef6176b446aa484afb8d54ec549700b1fe96417519a9"></a>Edges&#160;</td><td class="fielddoc"><p>Edges. </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+<h2 class="groupheader">Function Documentation</h2>
 <a id="ade0f3adb023efd0fd7feb4748b888ca5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ade0f3adb023efd0fd7feb4748b888ca5">&#9670;&nbsp;</a></span>ug_attribute_char_define()</h2>
 
@@ -689,7 +740,7 @@ Functions</h2></td></tr>
 <p>Gets the integer identifying an edge location. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">location</td><td>[out] The integer identifying an edge location </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">location</td><td>The integer identifying an edge location </td></tr>
   </table>
   </dd>
 </dl>
@@ -716,7 +767,7 @@ Functions</h2></td></tr>
 <p>Gets the integer identifying an face location. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">location</td><td>[out] The integer identifying a face location </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">location</td><td>The integer identifying a face location </td></tr>
   </table>
   </dd>
 </dl>
@@ -743,7 +794,7 @@ Functions</h2></td></tr>
 <p>Gets the integer identifying a node location. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">location</td><td>[out] The integer identifying a node location </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">location</td><td>The integer identifying a node location </td></tr>
   </table>
   </dd>
 </dl>
@@ -797,7 +848,7 @@ Functions</h2></td></tr>
 <p>Closes a file. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">file_id</td><td>[in] The file id </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">file_id</td><td>The file id </td></tr>
   </table>
   </dd>
 </dl>
@@ -840,9 +891,9 @@ Functions</h2></td></tr>
 <p>Opens a file and fills the library state. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">file_path</td><td>[in] The path of the file </td></tr>
-    <tr><td class="paramname">mode</td><td>[in] The opening mode </td></tr>
-    <tr><td class="paramname">file_id</td><td>[out] The file id </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">file_path</td><td>The path of the file </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">mode</td><td>The opening mode </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">file_id</td><td>The file id </td></tr>
   </table>
   </dd>
 </dl>
@@ -869,7 +920,7 @@ Functions</h2></td></tr>
 <p>Gets the integer identifying the file read mode. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">mode</td><td>[out] the integer identifying the file read mode </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">mode</td><td>the integer identifying the file read mode </td></tr>
   </table>
   </dd>
 </dl>
@@ -904,7 +955,7 @@ Functions</h2></td></tr>
 <p>Gets the integer identifying the file replace mode. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">mode</td><td>[out] The integer identifying the file replace mode </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">mode</td><td>The integer identifying the file replace mode </td></tr>
   </table>
   </dd>
 </dl>
@@ -931,7 +982,88 @@ Functions</h2></td></tr>
 <p>Gets the integer identifying the file write mode. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">mode</td><td>[out] The integer identifying the file write mode </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">mode</td><td>The integer identifying the file write mode </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Error code </dd></dl>
+
+</div>
+</div>
+<a id="a3b5910f26a8ad124ebb2005ed8f9c756"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3b5910f26a8ad124ebb2005ed8f9c756">&#9670;&nbsp;</a></span>ug_get_edges_location_type()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">UGRID_API int ugridapi::ug_get_edges_location_type </td>
+          <td>(</td>
+          <td class="paramtype">int &amp;&#160;</td>
+          <td class="paramname"><em>type</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Gets an int indicating the edge location type. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">type</td><td>The int indicating the edge location type </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Error code </dd></dl>
+
+</div>
+</div>
+<a id="ad4e716cc04c77e69069a7a85f4b6d0cb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad4e716cc04c77e69069a7a85f4b6d0cb">&#9670;&nbsp;</a></span>ug_get_faces_location_type()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">UGRID_API int ugridapi::ug_get_faces_location_type </td>
+          <td>(</td>
+          <td class="paramtype">int &amp;&#160;</td>
+          <td class="paramname"><em>type</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Gets an int indicating the faces location type. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">type</td><td>The int indicating the face location type </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Error code </dd></dl>
+
+</div>
+</div>
+<a id="a1fa46c9f431db048b092b6f1200213cb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1fa46c9f431db048b092b6f1200213cb">&#9670;&nbsp;</a></span>ug_get_nodes_location_type()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">UGRID_API int ugridapi::ug_get_nodes_location_type </td>
+          <td>(</td>
+          <td class="paramtype">int &amp;&#160;</td>
+          <td class="paramname"><em>type</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Gets an int indicating the node location type. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">type</td><td>The int indicating the node location type </td></tr>
   </table>
   </dd>
 </dl>
@@ -1318,7 +1450,7 @@ Functions</h2></td></tr>
 <p>Gets the length of a name. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">length</td><td>[out] The length of names </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">length</td><td>The length of names </td></tr>
   </table>
   </dd>
 </dl>
@@ -1345,7 +1477,7 @@ Error code </dd></dl>
 </div><div class="memdoc">
 
 <p>Gets the length of a long name. </p>
-<dl class="section return"><dt>Returns</dt><dd>length [out] The length of long names </dd>
+<dl class="section return"><dt>Returns</dt><dd>[out] length The length of long names </dd>
 <dd>
 Error code </dd></dl>
 
@@ -1386,9 +1518,9 @@ Error code </dd></dl>
 <p>Defines a new network1d topology. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">file_id</td><td>[in] The file id </td></tr>
-    <tr><td class="paramname">network1d_api</td><td>[in] The structure containing the network data </td></tr>
-    <tr><td class="paramname">topology_id</td><td>[out] The id of the newly created network topology </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">file_id</td><td>The file id </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">network1d_api</td><td>The structure containing the network data </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">topology_id</td><td>The id of the newly created network topology </td></tr>
   </table>
   </dd>
 </dl>
@@ -1521,9 +1653,9 @@ Error code </dd></dl>
 <p>Writes the network1d geometrical data to file. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">file_id</td><td>[in] The file id </td></tr>
-    <tr><td class="paramname">topology_id</td><td>[in] The topology id </td></tr>
-    <tr><td class="paramname">network1d_api</td><td>[in] The structure containing the network data </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">file_id</td><td>The file id </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">topology_id</td><td>The topology id </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">network1d_api</td><td>The structure containing the network data </td></tr>
   </table>
   </dd>
 </dl>
@@ -1578,11 +1710,84 @@ Error code </dd></dl>
 <p>Get the number of data variables for a specific topology on a specific location. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">file_id</td><td>[in] The file id </td></tr>
-    <tr><td class="paramname">topology_type</td><td>[in] The topology type </td></tr>
-    <tr><td class="paramname">topology_id</td><td>[in] The topology id </td></tr>
-    <tr><td class="paramname">location</td><td>[in] The location (node, edge, face) </td></tr>
-    <tr><td class="paramname">data_variable_count</td><td>[out] The number of data variables on the topology </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">file_id</td><td>The file id </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">topology_type</td><td>The topology type </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">topology_id</td><td>The topology id </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">location</td><td>The location (node, edge, face) </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">data_variable_count</td><td>The number of data variables on the topology </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Error code </dd></dl>
+
+</div>
+</div>
+<a id="aefd06bf847075e3658dc778e324cde82"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aefd06bf847075e3658dc778e324cde82">&#9670;&nbsp;</a></span>ug_topology_define_double_variable_on_location()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">UGRID_API int ugridapi::ug_topology_define_double_variable_on_location </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>file_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>topology_type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>topology_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>location</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>variable_name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>dimension_name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>dimension_value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get the names of data variables for a specific topology on a specific location. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">file_id</td><td>The file id </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">topology_type</td><td>The topology type </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">topology_id</td><td>The topology id </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">location</td><td>The location on the topology (e.g. node, edge or face) </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">variable_name</td><td>The variable name </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">dimension_name</td><td>The name of the dimension not related to a topology (e.g "numTimeSteps") </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">dimension_value</td><td>The dimension value </td></tr>
   </table>
   </dd>
 </dl>
@@ -1609,7 +1814,7 @@ Error code </dd></dl>
 <p>Gets the integer identifying the contact topology type. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">topology_enum</td><td>[out] The integer identifying the contact topology type </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">topology_enum</td><td>The integer identifying the contact topology type </td></tr>
   </table>
   </dd>
 </dl>
@@ -1652,9 +1857,9 @@ Error code </dd></dl>
 <p>Gets the number of topologies of a specific type. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">file_id</td><td>[in] The file id </td></tr>
-    <tr><td class="paramname">topology_type</td><td>[in] The topology type </td></tr>
-    <tr><td class="paramname">topology_count</td><td>[out] The number of topologies of the specific type </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">file_id</td><td>The file id </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">topology_type</td><td>The topology type </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">topology_count</td><td>The number of topologies of the specific type </td></tr>
   </table>
   </dd>
 </dl>
@@ -1709,11 +1914,11 @@ Error code </dd></dl>
 <p>Get the names of data variables for a specific topology on a specific location. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">file_id</td><td>[in] The file id </td></tr>
-    <tr><td class="paramname">topology_type</td><td>[in] The topology type </td></tr>
-    <tr><td class="paramname">topology_id</td><td>[in] The topology id </td></tr>
-    <tr><td class="paramname">location</td><td>[in] The location on the topology (e.g. node, edge or face) </td></tr>
-    <tr><td class="paramname">data_variables_names_result</td><td>[out] </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">file_id</td><td>The file id </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">topology_type</td><td>The topology type </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">topology_id</td><td>The topology id </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">location</td><td>The location on the topology (e.g. node, edge or face) </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">data_variables_names_result</td><td>The names of the data variables </td></tr>
   </table>
   </dd>
 </dl>
@@ -1740,7 +1945,7 @@ Error code </dd></dl>
 <p>Gets the integer identifying the mesh1d topology type. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">topology_enum</td><td>[out] The integer identifying the mesh1d topology type </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">topology_enum</td><td>The integer identifying the mesh1d topology type </td></tr>
   </table>
   </dd>
 </dl>
@@ -1767,7 +1972,7 @@ Error code </dd></dl>
 <p>Gets the integer identifying the mesh2d topology type. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">topology_enum</td><td>[out] The integer identifying the mesh2d topology type </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">topology_enum</td><td>The integer identifying the mesh2d topology type </td></tr>
   </table>
   </dd>
 </dl>
@@ -1794,7 +1999,7 @@ Error code </dd></dl>
 <p>Gets the integer identifying the network topology type. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">topology_enum</td><td>[out] The integer identifying the network topology type </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">topology_enum</td><td>The integer identifying the network topology type </td></tr>
   </table>
   </dd>
 </dl>
@@ -1837,9 +2042,9 @@ Error code </dd></dl>
 <p>Get the number of attributes of a specific variable. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">file_id</td><td>[in] The file id </td></tr>
-    <tr><td class="paramname">variable_name</td><td>[in] The variable name </td></tr>
-    <tr><td class="paramname">attributes_count</td><td>[out] The number of attributes </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">file_id</td><td>The file id </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">variable_name</td><td>The variable name </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">attributes_count</td><td>The number of attributes </td></tr>
   </table>
   </dd>
 </dl>
@@ -1882,9 +2087,9 @@ Error code </dd></dl>
 <p>Get the number of dimensions of a specific variable. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">file_id</td><td>[in] The file id </td></tr>
-    <tr><td class="paramname">variable_name</td><td>[in] The variable name </td></tr>
-    <tr><td class="paramname">dimensions_count</td><td>[in] The number of dimensions </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">file_id</td><td>The file id </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">variable_name</td><td>The variable name </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">dimensions_count</td><td>The number of dimensions </td></tr>
   </table>
   </dd>
 </dl>
@@ -1927,9 +2132,9 @@ Error code </dd></dl>
 <p>Get the attributes names of a specific variable. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">file_id</td><td>[in] The file id </td></tr>
-    <tr><td class="paramname">variable_name</td><td>[in] The variable name </td></tr>
-    <tr><td class="paramname">names</td><td>[out] The attribute names </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">file_id</td><td>The file id </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">variable_name</td><td>The variable name </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">names</td><td>The attribute names </td></tr>
   </table>
   </dd>
 </dl>
@@ -1972,9 +2177,9 @@ Error code </dd></dl>
 <p>Get the attributes values of a specific variable. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">file_id</td><td>[in] The file id </td></tr>
-    <tr><td class="paramname">variable_name</td><td>[in] The variable name </td></tr>
-    <tr><td class="paramname">values</td><td>[out] The attribute values </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">file_id</td><td>The file id </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">variable_name</td><td>The variable name </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">values</td><td>The attribute values </td></tr>
   </table>
   </dd>
 </dl>
@@ -2017,9 +2222,9 @@ Error code </dd></dl>
 <p>Get the variable data as a flat array of char. This might be large, because the arrays can have a large dimensionality. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">file_id</td><td>[in] The file id </td></tr>
-    <tr><td class="paramname">variable_name</td><td>[in] The variable name </td></tr>
-    <tr><td class="paramname">data</td><td>[out] The variable data </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">file_id</td><td>The file id </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">variable_name</td><td>The variable name </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">data</td><td>The variable data </td></tr>
   </table>
   </dd>
 </dl>
@@ -2062,9 +2267,9 @@ Error code </dd></dl>
 <p>Get the dimension values of a specific variable. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">file_id</td><td>[in] The file id </td></tr>
-    <tr><td class="paramname">variable_name</td><td>[in] The variable name </td></tr>
-    <tr><td class="paramname">dimension_vec</td><td>[in] The dimension values associated with the variable name </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">file_id</td><td>The file id </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">variable_name</td><td>The variable name </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">dimension_vec</td><td>The dimension values associated with the variable name </td></tr>
   </table>
   </dd>
 </dl>
@@ -2107,9 +2312,9 @@ Error code </dd></dl>
 <p>Get the variable data as a flat array of doubles. This might be large, because the arrays can have a large dimensionality. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">file_id</td><td>[in] The file id </td></tr>
-    <tr><td class="paramname">variable_name</td><td>[in] The variable name </td></tr>
-    <tr><td class="paramname">data</td><td>[out] The variable data </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">file_id</td><td>The file id </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">variable_name</td><td>The variable name </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">data</td><td>The variable data </td></tr>
   </table>
   </dd>
 </dl>
@@ -2152,9 +2357,9 @@ Error code </dd></dl>
 <p>Get the variable data as a flat array of int. This might be large, because the arrays can have a large dimensionality. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">file_id</td><td>[in] The file id </td></tr>
-    <tr><td class="paramname">variable_name</td><td>[in] The variable name </td></tr>
-    <tr><td class="paramname">data</td><td>[out] The variable data </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">file_id</td><td>The file id </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">variable_name</td><td>The variable name </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">data</td><td>The variable data </td></tr>
   </table>
   </dd>
 </dl>
