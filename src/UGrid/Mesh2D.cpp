@@ -189,16 +189,6 @@ void Mesh2D::define(ugridapi::Mesh2D const& mesh2d)
         }
     }
 
-    // Layers, optionally required if layers are present (1D or 2D layered mesh topology)
-    if (mesh2d.num_layers > 0)
-    {
-        // Part to complete
-        //std::string long_name_patter;
-        //define_topological_variable_with_coordinates(UGridEntityLocations::layer, UGridFileDimensions::layer, mesh2d.num_layers, false, long_name_patter);
-        //define_topological_variable_with_coordinates(UGridEntityLocations::layer_interface, UGridFileDimensions::layer_interface, mesh2d.num_layers + 1, false, long_name_patter);
-        //define_topological_variable_with_coordinates(UGridEntityLocations::vertical, UGridFileDimensions::layer, mesh2d.num_layers + 1, false, long_name_patter);
-    }
-
     m_nc_file->enddef();
 }
 
