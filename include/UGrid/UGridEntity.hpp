@@ -97,7 +97,7 @@ namespace ugrid
 
         /// @brief Get the number of topological attributes
         /// @return The number of topological attributes
-        [[nodiscard]] const auto& get_num_attributes() const
+        [[nodiscard]] auto get_num_attributes() const
         {
             return m_topology_attributes_variables_values.size();
         }
