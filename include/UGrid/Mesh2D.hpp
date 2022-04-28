@@ -49,7 +49,7 @@ namespace ugrid
         /// @param entity_attributes The topological attributes (key value pair with key the topological attribute name and value the associated vector of variables)
         /// @param entity_attribute_names The topological attributes names (key value pair with key the topological attribute name and value the associated vector of variables names)
         /// @param entity_dimensions The dimensions associated with the mesh2d (key value pair with key the dimension enumeration and value the associated NetCDF dimension)
-        explicit Mesh2D(
+        Mesh2D(
             std::shared_ptr<netCDF::NcFile> nc_file,
             netCDF::NcVar const& topology_variable,
             std::map<std::string, std::vector<netCDF::NcVar>> const& entity_attributes,

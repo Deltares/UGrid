@@ -69,17 +69,17 @@ namespace ugrid
         lon
     };
 
-    size_t const name_length = 40;                                          ///< length of the names
-    size_t const name_long_length = 80;                                     ///< length of the long names
-    int const int_invalid_value = std::numeric_limits<int>::max();          ///< integer invalid value
-    double const double_invalid_value = std::numeric_limits<double>::max(); ///< double invalid value
+    const size_t name_length = 40;                                          ///< length of the names
+    const size_t name_long_length = 80;                                     ///< length of the long names
+    const int int_invalid_value = std::numeric_limits<int>::max();          ///< integer invalid value
+    const double double_invalid_value = std::numeric_limits<double>::max(); ///< double invalid value
 
-    int const int_missing_value = -999;                                         ///< integer missing value
-    double const double_missing_value = -999.0;                                 ///< double missing value
-    int const num_face_nodes_max = 6;                                           ///< default maximum number of node per face
-    std::string const two_string("Two");                                        ///< Name of variable dimension containing two
-    std::string const name_length_dimension("name_length_dimension");           ///< Name of variable dimension containing two
-    std::string const name_long_length_dimension("name_long_length_dimension"); ///< Name of variable dimension containing two
+    const int int_missing_value = -999;                                         ///< integer missing value
+    const double double_missing_value = -999.0;                                 ///< double missing value
+    const int num_face_nodes_max = 6;                                           ///< default maximum number of node per face
+    const std::string two_string("Two");                                        ///< Name of variable dimension containing two
+    const std::string name_length_dimension("name_length_dimension");           ///< Name of variable dimension containing two
+    const std::string name_long_length_dimension("name_long_length_dimension"); ///< Name of variable dimension containing two
 
     // define topology variable aliases
     static const std::map<std::string, std::vector<std::string>> attribute_aliases{

@@ -39,7 +39,7 @@ namespace ugrid
     {
         /// @brief Constructor setting the NetCDF file
         /// @param nc_file The NetCDF file pointer
-        explicit Contacts(std::shared_ptr<netCDF::NcFile> nc_file) : UGridEntity(nc_file)
+        Contacts(std::shared_ptr<netCDF::NcFile> nc_file) : UGridEntity(nc_file)
         {
         }
 

@@ -49,11 +49,11 @@ namespace ugrid
         /// @param entity_attributes The topological attributes (key value pair with key the topological attribute name and value the associated vector of variables)
         /// @param entity_attribute_names The topological attributes names (key value pair with key the topological attribute name and value the associated vector of variables names)
         /// @param entity_dimensions The dimensions associated with the mesh1d (key value pair with key the dimension enumeration and value the associated NetCDF dimension)
-        explicit Mesh1D(std::shared_ptr<netCDF::NcFile> nc_file,
-                        netCDF::NcVar const& topology_variable,
-                        std::map<std::string, std::vector<netCDF::NcVar>> const& entity_attributes,
-                        std::map<std::string, std::vector<std::string>> const& entity_attribute_names,
-                        std::map<UGridFileDimensions, netCDF::NcDim> const& entity_dimensions);
+        Mesh1D(std::shared_ptr<netCDF::NcFile> nc_file,
+               netCDF::NcVar const& topology_variable,
+               std::map<std::string, std::vector<netCDF::NcVar>> const& entity_attributes,
+               std::map<std::string, std::vector<std::string>> const& entity_attribute_names,
+               std::map<UGridFileDimensions, netCDF::NcDim> const& entity_dimensions);
 
         /// @brief Defines the mesh1d header (ug_write_mesh_arrays, ug_create_1d_mesh_v2, ug_def_mesh_ids)
         /// @param mesh1d The mesh1d api structure with the fields to write and all optional flags

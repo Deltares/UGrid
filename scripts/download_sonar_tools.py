@@ -7,10 +7,10 @@ import requests
 import zipfile
 import shutil
 import platform
+import argparse
 
 from pathlib import Path
 
-SONAR_SCANNER_VERSION = "4.4.0.2170"
 
 
 def download_file(url: str, save_path: Path, chunk_size=128) -> None:
@@ -46,11 +46,11 @@ def rename_sonar_scanner_folder(save_dir: Path) -> None:
     )
 
 
-def get_scanner(save_dir: Path) -> None:
+def get_scanner(save_dir: Path, sonar_scanner_version: str) -> None:
     if platform.system() == "Windows":
-        url = f"https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-{SONAR_SCANNER_VERSION}-windows.zip"
+        url = f"https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-{sonar_scanner_version}-windows.zip"
     elif platform.system() == "Linux":
-        url = f"https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-{SONAR_SCANNER_VERSION}-linux.zip"
+        url = f"https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-{sonar_scanner_version}-linux.zip"
     else:
         raise Exception("Unsupported OS used.")
 
@@ -61,7 +61,14 @@ def get_scanner(save_dir: Path) -> None:
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-ssv",
+                        "--sonar_scanner_version",
+                        help="The sonar scanner version",
+                        default="4.4.0.2170")
+    args = vars(parser.parse_args())
+
     save_dir = Path(".") / Path(".sonar")
     save_dir.mkdir(exist_ok=True)
     get_build_wrapper(save_dir)
-    get_scanner(save_dir)
+    get_scanner(save_dir, args["sonar_scanner_version"])
