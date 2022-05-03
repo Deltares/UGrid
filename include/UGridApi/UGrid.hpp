@@ -278,141 +278,141 @@ namespace ugridapi
         UGRID_API int ug_network1d_put(int file_id, int topology_id, Network1D const& network1d_api);
 
         /// @brief Inquires the network1d dimensions and names
-        /// @param file_id [in] The file id
-        /// @param topology_id [in] The topology id
-        /// @param network1d_api [out] The structure containing the network data
+        /// @param[in] file_id The file id
+        /// @param[in] topology_id The topology id
+        /// @param[out] network1d_api The structure containing the network data
         /// @return Error code
         UGRID_API int ug_network1d_inq(int file_id, int topology_id, Network1D& network1d_api);
 
         /// @brief Gets the network1d geometrical data
-        /// @param file_id [in] The file id
-        /// @param topology_id [in] The topology id
-        /// @param network1d_api [out] The structure containing the network data
+        /// @param[in] file_id The file id
+        /// @param[in] topology_id The topology id
+        /// @param[out] network1d_api The structure containing the network data
         /// @return Error code
         UGRID_API int ug_network1d_get(int file_id, int topology_id, Network1D& network1d_api);
 
         /// @brief Defines a new mesh1d topology
-        /// @param file_id [in] The file id
-        /// @param mesh1d_api [in] The structure containing the mesh1d data
-        /// @param topology_id [out] The id of the newly created mesh1d topology
+        /// @param[in] file_id The file id
+        /// @param[in] mesh1d_api The structure containing the mesh1d data
+        /// @param[out] topology_id The id of the newly created mesh1d topology
         /// @return Error code
         UGRID_API int ug_mesh1d_def(int file_id, Mesh1D const& mesh1d_api, int& topology_id);
 
         /// @brief Writes mesh1d geometrical data to file
-        /// @param file_id [in] The file id
-        /// @param topology_id [in] The topology id
-        /// @param mesh1d_api [in] The structure containing the mesh1d data
+        /// @param[in] file_id The file id
+        /// @param[in] topology_id The topology id
+        /// @param[in] mesh1d_api The structure containing the mesh1d data
         /// @return Error code
         UGRID_API int ug_mesh1d_put(int file_id, int topology_id, Mesh1D const& mesh1d_api);
 
         /// @brief Inquires mesh1d dimensions and names
-        /// @param file_id [in] The file id
-        /// @param topology_id [in] The topology id
-        /// @param mesh1d_api [out] The structure containing the mesh1d data
+        /// @param[in] file_id The file id
+        /// @param[in] topology_id The topology id
+        /// @param[out] mesh1d_api The structure containing the mesh1d data
         /// @return Error code
         UGRID_API int ug_mesh1d_inq(int file_id, int topology_id, Mesh1D& mesh1d_api);
 
         /// @brief Gets mesh1d geometrical data
-        /// @param file_id [in] The file id
-        /// @param topology_id [in] The topology id
-        /// @param mesh1d_api [out] The structure containing the mesh1d data
+        /// @param[in] file_id The file id
+        /// @param[in] topology_id The topology id
+        /// @param[out] mesh1d_api The structure containing the mesh1d data
         /// @return Error code
         UGRID_API int ug_mesh1d_get(int file_id, int topology_id, Mesh1D& mesh1d_api);
 
         /// @brief Defines a new mesh2d topology
-        /// @param file_id [in] The file id
-        /// @param mesh2d_api [in] The structure containing the mesh2d data
-        /// @param topology_id [out] The id of the newly created mesh2d topology
+        /// @param[in] file_id The file id
+        /// @param[in] mesh2d_api The structure containing the mesh2d data
+        /// @param[out] topology_id The id of the newly created mesh2d topology
         /// @return Error code
         UGRID_API int ug_mesh2d_def(int file_id, Mesh2D const& mesh2d_api, int& topology_id);
 
         /// @brief Writes mesh2d geometrical data to file
-        /// @param file_id [in] The file id
-        /// @param topology_id [in] The topology id
-        /// @param mesh2d_api [in] The structure containing the mesh2d data
+        /// @param[in] file_id The file id
+        /// @param[in] topology_id The topology id
+        /// @param[in] mesh2d_api The structure containing the mesh2d data
         /// @return Error code
         UGRID_API int ug_mesh2d_put(int file_id, int topology_id, Mesh2D const& mesh2d_api);
 
         /// @brief Inquires mesh2d dimensions and names
-        /// @param file_id [in] The file id
-        /// @param topology_id [in] The topology id
-        /// @param mesh2d_api [out] The structure containing the mesh2d data
+        /// @param[in] file_id The file id
+        /// @param[in] topology_id The topology id
+        /// @param[out] mesh2d_api The structure containing the mesh2d data
         /// @return Error code
         UGRID_API int ug_mesh2d_inq(int file_id, int topology_id, Mesh2D& mesh2d_api);
 
         /// @brief Gets mesh2d geometrical data
-        /// @param file_id [in] The file id
-        /// @param topology_id [in] The topology id
-        /// @param mesh2d_api [out] The structure containing the mesh2d data
+        /// @param[in] file_id The file id
+        /// @param[in] topology_id The topology id
+        /// @param[out] mesh2d_api The structure containing the mesh2d data
         /// @return Error code
         UGRID_API int ug_mesh2d_get(int file_id, int topology_id, Mesh2D& mesh2d_api);
 
         /// @brief Defines a new contact topology
-        /// @param file_id [in] The file id
-        /// @param contacts_api [in] The structure containing the contact data
-        /// @param topology_id [out] The id of the newly created contact topology
+        /// @param[in] file_id The file id
+        /// @param[in] contacts_api The structure containing the contact data
+        /// @param[out] topology_id The id of the newly created contact topology
         /// @return Error code
         UGRID_API int ug_contacts_def(int file_id, Contacts const& contacts_api, int& topology_id);
 
         /// @brief Writes contact geometrical data to file
-        /// @param file_id [in] The file id
-        /// @param topology_id [in] The topology id
-        /// @param contacts_api [in] The structure containing the contact data
+        /// @param[in] file_id The file id
+        /// @param[in] topology_id The topology id
+        /// @param[in] contacts_api The structure containing the contact data
         /// @return Error code
         UGRID_API int ug_contacts_put(int file_id, int topology_id, Contacts const& contacts_api);
 
         /// @brief Inquires contact dimensions and names
-        /// @param file_id [in] The file id
-        /// @param topology_id [in] The topology id
-        /// @param contacts_api [out] The structure containing the contact data
+        /// @param[in] file_id The file id
+        /// @param[in] topology_id The topology id
+        /// @param[out] contacts_api The structure containing the contact data
         /// @return Error code
         UGRID_API int ug_contacts_inq(int file_id, int topology_id, Contacts& contacts_api);
 
         /// @brief Gets contact geometrical data
-        /// @param file_id [in] The file id
-        /// @param topology_id [in] The topology id
-        /// @param contacts_api [out] The structure containing the contact data
+        /// @param[in] file_id The file id
+        /// @param[in] topology_id The topology id
+        /// @param[out] contacts_api The structure containing the contact data
         /// @return Error code
         UGRID_API int ug_contacts_get(int file_id, int topology_id, Contacts& contacts_api);
 
         /// @brief Defines a new integer variable
-        /// @param file_id [in] The file id
-        /// @param variable_name [in] The variable name
+        /// @param[in] file_id The file id
+        /// @param[in] variable_name The variable name
         /// @return Error code
         UGRID_API int ug_variable_int_define(int file_id, char const* variable_name);
 
         /// @brief Add integer attributes to an existing variable
-        /// @param file_id [in] The file id
-        /// @param variable_name [in] The variable name
-        /// @param attribute_name [in] The attribute name
-        /// @param attribute_values [in] The attribute values
-        /// @param num_values [in] The number of attribute values
+        /// @param[in] file_id The file id
+        /// @param[in] variable_name The variable name
+        /// @param[in] attribute_name The attribute name
+        /// @param[in] attribute_values The attribute values
+        /// @param[in] num_values The number of attribute values
         /// @return Error code
         UGRID_API int ug_attribute_int_define(int file_id, char const* variable_name, char const* attribute_name, int const* attribute_values, int num_values);
 
         /// @brief Add a char attributes to an existing variable
-        /// @param file_id [in] The file id
-        /// @param variable_name [in] The variable name
-        /// @param attribute_name [in] The attribute name
-        /// @param attribute_values [in] The attribute values
-        /// @param num_values [in] The number of attribute values
+        /// @param[in] file_id The file id
+        /// @param[in] variable_name The variable name
+        /// @param[in] attribute_name The attribute name
+        /// @param[in] attribute_values The attribute values
+        /// @param[in] num_values The number of attribute values
         /// @return Error code
         UGRID_API int ug_attribute_char_define(int file_id, char const* variable_name, char const* attribute_name, char const* attribute_values, int num_values);
 
         /// @brief Add a double attributes to an existing variable
-        /// @param file_id [in] The file id
-        /// @param variable_name [in] The variable name
-        /// @param attribute_name [in] The attribute name
-        /// @param attribute_values [in] The attribute values
-        /// @param num_values [in] The number of attribute values
+        /// @param[in] file_id The file id
+        /// @param[in] variable_name The variable name
+        /// @param[in] attribute_name The attribute name
+        /// @param[in] attribute_values The attribute values
+        /// @param[in] num_values The number of attribute values
         /// @return Error code
         UGRID_API int ug_attribute_double_define(int file_id, char const* variable_name, char const* attribute_name, double const* attribute_values, int num_values);
 
         /// @brief Add a char attributes as global and not related to a variable
-        /// @param file_id [in] The file id
-        /// @param att_name [in] The attribute name
-        /// @param attribute_values [in] The attribute values
-        /// @param num_values [in] The number of values
+        /// @param[in] file_id The file id
+        /// @param[in] att_name The attribute name
+        /// @param[in] attribute_values The attribute values
+        /// @param[in] num_values The number of values
         /// @return Error code
         UGRID_API int ug_attribute_global_char_define(int file_id, char const* att_name, char const* attribute_values, int num_values);
 
