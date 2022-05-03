@@ -4,6 +4,8 @@ cmake_minimum_required(VERSION 3.16...3.18)
 # Set compiler flags
 enable_language(C CXX)
 
+option(PRODUCE_CODE_COVERAGE "Produce code coverage files under GNU compilers" OFF)
+
 # Project name and a few useful settings. Other commands can pick up the results
 project(
   UGrid

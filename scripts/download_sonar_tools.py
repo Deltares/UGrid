@@ -30,7 +30,7 @@ def get_build_wrapper(save_dir: Path) -> None:
     if platform.system() == "Windows":
         url = "https://sonarcloud.io/static/cpp/build-wrapper-win-x86.zip"
     elif platform.system() == "Linux":
-        url = "http://sonarcloud.io/static/cpp/build-wrapper-linux-x86.zip"
+        url = "https://sonarcloud.io/static/cpp/build-wrapper-linux-x86.zip"
     else:
         raise Exception("Unsupported OS used.")
 

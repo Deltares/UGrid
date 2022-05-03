@@ -18,7 +18,7 @@ set_target_properties(${target_name} PROPERTIES PUBLIC_HEADER "${HEADER_LIST}")
 target_include_directories(${target_name} PUBLIC "${PROJECT_SOURCE_DIR}/include" ${netCDF_INCLUDE_DIR} )
 
 # Make sure that coverage information is produced when using gcc
-if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+if(PRODUCE_CODE_COVERAGE AND CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
    set_target_properties(${target_name} PROPERTIES COMPILE_FLAGS "-fprofile-arcs -ftest-coverage -static-libgcc -static-libstdc++")
    set_target_properties(${target_name} PROPERTIES LINK_FLAGS "-ldl -lgcov --coverage")
 endif()
