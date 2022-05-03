@@ -359,11 +359,11 @@ Functions</h2></td></tr>
 <p>Add a char attributes to an existing variable. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">file_id</td><td>[in] The file id </td></tr>
-    <tr><td class="paramname">variable_name</td><td>[in] The variable name </td></tr>
-    <tr><td class="paramname">attribute_name</td><td>[in] The attribute name </td></tr>
-    <tr><td class="paramname">attribute_values</td><td>[in] The attribute values </td></tr>
-    <tr><td class="paramname">num_values</td><td>[in] The number of attribute values </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">file_id</td><td>The file id </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">variable_name</td><td>The variable name </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">attribute_name</td><td>The attribute name </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">attribute_values</td><td>The attribute values </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">num_values</td><td>The number of attribute values </td></tr>
   </table>
   </dd>
 </dl>
@@ -418,11 +418,11 @@ Functions</h2></td></tr>
 <p>Add a double attributes to an existing variable. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">file_id</td><td>[in] The file id </td></tr>
-    <tr><td class="paramname">variable_name</td><td>[in] The variable name </td></tr>
-    <tr><td class="paramname">attribute_name</td><td>[in] The attribute name </td></tr>
-    <tr><td class="paramname">attribute_values</td><td>[in] The attribute values </td></tr>
-    <tr><td class="paramname">num_values</td><td>[in] The number of attribute values </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">file_id</td><td>The file id </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">variable_name</td><td>The variable name </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">attribute_name</td><td>The attribute name </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">attribute_values</td><td>The attribute values </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">num_values</td><td>The number of attribute values </td></tr>
   </table>
   </dd>
 </dl>
@@ -471,10 +471,10 @@ Functions</h2></td></tr>
 <p>Add a char attributes as global and not related to a variable. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">file_id</td><td>[in] The file id </td></tr>
-    <tr><td class="paramname">att_name</td><td>[in] The attribute name </td></tr>
-    <tr><td class="paramname">attribute_values</td><td>[in] The attribute values </td></tr>
-    <tr><td class="paramname">num_values</td><td>[in] The number of values </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">file_id</td><td>The file id </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">att_name</td><td>The attribute name </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">attribute_values</td><td>The attribute values </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">num_values</td><td>The number of values </td></tr>
   </table>
   </dd>
 </dl>
@@ -529,11 +529,11 @@ Functions</h2></td></tr>
 <p>Add integer attributes to an existing variable. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">file_id</td><td>[in] The file id </td></tr>
-    <tr><td class="paramname">variable_name</td><td>[in] The variable name </td></tr>
-    <tr><td class="paramname">attribute_name</td><td>[in] The attribute name </td></tr>
-    <tr><td class="paramname">attribute_values</td><td>[in] The attribute values </td></tr>
-    <tr><td class="paramname">num_values</td><td>[in] The number of attribute values </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">file_id</td><td>The file id </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">variable_name</td><td>The variable name </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">attribute_name</td><td>The attribute name </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">attribute_values</td><td>The attribute values </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">num_values</td><td>The number of attribute values </td></tr>
   </table>
   </dd>
 </dl>
@@ -576,9 +576,9 @@ Functions</h2></td></tr>
 <p>Defines a new contact topology. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">file_id</td><td>[in] The file id </td></tr>
-    <tr><td class="paramname">contacts_api</td><td>[in] The structure containing the contact data </td></tr>
-    <tr><td class="paramname">topology_id</td><td>[out] The id of the newly created contact topology </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">file_id</td><td>The file id </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">contacts_api</td><td>The structure containing the contact data </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">topology_id</td><td>The id of the newly created contact topology </td></tr>
   </table>
   </dd>
 </dl>
@@ -621,9 +621,9 @@ Functions</h2></td></tr>
 <p>Gets contact geometrical data. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">file_id</td><td>[in] The file id </td></tr>
-    <tr><td class="paramname">topology_id</td><td>[in] The topology id </td></tr>
-    <tr><td class="paramname">contacts_api</td><td>[out] The structure containing the contact data </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">file_id</td><td>The file id </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">topology_id</td><td>The topology id </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">contacts_api</td><td>The structure containing the contact data </td></tr>
   </table>
   </dd>
 </dl>
@@ -666,9 +666,9 @@ Functions</h2></td></tr>
 <p>Inquires contact dimensions and names. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">file_id</td><td>[in] The file id </td></tr>
-    <tr><td class="paramname">topology_id</td><td>[in] The topology id </td></tr>
-    <tr><td class="paramname">contacts_api</td><td>[out] The structure containing the contact data </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">file_id</td><td>The file id </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">topology_id</td><td>The topology id </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">contacts_api</td><td>The structure containing the contact data </td></tr>
   </table>
   </dd>
 </dl>
@@ -711,9 +711,9 @@ Functions</h2></td></tr>
 <p>Writes contact geometrical data to file. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">file_id</td><td>[in] The file id </td></tr>
-    <tr><td class="paramname">topology_id</td><td>[in] The topology id </td></tr>
-    <tr><td class="paramname">contacts_api</td><td>[in] The structure containing the contact data </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">file_id</td><td>The file id </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">topology_id</td><td>The topology id </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">contacts_api</td><td>The structure containing the contact data </td></tr>
   </table>
   </dd>
 </dl>
@@ -1106,9 +1106,9 @@ Functions</h2></td></tr>
 <p>Defines a new mesh1d topology. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">file_id</td><td>[in] The file id </td></tr>
-    <tr><td class="paramname">mesh1d_api</td><td>[in] The structure containing the mesh1d data </td></tr>
-    <tr><td class="paramname">topology_id</td><td>[out] The id of the newly created mesh1d topology </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">file_id</td><td>The file id </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">mesh1d_api</td><td>The structure containing the mesh1d data </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">topology_id</td><td>The id of the newly created mesh1d topology </td></tr>
   </table>
   </dd>
 </dl>
@@ -1151,9 +1151,9 @@ Functions</h2></td></tr>
 <p>Gets mesh1d geometrical data. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">file_id</td><td>[in] The file id </td></tr>
-    <tr><td class="paramname">topology_id</td><td>[in] The topology id </td></tr>
-    <tr><td class="paramname">mesh1d_api</td><td>[out] The structure containing the mesh1d data </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">file_id</td><td>The file id </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">topology_id</td><td>The topology id </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">mesh1d_api</td><td>The structure containing the mesh1d data </td></tr>
   </table>
   </dd>
 </dl>
@@ -1196,9 +1196,9 @@ Functions</h2></td></tr>
 <p>Inquires mesh1d dimensions and names. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">file_id</td><td>[in] The file id </td></tr>
-    <tr><td class="paramname">topology_id</td><td>[in] The topology id </td></tr>
-    <tr><td class="paramname">mesh1d_api</td><td>[out] The structure containing the mesh1d data </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">file_id</td><td>The file id </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">topology_id</td><td>The topology id </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">mesh1d_api</td><td>The structure containing the mesh1d data </td></tr>
   </table>
   </dd>
 </dl>
@@ -1241,9 +1241,9 @@ Functions</h2></td></tr>
 <p>Writes mesh1d geometrical data to file. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">file_id</td><td>[in] The file id </td></tr>
-    <tr><td class="paramname">topology_id</td><td>[in] The topology id </td></tr>
-    <tr><td class="paramname">mesh1d_api</td><td>[in] The structure containing the mesh1d data </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">file_id</td><td>The file id </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">topology_id</td><td>The topology id </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">mesh1d_api</td><td>The structure containing the mesh1d data </td></tr>
   </table>
   </dd>
 </dl>
@@ -1286,9 +1286,9 @@ Functions</h2></td></tr>
 <p>Defines a new mesh2d topology. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">file_id</td><td>[in] The file id </td></tr>
-    <tr><td class="paramname">mesh2d_api</td><td>[in] The structure containing the mesh2d data </td></tr>
-    <tr><td class="paramname">topology_id</td><td>[out] The id of the newly created mesh2d topology </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">file_id</td><td>The file id </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">mesh2d_api</td><td>The structure containing the mesh2d data </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">topology_id</td><td>The id of the newly created mesh2d topology </td></tr>
   </table>
   </dd>
 </dl>
@@ -1331,9 +1331,9 @@ Functions</h2></td></tr>
 <p>Gets mesh2d geometrical data. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">file_id</td><td>[in] The file id </td></tr>
-    <tr><td class="paramname">topology_id</td><td>[in] The topology id </td></tr>
-    <tr><td class="paramname">mesh2d_api</td><td>[out] The structure containing the mesh2d data </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">file_id</td><td>The file id </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">topology_id</td><td>The topology id </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">mesh2d_api</td><td>The structure containing the mesh2d data </td></tr>
   </table>
   </dd>
 </dl>
@@ -1376,9 +1376,9 @@ Functions</h2></td></tr>
 <p>Inquires mesh2d dimensions and names. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">file_id</td><td>[in] The file id </td></tr>
-    <tr><td class="paramname">topology_id</td><td>[in] The topology id </td></tr>
-    <tr><td class="paramname">mesh2d_api</td><td>[out] The structure containing the mesh2d data </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">file_id</td><td>The file id </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">topology_id</td><td>The topology id </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">mesh2d_api</td><td>The structure containing the mesh2d data </td></tr>
   </table>
   </dd>
 </dl>
@@ -1421,9 +1421,9 @@ Functions</h2></td></tr>
 <p>Writes mesh2d geometrical data to file. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">file_id</td><td>[in] The file id </td></tr>
-    <tr><td class="paramname">topology_id</td><td>[in] The topology id </td></tr>
-    <tr><td class="paramname">mesh2d_api</td><td>[in] The structure containing the mesh2d data </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">file_id</td><td>The file id </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">topology_id</td><td>The topology id </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">mesh2d_api</td><td>The structure containing the mesh2d data </td></tr>
   </table>
   </dd>
 </dl>
@@ -1563,9 +1563,9 @@ Error code </dd></dl>
 <p>Gets the network1d geometrical data. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">file_id</td><td>[in] The file id </td></tr>
-    <tr><td class="paramname">topology_id</td><td>[in] The topology id </td></tr>
-    <tr><td class="paramname">network1d_api</td><td>[out] The structure containing the network data </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">file_id</td><td>The file id </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">topology_id</td><td>The topology id </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">network1d_api</td><td>The structure containing the network data </td></tr>
   </table>
   </dd>
 </dl>
@@ -1608,9 +1608,9 @@ Error code </dd></dl>
 <p>Inquires the network1d dimensions and names. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">file_id</td><td>[in] The file id </td></tr>
-    <tr><td class="paramname">topology_id</td><td>[in] The topology id </td></tr>
-    <tr><td class="paramname">network1d_api</td><td>[out] The structure containing the network data </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">file_id</td><td>The file id </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">topology_id</td><td>The topology id </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">network1d_api</td><td>The structure containing the network data </td></tr>
   </table>
   </dd>
 </dl>
@@ -2396,8 +2396,8 @@ Error code </dd></dl>
 <p>Defines a new integer variable. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">file_id</td><td>[in] The file id </td></tr>
-    <tr><td class="paramname">variable_name</td><td>[in] The variable name </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">file_id</td><td>The file id </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">variable_name</td><td>The variable name </td></tr>
   </table>
   </dd>
 </dl>
