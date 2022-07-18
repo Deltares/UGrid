@@ -225,6 +225,14 @@ void Mesh1D::get(ugridapi::Mesh1D& mesh1d) const
     }
     if (auto const it = m_topology_attribute_variables.find("node_coordinates"); mesh1d.node_edge_id.size() != 0 && it != m_topology_attribute_variables.end())
     {
+        it->second.at(0).getVar(mesh1d.node_x.data());
+    }
+    if (auto const it = m_topology_attribute_variables.find("node_coordinates"); mesh1d.node_edge_offset.size() != 0 && it != m_topology_attribute_variables.end())
+    {
+        it->second.at(1).getVar(mesh1d.node_y.data());
+    }
+    if (auto const it = m_topology_attribute_variables.find("node_coordinates"); mesh1d.node_edge_id.size() != 0 && it != m_topology_attribute_variables.end())
+    {
         it->second.at(0).getVar(mesh1d.node_edge_id.data());
     }
     if (auto const it = m_topology_attribute_variables.find("node_coordinates"); mesh1d.node_edge_offset.size() != 0 && it != m_topology_attribute_variables.end())

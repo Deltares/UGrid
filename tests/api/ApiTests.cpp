@@ -451,7 +451,8 @@ TEST(ApiTest, DefineAndPut_OneNetwork1D_ShouldWriteData)
 }
 TEST(ApiTest, InquireAndGet_OneMesh1D_ShouldReadMesh1D)
 {
-    std::string const file_path = TEST_FOLDER + "/AllUGridEntities.nc";
+    //std::string const file_path = TEST_FOLDER + "/AllUGridEntities.nc";
+    std::string const file_path = TEST_FOLDER + "/tunnel_map.nc";
 
     // Open a file
     int file_id = -1;
@@ -473,8 +474,8 @@ TEST(ApiTest, InquireAndGet_OneMesh1D_ShouldReadMesh1D)
     // get the dimensions
     ugridapi::Mesh1D mesh1d;
     error_code = ug_mesh1d_inq(file_id, 0, mesh1d);
-    ASSERT_EQ(25, mesh1d.num_nodes);
-    ASSERT_EQ(24, mesh1d.num_edges);
+    ASSERT_EQ(3, mesh1d.num_nodes);
+    ASSERT_EQ(2, mesh1d.num_edges);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
     // Allocate data variables
@@ -491,6 +492,8 @@ TEST(ApiTest, InquireAndGet_OneMesh1D_ShouldReadMesh1D)
     std::unique_ptr<char> const network_name(new char[long_names_length]);
     mesh1d.network_name = network_name.get();
 
+    mesh1d.node_x.resize(mesh1d.num_nodes);
+    mesh1d.node_y.resize(mesh1d.num_nodes);
     mesh1d.node_edge_id.resize(mesh1d.num_nodes);
     mesh1d.node_edge_offset.resize(mesh1d.num_nodes);
     mesh1d.edge_node.resize(mesh1d.num_edges * 2);
