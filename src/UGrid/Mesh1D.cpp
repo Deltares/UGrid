@@ -197,9 +197,9 @@ void Mesh1D::put(ugridapi::Mesh1D const& mesh1d)
     {
         it->second.at(0).putVar(mesh1d.node_long_name);
     }
-    if (auto const it = m_topology_attribute_variables.find("edge_node_connectivity"); mesh1d.edge_node != nullptr && it != m_topology_attribute_variables.end())
+    if (auto const it = m_topology_attribute_variables.find("edge_node_connectivity"); mesh1d.edge_nodes != nullptr && it != m_topology_attribute_variables.end())
     {
-        it->second.at(0).putVar(mesh1d.edge_node);
+        it->second.at(0).putVar(mesh1d.edge_nodes);
     }
 }
 
@@ -240,8 +240,8 @@ void Mesh1D::get(ugridapi::Mesh1D& mesh1d) const
     {
         it->second.at(0).getVar(mesh1d.node_long_name);
     }
-    if (auto const it = m_topology_attribute_variables.find("edge_node_connectivity"); mesh1d.edge_node != nullptr && it != m_topology_attribute_variables.end())
+    if (auto const it = m_topology_attribute_variables.find("edge_node_connectivity"); mesh1d.edge_nodes != nullptr && it != m_topology_attribute_variables.end())
     {
-        it->second.at(0).getVar(mesh1d.edge_node);
+        it->second.at(0).getVar(mesh1d.edge_nodes);
     }
 }

@@ -77,7 +77,7 @@ void Network1D::define(ugridapi::Network1D const& network1d)
     {
         throw std::invalid_argument("Network1D::define network node coordinates missing");
     }
-    if (network1d.edge_node == nullptr)
+    if (network1d.edge_nodes == nullptr)
     {
         throw std::invalid_argument("Network1D::define network edge (branches) missing");
     }
@@ -266,9 +266,9 @@ void Network1D::put(ugridapi::Network1D const& network1d)
         it->second.at(0).putVar(network1d.node_long_name);
     }
 
-    if (auto const it = m_topology_attribute_variables.find("edge_node_connectivity"); network1d.edge_node != nullptr && it != m_topology_attribute_variables.end())
+    if (auto const it = m_topology_attribute_variables.find("edge_node_connectivity"); network1d.edge_nodes != nullptr && it != m_topology_attribute_variables.end())
     {
-        it->second.at(0).putVar(network1d.edge_node);
+        it->second.at(0).putVar(network1d.edge_nodes);
     }
 
     if (auto const it = m_topology_attribute_variables.find("edge_length"); network1d.edge_length != nullptr && it != m_topology_attribute_variables.end())
@@ -339,9 +339,9 @@ void Network1D::get(ugridapi::Network1D& network1d) const
         it->second.at(1).getVar(network1d.node_y);
     }
 
-    if (auto const it = m_topology_attribute_variables.find("edge_node_connectivity"); network1d.edge_node != nullptr && it != m_topology_attribute_variables.end())
+    if (auto const it = m_topology_attribute_variables.find("edge_node_connectivity"); network1d.edge_nodes != nullptr && it != m_topology_attribute_variables.end())
     {
-        it->second.at(0).getVar(network1d.edge_node);
+        it->second.at(0).getVar(network1d.edge_nodes);
     }
 
     if (auto const it = find_attribute_variable_name_with_aliases("node_id"); network1d.node_id != nullptr && it != m_topology_attribute_variables.end())

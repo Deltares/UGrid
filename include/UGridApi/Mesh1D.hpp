@@ -47,7 +47,7 @@ namespace ugridapi
         double* node_y = nullptr;
 
         /// @brief The edge node connectivity
-        int* edge_node = nullptr;
+        int* edge_nodes = nullptr;
 
         /// @brief The network edge id where every node lies
         int* node_edge_id = nullptr;

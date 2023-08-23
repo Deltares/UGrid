@@ -48,7 +48,7 @@ namespace ugridapi
         char* node_long_name = nullptr;
 
         /// @brief The node defining each edge
-        int* edge_node = nullptr;
+        int* edge_nodes = nullptr;
 
         /// @brief The edge lengths
         double* edge_length = nullptr;

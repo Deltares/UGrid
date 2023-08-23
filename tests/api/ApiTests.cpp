@@ -120,13 +120,13 @@ TEST(ApiTest, InquireAndGet_OneMesh2D_ShouldReadMesh2d)
     std::unique_ptr<double> const node_y(new double[mesh2d.num_nodes]);
     mesh2d.node_y = node_y.get();
     std::unique_ptr<int> const edge_nodes(new int[mesh2d.num_edges * 2]);
-    mesh2d.edge_node = edge_nodes.get();
+    mesh2d.edge_nodes = edge_nodes.get();
     std::unique_ptr<double> const face_x(new double[mesh2d.num_faces]);
     mesh2d.face_x = face_x.get();
     std::unique_ptr<double> const face_y(new double[mesh2d.num_faces]);
     mesh2d.face_y = face_y.get();
     std::unique_ptr<int> const face_nodes(new int[mesh2d.num_faces * mesh2d.num_face_nodes_max]);
-    mesh2d.face_node = face_nodes.get();
+    mesh2d.face_nodes = face_nodes.get();
 
     // Execute
     error_code = ug_mesh2d_get(file_id, 0, mesh2d);
@@ -275,7 +275,7 @@ TEST(ApiTest, DefineAndPut_OneMesh2D_ShouldWriteData)
         15,
         16,
     });
-    mesh2d.edge_node = edge_nodes.get();
+    mesh2d.edge_nodes = edge_nodes.get();
     mesh2d.num_edges = 23;
 
     std::unique_ptr<double> const face_x(new double[]{0.5, 0.5, 0.5, 1.5, 1.5, 1.5, 2.5, 2.5, 2.5});
@@ -293,7 +293,7 @@ TEST(ApiTest, DefineAndPut_OneMesh2D_ShouldWriteData)
         9, 13, 14, 10,
         10, 14, 15, 11,
         11, 15, 16, 12});
-    mesh2d.face_node = face_nodes.get();
+    mesh2d.face_nodes = face_nodes.get();
     mesh2d.num_face_nodes_max = 4;
 
     // Execute
@@ -357,7 +357,7 @@ TEST(ApiTest, InquireAndGet_OneNetwork1D_ShouldReadNetwork1D)
     network1d.node_y = node_y.get();
 
     std::unique_ptr<int> const edge_node(new int[network1d.num_edges * 2]);
-    network1d.edge_node = edge_node.get();
+    network1d.edge_nodes = edge_node.get();
 
     std::unique_ptr<double> const geometry_nodes_x(new double[network1d.num_geometry_nodes]);
     network1d.geometry_nodes_x = geometry_nodes_x.get();
@@ -476,7 +476,7 @@ TEST(ApiTest, DefineAndPut_OneNetwork1D_ShouldWriteData)
     network1d.node_y = node_y.get();
     network1d.num_nodes = 2;
     std::unique_ptr<int> const edge_node(new int[]{0, 1});
-    network1d.edge_node = edge_node.get();
+    network1d.edge_nodes = edge_node.get();
     network1d.num_edges = 1;
 
     std::unique_ptr<double> const geometry_nodes_x(new double[]{293.78, 278.97, 265.31, 254.17, 247.44, 248.3, 259.58,
@@ -567,7 +567,7 @@ TEST(ApiTest, InquireAndGet_OneMesh1D_ShouldReadMesh1D)
     mesh1d.node_edge_offset = edge_offset.get();
 
     std::unique_ptr<int> const edge_nodes(new int[mesh1d.num_edges * 2]);
-    mesh1d.edge_node = edge_nodes.get();
+    mesh1d.edge_nodes = edge_nodes.get();
 
     std::unique_ptr<char> const node_id(new char[name_length * mesh1d.num_nodes]);
     mesh1d.node_id = node_id.get();
@@ -665,7 +665,7 @@ TEST(ApiTest, DefineAndPut_OneMesh1D_ShouldWriteData)
                                                      21, 22,
                                                      22, 23,
                                                      23, 24});
-    mesh1d.edge_node = edges_nodes.get();
+    mesh1d.edge_nodes = edges_nodes.get();
 
     std::vector<std::string> ids;
     std::vector<std::string> long_names;
@@ -1237,7 +1237,7 @@ TEST(ApiTest, TopologyDefineDoubleVariableOnLocation_OnExistingFile_ShouldDefine
         15,
         16,
     });
-    mesh2d.edge_node = edge_nodes.get();
+    mesh2d.edge_nodes = edge_nodes.get();
     mesh2d.num_edges = 23;
 
     std::unique_ptr<double> const face_x(new double[]{0.5, 0.5, 0.5, 1.5, 1.5, 1.5, 2.5, 2.5, 2.5});
@@ -1255,7 +1255,7 @@ TEST(ApiTest, TopologyDefineDoubleVariableOnLocation_OnExistingFile_ShouldDefine
         9, 13, 14, 10,
         10, 14, 15, 11,
         11, 15, 16, 12});
-    mesh2d.face_node = face_nodes.get();
+    mesh2d.face_nodes = face_nodes.get();
     mesh2d.num_face_nodes_max = 4;
 
     // Open file
