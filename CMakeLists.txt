@@ -72,16 +72,16 @@ endif()
 find_package(Boost REQUIRED COMPONENTS system filesystem)
 include_directories(${Boost_INCLUDE_DIR})
 
+# Use NetCDF
+find_package(netCDF REQUIRED COMPONENTS C)
+if (netCDF_FOUND)
+  message(STATUS "Found NetCDF: in ${netCDF_INSTALL_PREFIX} (found version \"${NetCDFVersion}\")")
+endif()
+
 # Use NetCDF-cxx
 find_package(netCDFCxx 4.3.1 REQUIRED)
 if (NetCDFCxx_FOUND)
     message(STATUS "NetCDFCXX include dirs: ${NetCDFCxx_INCLUDE_DIRS}")
-endif()
-
-# Use NetCDF
-find_package(netCDF REQUIRED)
-if (netCDF_FOUND)
-    message(STATUS "netCDF_LIB_DIR dirs: ${netCDF_LIB_DIR}")
 endif()
 
 # FetchContent added in CMake 3.11, downloads during the configure step

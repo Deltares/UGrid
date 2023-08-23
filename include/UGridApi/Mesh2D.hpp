@@ -38,10 +38,10 @@ namespace ugridapi
         char* name = nullptr;
 
         /// @brief The edge node connectivity
-        int* edge_node = nullptr;
+        int* edge_nodes = nullptr;
 
         /// @brief The node composing each face
-        int* face_node = nullptr;
+        int* face_nodes = nullptr;
 
         /// @brief The node x coordinates
         double* node_x = nullptr;
@@ -62,13 +62,13 @@ namespace ugridapi
         double* face_y = nullptr;
 
         /// @brief The edge composing each face
-        int* edge_face = nullptr;
+        int* edge_faces = nullptr;
 
         /// @brief For each face, the edge composing it
-        int* face_edge = nullptr;
+        int* face_edges = nullptr;
 
         /// @brief For each face, the neighboring face
-        int* face_face = nullptr;
+        int* face_faces = nullptr;
 
         /// @brief The node z coordinates
         double* node_z = nullptr;
