@@ -218,6 +218,10 @@ void Mesh2D::put(ugridapi::Mesh2D const& mesh2d)
     {
         it->second.at(0).putVar(mesh2d.edge_nodes);
     }
+    if (auto const it = m_topology_attribute_variables.find("edge_face_connectivity"); mesh2d.edge_faces != nullptr && it != m_topology_attribute_variables.end())
+    {
+        it->second.at(0).putVar(mesh2d.edge_faces);
+    }
     if (auto const it = m_topology_attribute_variables.find("edge_coordinates"); mesh2d.edge_x != nullptr && it != m_topology_attribute_variables.end())
     {
         it->second.at(0).putVar(mesh2d.edge_x);
@@ -232,13 +236,13 @@ void Mesh2D::put(ugridapi::Mesh2D const& mesh2d)
     {
         it->second.at(0).putVar(mesh2d.face_nodes);
     }
-    if (auto const it = m_topology_attribute_variables.find("face_edge_connectivity"); mesh2d.face_faces != nullptr && it != m_topology_attribute_variables.end())
+    if (auto const it = m_topology_attribute_variables.find("face_edge_connectivity"); mesh2d.face_edges != nullptr && it != m_topology_attribute_variables.end())
+    {
+        it->second.at(0).putVar(mesh2d.face_edges);
+    }
+    if (auto const it = m_topology_attribute_variables.find("face_face_connectivity"); mesh2d.face_faces != nullptr && it != m_topology_attribute_variables.end())
     {
         it->second.at(0).putVar(mesh2d.face_faces);
-    }
-    if (auto const it = m_topology_attribute_variables.find("face_face_connectivity"); mesh2d.edge_faces != nullptr && it != m_topology_attribute_variables.end())
-    {
-        it->second.at(0).putVar(mesh2d.edge_faces);
     }
     if (auto const it = m_topology_attribute_variables.find("face_coordinates"); mesh2d.face_x != nullptr && it != m_topology_attribute_variables.end())
     {
@@ -294,6 +298,10 @@ void Mesh2D::get(ugridapi::Mesh2D& mesh2d) const
     {
         it->second.at(0).getVar(mesh2d.edge_nodes);
     }
+    if (auto const it = m_topology_attribute_variables.find("edge_face_connectivity"); mesh2d.edge_faces != nullptr && it != m_topology_attribute_variables.end())
+    {
+        it->second.at(0).getVar(mesh2d.edge_faces);
+    }
     if (auto const it = m_topology_attribute_variables.find("edge_coordinates"); mesh2d.edge_x != nullptr && it != m_topology_attribute_variables.end())
     {
         it->second.at(0).getVar(mesh2d.edge_x);
@@ -308,13 +316,13 @@ void Mesh2D::get(ugridapi::Mesh2D& mesh2d) const
     {
         it->second.at(0).getVar(mesh2d.face_nodes);
     }
-    if (auto const it = m_topology_attribute_variables.find("face_edge_connectivity"); mesh2d.face_faces != nullptr && it != m_topology_attribute_variables.end())
+    if (auto const it = m_topology_attribute_variables.find("face_edge_connectivity"); mesh2d.face_edges != nullptr && it != m_topology_attribute_variables.end())
+    {
+        it->second.at(0).getVar(mesh2d.face_edges);
+    }
+    if (auto const it = m_topology_attribute_variables.find("face_face_connectivity"); mesh2d.face_faces != nullptr && it != m_topology_attribute_variables.end())
     {
         it->second.at(0).getVar(mesh2d.face_faces);
-    }
-    if (auto const it = m_topology_attribute_variables.find("face_face_connectivity"); mesh2d.edge_faces != nullptr && it != m_topology_attribute_variables.end())
-    {
-        it->second.at(0).getVar(mesh2d.edge_faces);
     }
     if (auto const it = m_topology_attribute_variables.find("face_coordinates"); mesh2d.face_x != nullptr && it != m_topology_attribute_variables.end())
     {
