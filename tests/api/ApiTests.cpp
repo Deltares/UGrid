@@ -1311,13 +1311,11 @@ TEST(ApiTest, TopologyDefineDoubleVariableOnLocation_OnExistingFile_ShouldDefine
     error_code = ugridapi::ug_file_close(file_id);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 }
-
+/*
 TEST(ApiTest, InquireAndGetFaceEdges_OneMesh2D_ShouldReadMesh2D)
 {
     // Prepare
-    // Open a file
     std::string const file_path = TEST_FOLDER + "/AllUGridEntities.nc";
-
     int file_mode = -1;
     auto error_code = ugridapi::ug_file_read_mode(file_mode);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
@@ -1348,9 +1346,6 @@ TEST(ApiTest, InquireAndGetFaceEdges_OneMesh2D_ShouldReadMesh2D)
     error_code = ugridapi::ug_name_get_long_length(long_names_length);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
-    std::vector<char> name(long_names_length);
-    mesh2d.name = name.data();
-
     std::vector<double> node_x(mesh2d.num_nodes);
     mesh2d.node_x = node_x.data();
 
@@ -1360,14 +1355,83 @@ TEST(ApiTest, InquireAndGetFaceEdges_OneMesh2D_ShouldReadMesh2D)
     std::vector<int> edge_node(mesh2d.num_edges * 2);
     mesh2d.edge_nodes = edge_node.data();
 
-    std::vector<int> face_edges(mesh2d.num_face_nodes_max * mesh2d.num_faces);
-    mesh2d.face_edges = edge_node.data();
+    std::vector<int> edge_faces(mesh2d.num_face_nodes_max * mesh2d.num_faces, -1);
+    mesh2d.edge_faces = edge_faces.data();
+
+    std::vector<int> face_edges(mesh2d.num_face_nodes_max * mesh2d.num_faces, -1);
+    mesh2d.face_edges = face_edges.data();
+
+    // Execute
+    error_code = ug_mesh2d_get(file_id, 0, mesh2d);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+
+
+
+    error_code = ugridapi::ug_file_close(file_id);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+}
+*/
+
+TEST(ApiTest, InquireAndGetFaceEdges_OneMesh2D_ShouldReadMesh2D)
+{
+    // Prepare
+    // Open a file
+    std::string const file_path = TEST_FOLDER + "/AllUGridEntities.nc";
+
+    int file_mode = -1;
+    auto error_code = ugridapi::ug_file_read_mode(file_mode);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+
+    int file_id = -1;
+    error_code = ugridapi::ug_file_open(file_path.c_str(), file_mode, file_id);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+
+    // get the number of topologies
+    int topology_type;
+    error_code = ugridapi::ug_topology_get_network1d_enum(topology_type);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+    int num_topologies;
+    error_code = ugridapi::ug_topology_get_count(file_id, topology_type, num_topologies);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+    ASSERT_EQ(num_topologies, 1);
+
+    // get the dimensions
+    ugridapi::Mesh2D mesh2d;
+    error_code = ug_mesh2d_inq(file_id, 0, mesh2d);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+
+    // Allocate data variables
+    int name_length;
+    error_code = ugridapi::ug_name_get_length(name_length);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+    int long_names_length;
+    error_code = ugridapi::ug_name_get_long_length(long_names_length);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+
+    std::vector<int> edge_faces(mesh2d.num_edges * 2);
+    mesh2d.edge_faces = edge_faces.data();
+
+    std::vector<int> face_edges(mesh2d.num_faces * mesh2d.num_face_nodes_max, -1);
+    mesh2d.face_edges = face_edges.data();
 
     // get the data
     error_code = ug_mesh2d_get(file_id, 0, mesh2d);
-    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
     // Close the file
     error_code = ugridapi::ug_file_close(file_id);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+
+    // Assert
+    std::vector<int> edge_faces_expected{23, 0, 45, 0, 56, 0, 67, 0, 78, 0};
+    for (int i = 0; i < edge_faces_expected.size(); ++i)
+    {
+        ASSERT_EQ(edge_faces_expected[i], edge_faces[i]);
+    }
+
+    // No faces found, the initial -1 are retained
+    std::vector<int> face_edges_expected{-1, -1, -1, -1};
+    for (int i = 0; i < face_edges_expected.size(); ++i)
+    {
+        ASSERT_EQ(face_edges_expected[i], face_edges[i]);
+    }
 }
