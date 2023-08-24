@@ -109,8 +109,7 @@ void Mesh2D::define(ugridapi::Mesh2D const& mesh2d)
                                     {{"long_name", "Start and end node of mesh edge"}});
 
         // Define edge_nodes coordinates
-        bool const add_coordinate_variable = mesh2d.edge_x != nullptr && mesh2d.edge_y != nullptr;
-        if (add_coordinate_variable)
+        if (mesh2d.edge_x != nullptr && mesh2d.edge_y != nullptr)
         {
             define_topology_coordinates(UGridFileDimensions::edge, "characteristic %s of the mesh edge (e.g. midpoint)");
         }
