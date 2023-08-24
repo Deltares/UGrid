@@ -146,7 +146,7 @@ namespace ugrid
         /// @param is_spherical [in] 1 if coordinates are in a spherical system, 0 otherwise
         void define(char* entity_name, int start_index, std::string const& long_name, int topology_dimension, int is_spherical);
 
-        /// @brief A function to determine if a variable is a topology variable (this function migh get overwritten in derived if necessary)
+        /// @brief A function to determine if a variable is a topology variable (this function might get overwritten in derived if necessary)
         /// @param attributes [in] The variable attributes
         /// @return True if the variable is a topology variable
         static bool is_topology_variable(std::map<std::string, netCDF::NcVarAtt> const& attributes);
