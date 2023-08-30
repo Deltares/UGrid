@@ -431,6 +431,16 @@ namespace ugridapi
         /// @returns Error code
         UGRID_API int ug_get_faces_location_type(int& type);
 
+        /// @brief Gets the int fill value
+        /// @param[out] fillValue The int indicating the fill value
+        /// @returns Error code
+        UGRID_API int ug_get_int_fill_value(int& fillValue);
+
+        /// @brief Gets the double fill value
+        /// @param[out] fillValue The double indicating the fill value
+        /// @returns Error code
+        UGRID_API int ug_get_double_fill_value(double& fillValue);
+
 #ifdef __cplusplus
     }
 #endif

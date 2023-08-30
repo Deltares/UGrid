@@ -137,7 +137,7 @@ void Mesh2D::define(ugridapi::Mesh2D const& mesh2d)
                                     "face_nodes",
                                     netCDF::NcType::nc_INT,
                                     {UGridFileDimensions::face, UGridFileDimensions::max_face_node},
-                                    {{"long_name", "Vertex node of mesh face(counterclockwise)"}});
+                                    {{"long_name", "Vertex node of mesh face(counterclockwise)"}}, true);
 
         // Define face coordinates
         bool const add_coordinate_variable = mesh2d.face_x != nullptr && mesh2d.face_y != nullptr;
@@ -160,7 +160,7 @@ void Mesh2D::define(ugridapi::Mesh2D const& mesh2d)
                                         "face_edge",
                                         netCDF::NcType::nc_INT,
                                         {UGridFileDimensions::face, UGridFileDimensions::max_face_node},
-                                        {{"long_name", "Side edge of mesh face (counterclockwise)"}});
+                                        {{"long_name", "Side edge of mesh face (counterclockwise)"}}, true);
         }
         if (mesh2d.face_faces != nullptr)
         {
