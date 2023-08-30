@@ -1105,12 +1105,12 @@ namespace ugridapi
     }
     UGRID_API int ug_get_int_fill_value(int& fillValue)
     {
-        fillValue = ugrid::int_missing_value; 
+        fillValue = ugrid::int_missing_value;
         return Success;
     }
     UGRID_API int ug_get_double_fill_value(double& fillValue)
     {
-        fillValue = ugrid::double_missing_value; 
+        fillValue = ugrid::double_missing_value;
         return Success;
     }
 
