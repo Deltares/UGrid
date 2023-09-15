@@ -115,18 +115,18 @@ TEST(ApiTest, InquireAndGet_OneMesh2D_ShouldReadMesh2d)
 
     std::unique_ptr<char> const name(new char[name_long_length]);
     mesh2d.name = name.get();
-    std::unique_ptr<double> const node_x(new double[mesh2d.num_nodes]);
-    mesh2d.node_x = node_x.get();
-    std::unique_ptr<double> const node_y(new double[mesh2d.num_nodes]);
-    mesh2d.node_y = node_y.get();
-    std::unique_ptr<int> const edge_nodes(new int[mesh2d.num_edges * 2]);
-    mesh2d.edge_nodes = edge_nodes.get();
-    std::unique_ptr<double> const face_x(new double[mesh2d.num_faces]);
-    mesh2d.face_x = face_x.get();
-    std::unique_ptr<double> const face_y(new double[mesh2d.num_faces]);
-    mesh2d.face_y = face_y.get();
-    std::unique_ptr<int> const face_nodes(new int[mesh2d.num_faces * mesh2d.num_face_nodes_max]);
-    mesh2d.face_nodes = face_nodes.get();
+    std::vector<double> node_x(mesh2d.num_nodes);
+    mesh2d.node_x = node_x.data();
+    std::vector<double> node_y(mesh2d.num_nodes);
+    mesh2d.node_y = node_y.data();
+    std::vector<int> edge_nodes(mesh2d.num_edges * 2);
+    mesh2d.edge_nodes = edge_nodes.data();
+    std::vector<double> face_x(mesh2d.num_faces);
+    mesh2d.face_x = face_x.data();
+    std::vector<double> face_y(mesh2d.num_faces);
+    mesh2d.face_y = face_y.data();
+    std::vector<int> face_nodes(mesh2d.num_faces * mesh2d.num_face_nodes_max);
+    mesh2d.face_nodes = face_nodes.data();
 
     // Execute
     error_code = ug_mesh2d_get(file_id, 0, mesh2d);
@@ -136,15 +136,15 @@ TEST(ApiTest, InquireAndGet_OneMesh2D_ShouldReadMesh2d)
     std::string mesh_name(mesh2d.name);
     right_trim_string(mesh_name);
     ASSERT_EQ(mesh_name, "mesh2d");
-    std::vector<double> node_x_vector(node_x.get(), node_x.get() + mesh2d.num_nodes);
+    std::vector<double> node_x_vector(node_x.data(), node_x.data() + mesh2d.num_nodes);
     std::vector<double> node_x_expected{0, 1, 0, 1, 0, 1, 0, 1, 2, 2, 2, 2, 3, 3, 3, 3};
     ASSERT_THAT(node_x_vector, ::testing::ContainerEq(node_x_expected));
 
-    std::vector<double> node_y_vector(node_y.get(), node_y.get() + mesh2d.num_nodes);
+    std::vector<double> node_y_vector(node_y.data(), node_y.data() + mesh2d.num_nodes);
     std::vector<double> node_y_vector_expected{0, 0, 1, 1, 2, 2, 3, 3, 0, 1, 2, 3, 0, 1, 2, 3};
     ASSERT_THAT(node_y_vector, ::testing::ContainerEq(node_y_vector_expected));
 
-    std::vector<int> edge_nodes_vector(edge_nodes.get(), edge_nodes.get() + mesh2d.num_edges * 2);
+    std::vector<int> edge_nodes_vector(edge_nodes.data(), edge_nodes.data() + mesh2d.num_edges * 2);
     std::vector<int> edge_nodes_vector_expected{
         1, 2,
         3, 4,
@@ -172,15 +172,15 @@ TEST(ApiTest, InquireAndGet_OneMesh2D_ShouldReadMesh2d)
         15, 16};
     ASSERT_THAT(edge_nodes_vector, ::testing::ContainerEq(edge_nodes_vector_expected));
 
-    std::vector<double> face_x_vector(face_x.get(), face_x.get() + mesh2d.num_faces);
+    std::vector<double> face_x_vector(face_x.data(), face_x.data() + mesh2d.num_faces);
     std::vector<double> face_x_vector_expected{0.5, 0.5, 0.5, 1.5, 1.5, 1.5, 2.5, 2.5, 2.5};
     ASSERT_THAT(face_x_vector, ::testing::ContainerEq(face_x_vector_expected));
 
-    std::vector<double> face_y_vector(face_y.get(), face_y.get() + mesh2d.num_faces);
+    std::vector<double> face_y_vector(face_y.data(), face_y.data() + mesh2d.num_faces);
     std::vector<double> face_y_vector_expected{0.5, 1.5, 2.5, 0.5, 1.5, 2.5, 0.5, 1.5, 2.5};
     ASSERT_THAT(face_y_vector, ::testing::ContainerEq(face_y_vector_expected));
 
-    std::vector<int> face_nodes_vector(face_nodes.get(), face_nodes.get() + mesh2d.num_faces * mesh2d.num_face_nodes_max);
+    std::vector<int> face_nodes_vector(face_nodes.data(), face_nodes.data() + mesh2d.num_faces * mesh2d.num_face_nodes_max);
     std::vector<int> face_nodes_vector_expected{
         1, 2, 4, 3,
         3, 4, 6, 5,
@@ -218,14 +218,14 @@ TEST(ApiTest, DefineAndPut_OneMesh2D_ShouldWriteData)
     std::unique_ptr<char> const name(new char[name_long_length]);
     string_to_char_array("mesh2d", name_long_length, name.get());
     mesh2d.name = name.get();
-    std::unique_ptr<double> const node_x(new double[]{0, 1, 0, 1, 0, 1, 0, 1, 2, 2, 2, 2, 3, 3, 3, 3});
+    std::vector<double> node_x{0, 1, 0, 1, 0, 1, 0, 1, 2, 2, 2, 2, 3, 3, 3, 3};
 
-    mesh2d.node_x = node_x.get();
-    std::unique_ptr<double> const node_y(new double[]{0, 0, 1, 1, 2, 2, 3, 3, 0, 1, 2, 3, 0, 1, 2, 3});
+    mesh2d.node_x = node_x.data();
+    std::vector<double> node_y{0, 0, 1, 1, 2, 2, 3, 3, 0, 1, 2, 3, 0, 1, 2, 3};
 
-    mesh2d.node_y = node_y.get();
+    mesh2d.node_y = node_y.data();
     mesh2d.num_nodes = 16;
-    std::unique_ptr<int> const edge_nodes(new int[]{
+    std::vector<int> edge_nodes{
         1,
         2,
         3,
@@ -274,16 +274,17 @@ TEST(ApiTest, DefineAndPut_OneMesh2D_ShouldWriteData)
         15,
         15,
         16,
-    });
-    mesh2d.edge_nodes = edge_nodes.get();
+    };
+
+    mesh2d.edge_nodes = edge_nodes.data();
     mesh2d.num_edges = 23;
 
-    std::unique_ptr<double> const face_x(new double[]{0.5, 0.5, 0.5, 1.5, 1.5, 1.5, 2.5, 2.5, 2.5});
-    mesh2d.face_x = face_x.get();
-    std::unique_ptr<double> const face_y(new double[]{0, 0, 1, 1, 2, 2, 3, 3, 0, 1, 2, 3, 0, 1, 2, 3});
-    mesh2d.face_y = face_y.get();
+    std::vector<double> face_x{0.5, 0.5, 0.5, 1.5, 1.5, 1.5, 2.5, 2.5, 2.5};
+    mesh2d.face_x = face_x.data();
+    std::vector<double> face_y{0, 0, 1, 1, 2, 2, 3, 3, 0, 1, 2, 3, 0, 1, 2, 3};
+    mesh2d.face_y = face_y.data();
     mesh2d.num_faces = 9;
-    std::unique_ptr<int> const face_nodes(new int[]{
+    std::vector<int> face_nodes{
         1, 2, 4, 3,
         3, 4, 6, 5,
         5, 6, 8, 7,
@@ -292,8 +293,8 @@ TEST(ApiTest, DefineAndPut_OneMesh2D_ShouldWriteData)
         6, 11, 12, 8,
         9, 13, 14, 10,
         10, 14, 15, 11,
-        11, 15, 16, 12});
-    mesh2d.face_nodes = face_nodes.get();
+        11, 15, 16, 12};
+    mesh2d.face_nodes = face_nodes.data();
     mesh2d.num_face_nodes_max = 4;
 
     // Execute
@@ -470,27 +471,27 @@ TEST(ApiTest, DefineAndPut_OneNetwork1D_ShouldWriteData)
     std::unique_ptr<char> const name(new char[name_long_length]);
     string_to_char_array("network1d", name_long_length, name.get());
     network1d.name = name.get();
-    std::unique_ptr<double> const node_x(new double[]{293.78, 538.89});
-    network1d.node_x = node_x.get();
-    std::unique_ptr<double> const node_y(new double[]{27.48, 956.75});
-    network1d.node_y = node_y.get();
+    std::vector<double> node_x{293.78, 538.89};
+    network1d.node_x = node_x.data();
+    std::vector<double> node_y{27.48, 956.75};
+    network1d.node_y = node_y.data();
     network1d.num_nodes = 2;
-    std::unique_ptr<int> const edge_node(new int[]{0, 1});
-    network1d.edge_nodes = edge_node.get();
+    std::vector<int> edge_node{0, 1};
+    network1d.edge_nodes = edge_node.data();
     network1d.num_edges = 1;
 
-    std::unique_ptr<double> const geometry_nodes_x(new double[]{293.78, 278.97, 265.31, 254.17, 247.44, 248.3, 259.58,
-                                                                282.24, 314.61, 354.44, 398.94, 445, 490.6, 532.84, 566.64, 589.08,
-                                                                600.72, 603.53, 599.27, 590.05, 577.56, 562.97, 547.12, 530.67, 538.89});
-    network1d.geometry_nodes_x = geometry_nodes_x.get();
+    std::vector<double> geometry_nodes_x{293.78, 278.97, 265.31, 254.17, 247.44, 248.3, 259.58,
+                                         282.24, 314.61, 354.44, 398.94, 445, 490.6, 532.84, 566.64, 589.08,
+                                         600.72, 603.53, 599.27, 590.05, 577.56, 562.97, 547.12, 530.67, 538.89};
+    network1d.geometry_nodes_x = geometry_nodes_x.data();
 
-    std::unique_ptr<double> const geometry_nodes_y(new double[]{27.48, 74.87, 122.59, 170.96, 220.12, 269.67, 317.89,
-                                                                361.93, 399.39, 428.84, 450.76, 469.28, 488.89, 514.78, 550.83, 594.93,
-                                                                643.09, 692.6, 742.02, 790.79, 838.83, 886.28, 933.33, 980.17, 956.75});
-    network1d.geometry_nodes_y = geometry_nodes_y.get();
+    std::vector<double> geometry_nodes_y{27.48, 74.87, 122.59, 170.96, 220.12, 269.67, 317.89,
+                                         361.93, 399.39, 428.84, 450.76, 469.28, 488.89, 514.78, 550.83, 594.93,
+                                         643.09, 692.6, 742.02, 790.79, 838.83, 886.28, 933.33, 980.17, 956.75};
+    network1d.geometry_nodes_y = geometry_nodes_y.data();
 
-    std::unique_ptr<int> const geometry_nodes_count(new int[]{25});
-    network1d.num_edge_geometry_nodes = geometry_nodes_count.get();
+    std::vector<int> geometry_nodes_count{25};
+    network1d.num_edge_geometry_nodes = geometry_nodes_count.data();
 
     network1d.num_geometry_nodes = 25;
 
@@ -629,43 +630,44 @@ TEST(ApiTest, DefineAndPut_OneMesh1D_ShouldWriteData)
     std::unique_ptr<char> const network_name(new char[]{"network1d                               "});
     mesh1d.network_name = network_name.get();
 
-    std::unique_ptr<int> const node_edge_id(new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0});
-    mesh1d.node_edge_id = node_edge_id.get();
+    std::vector<int> node_edge_id{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    mesh1d.node_edge_id = node_edge_id.data();
 
-    std::unique_ptr<double> const node_edge_offset(new double[]{
+    std::vector<double> node_edge_offset{
         0, 49.65, 99.29, 148.92, 198.54, 248.09,
         297.62, 347.15, 396.66, 446.19, 495.8, 545.44, 595.08, 644.63, 694.04,
         743.52, 793.07, 842.65, 892.26, 941.89, 991.53, 1041.17, 1090.82,
-        1140.46, 1165.29});
-    mesh1d.node_edge_offset = node_edge_offset.get();
+        1140.46, 1165.29};
+    mesh1d.node_edge_offset = node_edge_offset.data();
 
     mesh1d.num_nodes = 25;
     mesh1d.num_edges = 24;
-    std::unique_ptr<int> const edges_nodes(new int[]{0, 1,
-                                                     1, 2,
-                                                     2, 3,
-                                                     3, 4,
-                                                     4, 5,
-                                                     5, 6,
-                                                     6, 7,
-                                                     7, 8,
-                                                     8, 9,
-                                                     9, 10,
-                                                     10, 11,
-                                                     11, 12,
-                                                     12, 13,
-                                                     13, 14,
-                                                     14, 15,
-                                                     15, 16,
-                                                     16, 17,
-                                                     17, 18,
-                                                     18, 19,
-                                                     19, 20,
-                                                     20, 21,
-                                                     21, 22,
-                                                     22, 23,
-                                                     23, 24});
-    mesh1d.edge_nodes = edges_nodes.get();
+    std::vector<int> edges_nodes{0, 1,
+                                 1, 2,
+                                 2, 3,
+                                 3, 4,
+                                 4, 5,
+                                 5, 6,
+                                 6, 7,
+                                 7, 8,
+                                 8, 9,
+                                 9, 10,
+                                 10, 11,
+                                 11, 12,
+                                 12, 13,
+                                 13, 14,
+                                 14, 15,
+                                 15, 16,
+                                 16, 17,
+                                 17, 18,
+                                 18, 19,
+                                 19, 20,
+                                 20, 21,
+                                 21, 22,
+                                 22, 23,
+                                 23, 24};
+
+    mesh1d.edge_nodes = edges_nodes.data();
 
     std::vector<std::string> ids;
     std::vector<std::string> long_names;
@@ -853,33 +855,34 @@ TEST(ApiTest, DefineAndPut_OneContact_ShouldWriteAContact)
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
     contacts.mesh_to_location = face_location_enum;
 
-    std::unique_ptr<int> const contact_type(new int[]{3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3});
-    contacts.contact_type = contact_type.get();
+    std::vector<int> contact_type{3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3};
+    contacts.contact_type = contact_type.data();
 
-    std::unique_ptr<int> const edges(new int[]{13, 1,
-                                               13, 2,
-                                               13, 3,
-                                               13, 4,
-                                               70, 5,
-                                               76, 6,
-                                               91, 7,
-                                               13, 8,
-                                               13, 9,
-                                               13, 10,
-                                               13, 11,
-                                               13, 12,
-                                               178, 13,
-                                               200, 14,
-                                               228, 15,
-                                               255, 16,
-                                               277, 17,
-                                               293, 18,
-                                               304, 19,
-                                               315, 20,
-                                               326, 21,
-                                               337, 22,
-                                               353, 23});
-    contacts.edges = edges.get();
+    std::vector<int> edges{13, 1,
+                           13, 2,
+                           13, 3,
+                           13, 4,
+                           70, 5,
+                           76, 6,
+                           91, 7,
+                           13, 8,
+                           13, 9,
+                           13, 10,
+                           13, 11,
+                           13, 12,
+                           178, 13,
+                           200, 14,
+                           228, 15,
+                           255, 16,
+                           277, 17,
+                           293, 18,
+                           304, 19,
+                           315, 20,
+                           326, 21,
+                           337, 22,
+                           353, 23};
+    contacts.edges = edges.data();
+
     contacts.num_contacts = 23;
 
     std::vector<std::string> ids;
@@ -1180,14 +1183,14 @@ TEST(ApiTest, TopologyDefineDoubleVariableOnLocation_OnExistingFile_ShouldDefine
     std::unique_ptr<char> const name(new char[name_long_length]);
     string_to_char_array("mesh2d", name_long_length, name.get());
     mesh2d.name = name.get();
-    std::unique_ptr<double> const node_x(new double[]{0, 1, 0, 1, 0, 1, 0, 1, 2, 2, 2, 2, 3, 3, 3, 3});
+    std::vector<double> node_x{0, 1, 0, 1, 0, 1, 0, 1, 2, 2, 2, 2, 3, 3, 3, 3};
 
-    mesh2d.node_x = node_x.get();
-    std::unique_ptr<double> const node_y(new double[]{0, 0, 1, 1, 2, 2, 3, 3, 0, 1, 2, 3, 0, 1, 2, 3});
+    mesh2d.node_x = node_x.data();
+    std::vector<double> node_y{0, 0, 1, 1, 2, 2, 3, 3, 0, 1, 2, 3, 0, 1, 2, 3};
 
-    mesh2d.node_y = node_y.get();
+    mesh2d.node_y = node_y.data();
     mesh2d.num_nodes = 16;
-    std::unique_ptr<int> const edge_nodes(new int[]{
+    std::vector<int> edge_nodes{
         1,
         2,
         3,
@@ -1236,16 +1239,17 @@ TEST(ApiTest, TopologyDefineDoubleVariableOnLocation_OnExistingFile_ShouldDefine
         15,
         15,
         16,
-    });
-    mesh2d.edge_nodes = edge_nodes.get();
+    };
+
+    mesh2d.edge_nodes = edge_nodes.data();
     mesh2d.num_edges = 23;
 
-    std::unique_ptr<double> const face_x(new double[]{0.5, 0.5, 0.5, 1.5, 1.5, 1.5, 2.5, 2.5, 2.5});
-    mesh2d.face_x = face_x.get();
-    std::unique_ptr<double> const face_y(new double[]{0, 0, 1, 1, 2, 2, 3, 3, 0, 1, 2, 3, 0, 1, 2, 3});
-    mesh2d.face_y = face_y.get();
+    std::vector<double> face_x{0.5, 0.5, 0.5, 1.5, 1.5, 1.5, 2.5, 2.5, 2.5};
+    mesh2d.face_x = face_x.data();
+    std::vector<double> face_y{0, 0, 1, 1, 2, 2, 3, 3, 0, 1, 2, 3, 0, 1, 2, 3};
+    mesh2d.face_y = face_y.data();
     mesh2d.num_faces = 9;
-    std::unique_ptr<int> const face_nodes(new int[]{
+    std::vector<int> face_nodes{
         1, 2, 4, 3,
         3, 4, 6, 5,
         5, 6, 8, 7,
@@ -1254,8 +1258,8 @@ TEST(ApiTest, TopologyDefineDoubleVariableOnLocation_OnExistingFile_ShouldDefine
         6, 11, 12, 8,
         9, 13, 14, 10,
         10, 14, 15, 11,
-        11, 15, 16, 12});
-    mesh2d.face_nodes = face_nodes.get();
+        11, 15, 16, 12};
+    mesh2d.face_nodes = face_nodes.data();
     mesh2d.num_face_nodes_max = 4;
 
     // Open file
@@ -1311,66 +1315,6 @@ TEST(ApiTest, TopologyDefineDoubleVariableOnLocation_OnExistingFile_ShouldDefine
     error_code = ugridapi::ug_file_close(file_id);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 }
-/*
-TEST(ApiTest, InquireAndGetFaceEdges_OneMesh2D_ShouldReadMesh2D)
-{
-    // Prepare
-    std::string const file_path = TEST_FOLDER + "/AllUGridEntities.nc";
-    int file_mode = -1;
-    auto error_code = ugridapi::ug_file_read_mode(file_mode);
-    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
-
-    int file_id = -1;
-    error_code = ugridapi::ug_file_open(file_path.c_str(), file_mode, file_id);
-    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
-
-    // get the number of topologies
-    int topology_type;
-    error_code = ugridapi::ug_topology_get_mesh2d_enum(topology_type);
-    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
-    int num_topologies;
-    error_code = ugridapi::ug_topology_get_count(file_id, topology_type, num_topologies);
-    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
-    ASSERT_EQ(num_topologies, 1);
-
-    // get the dimensions
-    ugridapi::Mesh2D mesh2d;
-    error_code = ug_mesh2d_inq(file_id, 0, mesh2d);
-    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
-
-    // Allocate data variables
-    int name_length;
-    error_code = ugridapi::ug_name_get_length(name_length);
-    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
-    int long_names_length;
-    error_code = ugridapi::ug_name_get_long_length(long_names_length);
-    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
-
-    std::vector<double> node_x(mesh2d.num_nodes);
-    mesh2d.node_x = node_x.data();
-
-    std::vector<double> node_y(mesh2d.num_nodes);
-    mesh2d.node_y = node_y.data();
-
-    std::vector<int> edge_node(mesh2d.num_edges * 2);
-    mesh2d.edge_nodes = edge_node.data();
-
-    std::vector<int> edge_faces(mesh2d.num_face_nodes_max * mesh2d.num_faces, -1);
-    mesh2d.edge_faces = edge_faces.data();
-
-    std::vector<int> face_edges(mesh2d.num_face_nodes_max * mesh2d.num_faces, -1);
-    mesh2d.face_edges = face_edges.data();
-
-    // Execute
-    error_code = ug_mesh2d_get(file_id, 0, mesh2d);
-    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
-
-
-
-    error_code = ugridapi::ug_file_close(file_id);
-    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
-}
-*/
 
 TEST(ApiTest, InquireAndGetFaceEdges_OneMesh2D_ShouldReadMesh2D)
 {
