@@ -242,6 +242,8 @@ void Mesh1D::get(ugridapi::Mesh1D& mesh1d) const
     }
     if (auto const it = m_topology_attribute_variables.find("edge_node_connectivity"); mesh1d.edge_nodes != nullptr && it != m_topology_attribute_variables.end())
     {
-        it->second.at(0).getVar(mesh1d.edge_nodes);
+        const auto var = it->second.at(0);
+        var.getVar(mesh1d.edge_nodes);
+        apply_start_index_offset(var, mesh1d.start_index, mesh1d.num_edges, mesh1d.edge_nodes);
     }
 }
