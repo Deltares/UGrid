@@ -297,7 +297,7 @@ void Mesh2D::get(ugridapi::Mesh2D& mesh2d) const
     {
         const auto var = it->second.at(0);
         var.getVar(mesh2d.edge_nodes);
-        apply_start_index_offset(var, mesh2d.start_index, mesh2d.num_edges, mesh2d.edge_nodes);
+        apply_start_index_offset(var, mesh2d.start_index, mesh2d.num_edges * 2, mesh2d.edge_nodes);
     }
     if (auto const it = m_topology_attribute_variables.find("edge_face_connectivity"); mesh2d.edge_faces != nullptr && it != m_topology_attribute_variables.end())
     {
