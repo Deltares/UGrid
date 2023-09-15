@@ -343,7 +343,7 @@ void Network1D::get(ugridapi::Network1D& network1d) const
     {
         const auto var = it->second.at(0);
         var.getVar(network1d.edge_nodes);
-        apply_start_index_offset(var, network1d.start_index, network1d.num_edges, network1d.edge_nodes);
+        apply_start_index_offset(var, network1d.start_index, network1d.num_edges * 2, network1d.edge_nodes);
     }
 
     if (auto const it = find_attribute_variable_name_with_aliases("node_id"); network1d.node_id != nullptr && it != m_topology_attribute_variables.end())

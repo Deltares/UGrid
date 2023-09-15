@@ -244,6 +244,6 @@ void Mesh1D::get(ugridapi::Mesh1D& mesh1d) const
     {
         const auto var = it->second.at(0);
         var.getVar(mesh1d.edge_nodes);
-        apply_start_index_offset(var, mesh1d.start_index, mesh1d.num_edges, mesh1d.edge_nodes);
+        apply_start_index_offset(var, mesh1d.start_index, mesh1d.num_edges * 2, mesh1d.edge_nodes);
     }
 }
