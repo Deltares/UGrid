@@ -127,6 +127,7 @@ TEST(ApiTest, InquireAndGet_OneMesh2D_ShouldReadMesh2d)
     mesh2d.face_y = face_y.data();
     std::vector<int> face_nodes(mesh2d.num_faces * mesh2d.num_face_nodes_max);
     mesh2d.face_nodes = face_nodes.data();
+    mesh2d.start_index = 1;
 
     // Execute
     error_code = ug_mesh2d_get(file_id, 0, mesh2d);

@@ -137,6 +137,30 @@ namespace ugrid
         /// @return The variables names
         [[nodiscard]] std::vector<std::string> get_data_variables_names(std::string const& location_string);
 
+        /// @brief This function adjusts the values in an input array based on the difference between the provided `start_index`
+        /// and the `start_index` stored in the specified NetCDF variable's attribute named "start_index". If the attribute is not found, no adjustments are made to the array.
+        /// @tparam T The data type of the input array `values`.
+        /// @param[in] var The NetCDF variable from which to retrieve the "start_index" attribute.
+        /// @param[in] start_index The desired start index for the array.
+        /// @param[in] values_size The size of the input array `values`.
+        /// @param[in,out] values The input array to which the offset is applied.
+        template <typename T>
+        static void apply_start_index_offset(const netCDF::NcVar& var, int start_index, int values_size, T* values)
+        {
+            const auto varAtt = var.getAtts();
+            std::string start_index_att_name{"start_index"};
+            if (varAtt.find(start_index_att_name) != varAtt.end())
+            {
+                int variable_start_index;
+                varAtt.at(start_index_att_name).getValues(&variable_start_index);
+                int offset = start_index - variable_start_index;
+                for (auto i = 0; i < values_size; ++i)
+                {
+                    values[i] += offset;
+                }
+            }
+        }
+
     protected:
         /// @brief Method collecting common operations for defining a UGrid entity to file
         /// @param entity_name [in] The entity name
