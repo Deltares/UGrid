@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['boundary_5fnode_5fconnectivity_0',['boundary_node_connectivity',['../structugridapi_1_1_mesh2_d.html#a3b60522da4ac8a333b51e0dba28892fb',1,'ugridapi::Mesh2D']]]
+  ['apply_5fstart_5findex_5foffset_0',['apply_start_index_offset',['../classugrid_1_1_u_grid_entity.html#a279f52381a69d9f31cde5e076ff9a76a',1,'ugrid::UGridEntity']]]
 ];

@@ -139,6 +139,10 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:adc50ee16c35e37c760015b275c7a94b5"><td class="memTemplItemLeft" align="right" valign="top">static std::vector&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classugrid_1_1_u_grid_entity.html#adc50ee16c35e37c760015b275c7a94b5">create</a> (std::shared_ptr&lt; netCDF::NcFile &gt; const &amp;nc_file)</td></tr>
 <tr class="memdesc:adc50ee16c35e37c760015b275c7a94b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Factory method producing a vector of instances of T class.  <a href="classugrid_1_1_u_grid_entity.html#adc50ee16c35e37c760015b275c7a94b5">More...</a><br /></td></tr>
 <tr class="separator:adc50ee16c35e37c760015b275c7a94b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a279f52381a69d9f31cde5e076ff9a76a"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a279f52381a69d9f31cde5e076ff9a76a"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classugrid_1_1_u_grid_entity.html#a279f52381a69d9f31cde5e076ff9a76a">apply_start_index_offset</a> (const netCDF::NcVar &amp;var, int start_index, int values_size, T *values)</td></tr>
+<tr class="memdesc:a279f52381a69d9f31cde5e076ff9a76a"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function adjusts the values in an input array based on the difference between the provided <code>start_index</code> and the <code>start_index</code> stored in the specified NetCDF variable's attribute named "start_index". If the attribute is not found, no adjustments are made to the array.  <a href="classugrid_1_1_u_grid_entity.html#a279f52381a69d9f31cde5e076ff9a76a">More...</a><br /></td></tr>
+<tr class="separator:a279f52381a69d9f31cde5e076ff9a76a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
@@ -324,6 +328,73 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a279f52381a69d9f31cde5e076ff9a76a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a279f52381a69d9f31cde5e076ff9a76a">&#9670;&nbsp;</a></span>apply_start_index_offset()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void ugrid::UGridEntity::apply_start_index_offset </td>
+          <td>(</td>
+          <td class="paramtype">const netCDF::NcVar &amp;&#160;</td>
+          <td class="paramname"><em>var</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>start_index</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>values_size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">T *&#160;</td>
+          <td class="paramname"><em>values</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>This function adjusts the values in an input array based on the difference between the provided <code>start_index</code> and the <code>start_index</code> stored in the specified NetCDF variable's attribute named "start_index". If the attribute is not found, no adjustments are made to the array. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>The data type of the input array <code>values</code>. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">var</td><td>The NetCDF variable from which to retrieve the "start_index" attribute. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">start_index</td><td>The desired start index for the array. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">values_size</td><td>The size of the input array <code>values</code>. </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">values</td><td>The input array to which the offset is applied. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="adc50ee16c35e37c760015b275c7a94b5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#adc50ee16c35e37c760015b275c7a94b5">&#9670;&nbsp;</a></span>create()</h2>
 
