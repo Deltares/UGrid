@@ -153,7 +153,7 @@ namespace ugrid
             {
                 int variable_start_index;
                 varAtt.at(start_index_att_name).getValues(&variable_start_index);
-                int offset = start_index - variable_start_index;
+                const int offset = start_index - variable_start_index;
                 for (auto i = 0; i < values_size; ++i)
                 {
                     values[i] += offset;
