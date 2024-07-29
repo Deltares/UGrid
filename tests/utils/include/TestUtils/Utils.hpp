@@ -70,11 +70,11 @@ static void string_to_char_array(std::string const& value, size_t len, char* cha
 {
     if (value.empty())
     {
-        throw std::exception("string_to_char_array: value string is empty.");
+        throw std::runtime_error("string_to_char_array: value string is empty.");
     }
     if (char_array == nullptr)
     {
-        throw std::exception("string_to_char_array: char_array is nullptr.");
+        throw std::runtime_error("string_to_char_array: char_array is nullptr.");
     }
     for (auto i = 0; i < value.size(); ++i)
     {
