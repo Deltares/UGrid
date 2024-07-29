@@ -23,3 +23,4 @@ xbuild
 post_build.bat
 /tests/utils/include/TestUtils/Definitions.hpp
 /include/Version/Version.hpp
+/tests/data/written_files/*.nc
