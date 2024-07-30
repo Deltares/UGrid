@@ -234,25 +234,34 @@ namespace ugridapi
 
     UGRID_API int ug_topology_get_count(int file_id, int topology_type, int& topology_count)
     {
-        switch (topology_type)
+        int exit_code = Success;
+        try
         {
-        case Network1dTopology:
-            topology_count = static_cast<int>(ugrid_states[file_id].m_network1d.size());
-            break;
-        case Mesh1dTopology:
+            switch (static_cast<UGridTopologyType>(topology_type))
+            {
+            case Network1dTopology:
+                topology_count = static_cast<int>(ugrid_states[file_id].m_network1d.size());
+                break;
+            case Mesh1dTopology:
 
-            topology_count = static_cast<int>(ugrid_states[file_id].m_mesh1d.size());
-            break;
-        case Mesh2dTopology:
-            topology_count = static_cast<int>(ugrid_states[file_id].m_mesh2d.size());
-            break;
-        case ContactsTopology:
-            topology_count = static_cast<int>(ugrid_states[file_id].m_contacts.size());
-            break;
-        default:
-            throw std::runtime_error("Invalid topology");
+                topology_count = static_cast<int>(ugrid_states[file_id].m_mesh1d.size());
+                break;
+            case Mesh2dTopology:
+                topology_count = static_cast<int>(ugrid_states[file_id].m_mesh2d.size());
+                break;
+            case ContactsTopology:
+                topology_count = static_cast<int>(ugrid_states[file_id].m_contacts.size());
+                break;
+            default:
+                throw std::runtime_error("Invalid topology");
+            }
         }
-        return Success;
+        catch (...)
+        {
+            exit_code = HandleExceptions(std::current_exception());
+        }
+
+        return exit_code;
     }
 
     UGRID_API int ug_topology_count_data_variables(int file_id, int topology_type, int topology_id, int location, int& data_variable_count)
