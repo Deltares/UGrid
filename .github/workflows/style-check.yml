@@ -31,12 +31,12 @@ jobs:
                   clang-format -style=file -i "${file}"
               done
             )
-            # Just some visual separation
-            echo -e "\\n\\n\\n\\tChecking diff...\\n\\n\\n"
-            # Set error mode. Makes bash bail on first non-zero exit code
-            set -e
-            # Print diff, if any and report with exit code.
-            git diff --exit-code
-            # When no diff present, provide status.
-            echo -e "\\tStyle is fine"
           done
+          # Just some visual separation
+          echo -e "\\n\\n\\n\\tChecking diff...\\n\\n\\n"
+          # Set error mode. Makes bash bail on first non-zero exit code
+          set -e
+          # Print diff, if any and report with exit code.
+          git diff --exit-code
+          # When no diff present, provide status.
+          echo -e "\\tStyle is fine"
