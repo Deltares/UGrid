@@ -79,9 +79,9 @@ if (netCDF_FOUND)
 endif()
 
 # Use NetCDF-cxx
-find_package(netCDFCxx 4.3.1 REQUIRED)
-if (NetCDFCxx_FOUND)
-    message(STATUS "NetCDFCXX include dirs: ${NetCDFCxx_INCLUDE_DIRS}")
+find_package(netCDFCxx REQUIRED)
+if (netCDFCxx_FOUND)
+    message(STATUS "Found NetCDFCxx: ${netCDFCxx_VERSION}")
 endif()
 
 # FetchContent added in CMake 3.11, downloads during the configure step
