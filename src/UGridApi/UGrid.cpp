@@ -25,8 +25,6 @@
 //
 //------------------------------------------------------------------------------
 
-#pragma once
-
 #if defined(_WIN32)
 #if !defined(UGRID_API)
 #define UGRID_API __declspec(dllexport)
@@ -55,7 +53,7 @@ namespace ugridapi
     static std::map<int, UGridState> ugrid_states;
     static char exceptionMessage[512] = "";
 
-    int HandleExceptions(const std::exception_ptr exceptionPtr)
+    static int HandleExceptions(const std::exception_ptr exceptionPtr)
     {
         try
         {
@@ -68,23 +66,20 @@ namespace ugridapi
         }
     }
 
-    std::unique_ptr<ugrid::UGridEntity> get_topology(int file_id, int topology_id, int topology_type)
+    static std::unique_ptr<ugrid::UGridEntity> get_topology(int file_id, int topology_id, int topology_type)
     {
-        if (topology_type == Network1dTopology)
+        switch (topology_type)
         {
+        case Network1dTopology:
             return std::make_unique<ugrid::UGridEntity>(ugrid_states[file_id].m_network1d[topology_id]);
-        }
-        if (topology_type == Mesh1dTopology)
-        {
+        case Mesh1dTopology:
             return std::make_unique<ugrid::UGridEntity>(ugrid_states[file_id].m_mesh1d[topology_id]);
-        }
-        if (topology_type == Mesh2dTopology)
-        {
+        case Mesh2dTopology:
             return std::make_unique<ugrid::UGridEntity>(ugrid_states[file_id].m_mesh2d[topology_id]);
-        }
-        if (topology_type == ContactsTopology)
-        {
+        case ContactsTopology:
             return std::make_unique<ugrid::UGridEntity>(ugrid_states[file_id].m_contacts[topology_id]);
+        default:
+            throw std::runtime_error("Invalid topology.");
         }
     }
 
@@ -129,7 +124,7 @@ namespace ugridapi
     /// @param data_variable_name The name of the data variable
     /// @param data The retrieved data
     template <typename T>
-    void get_data_array(int file_id, const char* data_variable_name, T& data)
+    static void get_data_array(int file_id, const char* data_variable_name, T& data)
     {
         // Gets the variable name
         const auto variable_name = ugrid::char_array_to_string(data_variable_name, ugrid::name_long_length);
@@ -148,7 +143,7 @@ namespace ugridapi
         it->second.getVar(&data);
     }
 
-    static auto get_variable(int file_id, std::string const& name)
+    static netCDF::NcVar const& get_variable(int file_id, std::string const& name)
     {
         // Get all variables
         const auto vars = ugrid_states[file_id].m_ncFile->getVars();
@@ -163,13 +158,13 @@ namespace ugridapi
         return it->second;
     }
 
-    static auto get_coordinate_variable_string(int file_id, int topology_id, int topology_type, std::string const& var_name)
+    static std::string get_coordinate_variable_string(int file_id, int topology_id, int topology_type, std::string const& var_name)
     {
         auto topology = get_topology(file_id, topology_id, topology_type);
 
         auto coordinates_vector_variables = topology->get_topology_attribute_variable(var_name);
         std::string result;
-        for (auto i = 0; i < coordinates_vector_variables.size() - 1; ++i)
+        for (size_t i = 0; i < coordinates_vector_variables.size() - 1; ++i)
         {
             result += coordinates_vector_variables[i].getName() + " ";
         }
@@ -239,21 +234,23 @@ namespace ugridapi
 
     UGRID_API int ug_topology_get_count(int file_id, int topology_type, int& topology_count)
     {
-        if (topology_type == Network1dTopology)
+        switch (topology_type)
         {
+        case Network1dTopology:
             topology_count = static_cast<int>(ugrid_states[file_id].m_network1d.size());
-        }
-        if (topology_type == Mesh1dTopology)
-        {
+            break;
+        case Mesh1dTopology:
+
             topology_count = static_cast<int>(ugrid_states[file_id].m_mesh1d.size());
-        }
-        if (topology_type == Mesh2dTopology)
-        {
+            break;
+        case Mesh2dTopology:
             topology_count = static_cast<int>(ugrid_states[file_id].m_mesh2d.size());
-        }
-        if (topology_type == ContactsTopology)
-        {
+            break;
+        case ContactsTopology:
             topology_count = static_cast<int>(ugrid_states[file_id].m_contacts.size());
+            break;
+        default:
+            throw std::runtime_error("Invalid topology");
         }
         return Success;
     }
@@ -521,7 +518,7 @@ namespace ugridapi
 
             // Get the dimensions
             auto const dimensions = it->second.getDims();
-            for (auto i = 0; i < dimensions.size(); ++i)
+            for (size_t i = 0; i < dimensions.size(); ++i)
             {
                 dimension_vec[i] = dimensions[i].getSize();
             }

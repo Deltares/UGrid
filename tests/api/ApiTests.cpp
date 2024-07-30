@@ -393,7 +393,7 @@ TEST(ApiTest, InquireAndGet_OneNetwork1D_ShouldReadNetwork1D)
     ASSERT_EQ(network1d.num_edge_geometry_nodes[0], 25);
     std::string node_ids_string(node_id.get(), node_id.get() + name_length * network1d.num_nodes);
     std::string node_long_names_string(node_long_name.get(), node_long_name.get() + long_names_length * network1d.num_nodes);
-    for (auto i = 0; i < network1d.num_nodes; ++i)
+    for (int i = 0; i < network1d.num_nodes; ++i)
     {
         std::string node_id_string = node_ids_string.substr(i * name_length, name_length);
         right_trim_string(node_id_string);
@@ -405,7 +405,7 @@ TEST(ApiTest, InquireAndGet_OneNetwork1D_ShouldReadNetwork1D)
 
     std::string edge_ids_string(edge_id.get(), edge_id.get() + name_length * network1d.num_edges);
     std::string edge_long_names_string(edge_long_name.get(), edge_long_name.get() + long_names_length * network1d.num_edges);
-    for (auto i = 0; i < network1d.num_edges; ++i)
+    for (int i = 0; i < network1d.num_edges; ++i)
     {
         std::string edge_id_string = edge_ids_string.substr(i * name_length, name_length);
         right_trim_string(edge_id_string);
@@ -588,7 +588,7 @@ TEST(ApiTest, InquireAndGet_OneMesh1D_ShouldReadMesh1D)
 
     std::string node_ids_string(node_id.get(), node_id.get() + name_length * mesh1d.num_nodes);
     std::string node_long_names_string(node_long_name.get(), node_long_name.get() + long_names_length * mesh1d.num_nodes);
-    for (auto i = 0; i < mesh1d.num_nodes; ++i)
+    for (int i = 0; i < mesh1d.num_nodes; ++i)
     {
         std::string node_id_string = node_ids_string.substr(i * name_length, name_length);
         right_trim_string(node_id_string);
@@ -672,7 +672,7 @@ TEST(ApiTest, DefineAndPut_OneMesh1D_ShouldWriteData)
 
     std::vector<std::string> ids;
     std::vector<std::string> long_names;
-    for (auto i = 0; i < mesh1d.num_nodes; ++i)
+    for (int i = 0; i < mesh1d.num_nodes; ++i)
     {
         ids.emplace_back("meshnodeids");
         long_names.emplace_back("meshnodelongnames");
@@ -775,7 +775,7 @@ TEST(ApiTest, InquireAndGet_OneContact_ShouldReadContact)
 
     std::string contacts_ids_string(contact_name_id.get(), contact_name_id.get() + name_length * contacts.num_contacts);
     std::string contacts_long_names_string(contact_name_long.get(), contact_name_long.get() + long_names_length * contacts.num_contacts);
-    for (auto i = 0; i < contacts.num_contacts; ++i)
+    for (int i = 0; i < contacts.num_contacts; ++i)
     {
         std::string contact_id_string = contacts_ids_string.substr(i * name_length, name_length);
         right_trim_string(contact_id_string);
@@ -888,7 +888,7 @@ TEST(ApiTest, DefineAndPut_OneContact_ShouldWriteAContact)
 
     std::vector<std::string> ids;
     std::vector<std::string> long_names;
-    for (auto i = 0; i < contacts.num_contacts; ++i)
+    for (int i = 0; i < contacts.num_contacts; ++i)
     {
         ids.emplace_back("linkid");
         long_names.emplace_back("linklongname");
@@ -1368,14 +1368,14 @@ TEST(ApiTest, InquireAndGetFaceEdges_OneMesh2D_ShouldReadMesh2D)
 
     // Assert
     std::vector<int> edge_faces_expected{23, 0, 45, 0, 56, 0, 67, 0, 78, 0};
-    for (int i = 0; i < edge_faces_expected.size(); ++i)
+    for (size_t i = 0; i < edge_faces_expected.size(); ++i)
     {
         ASSERT_EQ(edge_faces_expected[i], edge_faces[i]);
     }
 
     // No faces found, the initial -1 are retained
     std::vector<int> face_edges_expected{-1, -1, -1, -1};
-    for (int i = 0; i < face_edges_expected.size(); ++i)
+    for (size_t i = 0; i < face_edges_expected.size(); ++i)
     {
         ASSERT_EQ(face_edges_expected[i], face_edges[i]);
     }

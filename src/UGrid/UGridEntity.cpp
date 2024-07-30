@@ -349,7 +349,11 @@ void UGridEntity::define_topology_related_variables(std::string const& variable,
     m_related_variables.insert({variable, {topology_related_variable}});
 }
 
-void UGridEntity::define(char* entity_name, int start_index, std::string const& long_name, int topology_dimension, int is_spherical)
+void UGridEntity::define(char const* const entity_name,
+                         int start_index,
+                         std::string const& long_name,
+                         int topology_dimension,
+                         int is_spherical)
 {
     m_start_index = start_index;
     m_entity_name = char_array_to_string(entity_name, name_length);
