@@ -32,7 +32,10 @@
 
 using ugrid::Mesh1D;
 
-Mesh1D::Mesh1D(std::shared_ptr<netCDF::NcFile> nc_file) : UGridEntity(nc_file) {};
+Mesh1D::Mesh1D(std::shared_ptr<netCDF::NcFile> nc_file)
+    : UGridEntity(nc_file)
+{
+}
 
 Mesh1D::Mesh1D(
     std::shared_ptr<netCDF::NcFile> nc_file,
@@ -40,7 +43,9 @@ Mesh1D::Mesh1D(
     std::map<std::string, std::vector<netCDF::NcVar>> const& entity_attributes,
     std::map<std::string, std::vector<std::string>> const& entity_attribute_names,
     std::map<UGridFileDimensions, netCDF::NcDim> const& entity_dimensions)
-    : UGridEntity(nc_file, topology_variable, entity_attributes, entity_attribute_names, entity_dimensions) {};
+    : UGridEntity(nc_file, topology_variable, entity_attributes, entity_attribute_names, entity_dimensions)
+{
+}
 
 void Mesh1D::define(ugridapi::Mesh1D const& mesh1d)
 {
