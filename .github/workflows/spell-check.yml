@@ -1,4 +1,4 @@
-name: Codespell
+name: Spell check
 
 on:
   push:
@@ -7,10 +7,14 @@ on:
 
 jobs:
   check:
-    runs-on: ubuntu-20.04
+    name: Codespell
+
+    runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v2
-      - uses: codespell-project/actions-codespell@master
+      - uses: actions/checkout@v4
+
+      - uses: codespell-project/actions-codespell@v2
         with:
           check_filenames: true
-          skip: tests,extern,build,.git,.gitignore,*.tif,*.ppt,*.pdf,*.jpg,*.cd
+          check_hidden: false

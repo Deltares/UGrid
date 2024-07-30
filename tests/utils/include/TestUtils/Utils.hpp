@@ -32,7 +32,10 @@
 /// @param str [in] The input string
 static void right_trim_string(std::string& str)
 {
-    auto const isalnum_lambda = [](auto const& ch) { return std::isalnum(ch); };
+    auto const isalnum_lambda = [](auto const& ch)
+    {
+        return std::isalnum(ch);
+    };
     str.erase(std::find_if(str.rbegin(), str.rend(), isalnum_lambda).base(), str.end());
 }
 

@@ -1,4 +1,4 @@
-name: ClangFormat
+name: Code formatting
 
 on:
   push:
@@ -7,26 +7,30 @@ on:
 
 jobs:
   check:
-    runs-on: ubuntu-20.04
+    name: ClangFormat
+
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Download a recent, static build of clang-format
-        run: |
-          wget --no-verbose https://github.com/angular/clang-format/raw/master/bin/linux_x64/clang-format
-          chmod a+x clang-format
-      - name: Print clang-format version
-        run: |
-          ./clang-format --version
+      - uses: actions/checkout@v4
+
+      - name: Install clang-format
+        run: sudo apt install clang-format
+
       - name: Run clang-format and report result
         run: |
-          cd src      
+          declare -a directories=("src" "include" "tests")
           # Parse full lines
           export IFS=$'\n'
-          # For each file in repository with name ending with ".hpp", ".h", ".cpp" ...
-          for file in $(git ls-files | egrep "\\.hpp$|\\.h$|\\.cpp$"$); do
-              echo Formatting "$file"
-              # format it in place, so git can pick it up.
-              ../clang-format -style=file -i "$file"
+          for directory in "${directories[@]}"; do
+            (
+              cd "${directory}"
+              # Format each file in the directory with name ending with ".hpp", ".h", ".cpp"
+              for file in $(git ls-files | egrep "\\.hpp$|\\.h$|\\.cpp$"$); do
+                  echo Formatting "${file}"
+                  # format it in place, so git diff can pick it up.
+                  clang-format -style=file -i "${file}"
+              done
+            )
           done
           # Just some visual separation
           echo -e "\\n\\n\\n\\tChecking diff...\\n\\n\\n"
