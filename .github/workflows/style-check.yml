@@ -19,16 +19,16 @@ jobs:
       - name: Run clang-format and report result
         run: |
           declare -a directories=("src" "include" "tests")
+          # Parse full lines
+          export IFS=$'\n'
           for directory in "${directories[@]}"; do
             (
-              cd ${directory}
-              # Parse full lines
-              export IFS=$'\n'
-              # For each file in repository with name ending with ".hpp", ".h", ".cpp" ...
+              cd "${directory}"
+              # Format each file in the directory with name ending with ".hpp", ".h", ".cpp"
               for file in $(git ls-files | egrep "\\.hpp$|\\.h$|\\.cpp$"$); do
-                  echo Formatting "$file"
-                  # format it in place, so git can pick it up.
-                  ../clang-format -style=file -i "$file"
+                  echo Formatting "${file}"
+                  # format it in place, so git diff can pick it up.
+                  clang-format -style=file -i "${file}"
               done
             )
             # Just some visual separation
