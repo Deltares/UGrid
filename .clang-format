@@ -5,7 +5,7 @@ IndentWidth: 4
 TabWidth: 4
 BreakBeforeBraces: Allman
 AllowShortIfStatementsOnASingleLine: false
-AllowShortLambdasOnASingleLine: All
+AllowShortLambdasOnASingleLine: Inline
 IndentCaseLabels: false
 ColumnLimit: 0
 AccessModifierOffset: -4
