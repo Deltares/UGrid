@@ -86,6 +86,7 @@ endif()
 
 # FetchContent added in CMake 3.11, downloads during the configure step
 include(FetchContent)
+set(FETCHCONTENT_QUIET off)
 
 # Run packaging scripts
 add_subdirectory(package)
