@@ -75,13 +75,18 @@ include_directories(${Boost_INCLUDE_DIR})
 # Use NetCDF
 find_package(netCDF REQUIRED COMPONENTS C)
 if (netCDF_FOUND)
-  message(STATUS "Found NetCDF: in ${netCDF_INSTALL_PREFIX} (found version \"${NetCDFVersion}\")")
+  message(STATUS "Found NetCDF ${netCDF_VERSION}")
 endif()
 
 # Use NetCDF-cxx
 find_package(netCDFCxx REQUIRED)
 if (netCDFCxx_FOUND)
-    message(STATUS "Found NetCDFCxx: ${netCDFCxx_VERSION}")
+    message(STATUS "Found NetCDFCxx ${netCDFCxx_VERSION}")
+endif()
+
+find_package(hdf5 REQUIRED)
+if (hdf5_FOUND)
+    message(STATUS "Found HDF5 ${hdf5_VERSION}")
 endif()
 
 # FetchContent added in CMake 3.11, downloads during the configure step
