@@ -89,6 +89,11 @@ if (hdf5_FOUND)
     message(STATUS "Found HDF5 ${hdf5_VERSION}")
 endif()
 
+find_package(CURL REQUIRED)
+if (CURL_FOUND)
+    message(STATUS "Found curl ${CURL_VERSION}")
+endif()
+
 # FetchContent added in CMake 3.11, downloads during the configure step
 include(FetchContent)
 set(FETCHCONTENT_QUIET off)
