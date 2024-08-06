@@ -6,4 +6,4 @@ COPY . .
 
 RUN chmod +x ./dnf_install.sh && ./dnf_install.sh
 
-ENTRYPOINT ["bash", "./main.sh"]
+ENTRYPOINT ["bash", "./scripts/docker/main.sh"]
