@@ -14,6 +14,9 @@ ENV THIRD_PARTY_INSTALL_DIR=${THIRD_PARTY_INSTALL_DIR}
 RUN chmod +x /workspace/install_netcdf_cxx4.sh
 RUN /workspace/install_netcdf_cxx4.sh \
     --work_dir ${THIRD_PARTY_WORK_DIR} \
-    --install_dir ${THIRD_PARTY_INSTALL_DIR}
+    --install_dir ${THIRD_PARTY_INSTALL_DIR} \
+    --clean
+
+ENV CLEAN_BUILD=false
 
 ENTRYPOINT ["bash", "/workspace/scripts/docker/main.sh"]
