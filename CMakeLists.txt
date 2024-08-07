@@ -68,6 +68,7 @@ if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
   endif()
 
   include(CTest)
+  enable_testing()
   
   # Docs only available if this is the main app
   add_subdirectory(docs)
