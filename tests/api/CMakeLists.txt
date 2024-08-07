@@ -21,7 +21,7 @@ target_precompile_headers(${target_name} PRIVATE <map>
                                         <ncFile.h>)
 
 # Should be linked to the main library, as well as the google test library
-target_link_libraries(${target_name} PRIVATE UGridApi UtilsStatic gmock gtest_main)
+target_link_libraries(${target_name} PRIVATE UGridApi UtilsStatic GTest::gmock GTest::gtest_main)
 
 # Make sure that coverage information is produced when using gcc
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
