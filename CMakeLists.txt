@@ -59,6 +59,9 @@ if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
     GIT_REPOSITORY https://github.com/google/googletest.git
     GIT_TAG v1.15.0
   )
+  if(WIN32)
+    set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+  endif()
 
   FetchContent_GetProperties(googletest)
 
