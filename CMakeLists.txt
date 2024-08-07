@@ -50,6 +50,20 @@ if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
 
   # Note this needs to be done in the main CMakeLists since it calls
   # enable_testing, which must be in the main CMakeLists.
+
+  FetchContent_Declare(
+    googletest
+    GIT_REPOSITORY https://github.com/google/googletest.git
+    GIT_TAG v1.15.0
+  )
+
+  FetchContent_GetProperties(googletest)
+
+  if(NOT googletest_POPULATED)
+    FetchContent_Populate(googletest)
+    add_subdirectory(${googletest_SOURCE_DIR} ${googletest_BINARY_DIR} EXCLUDE_FROM_ALL)
+  endif()
+
   include(CTest)
   
   # Docs only available if this is the main app
