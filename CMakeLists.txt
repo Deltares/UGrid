@@ -63,15 +63,17 @@ if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
     set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
   endif()
 
-  FetchContent_GetProperties(googletest)
+  # FetchContent_GetProperties(googletest)
+  # if(NOT googletest_POPULATED)
+  #   FetchContent_Populate(googletest)
+  #   add_subdirectory(${googletest_SOURCE_DIR} ${googletest_BINARY_DIR} EXCLUDE_FROM_ALL)
+  # endif()
 
-  if(NOT googletest_POPULATED)
-    FetchContent_Populate(googletest)
-    add_subdirectory(${googletest_SOURCE_DIR} ${googletest_BINARY_DIR} EXCLUDE_FROM_ALL)
-  endif()
+  FetchContent_MakeAvailable(googletest)
 
-  include(CTest)
+  #include(CTest)
   enable_testing()
+  include(GoogleTest)
   
   # Docs only available if this is the main app
   add_subdirectory(docs)
