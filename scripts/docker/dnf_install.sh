@@ -21,7 +21,7 @@ packages=(
 )
 
 for package in "${packages[@]}"; do
-  dnf install -y "${package}" || error "[yum] Failed to install ${package}"
+  dnf install -y "${package}" || error "[dnf] Failed to install ${package}"
 done
 
 scl enable "${dev_toolset}" bash || error "[scl] Failed to enable ${dev_toolset}"
