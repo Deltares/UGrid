@@ -57,7 +57,7 @@ static void right_trim_string_vector(std::vector<std::string>& str_vector)
 static std::vector<std::string> split_string(std::string string_value, size_t num_tokens, size_t length_token)
 {
     std::vector<std::string> result;
-    for (auto i = 0; i < num_tokens; ++i)
+    for (size_t i = 0; i < num_tokens; ++i)
     {
         auto attribute_name = string_value.substr(i * length_token, length_token);
         result.emplace_back(attribute_name);
@@ -79,7 +79,7 @@ static void string_to_char_array(std::string const& value, size_t len, char* cha
     {
         throw std::runtime_error("string_to_char_array: char_array is nullptr.");
     }
-    for (auto i = 0; i < value.size(); ++i)
+    for (size_t i = 0; i < value.size(); ++i)
     {
         char_array[i] = value[i];
     }
@@ -103,14 +103,14 @@ static void vector_of_strings_to_char_array(std::vector<std::string> const& valu
     }
 
     size_t char_array_position = 0;
-    for (auto i = 0; i < values.size(); ++i)
+    for (size_t i = 0; i < values.size(); ++i)
     {
-        for (auto j = 0; j < values[i].size(); ++j)
+        for (size_t j = 0; j < values[i].size(); ++j)
         {
             char_array[char_array_position] = values[i][j];
             char_array_position++;
         }
-        for (auto j = values[i].size(); j < len; ++j)
+        for (size_t j = values[i].size(); j < len; ++j)
         {
             char_array[char_array_position] = ' ';
             char_array_position++;

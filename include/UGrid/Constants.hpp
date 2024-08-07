@@ -71,14 +71,14 @@ namespace ugrid
         lon
     };
 
-    const size_t name_length = 40;                                          ///< length of the names
-    const size_t name_long_length = 80;                                     ///< length of the long names
-    const int int_invalid_value = std::numeric_limits<int>::max();          ///< integer invalid value
-    const double double_invalid_value = std::numeric_limits<double>::max(); ///< double invalid value
+    constexpr size_t name_length = 40;                                          ///< length of the names
+    constexpr size_t name_long_length = 80;                                     ///< length of the long names
+    constexpr int int_invalid_value = std::numeric_limits<int>::max();          ///< integer invalid value
+    constexpr double double_invalid_value = std::numeric_limits<double>::max(); ///< double invalid value
 
-    const int int_missing_value = -999;                                         ///< integer missing value
-    const double double_missing_value = -999.0;                                 ///< double missing value
-    const int num_face_nodes_max = 6;                                           ///< default maximum number of node per face
+    constexpr int int_missing_value = -999;                                     ///< integer missing value
+    constexpr double double_missing_value = -999.0;                             ///< double missing value
+    constexpr int num_face_nodes_max = 6;                                       ///< default maximum number of node per face
     const std::string two_string("Two");                                        ///< Name of variable dimension containing two
     const std::string name_length_dimension("name_length_dimension");           ///< Name of variable dimension containing two
     const std::string name_long_length_dimension("name_long_length_dimension"); ///< Name of variable dimension containing two

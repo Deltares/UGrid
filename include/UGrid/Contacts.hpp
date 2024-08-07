@@ -81,7 +81,8 @@ namespace ugrid
         /// @param attributes [in] The variable attributes
         /// @param entity_dimensionality [in] The sought dimensionality
         /// @return If The topology variable has a matching functionality
-        static bool has_matching_dimensionality(std::map<std::string, netCDF::NcVarAtt> const& attributes, int entity_dimensionality)
+        static bool has_matching_dimensionality([[maybe_unused]] std::map<std::string, netCDF::NcVarAtt> const& attributes,
+                                                [[maybe_unused]] int entity_dimensionality)
         {
             return true;
         }

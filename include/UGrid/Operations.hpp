@@ -80,35 +80,29 @@ namespace ugrid
         {
             return face;
         }
+        throw std::invalid_argument("from_location_string_to_location: Dimension not found.");
     }
 
     static std::string from_location_integer_to_location_string(int location)
     {
         auto const ug_entity_location = static_cast<UGridEntityLocations>(location);
 
-        if (ug_entity_location == node)
+        switch (ug_entity_location)
         {
+        case node:
             return "node";
-        }
-        if (ug_entity_location == edge)
-        {
+        case edge:
             return "edge";
-        }
-        if (ug_entity_location == face)
-        {
+        case face:
             return "face";
-        }
-        if (ug_entity_location == layer)
-        {
+        case layer:
             return "layer";
-        }
-        if (ug_entity_location == layer_interface)
-        {
+        case layer_interface:
             return "layer_interface";
-        }
-        if (ug_entity_location == vertical)
-        {
+        case vertical:
             return "vertical";
+        default:
+            throw std::runtime_error("Invalid location.");
         }
     }
 
@@ -202,7 +196,7 @@ namespace ugrid
         {
             return;
         }
-        for (auto i = 0; i < value.size(); ++i)
+        for (size_t i = 0; i < value.size(); ++i)
         {
             char_array[i] = value[i];
         }
@@ -223,14 +217,14 @@ namespace ugrid
         }
 
         size_t char_array_position = 0;
-        for (auto i = 0; i < values.size(); ++i)
+        for (size_t i = 0; i < values.size(); ++i)
         {
-            for (auto j = 0; j < values[i].size(); ++j)
+            for (size_t j = 0; j < values[i].size(); ++j)
             {
                 char_array[char_array_position] = values[i][j];
                 char_array_position++;
             }
-            for (auto j = values[i].size(); j < len; ++j)
+            for (size_t j = values[i].size(); j < len; ++j)
             {
                 char_array[char_array_position] = ' ';
                 char_array_position++;
@@ -250,14 +244,14 @@ namespace ugrid
         str.erase(std::find_if(str.rbegin(), str.rend(), isalnum_lambda).base(), str.end());
     }
 
-    static std::string char_array_to_string(char const* char_array, size_t len)
+    static std::string char_array_to_string(char const* const char_array, size_t len)
     {
-        std::string result(" ", len);
+        std::string result(len, ' ');
         if (char_array == nullptr)
         {
             return result;
         }
-        for (auto i = 0; i < len; ++i)
+        for (size_t i = 0; i < len; ++i)
         {
             result[i] = char_array[i];
         }

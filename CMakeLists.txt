@@ -31,7 +31,7 @@ SET(CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}/UGrid")
 
 if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
   if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -g -O2 -std=c++17")
+    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -g -O2 -std=c++17 -Werror -Wall -Wextra -pedantic -Wno-unused-function")
     set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g -std=c++17")
   else()
     set(CMAKE_CXX_FLAGS_RELEASE
@@ -50,8 +50,27 @@ if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
 
   # Note this needs to be done in the main CMakeLists since it calls
   # enable_testing, which must be in the main CMakeLists.
+
+  include(FetchContent)
+  set(FETCHCONTENT_QUIET off)
+
+  FetchContent_Declare(
+    googletest
+    GIT_REPOSITORY https://github.com/google/googletest.git
+    GIT_TAG v1.13.0
+  )
+  if(WIN32)
+    set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+  endif()
+
+  FetchContent_GetProperties(googletest)
+  if(NOT googletest_POPULATED)
+    FetchContent_Populate(googletest)
+    add_subdirectory(${googletest_SOURCE_DIR} ${googletest_BINARY_DIR} EXCLUDE_FROM_ALL)
+  endif()
+
   include(CTest)
-  
+
   # Docs only available if this is the main app
   add_subdirectory(docs)
   
@@ -75,17 +94,23 @@ include_directories(${Boost_INCLUDE_DIR})
 # Use NetCDF
 find_package(netCDF REQUIRED COMPONENTS C)
 if (netCDF_FOUND)
-  message(STATUS "Found NetCDF: in ${netCDF_INSTALL_PREFIX} (found version \"${NetCDFVersion}\")")
+  message(STATUS "Found NetCDF ${netCDF_VERSION}")
+else()
+  message(FATAL_ERROR "Could not find NetCDF" )
 endif()
 
 # Use NetCDF-cxx
-find_package(netCDFCxx 4.3.1 REQUIRED)
-if (NetCDFCxx_FOUND)
-    message(STATUS "NetCDFCXX include dirs: ${NetCDFCxx_INCLUDE_DIRS}")
+find_package(netCDFCxx REQUIRED)
+if (netCDFCxx_FOUND)
+    message(STATUS "Found NetCDFCxx ${netCDFCxx_VERSION}")
+    else()
+    message(FATAL_ERROR "Could not find NetCDFCxx")
 endif()
 
-# FetchContent added in CMake 3.11, downloads during the configure step
-include(FetchContent)
+find_package(hdf5 REQUIRED)
+if (hdf5_FOUND)
+    message(STATUS "Found HDF5 ${hdf5_VERSION}")
+endif()
 
 # Run packaging scripts
 add_subdirectory(package)
