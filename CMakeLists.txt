@@ -70,7 +70,7 @@ if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
   endif()
 
   include(CTest)
-  
+
   # Docs only available if this is the main app
   add_subdirectory(docs)
   
@@ -104,14 +104,12 @@ find_package(netCDFCxx REQUIRED)
 if (netCDFCxx_FOUND)
     message(STATUS "Found NetCDFCxx ${netCDFCxx_VERSION}")
     else()
-    message(FATAL_ERROR "Could not find NetCDFCxx" )
+    message(FATAL_ERROR "Could not find NetCDFCxx")
 endif()
 
 find_package(hdf5 REQUIRED)
 if (hdf5_FOUND)
     message(STATUS "Found HDF5 ${hdf5_VERSION}")
-# else()
-#     message(FATAL_ERROR "Could not find HDF5" )
 endif()
 
 # Run packaging scripts

@@ -60,7 +60,7 @@ function validate_args() {
     exit 1
   fi
 
-  # if provided the release type can be one of Release, Debug, orRelWithDebInfo
+  # if provided the release type can be one of Release, Debug, or RelWithDebInfo
   local valid_build_types=("Release" "Debug" "RelWithDebInfo")
   local build_type_is_valid=false
   for valid_build_type in "${valid_build_types[@]}"; do
