@@ -51,6 +51,9 @@ if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
   # Note this needs to be done in the main CMakeLists since it calls
   # enable_testing, which must be in the main CMakeLists.
 
+  include(FetchContent)
+  set(FETCHCONTENT_QUIET off)
+
   FetchContent_Declare(
     googletest
     GIT_REPOSITORY https://github.com/google/googletest.git
@@ -108,10 +111,6 @@ if (hdf5_FOUND)
 # else()
 #     message(FATAL_ERROR "Could not find HDF5" )
 endif()
-
-# FetchContent added in CMake 3.11, downloads during the configure step
-include(FetchContent)
-set(FETCHCONTENT_QUIET off)
 
 # Run packaging scripts
 add_subdirectory(package)
