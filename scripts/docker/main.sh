@@ -11,7 +11,7 @@ if ${CLEAN_BUILD}; then
   rm -fr ${build_dir}
 fi
 
-cmake -S . -B ${build_dir} -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=${THIRD_PARTY_INSTALL_DIR} ||
+cmake -S . -B ${build_dir} -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="${THIRD_PARTY_INSTALL_DIR}" ||
   error "[cmake] Failed to configure project"
 cmake --build ${build_dir} --config Release --parallel ||
   error "[cmake] Failed to build project"

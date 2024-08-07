@@ -91,8 +91,8 @@ endif()
 find_package(hdf5 REQUIRED)
 if (hdf5_FOUND)
     message(STATUS "Found HDF5 ${hdf5_VERSION}")
-    else()
-    message(FATAL_ERROR "Could not find HDF5" )
+# else()
+#     message(FATAL_ERROR "Could not find HDF5" )
 endif()
 
 # FetchContent added in CMake 3.11, downloads during the configure step
