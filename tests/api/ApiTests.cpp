@@ -352,22 +352,22 @@ TEST(ApiTest, InquireAndGet_OneNetwork1D_ShouldReadNetwork1D)
     std::unique_ptr<char[]> const name(new char[long_names_length]);
     network1d.name = name.get();
 
-    std::unique_ptr<double> const node_x(new double[network1d.num_nodes]);
+    std::unique_ptr<double[]> const node_x(new double[network1d.num_nodes]);
     network1d.node_x = node_x.get();
 
-    std::unique_ptr<double> const node_y(new double[network1d.num_nodes]);
+    std::unique_ptr<double[]> const node_y(new double[network1d.num_nodes]);
     network1d.node_y = node_y.get();
 
-    std::unique_ptr<int> const edge_node(new int[network1d.num_edges * 2]);
+    std::unique_ptr<int[]> const edge_node(new int[network1d.num_edges * 2]);
     network1d.edge_nodes = edge_node.get();
 
-    std::unique_ptr<double> const geometry_nodes_x(new double[network1d.num_geometry_nodes]);
+    std::unique_ptr<double[]> const geometry_nodes_x(new double[network1d.num_geometry_nodes]);
     network1d.geometry_nodes_x = geometry_nodes_x.get();
 
-    std::unique_ptr<double> const geometry_nodes_y(new double[network1d.num_geometry_nodes]);
+    std::unique_ptr<double[]> const geometry_nodes_y(new double[network1d.num_geometry_nodes]);
     network1d.geometry_nodes_y = geometry_nodes_y.get();
 
-    std::unique_ptr<int> const geometry_nodes_count(new int[network1d.num_edges]);
+    std::unique_ptr<int[]> const geometry_nodes_count(new int[network1d.num_edges]);
     network1d.num_edge_geometry_nodes = geometry_nodes_count.get();
 
     std::unique_ptr<char[]> const node_id(new char[name_length * network1d.num_nodes]);
@@ -382,7 +382,7 @@ TEST(ApiTest, InquireAndGet_OneNetwork1D_ShouldReadNetwork1D)
     std::unique_ptr<char[]> const edge_long_name(new char[long_names_length * network1d.num_nodes]);
     network1d.edge_long_name = edge_long_name.get();
 
-    std::unique_ptr<double> const edge_lengths(new double[network1d.num_edges]);
+    std::unique_ptr<double[]> const edge_lengths(new double[network1d.num_edges]);
     network1d.edge_length = edge_lengths.get();
 
     // get the data
@@ -562,13 +562,13 @@ TEST(ApiTest, InquireAndGet_OneMesh1D_ShouldReadMesh1D)
     std::unique_ptr<char[]> const network_name(new char[long_names_length]);
     mesh1d.network_name = network_name.get();
 
-    std::unique_ptr<int> const edge_id(new int[mesh1d.num_nodes]);
+    std::unique_ptr<int[]> const edge_id(new int[mesh1d.num_nodes]);
     mesh1d.node_edge_id = edge_id.get();
 
-    std::unique_ptr<double> const edge_offset(new double[mesh1d.num_nodes]);
+    std::unique_ptr<double[]> const edge_offset(new double[mesh1d.num_nodes]);
     mesh1d.node_edge_offset = edge_offset.get();
 
-    std::unique_ptr<int> const edge_nodes(new int[mesh1d.num_edges * 2]);
+    std::unique_ptr<int[]> const edge_nodes(new int[mesh1d.num_edges * 2]);
     mesh1d.edge_nodes = edge_nodes.get();
 
     std::unique_ptr<char[]> const node_id(new char[name_length * mesh1d.num_nodes]);
@@ -754,10 +754,10 @@ TEST(ApiTest, InquireAndGet_OneContact_ShouldReadContact)
     std::unique_ptr<char[]> const contact_name_long(new char[long_names_length * contacts.num_contacts]);
     contacts.contact_name_long = contact_name_long.get();
 
-    std::unique_ptr<int> const contact_type(new int[contacts.num_contacts]);
+    std::unique_ptr<int[]> const contact_type(new int[contacts.num_contacts]);
     contacts.contact_type = contact_type.get();
 
-    std::unique_ptr<int> const edges(new int[contacts.num_contacts * 2]);
+    std::unique_ptr<int[]> const edges(new int[contacts.num_contacts * 2]);
     contacts.edges = edges.get();
 
     // get the data

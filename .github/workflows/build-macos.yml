@@ -1,0 +1,141 @@
+name: Build macOS
+
+on:
+  push:
+    branches:
+      - main
+      - 'release/v[0-9]+\.[0-9]+\.[0-9]+'
+      - "feature/**"
+  pull_request:
+    types:
+      - opened # triggers build when opened
+      - synchronize # triggers build when commits are pushed to HEAD
+    branches:
+      - 'release/v[0-9]+\.[0-9]+\.[0-9]+'
+      - "feature/**"
+  # Manual trigger
+  workflow_dispatch:
+
+jobs:
+  build:
+    # Define build stratefy
+    strategy:
+      fail-fast: false
+      matrix:
+        platform:
+          - macos-13 # x86_64 (free)
+          - macos-14 # arm64 (free)
+        build_type:
+          - Release
+
+    name: ${{ matrix.platform }}-${{ matrix.build_type }}
+
+    runs-on: ${{ matrix.platform }}
+
+    defaults:
+      run:
+        shell: bash
+
+    # The default compiler on macos is clang, switch to gcc. Specifying the version is necessary.
+    # It seems like gcc and g++ are symbolic links to the default clang and clang++ compilers, respectively.
+    # CMAKE_CXX_COMPILER_ID will evaluate to AppleClang rather than GNU on macos.
+    env:
+      CC: gcc-12
+      CXX: g++-12
+
+    # Build steps
+    steps:
+      # Step: Checkout
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # Step: Set paths
+      - name: Set paths
+        id: paths
+        run: |
+          echo "build_dir=${{ github.workspace }}/build" >> $GITHUB_OUTPUT
+          echo "ext_deps_dir=${{ github.workspace }}/external_dependencies" >> $GITHUB_OUTPUT
+          echo "install_dir=${{ github.workspace }}/install" >> $GITHUB_OUTPUT
+
+      # Step: Generate cache key
+      - name: Generate cache key
+        id: cache-key-gen
+        run: |
+          cache_key="dependencies-cache-key-${{ matrix.platform }}-${{ matrix.build_type }}-$(echo $GITHUB_REF | sed 's/refs\/heads\///')"
+          echo "cache_key=$cache_key" >> $GITHUB_OUTPUT
+
+      # Step: Install system-provided dependencies
+      - name: Install system-provided dependencies
+        run: |
+          brew install bash
+          echo "$(brew --prefix)/bin/bash" | sudo tee -a /etc/shells
+          sudo chsh -s "$(brew --prefix)/bin/bash"
+          brew install boost
+          brew install doxygen 
+          brew install m4
+          brew install perl
+          brew install openssl
+          brew install curl
+
+      # Step: Restore cached external dependencies
+      - name: Restore cached external dependencies
+        uses: actions/cache/restore@v4
+        id: restore-cached-external-dependencies
+        with:
+          path: ${{ steps.paths.outputs.ext_deps_dir }}/install
+          key: ${{ steps.cache-key-gen.outputs.cache_key }}
+          restore-keys: |
+            dependencies-cache-key-${{ matrix.platform }}-${{ matrix.build_type }}-master
+            dependencies-cache-key-${{ matrix.platform }}-${{ matrix.build_type }}-
+
+      # Step: Build and install external dependencies
+      - name: Build and install external dependencies
+        if: steps.restore-cached-external-dependencies.outputs.cache-hit != 'true'
+        run: |
+          chmod +x ${{ github.workspace }}/scripts/docker/install_netcdf_cxx4.sh
+          ${{ github.workspace }}/scripts/docker/install_netcdf_cxx4.sh \
+            --work_dir ${{ steps.paths.outputs.ext_deps_dir }}/work \
+            --install_dir ${{ steps.paths.outputs.ext_deps_dir }}/install \
+            --build_type '${{ matrix.build_type }}' \
+            --reinstall \
+            --clean
+
+      # Step: Cache external dependencies, executes only if no cache restored
+      - name: Cache external dependencies
+        uses: actions/cache/save@v4
+        if: steps.restore-cached-external-dependencies.outputs.cache-hit != 'true'
+        with:
+          path: ${{ steps.paths.outputs.ext_deps_dir }}/install
+          key: ${{ steps.cache-key-gen.outputs.cache_key }}
+
+      # Step: Configure
+      - name: Configure
+        run: |
+          export netCDFCxx_DIR=${{ steps.paths.outputs.ext_deps_dir }}/install/netcdf_cxx4/lib/cmake/netCDF/
+          cmake \
+            -S ${{ github.workspace }} \
+            -B ${{ steps.paths.outputs.build_dir }} \
+            -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
+            -DCMAKE_PREFIX_PATH=${{ steps.paths.outputs.ext_deps_dir }}/install \
+            -DCMAKE_INSTALL_PREFIX=${{ steps.paths.outputs.install_dir }}
+
+      # Step: Build
+      - name: Build
+        run: cmake --build ${{ steps.paths.outputs.build_dir }} --config ${{ matrix.build_type }} -j
+
+      # Step: Test
+      - name: Test
+        run: ${{ steps.paths.outputs.build_dir }}/bin/UGridApiTests
+
+      # Step: Install
+      - name: Install
+        run: cmake --install ${{ steps.paths.outputs.build_dir }}
+
+      # Step: Upload artifacts
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ugrid-${{ matrix.platform }}-${{ matrix.build_type }}
+          path: ${{ steps.paths.outputs.install_dir }}
+          if-no-files-found: error

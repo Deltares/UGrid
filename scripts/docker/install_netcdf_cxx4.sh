@@ -1,9 +1,10 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 set -e
 
 # defaults of optional arguments
 declare -g RUN_TESTS=false
+declare -g REINSTALL=false
 declare -g CLEAN=false
 declare -g BUILD_TYPE="Release"
 
@@ -38,6 +39,10 @@ function parse_args() {
       ;;
     --run_tests)
       RUN_TESTS=true
+      shift
+      ;;
+    --reinstall)
+      REINSTALL=true
       shift
       ;;
     --clean)
@@ -82,17 +87,14 @@ function validate_args() {
 
 # Creates work directory
 function create_directories() {
-  # if [ -d "${WORK_DIR}" ]; then
-  #   rm -rf "${WORK_DIR}"
-  # fi
-  # mkdir ${WORK_DIR}
+  if ${REINSTALL}; then
+    rm -rf "${WORK_DIR}"
+    rm -rf "${INSTALL_DIR}"
+  fi
+
   mkdir -p ${WORK_DIR}
   WORK_DIR=$(realpath "${WORK_DIR}")
 
-  # if [ -d "${INSTALL_DIR}" ]; then
-  #   rm -rf "${INSTALL_DIR}"
-  # fi
-  # mkdir ${INSTALL_DIR}
   mkdir -p ${INSTALL_DIR}
   INSTALL_DIR=$(realpath "${INSTALL_DIR}")
 }
@@ -147,6 +149,28 @@ function install() {
   cmake --install ${build_dir}
 }
 
+function get_shared_lib_extension() {
+  local os_type=$(uname)
+  case "${os_type}" in
+  Darwin)
+    echo "dylib"
+    ;;
+  Linux)
+    echo "so"
+    ;;
+  MINGW* | MSYS* | MYSYS*)
+    echo "dll"
+    ;;
+  *)
+    echo "Unsupported OS: ${os_type}"
+    ;;
+  esac
+}
+
+function get_zlib_path() {
+  echo $(find $(realpath ${INSTALL_DIR}/zlib/lib) -name *.$(get_shared_lib_extension))
+}
+
 function install_all() {
   # zlib v1.2.1
   install \
@@ -175,7 +199,7 @@ function install_all() {
     -DHDF5_ENABLE_Z_LIB_SUPPORT:BOOL=ON \
     -DZLIB_ROOT=${INSTALL_DIR}/zlib \
     -DZLIB_INCLUDE_DIR:PATH=${INSTALL_DIR}/zlib/include \
-    -DZLIB_LIBRARY:FILEPATH=${INSTALL_DIR}/zlib/lib/libz.so \
+    -DZLIB_LIBRARY:FILEPATH=$(get_zlib_path) \
     -DCMAKE_PREFIX_PATH=${INSTALL_DIR}"
 
   # netcdf 4.8.1
