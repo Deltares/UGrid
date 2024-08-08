@@ -70,7 +70,7 @@ jobs:
           brew install m4
           brew install perl
           brew install openssl
-          brew install curl --with-openssl
+          brew install curl
 
       # Step: Restore cached extrenal dependencies
       - name: Restore cached extrenal dependencies
