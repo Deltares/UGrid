@@ -64,12 +64,13 @@ jobs:
       # Step: Install system-provided dependencies
       - name: Install system-provided dependencies
         run: |
+          brew upgrade
           brew install boost
           brew install doxygen 
           brew install m4
           brew install perl
           brew install openssl
-          brew install libcurl-devel
+          brew install curl --with-openssl
 
       # Step: Restore cached extrenal dependencies
       - name: Restore cached extrenal dependencies
