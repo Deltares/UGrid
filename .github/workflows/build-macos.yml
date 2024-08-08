@@ -107,35 +107,35 @@ jobs:
           path: ${{ steps.paths.outputs.ext_deps_dir }}/install
           key: ${{ steps.cache-key-gen.outputs.cache_key }}
 
-      # # Step: CMake configuration
-      # - name: Configure
-      #   run: >
-      #     cmake
-      #       -S ${{ github.workspace }}
-      #       -B ${{ steps.paths.outputs.build_dir }}
-      #       -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
-      #       -DCMAKE_PREFIX_PATH=${{ steps.paths.outputs.ext_deps_dir }}/install
-      #       -DCMAKE_INSTALL_PREFIX=${{ steps.paths.outputs.install_dir }}
+      # Step: Configure
+      - name: Configure
+        run: >
+          cmake
+            -S ${{ github.workspace }}
+            -B ${{ steps.paths.outputs.build_dir }}
+            -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+            -DCMAKE_PREFIX_PATH=${{ steps.paths.outputs.ext_deps_dir }}/install
+            -DCMAKE_INSTALL_PREFIX=${{ steps.paths.outputs.install_dir }}
 
-      # # Step: CMake build
-      # - name: Build
-      #   run: cmake --build ${{ steps.paths.outputs.build_dir }} --config ${{ matrix.build_type }} -j
+      # Step: CMake build
+      - name: Build
+        run: cmake --build ${{ steps.paths.outputs.build_dir }} --config ${{ matrix.build_type }} -j
 
-      # # Step: Test
-      # #       Works if runner.os == 'Linux' or runner.os == 'macOS'
-      # #       if runner.os == 'Windows',  /matrix.build_type needs to be inserted before /tests
-      # - name: Test
-      #   run: ${{ steps.paths.outputs.build_dir }}/bin/UGridApiTests
+      # Step: Test
+      #       Works if runner.os == 'Linux' or runner.os == 'macOS'
+      #       if runner.os == 'Windows',  /matrix.build_type needs to be inserted before /tests
+      - name: Test
+        run: ${{ steps.paths.outputs.build_dir }}/bin/UGridApiTests
 
-      # # Step: CMake install
-      # - name: Install
-      #   run: cmake --install ${{ steps.paths.outputs.build_dir }}
+      # Step: CMake install
+      - name: Install
+        run: cmake --install ${{ steps.paths.outputs.build_dir }}
 
-      # # Step: Upload artifacts
-      # - name: Upload artifacts
-      #   uses: actions/upload-artifact@v4
-      #   if: always()
-      #   with:
-      #     name: ugrid-${{ matrix.platform }}-${{ matrix.build_type }}
-      #     path: ${{ steps.paths.outputs.install_dir }}
-      #     if-no-files-found: error
+      # Step: Upload artifacts
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ugrid-${{ matrix.platform }}-${{ matrix.build_type }}
+          path: ${{ steps.paths.outputs.install_dir }}
+          if-no-files-found: error
