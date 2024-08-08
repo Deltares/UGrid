@@ -110,6 +110,7 @@ jobs:
       # Step: Configure
       - name: Configure
         run: |
+          export netCDFCxx_DIR=${{ steps.paths.outputs.ext_deps_dir }}/install/netcdf_cxx4/lib/cmake/netCDF/
           cmake \
             -S ${{ github.workspace }} \
             -B ${{ steps.paths.outputs.build_dir }} \
