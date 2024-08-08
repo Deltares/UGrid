@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/local/bin/bash
 
 error() {
   local exit_code="$?"
