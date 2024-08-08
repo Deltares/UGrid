@@ -32,6 +32,10 @@ jobs:
 
     runs-on: ${{ matrix.platform }}
 
+    defaults:
+      run:
+        shell: bash
+
     # The default compiler on macos is clang, switch to gcc. Specifying the version is necessary.
     # It seems like gcc and g++ are symbolic links to the default clang and clang++ compilers, respectively.
     # CMAKE_CXX_COMPILER_ID will evaluate to AppleClang rather than GNU on macos.
@@ -56,7 +60,6 @@ jobs:
       # Step: Generate cache key
       - name: Generate cache key
         id: cache-key-gen
-        shell: bash
         run: |
           cache_key="dependencies-cache-key-${{ matrix.platform }}-${{ matrix.build_type }}-$(echo $GITHUB_REF | sed 's/refs\/heads\///')"
           echo "cache_key=$cache_key" >> $GITHUB_OUTPUT
@@ -85,7 +88,6 @@ jobs:
       # Step: Build and install external dependencies
       - name: Build and install external dependencies
         if: steps.restore-cached-external-dependencies.outputs.cache-hit != 'true'
-        shell: bash
         run: |
           chmod +x ${{ github.workspace }}/scripts/docker/install_netcdf_cxx4.sh
           ${{ github.workspace }}/scripts/docker/install_netcdf_cxx4.sh \
