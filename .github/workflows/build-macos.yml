@@ -67,6 +67,7 @@ jobs:
       # Step: Install system-provided dependencies
       - name: Install system-provided dependencies
         run: |
+          brew install bash
           brew install boost
           brew install doxygen 
           brew install m4
