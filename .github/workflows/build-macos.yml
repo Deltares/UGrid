@@ -109,12 +109,12 @@ jobs:
 
       # Step: Configure
       - name: Configure
-        run: >
-          cmake
-            -S ${{ github.workspace }}
-            -B ${{ steps.paths.outputs.build_dir }}
-            -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
-            -DCMAKE_PREFIX_PATH=${{ steps.paths.outputs.ext_deps_dir }}/install
+        run: |
+          cmake \
+            -S ${{ github.workspace }} \
+            -B ${{ steps.paths.outputs.build_dir }} \
+            -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
+            -DCMAKE_PREFIX_PATH=${{ steps.paths.outputs.ext_deps_dir }}/install \
             -DCMAKE_INSTALL_PREFIX=${{ steps.paths.outputs.install_dir }}
 
       # Step: CMake build
