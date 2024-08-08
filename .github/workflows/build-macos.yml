@@ -97,7 +97,7 @@ jobs:
             --work_dir ${{ steps.paths.outputs.ext_deps_dir }}/work \
             --install_dir ${{ steps.paths.outputs.ext_deps_dir }}/install \
             --build_type '${{ matrix.build_type }}' \
-            --reinstall
+            --reinstall \
             --clean
 
       # Step: Cache external dependencies, executes only if no cache restored
