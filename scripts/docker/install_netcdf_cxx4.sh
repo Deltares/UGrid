@@ -147,6 +147,28 @@ function install() {
   cmake --install ${build_dir}
 }
 
+function get_shared_lib_extension() {
+  local os_type=$(uname)
+  case "${os_type}" in
+  Darwin)
+    echo "dylib"
+    ;;
+  Linux)
+    echo "so"
+    ;;
+  MINGW* | MSYS* | MYSYS*)
+    echo "dll"
+    ;;
+  *)
+    echo "Unsupported OS: ${os_type}"
+    ;;
+  esac
+}
+
+function get_zlib_path() {
+  echo $(find $(realpath ${INSTALL_DIR}/zlib/lib) -name *.$(get_shared_lib_extension))
+}
+
 function install_all() {
   # zlib v1.2.1
   install \
@@ -175,7 +197,7 @@ function install_all() {
     -DHDF5_ENABLE_Z_LIB_SUPPORT:BOOL=ON \
     -DZLIB_ROOT=${INSTALL_DIR}/zlib \
     -DZLIB_INCLUDE_DIR:PATH=${INSTALL_DIR}/zlib/include \
-    -DZLIB_LIBRARY:FILEPATH=${INSTALL_DIR}/zlib/lib/libz.so \
+    -DZLIB_LIBRARY:FILEPATH=$(get_zlib_path) \
     -DCMAKE_PREFIX_PATH=${INSTALL_DIR}"
 
   # netcdf 4.8.1

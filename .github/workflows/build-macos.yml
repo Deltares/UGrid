@@ -92,7 +92,6 @@ jobs:
       - name: Build and install external dependencies
         if: steps.restore-cached-external-dependencies.outputs.cache-hit != 'true'
         run: |
-          bash --version
           chmod +x ${{ github.workspace }}/scripts/docker/install_netcdf_cxx4.sh
           ${{ github.workspace }}/scripts/docker/install_netcdf_cxx4.sh \
             --work_dir ${{ steps.paths.outputs.ext_deps_dir }}/work \
