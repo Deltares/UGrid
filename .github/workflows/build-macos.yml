@@ -71,8 +71,8 @@ jobs:
           brew install openssl
           brew install curl
 
-      # Step: Restore cached extrenal dependencies
-      - name: Restore cached extrenal dependencies
+      # Step: Restore cached external dependencies
+      - name: Restore cached external dependencies
         uses: actions/cache/restore@v4
         id: restore-cached-external-dependencies
         with:
@@ -82,8 +82,8 @@ jobs:
             dependencies-cache-key-${{ matrix.platform }}-${{ matrix.build_type }}-master
             dependencies-cache-key-${{ matrix.platform }}-${{ matrix.build_type }}-
 
-      # Step: Build and install extrenal dependencies
-      - name: Build and install extrenal dependencies
+      # Step: Build and install external dependencies
+      - name: Build and install external dependencies
         if: steps.restore-cached-external-dependencies.outputs.cache-hit != 'true'
         run: |
           chmod +x ${{ github.workspace }}/scripts/docker/install_netcdf_cxx4.sh
@@ -93,8 +93,8 @@ jobs:
             --build_type '${{ matrix.build_type }}'
             --clean
 
-      # Step: Cache extrenal dependencies, executes only if no cache restored
-      - name: Cache extrenal dependencies
+      # Step: Cache external dependencies, executes only if no cache restored
+      - name: Cache external dependencies
         uses: actions/cache/save@v4
         if: steps.restore-cached-external-dependencies.outputs.cache-hit != 'true'
         with:
