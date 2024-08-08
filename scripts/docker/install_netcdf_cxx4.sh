@@ -4,6 +4,7 @@ set -e
 
 # defaults of optional arguments
 declare -g RUN_TESTS=false
+declare -g REINSTALL=false
 declare -g CLEAN=false
 declare -g BUILD_TYPE="Release"
 
@@ -38,6 +39,10 @@ function parse_args() {
       ;;
     --run_tests)
       RUN_TESTS=true
+      shift
+      ;;
+    --reinstall)
+      REINSTALL=true
       shift
       ;;
     --clean)
@@ -82,17 +87,14 @@ function validate_args() {
 
 # Creates work directory
 function create_directories() {
-  # if [ -d "${WORK_DIR}" ]; then
-  #   rm -rf "${WORK_DIR}"
-  # fi
-  # mkdir ${WORK_DIR}
+  if ${REINSTALL}; then
+    rm -rf "${WORK_DIR}"
+    rm -rf "${INSTALL_DIR}"
+  fi
+
   mkdir -p ${WORK_DIR}
   WORK_DIR=$(realpath "${WORK_DIR}")
 
-  # if [ -d "${INSTALL_DIR}" ]; then
-  #   rm -rf "${INSTALL_DIR}"
-  # fi
-  # mkdir ${INSTALL_DIR}
   mkdir -p ${INSTALL_DIR}
   INSTALL_DIR=$(realpath "${INSTALL_DIR}")
 }

@@ -97,6 +97,7 @@ jobs:
             --work_dir ${{ steps.paths.outputs.ext_deps_dir }}/work \
             --install_dir ${{ steps.paths.outputs.ext_deps_dir }}/install \
             --build_type '${{ matrix.build_type }}' \
+            --reinstall
             --clean
 
       # Step: Cache external dependencies, executes only if no cache restored
@@ -118,17 +119,15 @@ jobs:
             -DCMAKE_PREFIX_PATH=${{ steps.paths.outputs.ext_deps_dir }}/install \
             -DCMAKE_INSTALL_PREFIX=${{ steps.paths.outputs.install_dir }}
 
-      # Step: CMake build
+      # Step: Build
       - name: Build
         run: cmake --build ${{ steps.paths.outputs.build_dir }} --config ${{ matrix.build_type }} -j
 
       # Step: Test
-      #       Works if runner.os == 'Linux' or runner.os == 'macOS'
-      #       if runner.os == 'Windows',  /matrix.build_type needs to be inserted before /tests
       - name: Test
         run: ${{ steps.paths.outputs.build_dir }}/bin/UGridApiTests
 
-      # Step: CMake install
+      # Step: Install
       - name: Install
         run: cmake --install ${{ steps.paths.outputs.build_dir }}
 
