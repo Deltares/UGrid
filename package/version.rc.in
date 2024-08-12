@@ -72,7 +72,7 @@ BEGIN
 			VALUE "FileDescription",  "UGrid"
 			VALUE "FileVersion",      VER_FILEVERSION_STR
 			VALUE "InternalName",     "UGrid"
-			VALUE "LegalCopyright",   "Copyright (c) 2020 Deltares"
+			VALUE "LegalCopyright",   "Copyright (c) 2024 Deltares"
 			VALUE "OriginalFilename", "UGrid.dll"
 			VALUE "ProductName",      "UGrid"
 			VALUE "ProductVersion",   VER_PRODUCTVERSION_STR

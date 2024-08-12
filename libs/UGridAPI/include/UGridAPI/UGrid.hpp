@@ -35,10 +35,10 @@
 #define UGRID_API __attribute__((visibility("default")))
 #endif
 
-#include <UGridApi/Contacts.hpp>
-#include <UGridApi/Mesh1D.hpp>
-#include <UGridApi/Mesh2D.hpp>
-#include <UGridApi/Network1D.hpp>
+#include <UGridAPI/Contacts.hpp>
+#include <UGridAPI/Mesh1D.hpp>
+#include <UGridAPI/Mesh2D.hpp>
+#include <UGridAPI/Network1D.hpp>
 
 /// \namespace ugridapi
 /// @brief Contains all structs and functions exposed at the API level

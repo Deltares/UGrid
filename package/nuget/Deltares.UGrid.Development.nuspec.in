@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+    <metadata>
+        <id>Deltares.UGrid</id>
+        <version>@PROJECT_VERSION_MAJOR@.@PROJECT_VERSION_MINOR@.@PROJECT_VERSION_PATCH@.@VERSION_SUFFIX@-dev</version>
+        <authors>Deltares</authors>
+        <owners>Deltares</owners>
+        <description>Deltares back end for reading/writing UGrid meshes </description>
+        <copyright>Copyright 2021</copyright>
+        <tags>development</tags>
+    </metadata>
+    <files>
+        <file src="winX64\*" target="runtimes/win-x64/native/" />
+        <file src="Deltares.UGrid.targets" target="build\netstandard2.0\Deltares.UGrid.targets" />
+    </files>
+</package>

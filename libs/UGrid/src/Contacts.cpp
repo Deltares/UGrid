@@ -28,7 +28,7 @@
 #include <UGrid/Contacts.hpp>
 #include <UGrid/Operations.hpp>
 #include <UGrid/UGridVarAttributeStringBuilder.hpp>
-#include <UGridApi/Contacts.hpp>
+#include <UGridAPI/Contacts.hpp>
 
 using ugrid::Contacts;
 

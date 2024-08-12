@@ -28,7 +28,7 @@
 #pragma once
 
 #include <UGrid/UGridEntity.hpp>
-#include <UGridApi/Contacts.hpp>
+#include <UGridAPI/Contacts.hpp>
 
 /// \namespace ugrid
 /// @brief Contains the logic of the C++ static library

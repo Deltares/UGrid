@@ -28,7 +28,7 @@
 #pragma once
 #include <UGrid/UGridEntity.hpp>
 
-#include <UGridApi/Network1D.hpp>
+#include <UGridAPI/Network1D.hpp>
 
 /// \namespace ugrid
 /// @brief Contains the logic of the C++ static library

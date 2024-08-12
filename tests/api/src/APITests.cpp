@@ -3,7 +3,7 @@
 
 #include <TestUtils/Definitions.hpp>
 #include <TestUtils/Utils.hpp>
-#include <UGridApi/UGrid.hpp>
+#include <UGridAPI/UGrid.hpp>
 
 static void define_variable_attributes(int file_id, std::string const& variable_name, std::string const& attribute_name, std::vector<int> const& attribute_values)
 {

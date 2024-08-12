@@ -43,8 +43,8 @@
 #include <UGrid/Mesh2D.hpp>
 #include <UGrid/Operations.hpp>
 #include <UGrid/UGridEntity.hpp>
-#include <UGridApi/UGrid.hpp>
-#include <UGridApi/UGridState.hpp>
+#include <UGridAPI/UGrid.hpp>
+#include <UGridAPI/UGridState.hpp>
 
 /// \namespace ugridapi
 /// @brief Contains all structs and functions exposed at the API level
