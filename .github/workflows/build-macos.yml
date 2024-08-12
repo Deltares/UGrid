@@ -125,7 +125,7 @@ jobs:
 
       # Step: Test
       - name: Test
-        run: ${{ steps.paths.outputs.build_dir }}/bin/UGridApiTests
+        run: ${{ steps.paths.outputs.build_dir }}/tests/api/UGridAPITests
 
       # Step: Install
       - name: Install
