@@ -22,7 +22,7 @@ static void define_variable_attributes(int file_id, std::string const& variable_
                                                    variable_name_ptr.get(),
                                                    attribute_name_ptr.get(),
                                                    &attribute_values[0],
-                                                   attribute_values.size());
+                                                   static_cast<int>(attribute_values.size()));
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 }
 
@@ -43,7 +43,7 @@ static void define_variable_attributes(int file_id, std::string const& variable_
                                                       variable_name_ptr.get(),
                                                       attribute_name_ptr.get(),
                                                       &attribute_values[0],
-                                                      attribute_values.size());
+                                                      static_cast<int>(attribute_values.size()));
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 }
 
@@ -64,7 +64,7 @@ static void define_variable_attributes(int file_id, std::string const& variable_
                                                     variable_name_ptr.get(),
                                                     attribute_name_ptr.get(),
                                                     attribute_value.c_str(),
-                                                    attribute_value.length());
+                                                    static_cast<int>(attribute_value.length()));
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 }
 
@@ -78,7 +78,10 @@ static void define_global_attributes(int file_id, std::string const& attribute_n
     std::unique_ptr<char[]> const attribute_name_ptr(new char[name_long_length]);
     string_to_char_array(attribute_name, name_long_length, attribute_name_ptr.get());
 
-    error_code = ugridapi::ug_attribute_global_char_define(file_id, attribute_name_ptr.get(), attribute_value.c_str(), attribute_value.length());
+    error_code = ugridapi::ug_attribute_global_char_define(file_id,
+                                                           attribute_name_ptr.get(),
+                                                           attribute_value.c_str(),
+                                                           static_cast<int>(attribute_value.length()));
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 }
 
