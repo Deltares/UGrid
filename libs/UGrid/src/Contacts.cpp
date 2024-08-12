@@ -196,7 +196,7 @@ void Contacts::inquire(ugridapi::Contacts& contacts) const
 {
     if (auto const it = m_topology_attribute_variables.find("contact_type"); it != m_topology_attribute_variables.end())
     {
-        contacts.num_contacts = it->second.at(0).getDim(0).getSize();
+        contacts.num_contacts = static_cast<int>(it->second.at(0).getDim(0).getSize());
     }
 }
 

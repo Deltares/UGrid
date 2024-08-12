@@ -261,19 +261,19 @@ void Mesh2D::inquire(ugridapi::Mesh2D& mesh2d) const
 {
     if (m_dimensions.find(UGridFileDimensions::node) != m_dimensions.end())
     {
-        mesh2d.num_nodes = m_dimensions.at(UGridFileDimensions::node).getSize();
+        mesh2d.num_nodes = static_cast<int>(m_dimensions.at(UGridFileDimensions::node).getSize());
     }
     if (m_dimensions.find(UGridFileDimensions::edge) != m_dimensions.end())
     {
-        mesh2d.num_edges = m_dimensions.at(UGridFileDimensions::edge).getSize();
+        mesh2d.num_edges = static_cast<int>(m_dimensions.at(UGridFileDimensions::edge).getSize());
     }
     if (m_dimensions.find(UGridFileDimensions::face) != m_dimensions.end())
     {
-        mesh2d.num_faces = m_dimensions.at(UGridFileDimensions::face).getSize();
+        mesh2d.num_faces = static_cast<int>(m_dimensions.at(UGridFileDimensions::face).getSize());
     }
     if (m_dimensions.find(UGridFileDimensions::max_face_node) != m_dimensions.end())
     {
-        mesh2d.num_face_nodes_max = m_dimensions.at(UGridFileDimensions::max_face_node).getSize();
+        mesh2d.num_face_nodes_max = static_cast<int>(m_dimensions.at(UGridFileDimensions::max_face_node).getSize());
     }
 }
 

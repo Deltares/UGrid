@@ -311,16 +311,16 @@ void Network1D::inquire(ugridapi::Network1D& network1d) const
 {
     if (m_dimensions.find(UGridFileDimensions::node) != m_dimensions.end())
     {
-        network1d.num_nodes = m_dimensions.at(UGridFileDimensions::node).getSize();
+        network1d.num_nodes = static_cast<int>(m_dimensions.at(UGridFileDimensions::node).getSize());
     }
     if (m_dimensions.find(UGridFileDimensions::edge) != m_dimensions.end())
     {
-        network1d.num_edges = m_dimensions.at(UGridFileDimensions::edge).getSize();
+        network1d.num_edges = static_cast<int>(m_dimensions.at(UGridFileDimensions::edge).getSize());
     }
     // get network dimensions
     if (auto const it = m_network_geometry_attribute_variables.find("node_coordinates"); it != m_network_geometry_attribute_variables.end())
     {
-        network1d.num_geometry_nodes = it->second.at(0).getDim(0).getSize();
+        network1d.num_geometry_nodes = static_cast<int>(it->second.at(0).getDim(0).getSize());
     }
 }
 

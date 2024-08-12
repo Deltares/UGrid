@@ -240,11 +240,11 @@ namespace ugrid
         std::map<std::string, netCDF::NcVar> m_related_variables;      ///< Additional variables related to the entity (foe example defined on node, edge or face)
         std::string m_entity_name = "";                                ///< The name of the entity
 
-        bool m_spherical_coordinates = false;           ///< If it is a spherical entity
-        int m_start_index = 0;                          ///< The start index
-        int m_int_fill_value = int_missing_value;       ///< The fill value for arrays of int
-        int m_double_fill_value = double_missing_value; ///< The fill value for arrays of double
-        int m_epsg_code = 0;                            ///< The epsg code
+        bool m_spherical_coordinates = false;              ///< If it is a spherical entity
+        int m_start_index = 0;                             ///< The start index
+        int m_int_fill_value = int_missing_value;          ///< The fill value for arrays of int
+        double m_double_fill_value = double_missing_value; ///< The fill value for arrays of double
+        int m_epsg_code = 0;                               ///< The epsg code
 
     private:
         /// @brief Produces the attribute variables related to coordinate locations

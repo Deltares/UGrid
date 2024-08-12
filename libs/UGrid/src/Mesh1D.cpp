@@ -211,11 +211,11 @@ void Mesh1D::inquire(ugridapi::Mesh1D& mesh1d) const
 {
     if (m_dimensions.find(UGridFileDimensions::node) != m_dimensions.end())
     {
-        mesh1d.num_nodes = m_dimensions.at(UGridFileDimensions::node).getSize();
+        mesh1d.num_nodes = static_cast<int>(m_dimensions.at(UGridFileDimensions::node).getSize());
     }
     if (m_dimensions.find(UGridFileDimensions::edge) != m_dimensions.end())
     {
-        mesh1d.num_edges = m_dimensions.at(UGridFileDimensions::edge).getSize();
+        mesh1d.num_edges = static_cast<int>(m_dimensions.at(UGridFileDimensions::edge).getSize());
     }
 }
 
