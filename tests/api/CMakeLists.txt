@@ -37,8 +37,8 @@ target_link_libraries(
   PRIVATE
     UGridAPI
     UtilsStatic
-    gmock
-    gtest_main
+    GTest::gmock
+    GTest::gtest_main
 )
 
 # Make sure that coverage information is produced when using gcc
