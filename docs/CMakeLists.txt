@@ -7,7 +7,7 @@ endif()
 set(DOXYGEN_INPUT_LIST
     "${CMAKE_CURRENT_SOURCE_DIR}/main_page.md \
     ${PROJECT_SOURCE_DIR}/libs/UGrid/include/UGrid   \
-    ${PROJECT_SOURCE_DIR}/libs/UGridAPI/include/UGridApi")
+    ${PROJECT_SOURCE_DIR}/libs/UGridAPI/include/UGridAPI")
 set(DOXYGEN_OUTPUT_DIR ${CMAKE_CURRENT_BINARY_DIR})
 set(DOXYGEN_INDEX_FILE ${DOXYGEN_OUTPUT_DIR}/html/index.html)
 set(DOXYFILE_IN ${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.in)
@@ -29,7 +29,7 @@ file(GLOB UGrid_HEADER_LIST CONFIGURE_DEPENDS
 
 # UGridapi headers
 file(GLOB UGridAPI_HEADER_LIST CONFIGURE_DEPENDS
-     "${PROJECT_SOURCE_DIR}/libs/UGridAPI/include/UGridApi/*.hpp")
+     "${PROJECT_SOURCE_DIR}/libs/UGridAPI/include/UGridAPI/*.hpp")
 
 # markdown file
 file(GLOB DOXYGEN_MARKDOWN_FILES CONFIGURE_DEPENDS

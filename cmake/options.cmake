@@ -9,7 +9,7 @@ option(
 if(LINUX AND CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
   option(
     ENABLE_CODE_COVERAGE
-    "Generates code coverage files under GNU compilers."
+    "Generates code coverage statistics."
     OFF
   )
 endif()
