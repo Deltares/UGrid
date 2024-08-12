@@ -281,7 +281,7 @@ namespace ugridapi
             auto const data_variables_names = topology->get_data_variables_names(location_string);
 
             // count data variables
-            data_variable_count = data_variables_names.size();
+            data_variable_count = static_cast<int>(data_variables_names.size());
         }
         catch (...)
         {
@@ -387,7 +387,7 @@ namespace ugridapi
             }
 
             // Get the dimensions
-            attributes_count = it->second.getAtts().size();
+            attributes_count = static_cast<int>(it->second.getAtts().size());
         }
         catch (...)
         {
@@ -493,7 +493,7 @@ namespace ugridapi
             }
 
             // Get the dimensions
-            dimensions_count = it->second.getDims().size();
+            dimensions_count = static_cast<int>(it->second.getDims().size());
         }
         catch (...)
         {
@@ -529,7 +529,7 @@ namespace ugridapi
             auto const dimensions = it->second.getDims();
             for (size_t i = 0; i < dimensions.size(); ++i)
             {
-                dimension_vec[i] = dimensions[i].getSize();
+                dimension_vec[i] = static_cast<int>(dimensions[i].getSize());
             }
         }
         catch (...)
@@ -671,7 +671,7 @@ namespace ugridapi
             ugrid::Network1D network1d(ugrid_states[file_id].m_ncFile);
             network1d.define(network1d_api);
             ugrid_states[file_id].m_network1d.emplace_back(network1d);
-            topology_id = ugrid_states[file_id].m_network1d.size() - 1;
+            topology_id = static_cast<int>(ugrid_states[file_id].m_network1d.size()) - 1;
         }
         catch (...)
         {
@@ -745,7 +745,7 @@ namespace ugridapi
             ugrid::Mesh1D mesh1d(ugrid_states[file_id].m_ncFile);
             mesh1d.define(mesh1d_api);
             ugrid_states[file_id].m_mesh1d.emplace_back(mesh1d);
-            topology_id = ugrid_states[file_id].m_mesh1d.size() - 1;
+            topology_id = static_cast<int>(ugrid_states[file_id].m_mesh1d.size()) - 1;
         }
         catch (...)
         {
@@ -824,7 +824,7 @@ namespace ugridapi
             ugrid::Mesh2D mesh2d(ugrid_states[file_id].m_ncFile);
             mesh2d.define(mesh2d_api);
             ugrid_states[file_id].m_mesh2d.emplace_back(mesh2d);
-            topology_id = ugrid_states[file_id].m_mesh2d.size() - 1;
+            topology_id = static_cast<int>(ugrid_states[file_id].m_mesh2d.size()) - 1;
         }
         catch (...)
         {
@@ -898,7 +898,7 @@ namespace ugridapi
             ugrid::Contacts contacts(ugrid_states[file_id].m_ncFile);
             contacts.define(contacts_api);
             ugrid_states[file_id].m_contacts.emplace_back(contacts);
-            topology_id = ugrid_states[file_id].m_contacts.size() - 1;
+            topology_id = static_cast<int>(ugrid_states[file_id].m_contacts.size()) - 1;
         }
         catch (...)
         {
