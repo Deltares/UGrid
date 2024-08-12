@@ -27,10 +27,6 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 # Docs only available if this is the main app
 add_subdirectory(docs)
 
-# Tools
-# Note: tools/Version sets the semantic version
-#add_subdirectory(tools)
-
 # Run packaging scripts: requires semantic version
 add_subdirectory(package)
 
