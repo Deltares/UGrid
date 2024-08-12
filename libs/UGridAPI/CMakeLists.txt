@@ -1,7 +1,7 @@
 project(
   UGridAPI
   VERSION ${CMAKE_PROJECT_VERSION}
-  DESCRIPTION "UGridAPI shared libary"
+  DESCRIPTION "UGridAPI shared library"
   LANGUAGES CXX C
 )
 
