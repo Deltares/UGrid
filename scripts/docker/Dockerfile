@@ -7,8 +7,8 @@ COPY . /workspace/
 RUN chmod +x /workspace/dnf_install.sh
 RUN /workspace/dnf_install.sh
 
-ARG THIRD_PARTY_WORK_DIR=/app/third_party/work
-ARG THIRD_PARTY_INSTALL_DIR=/app/third_party/install
+ARG THIRD_PARTY_WORK_DIR=/third_party/work
+ARG THIRD_PARTY_INSTALL_DIR=/third_party/install
 ENV THIRD_PARTY_INSTALL_DIR=${THIRD_PARTY_INSTALL_DIR}
 
 RUN chmod +x /workspace/install_netcdf_cxx4.sh

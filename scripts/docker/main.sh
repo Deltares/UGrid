@@ -16,4 +16,4 @@ cmake -S . -B ${build_dir} -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="${THI
 cmake --build ${build_dir} --config Release --parallel ||
   error "[cmake] Failed to build project"
 
-${build_dir}/bin/UGridApiTests
+${build_dir}/tests/api/UGridAPITests

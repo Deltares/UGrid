@@ -4,6 +4,11 @@ set -e
 
 source error.sh
 
+dnf install -y epel-release
+dnf config-manager --enable epel
+dnf install -y dnf-utils
+dnf config-manager --set-enabled powertools
+
 dnf update -y
 
 dev_toolset="gcc-toolset-12"
@@ -11,7 +16,7 @@ dev_toolset="gcc-toolset-12"
 packages=(
   "git"
   "cmake"
-  "boost-devel"
+  "boost1.78-devel.x86_64"
   "m4"
   "perl"
   "openssl"
