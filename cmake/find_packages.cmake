@@ -1,5 +1,9 @@
 # Boost
-find_package(Boost REQUIRED)
+SET(BOOST_MIN_VERSION "1.78.0")
+find_package(Boost ${BOOST_MIN_VERSION} REQUIRED)
+if (NOT Boost_FOUND)
+  message(FATAL_ERROR "Could not find Boost >= 1.78.0" )
+endif
 
 # netCDF
 find_package(netCDF REQUIRED COMPONENTS C)
