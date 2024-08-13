@@ -9,15 +9,17 @@ if(ENABLE_UNIT_TESTING)
     GIT_TAG v1.13.0
   )
 
-  # if(WIN32)
-  #   set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
-  # endif()
+  if(WIN32)
+    set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+  endif()
 
   FetchContent_GetProperties(googletest)
   if(NOT googletest_POPULATED)
     FetchContent_Populate(googletest)
     add_subdirectory(${googletest_SOURCE_DIR} ${googletest_BINARY_DIR} EXCLUDE_FROM_ALL)
   endif()
+
+  set(CMAKE_PREFIX_PATH ${googletest_SOURCE_DIR} ${CMAKE_PREFIX_PATH})
 
   include(CTest)
 endif()
