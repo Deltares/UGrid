@@ -9,8 +9,8 @@ project(
   LANGUAGES CXX C
 )
 
-# get options
-include(cmake/options.cmake)
+# configuration options
+include(cmake/user_config_options.cmake)
 
 # configure the compiler
 include(cmake/compiler_config.cmake)

@@ -9,9 +9,9 @@ if(ENABLE_UNIT_TESTING)
     GIT_TAG v1.13.0
   )
 
-  if(WIN32)
-    set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
-  endif()
+  # if(WIN32)
+  #   set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+  # endif()
 
   FetchContent_GetProperties(googletest)
   if(NOT googletest_POPULATED)
