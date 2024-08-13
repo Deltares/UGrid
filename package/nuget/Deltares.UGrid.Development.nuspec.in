@@ -6,7 +6,7 @@
         <authors>Deltares</authors>
         <owners>Deltares</owners>
         <description>Deltares back end for reading/writing UGrid meshes </description>
-        <copyright>Copyright 2021</copyright>
+        <copyright>Copyright 2024</copyright>
         <tags>development</tags>
     </metadata>
     <files>
