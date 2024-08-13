@@ -215,10 +215,44 @@ function install_all() {
     -DCMAKE_PREFIX_PATH=${INSTALL_DIR}"
 
   # netcdf-cxx4 v4.3.2-development
-  install "netcdf_cxx4" \
-    "https://github.com/Unidata/netcdf-cxx4.git" \
-    "dev" \
-    "-DCMAKE_PREFIX_PATH=${INSTALL_DIR}"
+
+  local os_type=$(uname)
+  case "${os_type}" in
+  Darwin | Linux)
+    install "netcdf_cxx4" \
+      "https://github.com/Unidata/netcdf-cxx4.git" \
+      "dev" \
+      "-DCMAKE_PREFIX_PATH=${INSTALL_DIR}"
+    ;;
+  MINGW* | MSYS* | MYSYS*)
+    local HDF5_C_LIBRARIES="${INSTALL_DIR}/hdf5/lib/hdf5.lib"
+    local HDF5_INCLUDE_DIRS="${INSTALL_DIR}/hdf5/include"
+    COMMON_CONFIG_OPTS="-DCMAKE_PREFIX_PATH=${INSTALL_DIR} \
+      -DHDF5_C_LIBRARIES=${HDF5_C_LIBRARIES} \
+      -DHDF5_INCLUDE_DIRS=${HDF5_INCLUDE_DIRS} \
+      -DHDF5_C_LIBRARY_hdf5=${HDF5_C_LIBRARIES} \
+      -DNCXX_ENABLE_TESTS:BOOL=FALSE"
+    local netcdf_cxx_name="netcdf_cxx4"
+    local necdf_cxx_git_tag="dev"
+    local netcdf_cxx_repo="https://github.com/Unidata/netcdf-cxx4.git"
+    # Shared/static lib build is controlled by BUILD_SHARED_LIBS.
+    # BUILD_STATIC_LIBS does not exist. To install both, first runwith
+    # BUILD_SHARED_LIBS:BOOL=ON (shared)
+    # then with
+    # BUILD_SHARED_LIBS:BOOL=OFF (static)
+    install ${netcdf_cxx_name} \
+      ${netcdf_cxx_repo} \
+      ${necdf_cxx_git_tag} \
+      "-DBUILD_SHARED_LIBS:BOOL=OFF ${COMMON_CONFIG_OPTS}"
+    install ${netcdf_cxx_name} \
+      ${netcdf_cxx_repo} \
+      ${necdf_cxx_git_tag} \
+      "-DBUILD_SHARED_LIBS:BOOL=ON ${COMMON_CONFIG_OPTS}"
+    ;;
+  *)
+    echo "Unsupported OS: ${os_type}"
+    ;;
+  esac
 }
 
 function main() {
