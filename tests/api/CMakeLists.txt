@@ -1,13 +1,16 @@
-# project name
-project(
-  UGridAPITests
-  VERSION ${CMAKE_PROJECT_VERSION}
-  DESCRIPTION "UGridAPI tests"
-  LANGUAGES CXX C
-)
+# # project name
+# project(
+#   UGridAPITests
+#   VERSION ${CMAKE_PROJECT_VERSION}
+#   DESCRIPTION "UGridAPI tests"
+#   LANGUAGES CXX C
+# )
+
+# # target name
+# set(TARGET_NAME ${PROJECT_NAME})
 
 # target name
-set(TARGET_NAME ${PROJECT_NAME})
+set(TARGET_NAME UGridAPITests)
 
 # Make a test executable
 add_executable(${TARGET_NAME})
