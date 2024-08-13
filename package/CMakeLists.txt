@@ -5,11 +5,13 @@ else()
   set(VERSION_SUFFIX 0)
 endif()
 
+# Configure DLL version
 configure_file(
   ${CMAKE_CURRENT_SOURCE_DIR}/version.rc.in
   ${CMAKE_BINARY_DIR}/version.rc @ONLY
 )
 
+# Configure the nuspec files
 configure_file(
   ${CMAKE_CURRENT_SOURCE_DIR}/nuget/Deltares.UGrid.Development.nuspec.in
   ${CMAKE_BINARY_DIR}/package/nuget/Deltares.UGrid.Development.nuspec @ONLY

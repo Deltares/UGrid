@@ -13,13 +13,11 @@ if(ENABLE_UNIT_TESTING)
     set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
   endif()
 
-  # FetchContent_GetProperties(googletest)
-  # if(NOT googletest_POPULATED)
-  #   FetchContent_Populate(googletest)
-  #   add_subdirectory(${googletest_SOURCE_DIR} ${googletest_BINARY_DIR} EXCLUDE_FROM_ALL)
-  # endif()
-
-  FetchContent_MakeAvailable(googletest)
+  FetchContent_GetProperties(googletest)
+  if(NOT googletest_POPULATED)
+    FetchContent_Populate(googletest)
+    add_subdirectory(${googletest_SOURCE_DIR} ${googletest_BINARY_DIR} EXCLUDE_FROM_ALL)
+  endif()
 
   include(CTest)
 endif()
