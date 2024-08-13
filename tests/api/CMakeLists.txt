@@ -1,16 +1,15 @@
-# # project name
-# project(
-#   UGridAPITests
-#   VERSION ${CMAKE_PROJECT_VERSION}
-#   DESCRIPTION "UGridAPI tests"
-#   LANGUAGES CXX C
-# )
+# project name
+project(
+  UGridAPITests
+  VERSION ${CMAKE_PROJECT_VERSION}
+  DESCRIPTION "UGridAPI tests"
+  LANGUAGES CXX C
+)
 
-# # target name
-# set(TARGET_NAME ${PROJECT_NAME})
+include(${CMAKE_SOURCE_DIR}/cmake/fetch_contents.cmake)
 
 # target name
-set(TARGET_NAME UGridAPITests)
+set(TARGET_NAME ${PROJECT_NAME})
 
 # Make a test executable
 add_executable(${TARGET_NAME})
