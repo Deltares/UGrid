@@ -6,8 +6,6 @@ project(
   LANGUAGES CXX C
 )
 
-include(${CMAKE_SOURCE_DIR}/cmake/fetch_contents.cmake)
-
 # target name
 set(TARGET_NAME ${PROJECT_NAME})
 

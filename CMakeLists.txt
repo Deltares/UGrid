@@ -16,7 +16,7 @@ include(cmake/user_config_options.cmake)
 include(cmake/compiler_config.cmake)
 
 # fetch dependencies, must appear after options.cmake
-#include(cmake/fetch_contents.cmake)
+include(cmake/fetch_contents.cmake)
 
 # find required packages
 include(cmake/find_packages.cmake)
