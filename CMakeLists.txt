@@ -5,7 +5,7 @@ set(UGRID_VERSION 0.0.0)
 project(
   UGrid
   VERSION ${UGRID_VERSION}
-  DESCRIPTION "Library for reading/writing UGrid files."
+  DESCRIPTION "Library for reading and writing UGrid files."
   LANGUAGES CXX C
 )
 

@@ -5,7 +5,7 @@
         <version>@PROJECT_VERSION_MAJOR@.@PROJECT_VERSION_MINOR@.@PROJECT_VERSION_PATCH@.@VERSION_SUFFIX@-dev</version>
         <authors>Deltares</authors>
         <owners>Deltares</owners>
-        <description>Deltares back end for reading/writing UGrid meshes </description>
+        <description>Deltares back end for reading and writing UGrid meshes</description>
         <copyright>Copyright 2024</copyright>
         <tags>development</tags>
     </metadata>
