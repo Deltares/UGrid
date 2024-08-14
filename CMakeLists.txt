@@ -10,6 +10,11 @@ project(
 )
 
 # configuration options
+if (NOT WIN32)
+  message(NOTICE "Build type: ${CMAKE_BUILD_TYPE}")
+endif()
+
+# configuration options
 include(cmake/user_config_options.cmake)
 
 # configure the compiler

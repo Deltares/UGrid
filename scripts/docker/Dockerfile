@@ -19,4 +19,8 @@ RUN /workspace/install_netcdf_cxx4.sh \
 
 ENV CLEAN_BUILD=false
 
+ENV BUILD_TYPE=Release
+
+ENV VERBOSE=false
+
 ENTRYPOINT ["bash", "/workspace/scripts/docker/main.sh"]
