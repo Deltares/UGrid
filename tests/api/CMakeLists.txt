@@ -36,7 +36,7 @@ target_link_libraries(
   ${TARGET_NAME}
   PRIVATE
     UGridAPI
-    UtilsStatic
+    TestUtils
     GTest::gmock
     GTest::gtest_main
 )
