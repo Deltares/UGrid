@@ -17,10 +17,10 @@ RUN /workspace/install_netcdf_cxx4.sh \
     --install_dir ${THIRD_PARTY_INSTALL_DIR} \
     --clean
 
-ENV CLEAN_BUILD=false
+ENV CLEAN_BUILD="false"
 
-ENV BUILD_TYPE=Release
+ENV BUILD_TYPE="Release"
 
-ENV VERBOSE=false
+ENV VERBOSE_BUILD="false"
 
 ENTRYPOINT ["bash", "/workspace/scripts/docker/main.sh"]
