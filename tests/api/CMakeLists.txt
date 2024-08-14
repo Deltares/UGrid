@@ -1,46 +1,63 @@
-# Tests need to be added as executables first
-file(GLOB API_TEST_LIST CONFIGURE_DEPENDS "*.cpp")
+# project name
+project(
+  UGridAPITests
+  VERSION ${CMAKE_PROJECT_VERSION}
+  DESCRIPTION "UGridAPI tests"
+  LANGUAGES CXX C
+)
+
+# target name
+set(TARGET_NAME ${PROJECT_NAME})
 
 # Make a test executable
-set(target_name UGridApiTests)
-add_executable(${target_name} ${API_TEST_LIST})
+add_executable(${TARGET_NAME})
 
-# Add a dependency to ensure the correct build order
-add_dependencies(${target_name} UGridApi)
+# source directory
+set(SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 
-# Add precompiled header 
-target_precompile_headers(${target_name} PRIVATE <map> 
-                                        <string> 
-                                        <exception>
-                                        <unordered_map> 
-                                        <vector> 
-                                        <memory>
-                                        <sstream>
-                                        <ncDim.h> 
-                                        <ncVar.h> 
-                                        <ncFile.h>)
+# include directory
+set(INC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include)
+
+# list of target sources
+set(SRC_LIST
+    ${SRC_DIR}/APITests.cpp
+)
+
+set(INC_LIST)
+
+# add sources to target
+target_sources(${TARGET_NAME} PRIVATE ${SRC_LIST} ${INC_LIST})
+
+# Expose the interface of the shared lib
+target_include_directories(${TARGET_NAME} PUBLIC ${INC_DIR})
 
 # Should be linked to the main library, as well as the google test library
-target_link_libraries(${target_name} PRIVATE UGridApi UtilsStatic GTest::gmock GTest::gtest_main)
-
-# Make sure that coverage information is produced when using gcc
-if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    set_target_properties(${target_name} PROPERTIES COMPILE_FLAGS "-fprofile-arcs -ftest-coverage -static-libgcc -static-libstdc++")
-    set_target_properties(${target_name} PROPERTIES LINK_FLAGS "-ldl -lgcov --coverage")
-endif()
-
-# Link shared lib to static lib, but don't expose it
-target_link_directories(${target_name} PRIVATE ${netCDF_LIB_DIR})
-target_link_libraries(${target_name} PRIVATE UGrid netCDF::netcdf-cxx4 netcdf)
+target_link_libraries(
+  ${TARGET_NAME}
+  PRIVATE
+    UGridAPI
+    TestUtils
+    GTest::gmock
+    GTest::gtest_main
+)
 
 # If you register a test, then ctest and make test will run it. You can also run
 # examples and check the output, as well. Command can be a target.
-add_test(NAME ${target_name} COMMAND UGridApiTests)
+add_test(
+  NAME ${TARGET_NAME}
+  COMMAND ${TARGET_NAME}
+)
 
-# Copy the UGrid shared library to the target directory
+# Copy the UGridAPI shared library to the target directory
 add_custom_command(
-  TARGET ${target_name}
+  TARGET ${TARGET_NAME}
   POST_BUILD
-  COMMAND ${CMAKE_COMMAND} -E copy_if_different "$<TARGET_FILE:UGridApi>"
-          "$<TARGET_FILE_DIR:UGridApiTests>"
-  COMMENT "Copying UGrid shared library")
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different "$<TARGET_FILE:UGridAPI>" "$<TARGET_FILE_DIR:UGridAPITests>"
+    COMMENT "Copy $<TARGET_FILE:UGridAPI> to $<TARGET_FILE_DIR:UGridAPITests>"
+)
+
+# group the sources in IDE tree
+source_group("Source Files" FILES ${SRC_LIST})
+
+# group the headers in IDE tree
+source_group("Header Files" FILES ${INC_LIST})

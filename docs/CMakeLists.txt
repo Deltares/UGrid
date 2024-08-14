@@ -6,8 +6,8 @@ endif()
 
 set(DOXYGEN_INPUT_LIST
     "${CMAKE_CURRENT_SOURCE_DIR}/main_page.md \
-    ${PROJECT_SOURCE_DIR}/include/UGrid   \
-    ${PROJECT_SOURCE_DIR}/include/UGridApi")
+    ${PROJECT_SOURCE_DIR}/libs/UGrid/include/UGrid   \
+    ${PROJECT_SOURCE_DIR}/libs/UGridAPI/include/UGridAPI")
 set(DOXYGEN_OUTPUT_DIR ${CMAKE_CURRENT_BINARY_DIR})
 set(DOXYGEN_INDEX_FILE ${DOXYGEN_OUTPUT_DIR}/html/index.html)
 set(DOXYFILE_IN ${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.in)
@@ -25,11 +25,11 @@ file(MAKE_DIRECTORY ${DOXYGEN_OUTPUT_DIR})
 
 # UGrid headers
 file(GLOB UGrid_HEADER_LIST CONFIGURE_DEPENDS
-     "${PROJECT_SOURCE_DIR}/include/UGrid/*.hpp")
+     "${PROJECT_SOURCE_DIR}/libs/UGrid/include/UGrid/*.hpp")
 
 # UGridapi headers
 file(GLOB UGridAPI_HEADER_LIST CONFIGURE_DEPENDS
-     "${PROJECT_SOURCE_DIR}/include/UGridApi/*.hpp")
+     "${PROJECT_SOURCE_DIR}/libs/UGridAPI/include/UGridAPI/*.hpp")
 
 # markdown file
 file(GLOB DOXYGEN_MARKDOWN_FILES CONFIGURE_DEPENDS
@@ -41,7 +41,7 @@ add_custom_command(
   DEPENDS ${UGrid_HEADER_LIST} ${UGridAPI_HEADER_LIST}
           ${DOXYGEN_MARKDOWN_FILES} 
   COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYFILE_OUT}
-  WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}/include"
+  WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}/libs"
   MAIN_DEPENDENCY ${DOXYFILE_OUT}
   ${DOXYFILE_IN}
   COMMENT "Generating docs")

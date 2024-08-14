@@ -25,8 +25,12 @@ def configure_doxyfile(
         doxyfile_data = file.read()
 
     doxyfile_data = doxyfile_data.replace("@DOXYGEN_INPUT_LIST@", doxygen_input_list)
-    doxyfile_data = doxyfile_data.replace("@DOXYGEN_OUTPUT_DIR@", str(output_dir.resolve()))
-    doxyfile_data = doxyfile_data.replace("@CMAKE_CURRENT_SOURCE_DIR@", str(docs_dir.resolve()))
+    doxyfile_data = doxyfile_data.replace(
+        "@DOXYGEN_OUTPUT_DIR@", str(output_dir.resolve())
+    )
+    doxyfile_data = doxyfile_data.replace(
+        "@CMAKE_CURRENT_SOURCE_DIR@", str(docs_dir.resolve())
+    )
     doxyfile_data = doxyfile_data.replace(
         "@DOXYGEN_WARN_LOG_FILE@", str(doxygen_log_path)
     )
@@ -51,8 +55,8 @@ def print_file(file: Path):
 
 # Set dirs
 root_dir = Path(__file__).parent.parent
-UGrid_include_dir = root_dir / "include" / "UGrid"
-UGridapi_include_dir = root_dir / "include" / "UGridApi"
+UGrid_include_dir = root_dir / "libs" / "UGrid" / "include" / "UGrid"
+UGridapi_include_dir = root_dir / "libs" / "UGridAPI" / "include" / "UGridAPI"
 output_dir = root_dir / "build" / "docs"
 docs_dir = root_dir / "docs"
 

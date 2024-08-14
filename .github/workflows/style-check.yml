@@ -18,7 +18,13 @@ jobs:
 
       - name: Run clang-format and report result
         run: |
-          declare -a directories=("src" "include" "tests")
+          declare -a directories=(
+            "libs/UGrid/src"
+            "libs/UGrid/include"
+            "libs/UGridAPI/src"
+            "libs/UGridAPI/include"
+            "tests"
+          )
           # Parse full lines
           export IFS=$'\n'
           for directory in "${directories[@]}"; do
