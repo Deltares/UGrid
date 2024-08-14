@@ -19,7 +19,7 @@ cmake \
   error "[cmake] Failed to configure project"
 
 verbose_build=""
-if ${VRBOSE}; then
+if ${VERBOSE}; then
   verbose_build="--verbose"
 fi
 
