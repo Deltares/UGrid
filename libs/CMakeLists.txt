@@ -3,3 +3,6 @@ add_subdirectory(UGrid)
 
 # Add UGridAPI dynamic lib
 add_subdirectory(UGridAPI)
+
+# Add UGridNET
+add_subdirectory(UGridNET)

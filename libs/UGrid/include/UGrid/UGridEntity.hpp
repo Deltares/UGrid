@@ -27,6 +27,8 @@
 
 #pragma once
 
+#include <netcdf>
+
 #include <UGrid/Constants.hpp>
 #include <UGrid/Operations.hpp>
 
