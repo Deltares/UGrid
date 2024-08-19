@@ -8,10 +8,17 @@ project(
 # target name
 set(TARGET_NAME ${PROJECT_NAME})
 
+include(${CMAKE_SOURCE_DIR}/cmake/install_swig.cmake)
+set(SWIG_VERSION 4.2.1)
+set(SWIG_WORK_DIR ${CMAKE_BINARY_DIR}/swig)
+install_swig(
+  VERSION ${SWIG_VERSION}
+  INSTALL_DIR ${SWIG_WORK_DIR}
+)
+set(SWIG_INSTALL_DIR ${SWIG_WORK_DIR}/swigwin-${SWIG_VERSION}) 
 # Find SWIG
-#set(SWIG_INSTALL_DIR "C:/Users/sayed/libraries/swig/swigwin-4.2.1")
-#set(SWIG_DIR ${SWIG_INSTALL_DIR}/Lib)
-#set(SWIG_EXECUTABLE ${SWIG_INSTALL_DIR}/swig.exe)
+set(SWIG_DIR ${SWIG_INSTALL_DIR}/Lib)
+set(SWIG_EXECUTABLE ${SWIG_INSTALL_DIR}/swig.exe)
 find_package(SWIG REQUIRED)
 include(${SWIG_USE_FILE})
 
