@@ -17,4 +17,3 @@ jobs:
       - uses: codespell-project/actions-codespell@v2
         with:
           check_filenames: true
-          check_hidden: false
