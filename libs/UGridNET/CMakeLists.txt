@@ -9,9 +9,9 @@ project(
 set(TARGET_NAME ${PROJECT_NAME})
 
 # Find SWIG
-set(SWIG_INSTALL_DIR "C:/Users/sayed/libraries/swig/swigwin-4.2.1")
-set(SWIG_DIR ${SWIG_INSTALL_DIR}/Lib)
-set(SWIG_EXECUTABLE ${SWIG_INSTALL_DIR}/swig.exe)
+#set(SWIG_INSTALL_DIR "C:/Users/sayed/libraries/swig/swigwin-4.2.1")
+#set(SWIG_DIR ${SWIG_INSTALL_DIR}/Lib)
+#set(SWIG_EXECUTABLE ${SWIG_INSTALL_DIR}/swig.exe)
 find_package(SWIG REQUIRED)
 include(${SWIG_USE_FILE})
 
