@@ -22,7 +22,7 @@ else()
 endif()
 
 # hdf5
-find_package(HDF5 REQUIRED)
+find_package(HDF5)
 if (HDF5_FOUND)
     message(STATUS "Found HDF5 ${HDF5_VERSION}")
 endif()
