@@ -1,5 +1,5 @@
 project(
-  UGridNET
+  UGridCSWrapper
   VERSION ${CMAKE_PROJECT_VERSION}
   DESCRIPTION "UGridNET C# wrapper around UGridAPI"
   LANGUAGES CXX C
@@ -22,19 +22,21 @@ install_swig(
 # Find SWIG
 find_package(SWIG REQUIRED)
 if (SWIG_FOUND)
-    message(STATUS "Found SWIG ${SWIG_VERSION}")
+  message(STATUS "Found SWIG ${SWIG_VERSION}")
+  else()
+  message(FATAL_ERROR "Could not find SWIG")
 endif()
 include(${SWIG_USE_FILE})
 
 # Include directories
-#include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../UGridAPI/src)
-
 set(UGridAPI_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../UGridAPI)
 set(UGridAPI_INC_DIR ${UGridAPI_DIR}/include/UGridAPI)
 set(UGridAPI_SRC_DIR ${UGridAPI_DIR}/src)
 
 set(SWIG_INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/interface/UGrid.i)
-set(OUT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
+set(OUTPUT_DIR_PREFIX ${CMAKE_CURRENT_BINARY_DIR}/swig)
+set(OUTPUT_DIR ${OUTPUT_DIR_PREFIX}/csharp)
+set(OUTFILE_DIR ${OUTPUT_DIR_PREFIX}/cxx)
 
 set_property(
   SOURCE 
@@ -59,8 +61,8 @@ swig_add_library(
     ${UGridAPI_INC_DIR}/Network1D.hpp
     ${UGridAPI_INC_DIR}/UGrid.hpp
     ${UGridAPI_INC_DIR}/UGridState.hpp
-  OUTPUT_DIR ${OUT_DIR}
-  OUTFILE_DIR ${OUT_DIR}
+  OUTPUT_DIR ${OUTPUT_DIR}
+  OUTFILE_DIR ${OUTFILE_DIR}
 )
 
 set_property(
@@ -73,12 +75,12 @@ set_property(
 set_property(TARGET ${TARGET_NAME} PROPERTY SWIG_USE_TARGET_INCLUDE_DIRECTORIES TRUE)
 
 target_link_libraries(
-    ${TARGET_NAME} 
-    PUBLIC
-      UGrid
-    PRIVATE
-      netCDF::netcdf
-      netCDF::netcdf-cxx4
+  ${TARGET_NAME} 
+  PUBLIC
+    UGrid
+  PRIVATE
+    netCDF::netcdf
+    netCDF::netcdf-cxx4
 )
 
 target_include_directories(${TARGET_NAME} PUBLIC ${UGridAPI_DIR}/include)
