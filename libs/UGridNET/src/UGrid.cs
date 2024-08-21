@@ -37,69 +37,58 @@ public class UGrid {
     return ret;
   }
 
-  public static int ug_name_get_length(SWIGTYPE_p_int length) {
-    int ret = UGridPINVOKE.ug_name_get_length(SWIGTYPE_p_int.getCPtr(length));
-    if (UGridPINVOKE.SWIGPendingException.Pending) throw UGridPINVOKE.SWIGPendingException.Retrieve();
+  public static int ug_name_get_length(ref int length) {
+    int ret = UGridPINVOKE.ug_name_get_length(ref length);
     return ret;
   }
 
-  public static int ug_name_get_long_length(SWIGTYPE_p_int length) {
-    int ret = UGridPINVOKE.ug_name_get_long_length(SWIGTYPE_p_int.getCPtr(length));
-    if (UGridPINVOKE.SWIGPendingException.Pending) throw UGridPINVOKE.SWIGPendingException.Retrieve();
+  public static int ug_name_get_long_length(ref int length) {
+    int ret = UGridPINVOKE.ug_name_get_long_length(ref length);
     return ret;
   }
 
-  public static int ug_entity_get_node_location_enum(SWIGTYPE_p_int location) {
-    int ret = UGridPINVOKE.ug_entity_get_node_location_enum(SWIGTYPE_p_int.getCPtr(location));
-    if (UGridPINVOKE.SWIGPendingException.Pending) throw UGridPINVOKE.SWIGPendingException.Retrieve();
+  public static int ug_entity_get_node_location_enum(ref int location) {
+    int ret = UGridPINVOKE.ug_entity_get_node_location_enum(ref location);
     return ret;
   }
 
-  public static int ug_entity_get_edge_location_enum(SWIGTYPE_p_int location) {
-    int ret = UGridPINVOKE.ug_entity_get_edge_location_enum(SWIGTYPE_p_int.getCPtr(location));
-    if (UGridPINVOKE.SWIGPendingException.Pending) throw UGridPINVOKE.SWIGPendingException.Retrieve();
+  public static int ug_entity_get_edge_location_enum(ref int location) {
+    int ret = UGridPINVOKE.ug_entity_get_edge_location_enum(ref location);
     return ret;
   }
 
-  public static int ug_entity_get_face_location_enum(SWIGTYPE_p_int location) {
-    int ret = UGridPINVOKE.ug_entity_get_face_location_enum(SWIGTYPE_p_int.getCPtr(location));
-    if (UGridPINVOKE.SWIGPendingException.Pending) throw UGridPINVOKE.SWIGPendingException.Retrieve();
+  public static int ug_entity_get_face_location_enum(ref int location) {
+    int ret = UGridPINVOKE.ug_entity_get_face_location_enum(ref location);
     return ret;
   }
 
-  public static int ug_topology_get_network1d_enum(SWIGTYPE_p_int topology_enum) {
-    int ret = UGridPINVOKE.ug_topology_get_network1d_enum(SWIGTYPE_p_int.getCPtr(topology_enum));
-    if (UGridPINVOKE.SWIGPendingException.Pending) throw UGridPINVOKE.SWIGPendingException.Retrieve();
+  public static int ug_topology_get_network1d_enum(ref int topology_enum) {
+    int ret = UGridPINVOKE.ug_topology_get_network1d_enum(ref topology_enum);
     return ret;
   }
 
-  public static int ug_topology_get_mesh1d_enum(SWIGTYPE_p_int topology_enum) {
-    int ret = UGridPINVOKE.ug_topology_get_mesh1d_enum(SWIGTYPE_p_int.getCPtr(topology_enum));
-    if (UGridPINVOKE.SWIGPendingException.Pending) throw UGridPINVOKE.SWIGPendingException.Retrieve();
+  public static int ug_topology_get_mesh1d_enum(ref int topology_enum) {
+    int ret = UGridPINVOKE.ug_topology_get_mesh1d_enum(ref topology_enum);
     return ret;
   }
 
-  public static int ug_topology_get_mesh2d_enum(SWIGTYPE_p_int topology_enum) {
-    int ret = UGridPINVOKE.ug_topology_get_mesh2d_enum(SWIGTYPE_p_int.getCPtr(topology_enum));
-    if (UGridPINVOKE.SWIGPendingException.Pending) throw UGridPINVOKE.SWIGPendingException.Retrieve();
+  public static int ug_topology_get_mesh2d_enum(ref int topology_enum) {
+    int ret = UGridPINVOKE.ug_topology_get_mesh2d_enum(ref topology_enum);
     return ret;
   }
 
-  public static int ug_topology_get_contacts_enum(SWIGTYPE_p_int topology_enum) {
-    int ret = UGridPINVOKE.ug_topology_get_contacts_enum(SWIGTYPE_p_int.getCPtr(topology_enum));
-    if (UGridPINVOKE.SWIGPendingException.Pending) throw UGridPINVOKE.SWIGPendingException.Retrieve();
+  public static int ug_topology_get_contacts_enum(ref int topology_enum) {
+    int ret = UGridPINVOKE.ug_topology_get_contacts_enum(ref topology_enum);
     return ret;
   }
 
-  public static int ug_topology_get_count(int file_id, int topology_type, SWIGTYPE_p_int topology_count) {
-    int ret = UGridPINVOKE.ug_topology_get_count(file_id, topology_type, SWIGTYPE_p_int.getCPtr(topology_count));
-    if (UGridPINVOKE.SWIGPendingException.Pending) throw UGridPINVOKE.SWIGPendingException.Retrieve();
+  public static int ug_topology_get_count(int file_id, int topology_type, ref int topology_count) {
+    int ret = UGridPINVOKE.ug_topology_get_count(file_id, topology_type, ref topology_count);
     return ret;
   }
 
-  public static int ug_topology_count_data_variables(int file_id, int topology_type, int topology_id, int location, SWIGTYPE_p_int data_variable_count) {
-    int ret = UGridPINVOKE.ug_topology_count_data_variables(file_id, topology_type, topology_id, location, SWIGTYPE_p_int.getCPtr(data_variable_count));
-    if (UGridPINVOKE.SWIGPendingException.Pending) throw UGridPINVOKE.SWIGPendingException.Retrieve();
+  public static int ug_topology_count_data_variables(int file_id, int topology_type, int topology_id, int location, ref int data_variable_count) {
+    int ret = UGridPINVOKE.ug_topology_count_data_variables(file_id, topology_type, topology_id, location, ref data_variable_count);
     return ret;
   }
 
@@ -113,9 +102,8 @@ public class UGrid {
     return ret;
   }
 
-  public static int ug_variable_count_attributes(int file_id, string variable_name, SWIGTYPE_p_int attributes_count) {
-    int ret = UGridPINVOKE.ug_variable_count_attributes(file_id, variable_name, SWIGTYPE_p_int.getCPtr(attributes_count));
-    if (UGridPINVOKE.SWIGPendingException.Pending) throw UGridPINVOKE.SWIGPendingException.Retrieve();
+  public static int ug_variable_count_attributes(int file_id, string variable_name, ref int attributes_count) {
+    int ret = UGridPINVOKE.ug_variable_count_attributes(file_id, variable_name, ref attributes_count);
     return ret;
   }
 
@@ -129,9 +117,8 @@ public class UGrid {
     return ret;
   }
 
-  public static int ug_variable_count_dimensions(int file_id, string variable_name, SWIGTYPE_p_int dimensions_count) {
-    int ret = UGridPINVOKE.ug_variable_count_dimensions(file_id, variable_name, SWIGTYPE_p_int.getCPtr(dimensions_count));
-    if (UGridPINVOKE.SWIGPendingException.Pending) throw UGridPINVOKE.SWIGPendingException.Retrieve();
+  public static int ug_variable_count_dimensions(int file_id, string variable_name, ref int dimensions_count) {
+    int ret = UGridPINVOKE.ug_variable_count_dimensions(file_id, variable_name, ref dimensions_count);
     return ret;
   }
 
@@ -155,27 +142,23 @@ public class UGrid {
     return ret;
   }
 
-  public static int ug_file_read_mode(SWIGTYPE_p_int mode) {
-    int ret = UGridPINVOKE.ug_file_read_mode(SWIGTYPE_p_int.getCPtr(mode));
-    if (UGridPINVOKE.SWIGPendingException.Pending) throw UGridPINVOKE.SWIGPendingException.Retrieve();
+  public static int ug_file_read_mode(ref int mode) {
+    int ret = UGridPINVOKE.ug_file_read_mode(ref mode);
     return ret;
   }
 
-  public static int ug_file_write_mode(SWIGTYPE_p_int mode) {
-    int ret = UGridPINVOKE.ug_file_write_mode(SWIGTYPE_p_int.getCPtr(mode));
-    if (UGridPINVOKE.SWIGPendingException.Pending) throw UGridPINVOKE.SWIGPendingException.Retrieve();
+  public static int ug_file_write_mode(ref int mode) {
+    int ret = UGridPINVOKE.ug_file_write_mode(ref mode);
     return ret;
   }
 
-  public static int ug_file_replace_mode(SWIGTYPE_p_int mode) {
-    int ret = UGridPINVOKE.ug_file_replace_mode(SWIGTYPE_p_int.getCPtr(mode));
-    if (UGridPINVOKE.SWIGPendingException.Pending) throw UGridPINVOKE.SWIGPendingException.Retrieve();
+  public static int ug_file_replace_mode(ref int mode) {
+    int ret = UGridPINVOKE.ug_file_replace_mode(ref mode);
     return ret;
   }
 
-  public static int ug_file_open(string file_path, int mode, SWIGTYPE_p_int file_id) {
-    int ret = UGridPINVOKE.ug_file_open(file_path, mode, SWIGTYPE_p_int.getCPtr(file_id));
-    if (UGridPINVOKE.SWIGPendingException.Pending) throw UGridPINVOKE.SWIGPendingException.Retrieve();
+  public static int ug_file_open(string file_path, int mode, ref int file_id) {
+    int ret = UGridPINVOKE.ug_file_open(file_path, mode, ref file_id);
     return ret;
   }
 
@@ -184,8 +167,8 @@ public class UGrid {
     return ret;
   }
 
-  public static int ug_network1d_def(int file_id, Network1D network1d_api, SWIGTYPE_p_int topology_id) {
-    int ret = UGridPINVOKE.ug_network1d_def(file_id, Network1D.getCPtr(network1d_api), SWIGTYPE_p_int.getCPtr(topology_id));
+  public static int ug_network1d_def(int file_id, Network1D network1d_api, ref int topology_id) {
+    int ret = UGridPINVOKE.ug_network1d_def(file_id, Network1D.getCPtr(network1d_api), ref topology_id);
     if (UGridPINVOKE.SWIGPendingException.Pending) throw UGridPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
@@ -208,8 +191,8 @@ public class UGrid {
     return ret;
   }
 
-  public static int ug_mesh1d_def(int file_id, Mesh1D mesh1d_api, SWIGTYPE_p_int topology_id) {
-    int ret = UGridPINVOKE.ug_mesh1d_def(file_id, Mesh1D.getCPtr(mesh1d_api), SWIGTYPE_p_int.getCPtr(topology_id));
+  public static int ug_mesh1d_def(int file_id, Mesh1D mesh1d_api, ref int topology_id) {
+    int ret = UGridPINVOKE.ug_mesh1d_def(file_id, Mesh1D.getCPtr(mesh1d_api), ref topology_id);
     if (UGridPINVOKE.SWIGPendingException.Pending) throw UGridPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
@@ -232,8 +215,8 @@ public class UGrid {
     return ret;
   }
 
-  public static int ug_mesh2d_def(int file_id, Mesh2D mesh2d_api, SWIGTYPE_p_int topology_id) {
-    int ret = UGridPINVOKE.ug_mesh2d_def(file_id, Mesh2D.getCPtr(mesh2d_api), SWIGTYPE_p_int.getCPtr(topology_id));
+  public static int ug_mesh2d_def(int file_id, Mesh2D mesh2d_api, ref int topology_id) {
+    int ret = UGridPINVOKE.ug_mesh2d_def(file_id, Mesh2D.getCPtr(mesh2d_api), ref topology_id);
     if (UGridPINVOKE.SWIGPendingException.Pending) throw UGridPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
@@ -256,8 +239,8 @@ public class UGrid {
     return ret;
   }
 
-  public static int ug_contacts_def(int file_id, Contacts contacts_api, SWIGTYPE_p_int topology_id) {
-    int ret = UGridPINVOKE.ug_contacts_def(file_id, Contacts.getCPtr(contacts_api), SWIGTYPE_p_int.getCPtr(topology_id));
+  public static int ug_contacts_def(int file_id, Contacts contacts_api, ref int topology_id) {
+    int ret = UGridPINVOKE.ug_contacts_def(file_id, Contacts.getCPtr(contacts_api), ref topology_id);
     if (UGridPINVOKE.SWIGPendingException.Pending) throw UGridPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
@@ -305,33 +288,28 @@ public class UGrid {
     return ret;
   }
 
-  public static int ug_get_edges_location_type(SWIGTYPE_p_int type) {
-    int ret = UGridPINVOKE.ug_get_edges_location_type(SWIGTYPE_p_int.getCPtr(type));
-    if (UGridPINVOKE.SWIGPendingException.Pending) throw UGridPINVOKE.SWIGPendingException.Retrieve();
+  public static int ug_get_edges_location_type(ref int type) {
+    int ret = UGridPINVOKE.ug_get_edges_location_type(ref type);
     return ret;
   }
 
-  public static int ug_get_nodes_location_type(SWIGTYPE_p_int type) {
-    int ret = UGridPINVOKE.ug_get_nodes_location_type(SWIGTYPE_p_int.getCPtr(type));
-    if (UGridPINVOKE.SWIGPendingException.Pending) throw UGridPINVOKE.SWIGPendingException.Retrieve();
+  public static int ug_get_nodes_location_type(ref int type) {
+    int ret = UGridPINVOKE.ug_get_nodes_location_type(ref type);
     return ret;
   }
 
-  public static int ug_get_faces_location_type(SWIGTYPE_p_int type) {
-    int ret = UGridPINVOKE.ug_get_faces_location_type(SWIGTYPE_p_int.getCPtr(type));
-    if (UGridPINVOKE.SWIGPendingException.Pending) throw UGridPINVOKE.SWIGPendingException.Retrieve();
+  public static int ug_get_faces_location_type(ref int type) {
+    int ret = UGridPINVOKE.ug_get_faces_location_type(ref type);
     return ret;
   }
 
-  public static int ug_get_int_fill_value(SWIGTYPE_p_int fillValue) {
-    int ret = UGridPINVOKE.ug_get_int_fill_value(SWIGTYPE_p_int.getCPtr(fillValue));
-    if (UGridPINVOKE.SWIGPendingException.Pending) throw UGridPINVOKE.SWIGPendingException.Retrieve();
+  public static int ug_get_int_fill_value(ref int fillValue) {
+    int ret = UGridPINVOKE.ug_get_int_fill_value(ref fillValue);
     return ret;
   }
 
-  public static int ug_get_double_fill_value(SWIGTYPE_p_double fillValue) {
-    int ret = UGridPINVOKE.ug_get_double_fill_value(SWIGTYPE_p_double.getCPtr(fillValue));
-    if (UGridPINVOKE.SWIGPendingException.Pending) throw UGridPINVOKE.SWIGPendingException.Retrieve();
+  public static int ug_get_double_fill_value(ref double fillValue) {
+    int ret = UGridPINVOKE.ug_get_double_fill_value(ref fillValue);
     return ret;
   }
 

@@ -727,37 +727,37 @@ class UGridPINVOKE {
   public static extern int ug_error_get(string jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("UGridNET", EntryPoint="CSharp_ug_name_get_length")]
-  public static extern int ug_name_get_length(global::System.Runtime.InteropServices.HandleRef jarg1);
+  public static extern int ug_name_get_length(ref int jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("UGridNET", EntryPoint="CSharp_ug_name_get_long_length")]
-  public static extern int ug_name_get_long_length(global::System.Runtime.InteropServices.HandleRef jarg1);
+  public static extern int ug_name_get_long_length(ref int jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("UGridNET", EntryPoint="CSharp_ug_entity_get_node_location_enum")]
-  public static extern int ug_entity_get_node_location_enum(global::System.Runtime.InteropServices.HandleRef jarg1);
+  public static extern int ug_entity_get_node_location_enum(ref int jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("UGridNET", EntryPoint="CSharp_ug_entity_get_edge_location_enum")]
-  public static extern int ug_entity_get_edge_location_enum(global::System.Runtime.InteropServices.HandleRef jarg1);
+  public static extern int ug_entity_get_edge_location_enum(ref int jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("UGridNET", EntryPoint="CSharp_ug_entity_get_face_location_enum")]
-  public static extern int ug_entity_get_face_location_enum(global::System.Runtime.InteropServices.HandleRef jarg1);
+  public static extern int ug_entity_get_face_location_enum(ref int jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("UGridNET", EntryPoint="CSharp_ug_topology_get_network1d_enum")]
-  public static extern int ug_topology_get_network1d_enum(global::System.Runtime.InteropServices.HandleRef jarg1);
+  public static extern int ug_topology_get_network1d_enum(ref int jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("UGridNET", EntryPoint="CSharp_ug_topology_get_mesh1d_enum")]
-  public static extern int ug_topology_get_mesh1d_enum(global::System.Runtime.InteropServices.HandleRef jarg1);
+  public static extern int ug_topology_get_mesh1d_enum(ref int jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("UGridNET", EntryPoint="CSharp_ug_topology_get_mesh2d_enum")]
-  public static extern int ug_topology_get_mesh2d_enum(global::System.Runtime.InteropServices.HandleRef jarg1);
+  public static extern int ug_topology_get_mesh2d_enum(ref int jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("UGridNET", EntryPoint="CSharp_ug_topology_get_contacts_enum")]
-  public static extern int ug_topology_get_contacts_enum(global::System.Runtime.InteropServices.HandleRef jarg1);
+  public static extern int ug_topology_get_contacts_enum(ref int jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("UGridNET", EntryPoint="CSharp_ug_topology_get_count")]
-  public static extern int ug_topology_get_count(int jarg1, int jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
+  public static extern int ug_topology_get_count(int jarg1, int jarg2, ref int jarg3);
 
   [global::System.Runtime.InteropServices.DllImport("UGridNET", EntryPoint="CSharp_ug_topology_count_data_variables")]
-  public static extern int ug_topology_count_data_variables(int jarg1, int jarg2, int jarg3, int jarg4, global::System.Runtime.InteropServices.HandleRef jarg5);
+  public static extern int ug_topology_count_data_variables(int jarg1, int jarg2, int jarg3, int jarg4, ref int jarg5);
 
   [global::System.Runtime.InteropServices.DllImport("UGridNET", EntryPoint="CSharp_ug_topology_get_data_variables_names")]
   public static extern int ug_topology_get_data_variables_names(int jarg1, int jarg2, int jarg3, int jarg4, string jarg5);
@@ -766,7 +766,7 @@ class UGridPINVOKE {
   public static extern int ug_topology_define_double_variable_on_location(int jarg1, int jarg2, int jarg3, int jarg4, string jarg5, string jarg6, int jarg7);
 
   [global::System.Runtime.InteropServices.DllImport("UGridNET", EntryPoint="CSharp_ug_variable_count_attributes")]
-  public static extern int ug_variable_count_attributes(int jarg1, string jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
+  public static extern int ug_variable_count_attributes(int jarg1, string jarg2, ref int jarg3);
 
   [global::System.Runtime.InteropServices.DllImport("UGridNET", EntryPoint="CSharp_ug_variable_get_attributes_values")]
   public static extern int ug_variable_get_attributes_values(int jarg1, string jarg2, string jarg3);
@@ -775,7 +775,7 @@ class UGridPINVOKE {
   public static extern int ug_variable_get_attributes_names(int jarg1, string jarg2, string jarg3);
 
   [global::System.Runtime.InteropServices.DllImport("UGridNET", EntryPoint="CSharp_ug_variable_count_dimensions")]
-  public static extern int ug_variable_count_dimensions(int jarg1, string jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
+  public static extern int ug_variable_count_dimensions(int jarg1, string jarg2, ref int jarg3);
 
   [global::System.Runtime.InteropServices.DllImport("UGridNET", EntryPoint="CSharp_ug_variable_get_data_dimensions")]
   public static extern int ug_variable_get_data_dimensions(int jarg1, string jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
@@ -790,22 +790,22 @@ class UGridPINVOKE {
   public static extern int ug_variable_get_data_char(int jarg1, string jarg2, string jarg3);
 
   [global::System.Runtime.InteropServices.DllImport("UGridNET", EntryPoint="CSharp_ug_file_read_mode")]
-  public static extern int ug_file_read_mode(global::System.Runtime.InteropServices.HandleRef jarg1);
+  public static extern int ug_file_read_mode(ref int jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("UGridNET", EntryPoint="CSharp_ug_file_write_mode")]
-  public static extern int ug_file_write_mode(global::System.Runtime.InteropServices.HandleRef jarg1);
+  public static extern int ug_file_write_mode(ref int jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("UGridNET", EntryPoint="CSharp_ug_file_replace_mode")]
-  public static extern int ug_file_replace_mode(global::System.Runtime.InteropServices.HandleRef jarg1);
+  public static extern int ug_file_replace_mode(ref int jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("UGridNET", EntryPoint="CSharp_ug_file_open")]
-  public static extern int ug_file_open(string jarg1, int jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
+  public static extern int ug_file_open(string jarg1, int jarg2, ref int jarg3);
 
   [global::System.Runtime.InteropServices.DllImport("UGridNET", EntryPoint="CSharp_ug_file_close")]
   public static extern int ug_file_close(int jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("UGridNET", EntryPoint="CSharp_ug_network1d_def")]
-  public static extern int ug_network1d_def(int jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
+  public static extern int ug_network1d_def(int jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, ref int jarg3);
 
   [global::System.Runtime.InteropServices.DllImport("UGridNET", EntryPoint="CSharp_ug_network1d_put")]
   public static extern int ug_network1d_put(int jarg1, int jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
@@ -817,7 +817,7 @@ class UGridPINVOKE {
   public static extern int ug_network1d_get(int jarg1, int jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
 
   [global::System.Runtime.InteropServices.DllImport("UGridNET", EntryPoint="CSharp_ug_mesh1d_def")]
-  public static extern int ug_mesh1d_def(int jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
+  public static extern int ug_mesh1d_def(int jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, ref int jarg3);
 
   [global::System.Runtime.InteropServices.DllImport("UGridNET", EntryPoint="CSharp_ug_mesh1d_put")]
   public static extern int ug_mesh1d_put(int jarg1, int jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
@@ -829,7 +829,7 @@ class UGridPINVOKE {
   public static extern int ug_mesh1d_get(int jarg1, int jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
 
   [global::System.Runtime.InteropServices.DllImport("UGridNET", EntryPoint="CSharp_ug_mesh2d_def")]
-  public static extern int ug_mesh2d_def(int jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
+  public static extern int ug_mesh2d_def(int jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, ref int jarg3);
 
   [global::System.Runtime.InteropServices.DllImport("UGridNET", EntryPoint="CSharp_ug_mesh2d_put")]
   public static extern int ug_mesh2d_put(int jarg1, int jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
@@ -841,7 +841,7 @@ class UGridPINVOKE {
   public static extern int ug_mesh2d_get(int jarg1, int jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
 
   [global::System.Runtime.InteropServices.DllImport("UGridNET", EntryPoint="CSharp_ug_contacts_def")]
-  public static extern int ug_contacts_def(int jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
+  public static extern int ug_contacts_def(int jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, ref int jarg3);
 
   [global::System.Runtime.InteropServices.DllImport("UGridNET", EntryPoint="CSharp_ug_contacts_put")]
   public static extern int ug_contacts_put(int jarg1, int jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
@@ -868,17 +868,17 @@ class UGridPINVOKE {
   public static extern int ug_attribute_global_char_define(int jarg1, string jarg2, string jarg3, int jarg4);
 
   [global::System.Runtime.InteropServices.DllImport("UGridNET", EntryPoint="CSharp_ug_get_edges_location_type")]
-  public static extern int ug_get_edges_location_type(global::System.Runtime.InteropServices.HandleRef jarg1);
+  public static extern int ug_get_edges_location_type(ref int jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("UGridNET", EntryPoint="CSharp_ug_get_nodes_location_type")]
-  public static extern int ug_get_nodes_location_type(global::System.Runtime.InteropServices.HandleRef jarg1);
+  public static extern int ug_get_nodes_location_type(ref int jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("UGridNET", EntryPoint="CSharp_ug_get_faces_location_type")]
-  public static extern int ug_get_faces_location_type(global::System.Runtime.InteropServices.HandleRef jarg1);
+  public static extern int ug_get_faces_location_type(ref int jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("UGridNET", EntryPoint="CSharp_ug_get_int_fill_value")]
-  public static extern int ug_get_int_fill_value(global::System.Runtime.InteropServices.HandleRef jarg1);
+  public static extern int ug_get_int_fill_value(ref int jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("UGridNET", EntryPoint="CSharp_ug_get_double_fill_value")]
-  public static extern int ug_get_double_fill_value(global::System.Runtime.InteropServices.HandleRef jarg1);
+  public static extern int ug_get_double_fill_value(ref double jarg1);
 }

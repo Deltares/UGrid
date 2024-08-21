@@ -2460,151 +2460,115 @@ SWIGEXPORT int SWIGSTDCALL CSharp_ug_error_get(char * jarg1) {
 }
 
 
-SWIGEXPORT int SWIGSTDCALL CSharp_ug_name_get_length(void * jarg1) {
+SWIGEXPORT int SWIGSTDCALL CSharp_ug_name_get_length(int * jarg1) {
   int jresult ;
   int *arg1 = 0 ;
   int result;
   
-  arg1 = (int *)jarg1;
-  if (!arg1) {
-    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "int & is null", 0);
-    return 0;
-  } 
+  arg1 = (int *)jarg1; 
   result = (int)ugridapi::ug_name_get_length(*arg1);
   jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT int SWIGSTDCALL CSharp_ug_name_get_long_length(void * jarg1) {
+SWIGEXPORT int SWIGSTDCALL CSharp_ug_name_get_long_length(int * jarg1) {
   int jresult ;
   int *arg1 = 0 ;
   int result;
   
-  arg1 = (int *)jarg1;
-  if (!arg1) {
-    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "int & is null", 0);
-    return 0;
-  } 
+  arg1 = (int *)jarg1; 
   result = (int)ugridapi::ug_name_get_long_length(*arg1);
   jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT int SWIGSTDCALL CSharp_ug_entity_get_node_location_enum(void * jarg1) {
+SWIGEXPORT int SWIGSTDCALL CSharp_ug_entity_get_node_location_enum(int * jarg1) {
   int jresult ;
   int *arg1 = 0 ;
   int result;
   
-  arg1 = (int *)jarg1;
-  if (!arg1) {
-    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "int & is null", 0);
-    return 0;
-  } 
+  arg1 = (int *)jarg1; 
   result = (int)ugridapi::ug_entity_get_node_location_enum(*arg1);
   jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT int SWIGSTDCALL CSharp_ug_entity_get_edge_location_enum(void * jarg1) {
+SWIGEXPORT int SWIGSTDCALL CSharp_ug_entity_get_edge_location_enum(int * jarg1) {
   int jresult ;
   int *arg1 = 0 ;
   int result;
   
-  arg1 = (int *)jarg1;
-  if (!arg1) {
-    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "int & is null", 0);
-    return 0;
-  } 
+  arg1 = (int *)jarg1; 
   result = (int)ugridapi::ug_entity_get_edge_location_enum(*arg1);
   jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT int SWIGSTDCALL CSharp_ug_entity_get_face_location_enum(void * jarg1) {
+SWIGEXPORT int SWIGSTDCALL CSharp_ug_entity_get_face_location_enum(int * jarg1) {
   int jresult ;
   int *arg1 = 0 ;
   int result;
   
-  arg1 = (int *)jarg1;
-  if (!arg1) {
-    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "int & is null", 0);
-    return 0;
-  } 
+  arg1 = (int *)jarg1; 
   result = (int)ugridapi::ug_entity_get_face_location_enum(*arg1);
   jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT int SWIGSTDCALL CSharp_ug_topology_get_network1d_enum(void * jarg1) {
+SWIGEXPORT int SWIGSTDCALL CSharp_ug_topology_get_network1d_enum(int * jarg1) {
   int jresult ;
   int *arg1 = 0 ;
   int result;
   
-  arg1 = (int *)jarg1;
-  if (!arg1) {
-    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "int & is null", 0);
-    return 0;
-  } 
+  arg1 = (int *)jarg1; 
   result = (int)ugridapi::ug_topology_get_network1d_enum(*arg1);
   jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT int SWIGSTDCALL CSharp_ug_topology_get_mesh1d_enum(void * jarg1) {
+SWIGEXPORT int SWIGSTDCALL CSharp_ug_topology_get_mesh1d_enum(int * jarg1) {
   int jresult ;
   int *arg1 = 0 ;
   int result;
   
-  arg1 = (int *)jarg1;
-  if (!arg1) {
-    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "int & is null", 0);
-    return 0;
-  } 
+  arg1 = (int *)jarg1; 
   result = (int)ugridapi::ug_topology_get_mesh1d_enum(*arg1);
   jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT int SWIGSTDCALL CSharp_ug_topology_get_mesh2d_enum(void * jarg1) {
+SWIGEXPORT int SWIGSTDCALL CSharp_ug_topology_get_mesh2d_enum(int * jarg1) {
   int jresult ;
   int *arg1 = 0 ;
   int result;
   
-  arg1 = (int *)jarg1;
-  if (!arg1) {
-    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "int & is null", 0);
-    return 0;
-  } 
+  arg1 = (int *)jarg1; 
   result = (int)ugridapi::ug_topology_get_mesh2d_enum(*arg1);
   jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT int SWIGSTDCALL CSharp_ug_topology_get_contacts_enum(void * jarg1) {
+SWIGEXPORT int SWIGSTDCALL CSharp_ug_topology_get_contacts_enum(int * jarg1) {
   int jresult ;
   int *arg1 = 0 ;
   int result;
   
-  arg1 = (int *)jarg1;
-  if (!arg1) {
-    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "int & is null", 0);
-    return 0;
-  } 
+  arg1 = (int *)jarg1; 
   result = (int)ugridapi::ug_topology_get_contacts_enum(*arg1);
   jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT int SWIGSTDCALL CSharp_ug_topology_get_count(int jarg1, int jarg2, void * jarg3) {
+SWIGEXPORT int SWIGSTDCALL CSharp_ug_topology_get_count(int jarg1, int jarg2, int * jarg3) {
   int jresult ;
   int arg1 ;
   int arg2 ;
@@ -2613,18 +2577,14 @@ SWIGEXPORT int SWIGSTDCALL CSharp_ug_topology_get_count(int jarg1, int jarg2, vo
   
   arg1 = (int)jarg1; 
   arg2 = (int)jarg2; 
-  arg3 = (int *)jarg3;
-  if (!arg3) {
-    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "int & is null", 0);
-    return 0;
-  } 
+  arg3 = (int *)jarg3; 
   result = (int)ugridapi::ug_topology_get_count(arg1,arg2,*arg3);
   jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT int SWIGSTDCALL CSharp_ug_topology_count_data_variables(int jarg1, int jarg2, int jarg3, int jarg4, void * jarg5) {
+SWIGEXPORT int SWIGSTDCALL CSharp_ug_topology_count_data_variables(int jarg1, int jarg2, int jarg3, int jarg4, int * jarg5) {
   int jresult ;
   int arg1 ;
   int arg2 ;
@@ -2637,11 +2597,7 @@ SWIGEXPORT int SWIGSTDCALL CSharp_ug_topology_count_data_variables(int jarg1, in
   arg2 = (int)jarg2; 
   arg3 = (int)jarg3; 
   arg4 = (int)jarg4; 
-  arg5 = (int *)jarg5;
-  if (!arg5) {
-    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "int & is null", 0);
-    return 0;
-  } 
+  arg5 = (int *)jarg5; 
   result = (int)ugridapi::ug_topology_count_data_variables(arg1,arg2,arg3,arg4,*arg5);
   jresult = result; 
   return jresult;
@@ -2692,7 +2648,7 @@ SWIGEXPORT int SWIGSTDCALL CSharp_ug_topology_define_double_variable_on_location
 }
 
 
-SWIGEXPORT int SWIGSTDCALL CSharp_ug_variable_count_attributes(int jarg1, char * jarg2, void * jarg3) {
+SWIGEXPORT int SWIGSTDCALL CSharp_ug_variable_count_attributes(int jarg1, char * jarg2, int * jarg3) {
   int jresult ;
   int arg1 ;
   char *arg2 = (char *) 0 ;
@@ -2701,11 +2657,7 @@ SWIGEXPORT int SWIGSTDCALL CSharp_ug_variable_count_attributes(int jarg1, char *
   
   arg1 = (int)jarg1; 
   arg2 = (char *)jarg2; 
-  arg3 = (int *)jarg3;
-  if (!arg3) {
-    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "int & is null", 0);
-    return 0;
-  } 
+  arg3 = (int *)jarg3; 
   result = (int)ugridapi::ug_variable_count_attributes(arg1,(char const *)arg2,*arg3);
   jresult = result; 
   return jresult;
@@ -2744,7 +2696,7 @@ SWIGEXPORT int SWIGSTDCALL CSharp_ug_variable_get_attributes_names(int jarg1, ch
 }
 
 
-SWIGEXPORT int SWIGSTDCALL CSharp_ug_variable_count_dimensions(int jarg1, char * jarg2, void * jarg3) {
+SWIGEXPORT int SWIGSTDCALL CSharp_ug_variable_count_dimensions(int jarg1, char * jarg2, int * jarg3) {
   int jresult ;
   int arg1 ;
   char *arg2 = (char *) 0 ;
@@ -2753,11 +2705,7 @@ SWIGEXPORT int SWIGSTDCALL CSharp_ug_variable_count_dimensions(int jarg1, char *
   
   arg1 = (int)jarg1; 
   arg2 = (char *)jarg2; 
-  arg3 = (int *)jarg3;
-  if (!arg3) {
-    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "int & is null", 0);
-    return 0;
-  } 
+  arg3 = (int *)jarg3; 
   result = (int)ugridapi::ug_variable_count_dimensions(arg1,(char const *)arg2,*arg3);
   jresult = result; 
   return jresult;
@@ -2828,55 +2776,43 @@ SWIGEXPORT int SWIGSTDCALL CSharp_ug_variable_get_data_char(int jarg1, char * ja
 }
 
 
-SWIGEXPORT int SWIGSTDCALL CSharp_ug_file_read_mode(void * jarg1) {
+SWIGEXPORT int SWIGSTDCALL CSharp_ug_file_read_mode(int * jarg1) {
   int jresult ;
   int *arg1 = 0 ;
   int result;
   
-  arg1 = (int *)jarg1;
-  if (!arg1) {
-    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "int & is null", 0);
-    return 0;
-  } 
+  arg1 = (int *)jarg1; 
   result = (int)ugridapi::ug_file_read_mode(*arg1);
   jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT int SWIGSTDCALL CSharp_ug_file_write_mode(void * jarg1) {
+SWIGEXPORT int SWIGSTDCALL CSharp_ug_file_write_mode(int * jarg1) {
   int jresult ;
   int *arg1 = 0 ;
   int result;
   
-  arg1 = (int *)jarg1;
-  if (!arg1) {
-    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "int & is null", 0);
-    return 0;
-  } 
+  arg1 = (int *)jarg1; 
   result = (int)ugridapi::ug_file_write_mode(*arg1);
   jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT int SWIGSTDCALL CSharp_ug_file_replace_mode(void * jarg1) {
+SWIGEXPORT int SWIGSTDCALL CSharp_ug_file_replace_mode(int * jarg1) {
   int jresult ;
   int *arg1 = 0 ;
   int result;
   
-  arg1 = (int *)jarg1;
-  if (!arg1) {
-    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "int & is null", 0);
-    return 0;
-  } 
+  arg1 = (int *)jarg1; 
   result = (int)ugridapi::ug_file_replace_mode(*arg1);
   jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT int SWIGSTDCALL CSharp_ug_file_open(char * jarg1, int jarg2, void * jarg3) {
+SWIGEXPORT int SWIGSTDCALL CSharp_ug_file_open(char * jarg1, int jarg2, int * jarg3) {
   int jresult ;
   char *arg1 = (char *) 0 ;
   int arg2 ;
@@ -2885,11 +2821,7 @@ SWIGEXPORT int SWIGSTDCALL CSharp_ug_file_open(char * jarg1, int jarg2, void * j
   
   arg1 = (char *)jarg1; 
   arg2 = (int)jarg2; 
-  arg3 = (int *)jarg3;
-  if (!arg3) {
-    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "int & is null", 0);
-    return 0;
-  } 
+  arg3 = (int *)jarg3; 
   result = (int)ugridapi::ug_file_open((char const *)arg1,arg2,*arg3);
   jresult = result; 
   return jresult;
@@ -2908,7 +2840,7 @@ SWIGEXPORT int SWIGSTDCALL CSharp_ug_file_close(int jarg1) {
 }
 
 
-SWIGEXPORT int SWIGSTDCALL CSharp_ug_network1d_def(int jarg1, void * jarg2, void * jarg3) {
+SWIGEXPORT int SWIGSTDCALL CSharp_ug_network1d_def(int jarg1, void * jarg2, int * jarg3) {
   int jresult ;
   int arg1 ;
   ugridapi::Network1D *arg2 = 0 ;
@@ -2921,11 +2853,7 @@ SWIGEXPORT int SWIGSTDCALL CSharp_ug_network1d_def(int jarg1, void * jarg2, void
     SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "ugridapi::Network1D const & is null", 0);
     return 0;
   } 
-  arg3 = (int *)jarg3;
-  if (!arg3) {
-    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "int & is null", 0);
-    return 0;
-  } 
+  arg3 = (int *)jarg3; 
   result = (int)ugridapi::ug_network1d_def(arg1,(ugridapi::Network1D const &)*arg2,*arg3);
   jresult = result; 
   return jresult;
@@ -2992,7 +2920,7 @@ SWIGEXPORT int SWIGSTDCALL CSharp_ug_network1d_get(int jarg1, int jarg2, void * 
 }
 
 
-SWIGEXPORT int SWIGSTDCALL CSharp_ug_mesh1d_def(int jarg1, void * jarg2, void * jarg3) {
+SWIGEXPORT int SWIGSTDCALL CSharp_ug_mesh1d_def(int jarg1, void * jarg2, int * jarg3) {
   int jresult ;
   int arg1 ;
   ugridapi::Mesh1D *arg2 = 0 ;
@@ -3005,11 +2933,7 @@ SWIGEXPORT int SWIGSTDCALL CSharp_ug_mesh1d_def(int jarg1, void * jarg2, void * 
     SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "ugridapi::Mesh1D const & is null", 0);
     return 0;
   } 
-  arg3 = (int *)jarg3;
-  if (!arg3) {
-    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "int & is null", 0);
-    return 0;
-  } 
+  arg3 = (int *)jarg3; 
   result = (int)ugridapi::ug_mesh1d_def(arg1,(ugridapi::Mesh1D const &)*arg2,*arg3);
   jresult = result; 
   return jresult;
@@ -3076,7 +3000,7 @@ SWIGEXPORT int SWIGSTDCALL CSharp_ug_mesh1d_get(int jarg1, int jarg2, void * jar
 }
 
 
-SWIGEXPORT int SWIGSTDCALL CSharp_ug_mesh2d_def(int jarg1, void * jarg2, void * jarg3) {
+SWIGEXPORT int SWIGSTDCALL CSharp_ug_mesh2d_def(int jarg1, void * jarg2, int * jarg3) {
   int jresult ;
   int arg1 ;
   ugridapi::Mesh2D *arg2 = 0 ;
@@ -3089,11 +3013,7 @@ SWIGEXPORT int SWIGSTDCALL CSharp_ug_mesh2d_def(int jarg1, void * jarg2, void * 
     SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "ugridapi::Mesh2D const & is null", 0);
     return 0;
   } 
-  arg3 = (int *)jarg3;
-  if (!arg3) {
-    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "int & is null", 0);
-    return 0;
-  } 
+  arg3 = (int *)jarg3; 
   result = (int)ugridapi::ug_mesh2d_def(arg1,(ugridapi::Mesh2D const &)*arg2,*arg3);
   jresult = result; 
   return jresult;
@@ -3160,7 +3080,7 @@ SWIGEXPORT int SWIGSTDCALL CSharp_ug_mesh2d_get(int jarg1, int jarg2, void * jar
 }
 
 
-SWIGEXPORT int SWIGSTDCALL CSharp_ug_contacts_def(int jarg1, void * jarg2, void * jarg3) {
+SWIGEXPORT int SWIGSTDCALL CSharp_ug_contacts_def(int jarg1, void * jarg2, int * jarg3) {
   int jresult ;
   int arg1 ;
   ugridapi::Contacts *arg2 = 0 ;
@@ -3173,11 +3093,7 @@ SWIGEXPORT int SWIGSTDCALL CSharp_ug_contacts_def(int jarg1, void * jarg2, void 
     SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "ugridapi::Contacts const & is null", 0);
     return 0;
   } 
-  arg3 = (int *)jarg3;
-  if (!arg3) {
-    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "int & is null", 0);
-    return 0;
-  } 
+  arg3 = (int *)jarg3; 
   result = (int)ugridapi::ug_contacts_def(arg1,(ugridapi::Contacts const &)*arg2,*arg3);
   jresult = result; 
   return jresult;
@@ -3336,80 +3252,60 @@ SWIGEXPORT int SWIGSTDCALL CSharp_ug_attribute_global_char_define(int jarg1, cha
 }
 
 
-SWIGEXPORT int SWIGSTDCALL CSharp_ug_get_edges_location_type(void * jarg1) {
+SWIGEXPORT int SWIGSTDCALL CSharp_ug_get_edges_location_type(int * jarg1) {
   int jresult ;
   int *arg1 = 0 ;
   int result;
   
-  arg1 = (int *)jarg1;
-  if (!arg1) {
-    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "int & is null", 0);
-    return 0;
-  } 
+  arg1 = (int *)jarg1; 
   result = (int)ugridapi::ug_get_edges_location_type(*arg1);
   jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT int SWIGSTDCALL CSharp_ug_get_nodes_location_type(void * jarg1) {
+SWIGEXPORT int SWIGSTDCALL CSharp_ug_get_nodes_location_type(int * jarg1) {
   int jresult ;
   int *arg1 = 0 ;
   int result;
   
-  arg1 = (int *)jarg1;
-  if (!arg1) {
-    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "int & is null", 0);
-    return 0;
-  } 
+  arg1 = (int *)jarg1; 
   result = (int)ugridapi::ug_get_nodes_location_type(*arg1);
   jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT int SWIGSTDCALL CSharp_ug_get_faces_location_type(void * jarg1) {
+SWIGEXPORT int SWIGSTDCALL CSharp_ug_get_faces_location_type(int * jarg1) {
   int jresult ;
   int *arg1 = 0 ;
   int result;
   
-  arg1 = (int *)jarg1;
-  if (!arg1) {
-    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "int & is null", 0);
-    return 0;
-  } 
+  arg1 = (int *)jarg1; 
   result = (int)ugridapi::ug_get_faces_location_type(*arg1);
   jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT int SWIGSTDCALL CSharp_ug_get_int_fill_value(void * jarg1) {
+SWIGEXPORT int SWIGSTDCALL CSharp_ug_get_int_fill_value(int * jarg1) {
   int jresult ;
   int *arg1 = 0 ;
   int result;
   
-  arg1 = (int *)jarg1;
-  if (!arg1) {
-    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "int & is null", 0);
-    return 0;
-  } 
+  arg1 = (int *)jarg1; 
   result = (int)ugridapi::ug_get_int_fill_value(*arg1);
   jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT int SWIGSTDCALL CSharp_ug_get_double_fill_value(void * jarg1) {
+SWIGEXPORT int SWIGSTDCALL CSharp_ug_get_double_fill_value(double * jarg1) {
   int jresult ;
   double *arg1 = 0 ;
   int result;
   
-  arg1 = (double *)jarg1;
-  if (!arg1) {
-    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "double & is null", 0);
-    return 0;
-  } 
+  arg1 = (double *)jarg1; 
   result = (int)ugridapi::ug_get_double_fill_value(*arg1);
   jresult = result; 
   return jresult;
