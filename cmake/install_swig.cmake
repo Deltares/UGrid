@@ -54,8 +54,8 @@ if(WIN32)
       set(INSTALL_DIR ${ARGS_SWIG_INSTALL_PREFIX}/swigwin-${ARGS_SWIG_VERSION})
       if(NOT EXISTS ${INSTALL_DIR})
         file(ARCHIVE_EXTRACT 
-             INPUT ${SWIG_ZIP} 
-             DESTINATION ${ARGS_SWIG_INSTALL_PREFIX})
+          INPUT ${SWIG_ZIP} 
+          DESTINATION ${ARGS_SWIG_INSTALL_PREFIX})
       endif()
 
       # Remove the zip file after extraction

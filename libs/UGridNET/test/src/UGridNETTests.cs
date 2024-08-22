@@ -10,17 +10,20 @@ namespace UGridNET.Tests
         public void TestMesh1DReadAndInquire()
         {
             // open
-            string file_path = "C:\\Users\\sayed\\work\\repositories\\UGrid\\tests\\data\\AllUGridEntities.nc";
-            int file_id = -1;
-            int file_mode = -1;
+            const string file_path = "C:\\Users\\sayed\\work\\repositories\\UGrid\\tests\\data\\AllUGridEntities.nc";
+
             int result = -1;
+
+            int file_mode = -1;
             result = UGrid.ug_file_read_mode(ref file_mode);
             Assert.That(result, Is.EqualTo(0));
             Assert.That(result, Is.EqualTo(0));
-            Console.WriteLine("brrrrrrrrrrr");
+
+            int file_id = -1;
             result = UGrid.ug_file_open(file_path, file_mode, ref file_id);
             Assert.That(result, Is.EqualTo(0));
 
+            Console.WriteLine("Hello dikkie dik!");
             Console.WriteLine(file_id);
             Console.WriteLine(file_mode);
 

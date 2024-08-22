@@ -14,6 +14,9 @@ if (NOT WIN32)
   message(NOTICE "Build type: ${CMAKE_BUILD_TYPE}")
 endif()
 
+# cached globals
+include(cmake/cached_globals.cmake)
+
 # configuration options
 include(cmake/user_config_options.cmake)
 

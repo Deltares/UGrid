@@ -10,31 +10,34 @@ include(CSharpUtilities)
 # target name
 set(TARGET_NAME ${PROJECT_NAME})
 
-# Specify the version of .NET to be used
-set(DOTNET_VERSION "net6.0")
+set(ASSEMBLY_INFO_CS ${CMAKE_CURRENT_BINARY_DIR}/Properties/AssemblyInfo.cs)
+CONFIGURE_FILE(
+  ${CMAKE_CURRENT_SOURCE_DIR}/../cs_proj_templates/AssemblyInfo.cs.template
+  ${ASSEMBLY_INFO_CS}
+)
 
 # Specify the source files
 set(SWIG_GENERATED_CSHARP_SRC_DIR ${CMAKE_BINARY_DIR}/libs/UGridNET/SWIG/generated/csharp)
 message("${SWIG_GENERATED_CSHARP_SRC_DIR}")
 file(GLOB SWIG_GENERATED_CSHARP_SRCS CONFIGURE_DEPENDS "${SWIG_GENERATED_CSHARP_SRC_DIR}/*.cs")
 
-# Create a shared library (DLL)
-add_library(${TARGET_NAME} SHARED ${SWIG_GENERATED_CSHARP_SRCS})
-
-# Specify target framework
-set_property(
-    TARGET ${TARGET_NAME}
-    PROPERTY
-      VS_GLOBAL_TargetFramework "netstandard2.0"
-)
-
-# Set C# compiler options
-set_property(
-    TARGET ${TARGET_NAME}
-    PROPERTY
-      VS_DOTNET_REFERENCES "System"
-      VS_GLOBAL_ROOTNAMESPACE ${TARGET_NAME}
+add_library(
+    ${TARGET_NAME}
+    SHARED 
+    ${ASSEMBLY_INFO_CS}
+    ${SWIG_GENERATED_CSHARP_SRCS}
 )
 
 target_link_libraries(${TARGET_NAME} PRIVATE UGridCSWrapper)
+
+target_compile_options(${TARGET_NAME} PUBLIC "/platform:${DOTNET_TARGET_PLATFORM}")
+
+set_property(
+  TARGET ${TARGET_NAME}
+  PROPERTY
+    VS_DOTNET_REFERENCES "System"
+    VS_GLOBAL_ROOTNAMESPACE ${TARGET_NAME}
+    VS_DOTNET_TARGET_FRAMEWORK ${DOTNET_TARGET_FRAMEWORK}
+    VS_DOTNET_TARGET_FRAMEWORK_VERSION ${DOTNET_TARGET_FRAMEWORK_VERSION}
+)
 
