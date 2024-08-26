@@ -12,32 +12,39 @@ set(TARGET_NAME ${PROJECT_NAME})
 
 set(ASSEMBLY_INFO_CS ${CMAKE_CURRENT_BINARY_DIR}/Properties/AssemblyInfo.cs)
 CONFIGURE_FILE(
-  ${CMAKE_CURRENT_SOURCE_DIR}/../cs_proj_templates/AssemblyInfo.cs.template
+  ${CMAKE_CURRENT_SOURCE_DIR}/../cs_proj_templates/AssemblyInfo.cs.in
   ${ASSEMBLY_INFO_CS}
 )
 
-# Specify the source files
-set(SWIG_GENERATED_CSHARP_SRC_DIR ${CMAKE_BINARY_DIR}/libs/UGridNET/SWIG/generated/csharp)
-message("${SWIG_GENERATED_CSHARP_SRC_DIR}")
-file(GLOB SWIG_GENERATED_CSHARP_SRCS CONFIGURE_DEPENDS "${SWIG_GENERATED_CSHARP_SRC_DIR}/*.cs")
+set(APP_CONFIG ${CMAKE_CURRENT_BINARY_DIR}/App.config)
+CONFIGURE_FILE(
+  ${CMAKE_CURRENT_SOURCE_DIR}/../cs_proj_templates/App.config.in
+  ${APP_CONFIG}
+)
 
 add_library(
-    ${TARGET_NAME}
-    SHARED 
-    ${ASSEMBLY_INFO_CS}
-    ${SWIG_GENERATED_CSHARP_SRCS}
+  ${TARGET_NAME}
+  SHARED 
+  ${ASSEMBLY_INFO_CS}
+  ${APP_CONFIG}
+  ${SWIG_GENERATED_CSHARP_SRCS}
 )
 
-target_link_libraries(${TARGET_NAME} PRIVATE UGridCSWrapper)
+set_property(TARGET ${TARGET_NAME} PROPERTY VS_DOTNET_REFERENCES "System")
 
-target_compile_options(${TARGET_NAME} PUBLIC "/platform:${DOTNET_TARGET_PLATFORM}")
+#target_compile_options(${TARGET_NAME} PRIVATE "/platform:${GLOB_DOTNET_TARGET_PLATFORM}")
+#target_compile_options(${TARGET_NAME} PRIVATE "/langversion:${GLOB_CSHARP_LANGUAGE_VERSION}")
 
-set_property(
+#Copy UGridCSWrapper
+add_custom_command(
   TARGET ${TARGET_NAME}
-  PROPERTY
-    VS_DOTNET_REFERENCES "System"
-    VS_GLOBAL_ROOTNAMESPACE ${TARGET_NAME}
-    VS_DOTNET_TARGET_FRAMEWORK ${DOTNET_TARGET_FRAMEWORK}
-    VS_DOTNET_TARGET_FRAMEWORK_VERSION ${DOTNET_TARGET_FRAMEWORK_VERSION}
+  POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different "$<TARGET_FILE:UGridCSWrapper>" "$<TARGET_FILE_DIR:UGridNET>"
+    COMMENT "Copy $<TARGET_FILE:UGridCSWrapper> to $<TARGET_FILE_DIR:UGridNET>"
 )
 
+add_custom_command(
+  TARGET ${TARGET_NAME}
+  POST_BUILD
+    COMMAND echo "[[[[ ${TARGET_NAME}  : DONE ]]]"
+)

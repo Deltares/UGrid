@@ -50,12 +50,11 @@ target_sources(
 # Expose the interface of the shared lib
 target_include_directories(${TARGET_NAME} PUBLIC ${INC_DIR})
 
-# link to static MeshKernel library
-target_link_libraries(${TARGET_NAME} PUBLIC UGrid)
-
 # link required libraries
 target_link_libraries(
   ${TARGET_NAME}
+  PUBLIC
+    UGrid
   PRIVATE
     netCDF::netcdf
     netCDF::netcdf-cxx4

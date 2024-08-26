@@ -47,7 +47,7 @@ if(WIN32)
       # Download the SWIG zip file
       set(SWIG_ZIP "${DOWNLOAD_DIR}/swigwin-${ARGS_SWIG_VERSION}.zip")
       if(NOT EXISTS ${SWIG_ZIP})
-        file(DOWNLOAD ${SWIG_URL} ${SWIG_ZIP} SHOW_PROGRESS)
+        file(DOWNLOAD ${SWIG_URL} ${SWIG_ZIP})
       endif()
 
       # Unzip the downloaded file

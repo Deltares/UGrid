@@ -5,6 +5,6 @@ add_subdirectory(UGrid)
 add_subdirectory(UGridAPI)
 
 # Add UGridNET
-if(WIN32)
+if(WIN32 AND BUILD_DOTNET_WRAPPER)
   add_subdirectory(UGridNET)
 endif()
