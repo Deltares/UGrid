@@ -67,12 +67,12 @@ add_custom_command(
 )
 
 #Copy UGridCSWrapper
-add_custom_command(
-  TARGET ${TARGET_NAME}
-  POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different "$<TARGET_FILE:UGridCSWrapper>" "$<TARGET_FILE_DIR:UGridNETTests>"
-    COMMENT "Copy $<TARGET_FILE:UGridCSWrapper> to $<TARGET_FILE_DIR:UGridNETTests>"
-)
+# add_custom_command(
+#   TARGET ${TARGET_NAME}
+#   POST_BUILD
+#     COMMAND ${CMAKE_COMMAND} -E copy_if_different "$<TARGET_FILE:UGridCSWrapper>" "$<TARGET_FILE_DIR:UGridNETTests>"
+#     COMMENT "Copy $<TARGET_FILE:UGridCSWrapper> to $<TARGET_FILE_DIR:UGridNETTests>"
+# )
 
 add_custom_command(
   TARGET ${TARGET_NAME}
