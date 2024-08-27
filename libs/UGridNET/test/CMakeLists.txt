@@ -33,7 +33,8 @@ add_library(${TARGET_NAME}
   ${ASSEMBLY_INFO_CS}
   ${APP_CONFIG}
   ${PACKAGES_CONFIG}
-  src/UGridNETTests.cs)
+  src/UGridNETTests.cs
+)
 
 target_link_libraries(${TARGET_NAME} PRIVATE UGridNET)
 
@@ -57,8 +58,9 @@ add_custom_command(
   COMMAND ${CMAKE_COMMAND} -E echo "[[[ NuGet: Restoring packages ]]]"  
   COMMAND ${NUGET_EXE} restore ${TARGET_NAME}.sln    # also packages.config works
     -SolutionDirectory ${CMAKE_CURRENT_BINARY_DIR}
+    -Force
+    -NoHttpCache
     -Verbosity detailed
-  #COMMAND dotnet restore ${CMAKE_CURRENT_BINARY_DIR}/${TARGET_NAME}.sln --verbosity detailed
   COMMAND ${CMAKE_COMMAND} -E echo "[[[ NuGet: Done ]]]"
   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
   COMMENT "NuGet packages installation"
