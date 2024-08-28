@@ -1,6 +1,5 @@
 #define UGRID_API
 
-%module UGrid
 %include "windows.i"
 %include "std_string.i"
 %include "std_vector.i"

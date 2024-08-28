@@ -1,5 +1,5 @@
 project(
-  UGridCSWrapper
+  UGridCSharpWrapper
   VERSION ${CMAKE_PROJECT_VERSION}
   DESCRIPTION "C# wrapper around UGridAPI"
   LANGUAGES CXX C
@@ -37,41 +37,45 @@ set(VERSION_INC_DIR ${CMAKE_SOURCE_DIR}/package)
 
 
 set(SWIG_INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/interface/UGrid.i)
-set(OUTPUT_DIR_PREFIX ${CMAKE_CURRENT_BINARY_DIR}/generated)
-set(OUTPUT_DIR ${OUTPUT_DIR_PREFIX}/csharp)
-set(OUTFILE_DIR ${OUTPUT_DIR_PREFIX}/cxx)
+set(SWIG_OUTPUT_SRC_DIR ${CMAKE_CURRENT_BINARY_DIR}/src)
+set(SWIG_OUTPUT_DIR ${SWIG_OUTPUT_SRC_DIR}/csharp)
+set(SWIG_OUTFILE_DIR ${SWIG_OUTPUT_SRC_DIR}/cxx)
+set(SWIG_CPP_OUTFILE_NAME "UGridCSharpWrapper.cxx")
 
-file(MAKE_DIRECTORY ${OUTPUT_DIR})
-file(MAKE_DIRECTORY ${OUTFILE_DIR})
+file(MAKE_DIRECTORY ${SWIG_OUTPUT_DIR})
+file(MAKE_DIRECTORY ${SWIG_OUTFILE_DIR})
+
+message(STATUS "Generating code...")
 execute_process(
   COMMAND ${SWIG_EXECUTABLE}
-    -v        # verbose
-    -csharp   # target language
-    -c++      # enable c++ processing
-    -I${UGridAPI_INC_DIR} #${UGridAPI_DOMAIN_INC_DIR}
-    -outdir ${OUTPUT_DIR} # language specific files output directory
-    -o ${OUTFILE_DIR}/UGridCSHARP_wrap.cxx
+    -v                                              # verbose
+    -module ${TARGET_NAME}                          # module name
+    -csharp                                         # target language
+    -c++                                            # enable c++ processing
+    -I${UGridAPI_INC_DIR}                           # look for SWIG files in the specified directory
+    -outdir ${SWIG_OUTPUT_DIR}                      # language specific files output directory, C# src in tis case
+    -o ${SWIG_OUTFILE_DIR}/${SWIG_CPP_OUTFILE_NAME} # name of C/C++ output file
+    -O                                              # enable optimization
     ${SWIG_INTERFACE}
   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
   RESULT_VARIABLE SWIG_RESULT
-  OUTPUT_VARIABLE SWIG_OUTPUT
   ERROR_VARIABLE SWIG_ERROR
+  ECHO_OUTPUT_VARIABLE
+  ECHO_ERROR_VARIABLE
+  COMMAND_ECHO STDOUT
+  COMMAND_ERROR_IS_FATAL LAST
 )
 
 # Get list of generated sources
-file(GLOB SWIG_GENERATED_CSHARP_SRCS CONFIGURE_DEPENDS "${OUTPUT_DIR}/*.cs")
+file(GLOB SWIG_GENERATED_CSHARP_SRCS CONFIGURE_DEPENDS "${SWIG_OUTPUT_DIR}/*.cs")
 set(SWIG_GENERATED_CSHARP_SRCS ${SWIG_GENERATED_CSHARP_SRCS} PARENT_SCOPE)
-
-if(NOT ${SWIG_RESULT} EQUAL 0)
-    message(FATAL_ERROR "SWIG failed with the following error:\n${SWIG_ERROR}")
-endif()
 
 add_library(${TARGET_NAME} SHARED ${CMAKE_BINARY_DIR}/version.rc)
 
 set(
   SRC_LIST
   ${UGridAPI_SRC_DIR}/UGrid.cpp
-  ${OUTFILE_DIR}/UGridCSHARP_wrap.cxx
+  ${SWIG_OUTFILE_DIR}/${SWIG_CPP_OUTFILE_NAME}
 )
 
 set(
@@ -98,7 +102,7 @@ target_sources(
 )
 
 target_link_libraries(
-  ${TARGET_NAME} 
+  ${TARGET_NAME}
   PUBLIC
     UGrid
   PRIVATE
@@ -106,58 +110,9 @@ target_link_libraries(
     netCDF::netcdf-cxx4
 )
 
-#target_include_directories(${TARGET_NAME} PUBLIC ${UGridAPI_DOMAIN_INC_DIR})
-
 # group the sources in IDE tree
 source_group("Source Files" FILES ${SRC_LIST})
 
 # group the headers in IDE tree
 source_group("Header Files" FILES ${INC_LIST})
 
-
-# set_property(
-#   SOURCE 
-#     ${SWIG_INTERFACE}
-#   PROPERTY
-#     CPLUSPLUS ON
-#     SWIG_MODULE_NAME ${TARGET_NAME}
-# )
-
-# include_directories(${UGridAPI_INC_DIR})
-
-# swig_add_library(
-#   ${TARGET_NAME}
-#   TYPE SHARED
-#   LANGUAGE csharp
-#   SOURCES
-#     ${SWIG_INTERFACE}
-#     ${UGridAPI_SRC_DIR}/UGrid.cpp
-#     ${UGridAPI_INC_DIR}/Contacts.hpp
-#     ${UGridAPI_INC_DIR}/Mesh1D.hpp
-#     ${UGridAPI_INC_DIR}/Mesh2D.hpp
-#     ${UGridAPI_INC_DIR}/Network1D.hpp
-#     ${UGridAPI_INC_DIR}/UGrid.hpp
-#     ${UGridAPI_INC_DIR}/UGridState.hpp
-#   OUTPUT_DIR ${OUTPUT_DIR}
-#   OUTFILE_DIR ${OUTFILE_DIR}
-# )
-
-# # set_property(
-# #   SOURCE 
-# #     ${${SWIG_INTERFACE}}
-# #   PROPERTY
-# #     SWIG_FLAGS "-namespace UGridNET"
-# # )
-
-# set_property(TARGET ${TARGET_NAME} PROPERTY SWIG_USE_TARGET_INCLUDE_DIRECTORIES TRUE)
-
-# target_link_libraries(
-#   ${TARGET_NAME} 
-#   PUBLIC
-#     UGrid
-#   PRIVATE
-#     netCDF::netcdf
-#     netCDF::netcdf-cxx4
-# )
-
-# target_include_directories(${TARGET_NAME} PUBLIC ${UGridAPI_DIR}/include)

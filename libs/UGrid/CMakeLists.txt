@@ -3,7 +3,7 @@ project(
   UGrid
   VERSION ${CMAKE_PROJECT_VERSION}
   DESCRIPTION "UGrid static library"
-  LANGUAGES CXX C
+  LANGUAGES CXX
 )
 
 # target name

@@ -1,8 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <packages>
-  <package id="NUnit" version="4.1.0" targetFramework="@GLOB_DOTNET_TARGET_FRAMEWORK@" />
+  <package id="NUnit" version="4.2.1" targetFramework="@GLOB_DOTNET_TARGET_FRAMEWORK@" />
   <package id="NUnit.ConsoleRunner" version="3.18.1" targetFramework="@GLOB_DOTNET_TARGET_FRAMEWORK@" />
   <package id="NUnit3TestAdapter" version="4.6.0" targetFramework="@GLOB_DOTNET_TARGET_FRAMEWORK@" />
-  <package id="System.Runtime.CompilerServices.Unsafe" version="4.5.3" targetFramework="@GLOB_DOTNET_TARGET_FRAMEWORK@" />
-  <package id="System.Threading.Tasks.Extensions" version="4.5.4" targetFramework="@GLOB_DOTNET_TARGET_FRAMEWORK@" />
 </packages>

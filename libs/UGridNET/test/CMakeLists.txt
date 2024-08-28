@@ -10,39 +10,36 @@ include(CSharpUtilities)
 # target name
 set(TARGET_NAME ${PROJECT_NAME})
 
-set(ASSEMBLY_INFO_CS ${CMAKE_CURRENT_BINARY_DIR}/Properties/AssemblyInfo.cs)
-CONFIGURE_FILE(
-  ${CMAKE_CURRENT_SOURCE_DIR}/../cs_proj_templates/AssemblyInfo.cs.in
-  ${ASSEMBLY_INFO_CS}
-)
+# set(ASSEMBLY_INFO_CS ${CMAKE_CURRENT_BINARY_DIR}/Properties/AssemblyInfo.cs)
+# CONFIGURE_FILE(
+#   ${CMAKE_CURRENT_SOURCE_DIR}/../cs_proj_templates/AssemblyInfo.cs.in
+#   ${ASSEMBLY_INFO_CS}
+#   @ONLY
+# )
 
 set(APP_CONFIG ${CMAKE_CURRENT_BINARY_DIR}/App.config)
 CONFIGURE_FILE(
   ${CMAKE_CURRENT_SOURCE_DIR}/../cs_proj_templates/App.config.in
   ${APP_CONFIG}
+  @ONLY
 )
 
 set(PACKAGES_CONFIG ${CMAKE_CURRENT_BINARY_DIR}/packages.config)
 CONFIGURE_FILE(
   ${CMAKE_CURRENT_SOURCE_DIR}/packages.config.in
   ${PACKAGES_CONFIG}
+  @ONLY
 )
 
 add_library(${TARGET_NAME} 
   SHARED
-  ${ASSEMBLY_INFO_CS}
+  #${ASSEMBLY_INFO_CS}
   ${APP_CONFIG}
   ${PACKAGES_CONFIG}
   src/UGridNETTests.cs
 )
 
 target_link_libraries(${TARGET_NAME} PRIVATE UGridNET)
-
-#target_compile_options(${TARGET_NAME} PRIVATE "/platform:${GLOB_DOTNET_TARGET_PLATFORM}")
-#target_compile_options(${TARGET_NAME} PRIVATE "/langversion:${GLOB_CSHARP_LANGUAGE_VERSION}")
-
-set_property(TARGET ${TARGET_NAME} PROPERTY VS_DOTNET_REFERENCES "System")
-set_property(TARGET ${TARGET_NAME} PROPERTY VS_PACKAGE_REFERENCES "NUnit_4.1.0;NUnit.ConsoleRunner_3.18.1;NUnit3TestAdapter_4.6.0;nunit.framework.dll")
 
 set(NUGET_DOWNLOAD_DIR ${TOOLS_INSTALL_DIR}/nuget)
 file(MAKE_DIRECTORY ${NUGET_DOWNLOAD_DIR})
@@ -52,30 +49,46 @@ if(NOT EXISTS ${NUGET_EXE})
   file(DOWNLOAD ${NUGET_URL} ${NUGET_EXE})
 endif()
 
-add_custom_command(
-  TARGET ${TARGET_NAME} 
-  PRE_BUILD
-  COMMAND ${CMAKE_COMMAND} -E echo "[[[ NuGet: Restoring packages ]]]"  
-  COMMAND ${NUGET_EXE} restore ${TARGET_NAME}.sln    # also packages.config works
+execute_process(
+  COMMAND ${NUGET_EXE} restore packages.config
     -SolutionDirectory ${CMAKE_CURRENT_BINARY_DIR}
     -Force
     -NoHttpCache
     -Verbosity detailed
-  COMMAND ${CMAKE_COMMAND} -E echo "[[[ NuGet: Done ]]]"
+    -Source https://api.nuget.org/v3/index.json
   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-  COMMENT "NuGet packages installation"
+  RESULT_VARIABLE NUGET_RESULT
+  ERROR_VARIABLE NUGET_ERROR
+  OUTPUT_VARIABLE NUGET_OUTPUT
+  ECHO_OUTPUT_VARIABLE
+  ECHO_ERROR_VARIABLE
+  COMMAND_ECHO STDOUT
+  COMMAND_ERROR_IS_FATAL LAST
 )
 
-#Copy UGridCSWrapper
-add_custom_command(
-  TARGET ${TARGET_NAME}
-  POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different "$<TARGET_FILE:UGridCSWrapper>" "$<TARGET_FILE_DIR:UGridNETTests>"
-    COMMENT "Copy $<TARGET_FILE:UGridCSWrapper> to $<TARGET_FILE_DIR:UGridNETTests>"
+set_target_properties(
+  ${TARGET_NAME} PROPERTIES
+  VS_DOTNET_REFERENCES "System;System.Runtime.CompilerServices.Unsafe"
+  VS_PACKAGE_REFERENCES "NUnit_4.2.0;NUnit.ConsoleRunner_3.18.1;NUnit3TestAdapter_4.6.0"
 )
 
-add_custom_command(
-  TARGET ${TARGET_NAME}
-  POST_BUILD
-    COMMAND echo "[[[[ ${TARGET_NAME}  : DONE ]]]"
-)
+# Copy UGridCSWrapper
+# when CMAKE_DOTNET_SDK is set to "Microsoft.NET.Sdk", cmake does not like add_custom_command anymore
+# add_custom_command(
+#   TARGET ${TARGET_NAME}
+#   POST_BUILD
+#   COMMAND ${CMAKE_COMMAND} -E copy_if_different "$<TARGET_FILE:UGridCSharpWrapper>" "$<TARGET_FILE_DIR:UGridNETTests>"
+#   COMMENT "Copy $<TARGET_FILE:UGridCSharpWrapper> to $<TARGET_FILE_DIR:UGridNETTests>"
+# )
+# workaround instead of add_custom_command with POST_BUILD, use a custom target with a dependency
+# to make sure the dll to copy is built first 
+
+# set(POST_BUILD_TARGET_NAME ${TARGET_NAME}_POST_BUILD)
+# add_custom_target(
+#   ${POST_BUILD_TARGET_NAME} ALL
+#   COMMAND ${CMAKE_COMMAND} -E copy_if_different "$<TARGET_FILE:UGridCSharpWrapper>" "$<TARGET_FILE_DIR:UGridNETTests>"
+#   COMMENT "Copy $<TARGET_FILE:UGridCSharpWrapper> to $<TARGET_FILE_DIR:UGridNETTests>"
+# )
+# add_dependencies(${POST_BUILD_TARGET_NAME} ${TARGET_NAME})
+
+#add_dependencies(${TARGET_NAME} UGridCSharpWrapper)

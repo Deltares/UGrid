@@ -14,7 +14,7 @@ if(ENABLE_UNIT_TESTING)
     set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
   endif()
 
-  # Use with CMake 3.28+ instead ogf FetchContent_Populate
+  # Use with CMake 3.28+ instead of FetchContent_Populate
   #FetchContent_MakeAvailable(googletest EXCLUDE_FROM_ALL )
 
   FetchContent_GetProperties(googletest)
