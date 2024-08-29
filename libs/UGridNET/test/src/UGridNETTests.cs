@@ -1,5 +1,6 @@
 using NUnit.Framework;
 using System;
+using System.IO;
 
 
 [TestFixture]
@@ -9,7 +10,11 @@ public class UGridNETTests
     public void TestMesh1DReadAndInquire()
     {
         // open
-        const string file_path = "C:\\Users\\sayed\\work\\repositories\\UGrid\\tests\\data\\AllUGridEntities.nc";
+        //const string file_path = "C:\\Users\\sayed\\work\\repositories\\UGrid\\tests\\data\\AllUGridEntities.nc";
+        const string file_path = "..\\..\\..\\..\\..\\tests\\data\\AllUGridEntities.nc";
+        Console.WriteLine(Path.GetFullPath(file_path));
+
+        //const string file_path = "AllUGridEntities.nc";
 
         int result = -1;
 
