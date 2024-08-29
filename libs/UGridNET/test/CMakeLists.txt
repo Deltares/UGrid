@@ -5,30 +5,36 @@ project(
   LANGUAGES CSharp
 )
 
-include(CSharpUtilities)
-
 # target name
 set(TARGET_NAME ${PROJECT_NAME})
 
 # set(ASSEMBLY_INFO_CS ${CMAKE_CURRENT_BINARY_DIR}/Properties/AssemblyInfo.cs)
-# CONFIGURE_FILE(
+# configure_file(
 #   ${CMAKE_CURRENT_SOURCE_DIR}/../cs_proj_templates/AssemblyInfo.cs.in
 #   ${ASSEMBLY_INFO_CS}
 #   @ONLY
 # )
 
 set(APP_CONFIG ${CMAKE_CURRENT_BINARY_DIR}/App.config)
-CONFIGURE_FILE(
+configure_file(
   ${CMAKE_CURRENT_SOURCE_DIR}/../cs_proj_templates/App.config.in
   ${APP_CONFIG}
   @ONLY
 )
 
+set(PACKAGE_REFERENCES
+  "NUnit_4.2.0"
+  "NUnit.ConsoleRunner_3.18.1"
+  "NUnit3TestAdapter_4.6.0"
+)
+
 set(PACKAGES_CONFIG ${CMAKE_CURRENT_BINARY_DIR}/packages.config)
-CONFIGURE_FILE(
-  ${CMAKE_CURRENT_SOURCE_DIR}/packages.config.in
+
+include(${CMAKE_SOURCE_DIR}/cmake/configure_dotnet_packages.cmake)
+configure_dotnet_packages(
   ${PACKAGES_CONFIG}
-  @ONLY
+  "${PACKAGE_REFERENCES}"
+  ${GLOB_DOTNET_TARGET_FRAMEWORK}
 )
 
 add_library(${TARGET_NAME} 
@@ -73,5 +79,5 @@ set_target_properties(
     DOTNET_TARGET_FRAMEWORK_VERSION ${GLOB_DOTNET_TARGET_FRAMEWORK_VERSION}
     DOTNET_SDK ${GLOB_DOTNET_SDK}
     VS_DOTNET_REFERENCES "System;System.Runtime.CompilerServices.Unsafe"
-    VS_PACKAGE_REFERENCES "NUnit_4.2.0;NUnit.ConsoleRunner_3.18.1;NUnit3TestAdapter_4.6.0"
+    VS_PACKAGE_REFERENCES "${PACKAGE_REFERENCES}"
 )
