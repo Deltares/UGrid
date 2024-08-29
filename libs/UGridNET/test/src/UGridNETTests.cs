@@ -27,7 +27,7 @@ public class UGridNETTests
         result = UGridCSharpWrapper.ug_file_open(file_path, file_mode, ref file_id);
         Assert.That(result, Is.EqualTo(0));
 
-        Console.WriteLine("Hello dikkie dik!");
+        Console.WriteLine("Hoi dikkie dik!!!");
         Console.WriteLine(file_id);
         Console.WriteLine(file_mode);
 

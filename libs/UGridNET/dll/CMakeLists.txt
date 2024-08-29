@@ -67,28 +67,10 @@ execute_process(
 
 set_target_properties(
   ${TARGET_NAME}
-  PROPERTIES 
+  PROPERTIES
+    DOTNET_TARGET_FRAMEWORK ${GLOB_DOTNET_TARGET_FRAMEWORK}
+    DOTNET_TARGET_FRAMEWORK_VERSION ${GLOB_DOTNET_TARGET_FRAMEWORK_VERSION}
+    DOTNET_SDK ${GLOB_DOTNET_SDK}
     VS_DOTNET_REFERENCES "System"
     VS_PACKAGE_REFERENCES "System.Buffers_4.5.1;System.Memory_4.5.5"
 )
-
-# Copy UGridCSWrapper
-# when CMAKE_DOTNET_SDK is set to "Microsoft.NET.Sdk", cmake does not like add_custom_command anymore
-# add_custom_command(
-#   TARGET ${TARGET_NAME}
-#   POST_BUILD
-#   COMMAND ${CMAKE_COMMAND} -E copy_if_different "$<TARGET_FILE:UGridCSharpWrapper>" "$<TARGET_FILE_DIR:UGridNET>"
-#   COMMENT "Copy $<TARGET_FILE:UGridCSharpWrapper> to $<TARGET_FILE_DIR:UGridNET>"
-# )
-# workaround instead of add_custom_command with POST_BUILD, use a custom target with a dependency
-# to make sure the dll to copy is built first 
-
-# set(POST_BUILD_TARGET_NAME ${TARGET_NAME}_POST_BUILD)
-# add_custom_target(
-#   ${POST_BUILD_TARGET_NAME} ALL
-#   COMMAND ${CMAKE_COMMAND} -E copy_if_different "$<TARGET_FILE:UGridCSharpWrapper>" "$<TARGET_FILE_DIR:UGridNET>"
-#   COMMENT "Copy $<TARGET_FILE:UGridCSharpWrapper> to $<TARGET_FILE_DIR:UGridNET>"
-# )
-# add_dependencies(${POST_BUILD_TARGET_NAME} ${TARGET_NAME})
-
-#add_dependencies(${TARGET_NAME} UGridCSharpWrapper)
