@@ -1,4 +1,5 @@
-set(TOOLS_INSTALL_DIR ${CMAKE_CURRENT_BINARY_DIR}/tools)
+# Download necessary tools
+add_subdirectory(tools)
 
 # Add UGrid static lib
 add_subdirectory(SWIG)

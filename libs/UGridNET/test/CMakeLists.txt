@@ -47,16 +47,8 @@ add_library(${TARGET_NAME}
 
 target_link_libraries(${TARGET_NAME} PRIVATE UGridNET)
 
-set(NUGET_DOWNLOAD_DIR ${TOOLS_INSTALL_DIR}/nuget)
-file(MAKE_DIRECTORY ${NUGET_DOWNLOAD_DIR})
-set(NUGET_EXE ${NUGET_DOWNLOAD_DIR}/nuget.exe)
-if(NOT EXISTS ${NUGET_EXE})
-  set(NUGET_URL "https://dist.nuget.org/win-x86-commandline/latest/nuget.exe")
-  file(DOWNLOAD ${NUGET_URL} ${NUGET_EXE})
-endif()
-
 execute_process(
-  COMMAND ${NUGET_EXE} restore packages.config
+  COMMAND ${NUGET_EXECUTABLE} restore packages.config
     -SolutionDirectory ${CMAKE_CURRENT_BINARY_DIR}
     -Force
     -NoHttpCache
