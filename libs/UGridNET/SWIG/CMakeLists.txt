@@ -8,18 +8,6 @@ project(
 # target name
 set(TARGET_NAME ${PROJECT_NAME})
 
-# #install swig
-# include(${CMAKE_SOURCE_DIR}/cmake/install_swig.cmake)
-# set(SWIG_VERSION 4.2.1)
-# set(SWIG_INSTALL_PREFIX ${TOOLS_INSTALL_DIR}/swig)
-# install_swig(
-#   SWIG_VERSION ${SWIG_VERSION}
-#   SWIG_INSTALL_PREFIX ${SWIG_INSTALL_PREFIX}
-#   SWIG_CLEAN FALSE
-#   SWIG_DIR_OUT SWIG_DIR
-#   SWIG_EXECUTABLE_OUT SWIG_EXECUTABLE
-# )
-
 # Find SWIG
 find_package(SWIG REQUIRED COMPONENTS csharp)
 if (NOT SWIG_FOUND)
