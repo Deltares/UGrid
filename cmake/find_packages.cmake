@@ -26,3 +26,12 @@ find_package(HDF5)
 if (HDF5_FOUND)
     message(STATUS "Found HDF5 ${HDF5_VERSION}")
 endif()
+
+# python
+set(Python_FIND_VIRTUALENV FIRST)
+find_package(Python REQUIRED COMPONENTS Interpreter)
+if (Python_FOUND)
+    message(STATUS "Found Python ${Python_VERSION}")
+else()
+    message(FATAL_ERROR "Could not find Python")
+endif()
