@@ -1,5 +1,5 @@
 project(
-  UGridNETTests
+  UGridNET.Tests
   VERSION ${CMAKE_PROJECT_VERSION}
   DESCRIPTION "UGrid C# API tests"
   LANGUAGES CSharp

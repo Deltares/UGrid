@@ -26,7 +26,7 @@ set(SWIG_INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/interface/UGrid.i)
 set(SWIG_OUTPUT_SRC_DIR ${CMAKE_CURRENT_BINARY_DIR}/src)
 set(SWIG_OUTPUT_DIR ${SWIG_OUTPUT_SRC_DIR}/csharp)
 set(SWIG_OUTFILE_DIR ${SWIG_OUTPUT_SRC_DIR}/cxx)
-set(SWIG_CPP_OUTFILE_NAME "UGridCSharpWrapper.cxx")
+set(SWIG_CPP_OUTFILE_NAME "${TARGET_NAME}.cxx")
 
 file(MAKE_DIRECTORY ${SWIG_OUTPUT_DIR})
 file(MAKE_DIRECTORY ${SWIG_OUTFILE_DIR})
@@ -35,7 +35,9 @@ message(STATUS "Generating code...")
 execute_process(
   COMMAND ${SWIG_EXECUTABLE}
     -v                                              # verbose
-    -module ${TARGET_NAME}                          # module name
+    -module UGrid                                   # module name
+    -dllimport ${TARGET_NAME}                       # override DllImport attribute name to target name
+    -namespace UGridNET
     -csharp                                         # target language
     -c++                                            # enable c++ processing
     -I${UGridAPI_INC_DIR}                           # look for SWIG files in the specified directory
