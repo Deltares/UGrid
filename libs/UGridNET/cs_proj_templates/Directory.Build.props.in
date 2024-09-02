@@ -10,7 +10,10 @@
 
 		<TargetFramework>@GLOB_DOTNET_TARGET_FRAMEWORK@</TargetFramework>
 
-		<OutputPath>$(SolutionDir)$(Configuration)\</OutputPath>
-		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+        <!--  <GenerateAssemblyInfo>true</GenerateAssemblyInfo> -->
+		<!-- <OutputPath>$(SolutionDir)$(Configuration)\</OutputPath> -->
+		<!-- <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath> -->
+		<!-- <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath> -->
+		<!-- <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies> -->
 	</PropertyGroup>
 </Project>

@@ -7,7 +7,6 @@ set(TARGET_NAME ${PROJECT_NAME})
 
 add_custom_target(
     ${TARGET_NAME} ALL
-    #DEPENDS ${TARGET_NAME}
     COMMAND ${NUGET_EXECUTABLE} restore ${CMAKE_CURRENT_BINARY_DIR}/../dll/UGridNET.sln
       -Force
       -NoHttpCache
