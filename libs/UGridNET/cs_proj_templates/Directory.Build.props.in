@@ -9,5 +9,7 @@
 		<FileVersion>@PROJECT_VERSION_MAJOR@.@PROJECT_VERSION_MINOR@.@PROJECT_VERSION_PATCH@</FileVersion>
 
 		<TargetFramework>@GLOB_DOTNET_TARGET_FRAMEWORK@</TargetFramework>
+
+		<OutputPath>$(SolutionDir)$(Configuration)\</OutputPath>
 	</PropertyGroup>
 </Project>
