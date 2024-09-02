@@ -30,7 +30,7 @@ configure_file(
 )
 
 execute_process(
-  COMMAND python ${CMAKE_SOURCE_DIR}/scripts/get_package_ids_from_directory_packages_props.py ${DIRECTORY_PACKAGES_PROPS}
+  COMMAND ${Python_EXECUTABLE} ${CMAKE_SOURCE_DIR}/scripts/get_package_ids_from_directory_packages_props.py ${DIRECTORY_PACKAGES_PROPS}
   OUTPUT_VARIABLE PACKAGE_REFERENCES
   RESULT_VARIABLE RETURN_CODE
   OUTPUT_STRIP_TRAILING_WHITESPACE
