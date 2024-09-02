@@ -11,5 +11,6 @@
 		<TargetFramework>@GLOB_DOTNET_TARGET_FRAMEWORK@</TargetFramework>
 
 		<OutputPath>$(SolutionDir)$(Configuration)\</OutputPath>
+		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 	</PropertyGroup>
 </Project>
