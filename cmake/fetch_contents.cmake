@@ -1,28 +1,41 @@
 include(FetchContent)
 
-#set(FETCHCONTENT_QUIET off)
-
 if(ENABLE_UNIT_TESTING)
-  # Fetch google test
-  FetchContent_Declare(
-    googletest
-    GIT_REPOSITORY https://github.com/google/googletest.git
-    GIT_TAG v1.13.0
-  )
+
+# Fetch googletest
+  set(googletest_url "https://github.com/google/googletest.git")
+  set(googletest_tag "v1.13.0")
+  set(cmake_FetchContent_Populate_deprecation_version "3.30.0")
+
+  if(CMAKE_VERSION VERSION_GREATER_EQUAL "${cmake_FetchContent_Populate_deprecation_version}")
+    FetchContent_Declare(
+      googletest
+      GIT_REPOSITORY ${googletest_url}
+      GIT_TAG ${googletest_tag}
+      EXCLUDE_FROM_ALL # available from v3.28.0+
+    )
+  else()
+    FetchContent_Declare(
+      googletest
+      GIT_REPOSITORY ${googletest_url}
+      GIT_TAG ${googletest_tag}
+    )
+  endif()
 
   if(WIN32)
     set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
   endif()
 
-  # Use with CMake 3.28+ instead of FetchContent_Populate
-  #FetchContent_MakeAvailable(googletest EXCLUDE_FROM_ALL )
-
-  FetchContent_GetProperties(googletest)
-  if(NOT googletest_POPULATED)
-    FetchContent_Populate(googletest)
-    add_subdirectory(${googletest_SOURCE_DIR} ${googletest_BINARY_DIR} EXCLUDE_FROM_ALL)
+  if(CMAKE_VERSION VERSION_GREATER_EQUAL "${cmake_FetchContent_Populate_deprecation_version}")
+    FetchContent_MakeAvailable(googletest)
+  else()
+    # deprecated
+    FetchContent_GetProperties(googletest)
+    if(NOT googletest_POPULATED)
+      FetchContent_Populate(googletest)
+      add_subdirectory(${googletest_SOURCE_DIR} ${googletest_BINARY_DIR} EXCLUDE_FROM_ALL)
+    endif()
   endif()
   
-  #include(CTest)
   enable_testing()
 endif()

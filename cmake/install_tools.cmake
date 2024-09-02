@@ -70,7 +70,7 @@ if(WIN32)
     set(${ARGS_SWIG_EXECUTABLE_OUT} "${EXECUTABLE_DIR}" PARENT_SCOPE)
     
     # Summary
-    message(STATUS "SWIG ${ARGS_SWIG_VERSION} downloaded and extracted to: ${INSTALL_DIR}")
+    message(STATUS "SWIG ${ARGS_SWIG_VERSION} installed to ${INSTALL_DIR}")
   endfunction()
 
   # Dowanlod and install nuget
@@ -108,7 +108,7 @@ if(WIN32)
     set(${ARGS_NUGET_EXECUTABLE_OUT} "${NUGET_EXECUTABLE}" PARENT_SCOPE)
 
     # Summary
-    message(STATUS "NuGet ${ARGS_NUGET_VERSION} downloaded and extracted to: ${NUGET_DOWNLOAD_DIR}")
+    message(STATUS "NuGet ${ARGS_NUGET_VERSION} installed to ${NUGET_DOWNLOAD_DIR}")
   endfunction()
 
 endif()
