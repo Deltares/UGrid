@@ -10,5 +10,7 @@ add_subdirectory(dll)
 # Add the UGridNET tests
 add_subdirectory(test)
 
+add_subdirectory(pre_build)
+
 add_subdirectory(post_build)
 

@@ -1,0 +1,13 @@
+<Project>
+	<PropertyGroup>
+		<AssemblyTitle>@PROJECT_NAME@</AssemblyTitle>
+		<AssemblyDescription>@PROJECT_DESCRIPTION@</AssemblyDescription>
+		<Company>Stichting Deltares</Company>
+		<Copyright>Copyright © Stichting Deltares @GLOB_CURRENT_YEAR@</Copyright>
+		<Product>UGrid</Product>
+		<Version>@PROJECT_VERSION_MAJOR@.@PROJECT_VERSION_MINOR@.@PROJECT_VERSION_PATCH@</Version>
+		<FileVersion>@PROJECT_VERSION_MAJOR@.@PROJECT_VERSION_MINOR@.@PROJECT_VERSION_PATCH@</FileVersion>
+
+		<TargetFramework>@GLOB_DOTNET_TARGET_FRAMEWORK@</TargetFramework>
+	</PropertyGroup>
+</Project>
