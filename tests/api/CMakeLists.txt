@@ -35,7 +35,7 @@ target_include_directories(${TARGET_NAME} PUBLIC ${INC_DIR})
 target_link_libraries(
   ${TARGET_NAME}
   PRIVATE
-    UGridAPI
+    "$<TARGET_NAME:UGridAPI>"
     TestUtils
     GTest::gmock
     GTest::gtest_main

@@ -30,7 +30,9 @@ configure_file(
 )
 
 execute_process(
-  COMMAND ${Python_EXECUTABLE} ${CMAKE_SOURCE_DIR}/scripts/get_package_ids_from_directory_packages_props.py ${DIRECTORY_PACKAGES_PROPS}
+  COMMAND ${Python_EXECUTABLE}
+    ${CMAKE_SOURCE_DIR}/scripts/get_package_ids_from_directory_packages_props.py
+    ${DIRECTORY_PACKAGES_PROPS}
   OUTPUT_VARIABLE PACKAGE_REFERENCES
   RESULT_VARIABLE RETURN_CODE
   OUTPUT_STRIP_TRAILING_WHITESPACE
@@ -48,7 +50,7 @@ add_library(${TARGET_NAME}
   src/UGridNETTests.cs
 )
 
-target_link_libraries(${TARGET_NAME} PRIVATE UGridNET)
+target_link_libraries(${TARGET_NAME} PRIVATE "$<TARGET_NAME:UGridNET>")
 
 set_target_properties(
   ${TARGET_NAME}
@@ -59,4 +61,3 @@ set_target_properties(
     VS_DOTNET_REFERENCES "System;System.Runtime.CompilerServices.Unsafe"
     VS_PACKAGE_REFERENCES "${PACKAGE_REFERENCES}"
 )
-

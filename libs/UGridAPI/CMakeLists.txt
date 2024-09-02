@@ -54,7 +54,7 @@ target_include_directories(${TARGET_NAME} PUBLIC ${INC_DIR})
 target_link_libraries(
   ${TARGET_NAME}
   PUBLIC
-    UGrid
+    "$<TARGET_NAME:UGrid>"
   PRIVATE
     netCDF::netcdf
     netCDF::netcdf-cxx4

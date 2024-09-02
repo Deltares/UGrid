@@ -20,5 +20,6 @@ add_custom_target(
     COMMENT "Restoring NuGet packages"
 )
 
+# cannot use generator expressions here
 add_dependencies(UGridNET ${TARGET_NAME})
 add_dependencies(UGridNET.Tests ${TARGET_NAME})
