@@ -32,7 +32,7 @@ if(WIN32)
 
     # Check if all required arguments are provided
     set(required_args ${options} ${one_value_args} ${multi_value_args})
-    check_arguments("install_swig" "${prefix}" "${required_args}")
+    check_arguments("${CMAKE_CURRENT_FUNCTION}" "${prefix}" "${required_args}")
 
     message(STATUS "Installing SWIG ${ARGS_SWIG_VERSION}...")
 
@@ -92,7 +92,7 @@ if(WIN32)
 
     # Check if all required arguments are provided
     set(required_args ${options} ${one_value_args} ${multi_value_args})
-    check_arguments("install_nuget" "${prefix}" "${required_args}")
+    check_arguments("${CMAKE_CURRENT_FUNCTION}" "${prefix}" "${required_args}")
 
     message(STATUS "Installing NuGet ${ARGS_NUGET_VERSION}...")
 
