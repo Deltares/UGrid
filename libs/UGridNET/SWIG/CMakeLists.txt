@@ -37,7 +37,7 @@ execute_process(
     -v                                              # verbose
     -module UGrid                                   # module name
     -dllimport ${TARGET_NAME}                       # override DllImport attribute name to target name
-    -namespace UGridNET
+    -namespace UGridNET                             # generate wrappers into the specified C# namespace
     -csharp                                         # target language
     -c++                                            # enable c++ processing
     -I${UGridAPI_INC_DIR}                           # look for SWIG files in the specified directory
