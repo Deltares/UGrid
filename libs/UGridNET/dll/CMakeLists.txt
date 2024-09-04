@@ -10,14 +10,21 @@ set(TARGET_NAME ${PROJECT_NAME})
 
 set(APP_CONFIG ${CMAKE_CURRENT_BINARY_DIR}/App.config)
 configure_file(
-  ${CMAKE_CURRENT_SOURCE_DIR}/../cs_proj_templates/App.config.in
+  ${CMAKE_CURRENT_SOURCE_DIR}/../config/App.config.in
   ${APP_CONFIG}
   @ONLY
 )
 
+set(NUGET_CONFIG ${CMAKE_CURRENT_BINARY_DIR}/NuGet.config)
+configure_file(
+  ${CMAKE_CURRENT_SOURCE_DIR}/../config/NuGet.config
+  ${NUGET_CONFIG}
+  COPYONLY
+)
+
 set(DIRECTORY_BUILD_PROPS ${CMAKE_CURRENT_BINARY_DIR}/Directory.Build.props)
 configure_file(
-  ${CMAKE_CURRENT_SOURCE_DIR}/../cs_proj_templates/Directory.Build.props.in
+  ${CMAKE_CURRENT_SOURCE_DIR}/../config/Directory.Build.props.in
   ${DIRECTORY_BUILD_PROPS}
   @ONLY
 )
@@ -46,6 +53,7 @@ add_library(
   ${TARGET_NAME}
   SHARED 
   ${APP_CONFIG}
+  ${NUGET_CONFIG}
   ${DIRECTORY_PACKAGES_PROPS}
   ${DIRECTORY_BUILD_PROPS}
   ${SWIG_GENERATED_CSHARP_SRCS}

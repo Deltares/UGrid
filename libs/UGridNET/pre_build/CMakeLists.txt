@@ -11,12 +11,12 @@ add_custom_target(
       -Force
       -NoHttpCache
       -Verbosity detailed
-      -Source https://api.nuget.org/v3/index.json
+      -ConfigFile ${CMAKE_CURRENT_BINARY_DIR}/../test/NuGet.config
     COMMAND ${NUGET_EXECUTABLE} restore ${CMAKE_CURRENT_BINARY_DIR}/../test/UGridNET.Tests.sln
       -Force
       -NoHttpCache
       -Verbosity detailed
-      -Source https://api.nuget.org/v3/index.json
+      -ConfigFile ${CMAKE_CURRENT_BINARY_DIR}/../test/NuGet.config
     COMMENT "Restoring NuGet packages"
 )
 
