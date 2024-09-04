@@ -13,9 +13,5 @@ add_custom_target(
     "$<TARGET_NAME:UGridNET.Tests>"
   COMMAND ${CMAKE_COMMAND} -E copy_if_different "$<TARGET_FILE:UGridCSharpWrapper>" "$<TARGET_FILE_DIR:UGridNET>"
   COMMAND ${CMAKE_COMMAND} -E copy_if_different "$<TARGET_FILE:UGridCSharpWrapper>" "$<TARGET_FILE_DIR:UGridNET.Tests>"
-  COMMAND ${CMAKE_COMMAND} -E copy_if_different "$<TARGET_LINKER_FILE:netCDF::netcdf>" "$<TARGET_FILE_DIR:UGridNET>"
-  COMMAND ${CMAKE_COMMAND} -E copy_if_different "$<TARGET_LINKER_FILE:netCDF::netcdf>" "$<TARGET_FILE_DIR:UGridNET.Tests>"
-  COMMAND ${CMAKE_COMMAND} -E copy_if_different "$<TARGET_LINKER_FILE:netCDF::netcdf-cxx4>" "$<TARGET_FILE_DIR:UGridNET>"
-  COMMAND ${CMAKE_COMMAND} -E copy_if_different "$<TARGET_LINKER_FILE:netCDF::netcdf-cxx4>" "$<TARGET_FILE_DIR:UGridNET.Tests>"
-  COMMENT "Copy dlls to target directories"
+  COMMENT "Copy $<TARGET_FILE:UGridCSharpWrapper> to $<TARGET_FILE_DIR:UGridNET> and $<TARGET_FILE_DIR:UGridNET.Tests>"
 )
