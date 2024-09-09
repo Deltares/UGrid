@@ -16,3 +16,5 @@ add_subdirectory(pre_build)
 # Add post-build targets
 add_subdirectory(post_build)
 
+# Add nuget config
+add_subdirectory(nuget)
