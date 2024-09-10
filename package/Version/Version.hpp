@@ -26,4 +26,4 @@
 //------------------------------------------------------------------------------
 
 // Only modify `Version.hpp.in`, never `Version.hpp`
-static char versionString[64] = "0.0.0.0";
+static char versionString[64] = "11.22.33.44";

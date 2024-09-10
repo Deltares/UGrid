@@ -1,10 +1,11 @@
 cmake_minimum_required(VERSION 3.23)
 
-set(UGRID_VERSION 0.0.0)
+# cached globals
+include(cmake/cached_globals.cmake)
 
 project(
   UGrid
-  VERSION ${UGRID_VERSION}
+  VERSION ${GLOB_UGRID_PROJECT_VERSION}
   DESCRIPTION "Library for reading and writing UGrid files."
   LANGUAGES CXX C
 )
@@ -13,9 +14,6 @@ project(
 if (NOT WIN32)
   message(NOTICE "Build type: ${CMAKE_BUILD_TYPE}")
 endif()
-
-# cached globals
-include(cmake/cached_globals.cmake)
 
 # configuration options
 include(cmake/user_config_options.cmake)
