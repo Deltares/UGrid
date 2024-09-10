@@ -12,3 +12,11 @@ configure_file(
   ${CMAKE_CURRENT_BINARY_DIR}/Deltares.UGridNET.targets
   COPYONLY
 )
+
+# Copy the README
+configure_file(
+  ${CMAKE_CURRENT_SOURCE_DIR}/README.md
+  ${CMAKE_CURRENT_BINARY_DIR}/README.md
+  COPYONLY
+)
+
