@@ -29,6 +29,7 @@
 
 #include <boost/algorithm/string.hpp>
 #include <boost/algorithm/string/split.hpp>
+#include <netcdf>
 
 #include <UGrid/Constants.hpp>
 

@@ -27,12 +27,12 @@
 
 #pragma once
 
-#if defined(_WIN32)
-#if !defined(UGRID_API)
+#ifndef UGRID_API
+#ifdef _WIN32
 #define UGRID_API __declspec(dllexport)
-#endif
 #else
 #define UGRID_API __attribute__((visibility("default")))
+#endif
 #endif
 
 #include <UGridAPI/Contacts.hpp>

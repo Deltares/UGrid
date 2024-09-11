@@ -1,0 +1,68 @@
+project(
+  UGridNET.Tests
+  VERSION ${CMAKE_PROJECT_VERSION}
+  DESCRIPTION "UGrid C# API tests"
+  LANGUAGES CSharp
+)
+
+# target name
+set(TARGET_NAME ${PROJECT_NAME})
+
+set(APP_CONFIG ${CMAKE_CURRENT_BINARY_DIR}/App.config)
+configure_file(
+  ${CMAKE_CURRENT_SOURCE_DIR}/../config/App.config.in
+  ${APP_CONFIG}
+  @ONLY
+)
+
+set(NUGET_CONFIG ${CMAKE_CURRENT_BINARY_DIR}/NuGet.config)
+configure_file(
+  ${CMAKE_CURRENT_SOURCE_DIR}/../config/NuGet.config
+  ${NUGET_CONFIG}
+  COPYONLY
+)
+
+set(DIRECTORY_BUILD_PROPS ${CMAKE_CURRENT_BINARY_DIR}/Directory.Build.props)
+configure_file(
+  ${CMAKE_CURRENT_SOURCE_DIR}/../config/Directory.Build.props.in
+  ${DIRECTORY_BUILD_PROPS}
+  @ONLY
+)
+
+set(DIRECTORY_PACKAGES_PROPS ${CMAKE_CURRENT_BINARY_DIR}/Directory.Packages.props)
+configure_file(
+  ${CMAKE_CURRENT_SOURCE_DIR}/Directory.Packages.props
+  ${DIRECTORY_PACKAGES_PROPS}
+  COPYONLY
+)
+
+execute_process(
+  COMMAND ${Python_EXECUTABLE}
+    ${CMAKE_SOURCE_DIR}/scripts/get_package_ids_from_directory_packages_props.py
+    ${DIRECTORY_PACKAGES_PROPS}
+  OUTPUT_VARIABLE PACKAGE_REFERENCES
+  RESULT_VARIABLE RETURN_CODE
+  OUTPUT_STRIP_TRAILING_WHITESPACE
+  COMMAND_ERROR_IS_FATAL LAST
+)
+
+add_library(${TARGET_NAME} 
+  SHARED
+  ${APP_CONFIG}
+  ${NUGET_CONFIG}
+  ${DIRECTORY_PACKAGES_PROPS}
+  ${DIRECTORY_BUILD_PROPS}
+  src/UGridNETTests.cs
+)
+
+target_link_libraries(${TARGET_NAME} PRIVATE "$<TARGET_NAME:UGridNET>")
+
+set_target_properties(
+  ${TARGET_NAME}
+  PROPERTIES
+    DOTNET_TARGET_FRAMEWORK ${GLOB_DOTNET_TARGET_FRAMEWORK}
+    DOTNET_TARGET_FRAMEWORK_VERSION ${GLOB_DOTNET_TARGET_FRAMEWORK_VERSION}
+    DOTNET_SDK ${GLOB_DOTNET_SDK}
+    VS_DOTNET_REFERENCES "System;System.Runtime.CompilerServices.Unsafe"
+    VS_PACKAGE_REFERENCES "${PACKAGE_REFERENCES}"
+)

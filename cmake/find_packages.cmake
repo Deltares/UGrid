@@ -17,12 +17,28 @@ endif()
 find_package(netCDFCxx REQUIRED)
 if (netCDFCxx_FOUND)
     message(STATUS "Found NetCDFCxx ${netCDFCxx_VERSION}")
-    else()
+else()
     message(FATAL_ERROR "Could not find NetCDFCxx")
 endif()
 
 # hdf5
-find_package(hdf5 REQUIRED)
-if (hdf5_FOUND)
-    message(STATUS "Found HDF5 ${hdf5_VERSION}")
+find_package(HDF5)
+if (HDF5_FOUND)
+    message(STATUS "Found HDF5 ${HDF5_VERSION}")
 endif()
+
+# python
+set(Python_FIND_VIRTUALENV FIRST)
+find_package(Python REQUIRED COMPONENTS Interpreter)
+if (Python_FOUND)
+    message(STATUS "Found Python ${Python_VERSION}")
+else()
+    message(FATAL_ERROR "Could not find Python")
+endif()
+
+# git
+find_package(Git)
+if (Git_FOUND)
+    message(STATUS "Found Git ${GIT_VERSION_STRING}")
+endif()
+

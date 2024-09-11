@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='utf-8'?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+    <metadata>
+        <id>Deltares.UGridNET</id>
+        <version>@PROJECT_VERSION_MAJOR@.@PROJECT_VERSION_MINOR@.@PROJECT_VERSION_PATCH@.@PROJECT_VERSION_TWEAK@@VERSION_SUFFIX@</version>
+        <title>Deltares.UGridNET</title>
+        <authors>Stichting Deltares</authors>
+        <owners>Stichting Deltares</owners>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>Deltares library for reading/writing UGrid files.</description>
+        <copyright>Copyright © Stichting Deltares @GLOB_CURRENT_YEAR@</copyright>
+        <readme>README.md</readme>
+
+        <dependencies>
+            <group targetFramework=".NETFramework@DOTNET_TARGET_FRAMEWORK_VERSION_WITHOUT_V_PREFIX@" />
+        </dependencies>
+    </metadata>
+    <files>
+        <file src="@CMAKE_BINARY_DIR@\libs\UGridNET\dll\Release\UGridNET.dll" target="lib\@GLOB_DOTNET_TARGET_FRAMEWORK@\UGridNET.dll" />
+        <file src="@CMAKE_BINARY_DIR@\libs\UGridNET\SWIG\Release\UGridCSharpWrapper.dll" target="runtimes\win-x64\native\" />
+        <file src="@CMAKE_BINARY_DIR@\libs\UGridNET\SWIG\Release\UGridCSharpWrapper.lib" target="runtimes\win-x64\native\" />
+        <file src="@CMAKE_BINARY_DIR@\libs\UGridNET\SWIG\Release\UGridCSharpWrapper.exp" target="runtimes\win-x64\native\" />
+        <file src="@CMAKE_BINARY_DIR@\libs\UGridNET\nuget\Deltares.UGridNET.targets" target="build\@GLOB_DOTNET_TARGET_FRAMEWORK@\" />
+        <file src="@CMAKE_BINARY_DIR@\libs\UGridNET\nuget\README.md" target="" />
+    </files>
+</package>

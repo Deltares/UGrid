@@ -1,10 +1,3 @@
-# Determine version suffix (current build number) from environment variable
-if(DEFINED ENV{VERSION_SUFFIX})
-  set(VERSION_SUFFIX $ENV{VERSION_SUFFIX})
-else()
-  set(VERSION_SUFFIX 0)
-endif()
-
 # Configure DLL version
 configure_file(
   ${CMAKE_CURRENT_SOURCE_DIR}/version.rc.in
