@@ -35,3 +35,10 @@ if (Python_FOUND)
 else()
     message(FATAL_ERROR "Could not find Python")
 endif()
+
+# git
+find_package(Git)
+if (Git_FOUND)
+    message(STATUS "Found Git ${GIT_VERSION_STRING}")
+endif()
+
