@@ -35,7 +35,11 @@ def determine_to_sign_dll_names(build_dir: Path) -> Generator[str, None, None]:
     vs_projs = []
     for vs_proj_type in vs_proj_types:
         vs_projs.extend((build_dir / Path("libs")).glob(f"**/{vs_proj_type}"))
-    return (x.with_suffix(".dll").name for x in vs_projs)
+    return (
+        x.with_suffix(".dll").name
+        for x in vs_projs
+        if "test" not in x.with_suffix(".dll").name.lower()
+    )
 
 
 def get_corresponding_path(build_dir: Path, dll_name: str) -> Path:
