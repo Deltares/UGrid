@@ -12,99 +12,65 @@ __status__ = "Development"
 
 
 from pathlib import Path
-from typing import Generator
+from typing import List
 import shutil
 import argparse
 import json
 
 
-def determine_to_sign_dll_names(build_dir: Path) -> Generator[str, None, None]:
+def get_paths_of_dlls_to_sign(build_dir: Path) -> List[Path]:
     """
     Gather all the dll names which need to be signed.
 
-    We assume that the only dlls produced by the solution are the
-    ones created by their corresponding .vcxproj and .csproj.
+    It is assumed that the only dlls produced by the solution are the ones created
+    by their corresponding .vcxproj and .csproj projects in Release mode.
 
     Args:
         build_dir (Path): Path to the build dir
 
     Returns:
-        Generator[str, None, None]: Generator containing the dll names to sign.
+        List[Path]: List of dll paths to sign.
     """
-    vs_proj_types = ("*.vcxproj", "*.csproj")
-    vs_projs = []
+    vs_proj_types = ("vcxproj", "csproj")
+    vs_proj_paths = []
     for vs_proj_type in vs_proj_types:
-        vs_projs.extend((build_dir / Path("libs")).glob(f"**/{vs_proj_type}"))
-    return (
-        x.with_suffix(".dll").name
-        for x in vs_projs
-        if "test" not in x.with_suffix(".dll").name.lower()
-    )
+        vs_proj_paths.extend(Path(f"{build_dir}/libs").glob(f"*/*.{vs_proj_type}"))
+        vs_proj_paths.extend(Path(f"{build_dir}/libs").glob(f"*/*/*.{vs_proj_type}"))
 
+    dll_paths = []
+    for vs_proj_path in vs_proj_paths:
+        parent = vs_proj_path.parent
+        stem = vs_proj_path.stem
+        dll_path = Path(f"{parent}/Release/{stem}.dll")
+        if dll_path.exists() and "test" not in stem.lower():
+            dll_paths.append(dll_path)
 
-def get_corresponding_path(build_dir: Path, dll_name: str) -> Path:
-    """
-    Get the dll path corresponding with the dll_name from the provided build_dir.
-
-    Args:
-        build_dir (Path): Path to the build dir
-        dll_name (str): Name of the dll
-    """
-    # this hack is required to keep the capitalisation
-    return next(
-        (build_dir / Path("libs")).glob("**/Release/{}".format(dll_name))
-    ).parent / Path(dll_name)
-
-
-def has_corresponding_path(build_dir: Path, dll_name: str) -> bool:
-    """
-    Verify whether the provided dll has a corresponding path.
-    Args:
-        build_dir (Path): Path to the build dir
-        dll_name (Generator[str, None, None]): Generator containing the dll names to sign.
-
-    Returns:
-        bool: True if a corresponding path can be found; False otherwise.
-    """
-    return any((build_dir / Path("libs")).glob(f"**/Release/{dll_name}"))
-
-
-def find_all_dll_paths(
-    build_dir: Path, dll_names: Generator[str, None, None]
-) -> Generator[Path, None, None]:
-    """
-    Find the dll paths of the dll names provided in dll_names.
-
-    Args:
-        build_dir (Path): Path to the build dir
-        dll_names (Generator[str, None, None]): Generator containing the dll names to sign.
-
-    Returns:
-        Generator[Path, None, None]: Generator containing the dll paths to sign.
-    """
-    return (
-        get_corresponding_path(build_dir, x)
-        for x in dll_names
-        if has_corresponding_path(build_dir, x)
-    )
+    return dll_paths
 
 
 def generate_json_mapping_content(
-    build_dir: Path, dll_paths: Generator[Path, None, None]
+    build_dir: Path,
+    dll_paths: List[Path],
 ) -> dict:
     """
     Generate the json mapping file, with which the signed dlls can be restored to their original paths.
 
     Args:
         build_dir (Path): Path to the build dir
-        dll_paths (Generator[Path, None, None]): Generator containing the dll names to sign.
+        dll_paths (List[Path]): List of dll paths to sign.
 
     Returns:
         dict: Dict describing the mapping
     """
     return {
         "mapping": list(
-            ({"dll": p.name, "path": str(p.relative_to(build_dir))} for p in dll_paths)
+            (
+                {
+                    "dll": dll_path.name,
+                    "path": str(dll_path.relative_to(build_dir)),
+                }
+                for dll_path in dll_paths
+            )
         )
     }
 
@@ -112,7 +78,10 @@ def generate_json_mapping_content(
 DLL_MAPPING_FILE_NAME = "dll_mapping.json"
 
 
-def write_json_mapping_file(sign_dir: Path, content: dict) -> None:
+def write_json_mapping_file(
+    sign_dir: Path,
+    content: dict,
+) -> None:
     """
     Write the specified content to the mapping file within sign_dir.
 
@@ -122,7 +91,7 @@ def write_json_mapping_file(sign_dir: Path, content: dict) -> None:
     """
     json_mapping_file = sign_dir / Path(DLL_MAPPING_FILE_NAME)
     with json_mapping_file.open("w") as f:
-        json.dump(content, f, indent=4)
+        json.dump(content, f, indent=2)
 
 
 def read_json_mapping_file(sign_dir: Path) -> dict:
@@ -139,7 +108,8 @@ def read_json_mapping_file(sign_dir: Path) -> dict:
 
 
 def harvest_to_sign_dlls(
-    dll_paths: Generator[Path, None, None], sign_dir: Path
+    dll_paths: List[Path],
+    sign_dir: Path,
 ) -> None:
     """
     Move the dlls specified by dll_paths to the sign_dir.
@@ -148,8 +118,10 @@ def harvest_to_sign_dlls(
         dll_paths: The dlls to copy
         sign_dir (Path): Path to the directory containing the dlls to sign.
     """
-    for p in dll_paths:
-        shutil.move(str(p), str(sign_dir))
+    print("DLLs to sign:")
+    for dll_path in dll_paths:
+        print(" -", dll_path)
+        shutil.move(str(dll_path), str(sign_dir))
 
 
 def restore_signed_dlls(build_dir: Path, dll_mapping: dict, sign_dir) -> None:
@@ -160,10 +132,12 @@ def restore_signed_dlls(build_dir: Path, dll_mapping: dict, sign_dir) -> None:
         dll_mapping (dict): Dictionary describing the mapping of dlls
         sign_dir (Path): Path to the directory containing the signed dlls.
     """
+    print("DLLs to restore:")
     for dll_info in dll_mapping["mapping"]:
-        shutil.move(
-            str(sign_dir / dll_info["dll"]), str(build_dir / Path(dll_info["path"]))
-        )
+        dll = str(sign_dir / dll_info["dll"])
+        destination = str(build_dir / Path(dll_info["path"]))
+        print(dll, "->", destination)
+        shutil.move(dll, destination)
 
 
 TO_SIGN_DIR_NAME = "to_sign"
@@ -176,8 +150,8 @@ def harvest(build_dir: Path) -> None:
     Args:
         build_dir: Path to the build dir.
     """
-    dll_names = determine_to_sign_dll_names(build_dir)
-    dll_paths = list(find_all_dll_paths(build_dir, dll_names))
+
+    dll_paths = get_paths_of_dlls_to_sign(build_dir)
 
     sign_dir = build_dir / Path(TO_SIGN_DIR_NAME)
     if not (sign_dir.exists() and sign_dir.is_dir()):
