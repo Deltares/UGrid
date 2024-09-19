@@ -13,9 +13,9 @@ if [[ "${CLEAN_BUILD}" = "true" && -d ${sonar_build_dir} ]]; then
     rm -fr ${sonar_build_dir}
 fi
 
-# downlaod sonar tools
+# download sonar tools
 rm -fr .sonar
-print_text_box "Downlaod sonar tools"
+print_text_box "Download sonar tools"
 python3 /workspace/scripts/download_sonar_tools.py
 chmod +x .sonar/build-wrapper-linux-x86/build-wrapper-linux-x86-64
 ls -ltr .sonar
