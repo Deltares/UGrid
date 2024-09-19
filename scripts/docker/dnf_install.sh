@@ -2,7 +2,7 @@
 
 set -e
 
-source error.sh
+source /workspace/scripts/docker/error.sh
 
 dnf install -y epel-release
 dnf config-manager --enable epel
@@ -23,6 +23,7 @@ packages=(
   "libcurl-devel"
   ${dev_toolset}
   "doxygen"
+  "python311"
 )
 
 for package in "${packages[@]}"; do
@@ -32,3 +33,6 @@ done
 scl enable "${dev_toolset}" bash || error "[scl] Failed to enable ${dev_toolset}"
 
 dnf clean all
+
+python3 -m ensurepip
+python3 -m pip install -r /workspace/scripts/docker/requirements.txt
