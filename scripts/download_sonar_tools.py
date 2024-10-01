@@ -2,7 +2,6 @@
 Script used to download sonar tools
 """
 
-
 import requests
 import zipfile
 import shutil
@@ -11,6 +10,7 @@ import argparse
 
 from pathlib import Path
 
+SONAR_SCANNER_VERSION = "5.0.1.3006"
 
 
 def download_file(url: str, save_path: Path, chunk_size=128) -> None:
@@ -62,13 +62,21 @@ def get_scanner(save_dir: Path, sonar_scanner_version: str) -> None:
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("-ssv",
-                        "--sonar_scanner_version",
-                        help="The sonar scanner version",
-                        default="4.4.0.2170")
+    parser.add_argument(
+        "-ssv",
+        "--sonar_scanner_version",
+        help="The sonar scanner version",
+        default=f"{SONAR_SCANNER_VERSION}",
+    )
+    parser.add_argument(
+        "--save_dir",
+        type=Path,
+        required=True,
+        help="The sonar scanner save directory",
+    )
     args = vars(parser.parse_args())
 
-    save_dir = Path(".") / Path(".sonar")
+    save_dir = args["save_dir"]
     save_dir.mkdir(exist_ok=True)
     get_build_wrapper(save_dir)
     get_scanner(save_dir, args["sonar_scanner_version"])

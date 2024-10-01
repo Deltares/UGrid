@@ -3,6 +3,7 @@
 set -e
 
 source /workspace/scripts/docker/error.sh
+source /workspace/scripts/docker/utilities.sh
 
 dnf install -y epel-release
 dnf config-manager --enable epel
@@ -27,6 +28,7 @@ packages=(
 )
 
 for package in "${packages[@]}"; do
+  col_echo --blue "Installing ${package}..."
   dnf install -y "${package}" || error "[dnf] Failed to install ${package}"
 done
 

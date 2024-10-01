@@ -4,6 +4,7 @@ set -e
 
 export netCDFCxx_DIR=${THIRD_PARTY_INSTALL_DIR}/netcdf_cxx4/lib64/cmake/netCDF/
 
+sonar_scanner_save_dir="/workspace/sonar"
 sonar_build_dir="/workspace/build_sonar"
 
 if [[ "${CLEAN_BUILD}" = "true" && -d ${sonar_build_dir} ]]; then
@@ -12,14 +13,6 @@ if [[ "${CLEAN_BUILD}" = "true" && -d ${sonar_build_dir} ]]; then
     #   error "[cmake] Failed to clean project"
     rm -fr ${sonar_build_dir}
 fi
-
-# download sonar tools
-rm -fr .sonar
-print_text_box "Download sonar tools"
-python3 /workspace/scripts/download_sonar_tools.py
-chmod +x .sonar/build-wrapper-linux-x86/build-wrapper-linux-x86-64
-ls -ltr .sonar
-ls -ltr .sonar/build-wrapper-linux-x86
 
 # configure
 print_text_box "Configure Sonar build"
@@ -34,7 +27,7 @@ cmake \
 # build
 print_text_box "Sonar Build"
 sonar_out_dir="/workspace/sonar_analysis"
-.sonar/build-wrapper-linux-x86/build-wrapper-linux-x86-64 \
+${SONAR_SAVE_DIR}/build-wrapper-linux-x86/build-wrapper-linux-x86-64 \
     --out-dir ${sonar_out_dir} \
     cmake \
     --build ${sonar_build_dir} \
@@ -43,7 +36,7 @@ sonar_out_dir="/workspace/sonar_analysis"
     error "[sonar build-wrapper-linux-x86-64] Failed to build project"
 
 # run tests
-print_text_box "Test"
+print_text_box "Run"
 ${sonar_build_dir}/tests/api/UGridAPITests
 
 # Generate coverage report
@@ -56,14 +49,13 @@ rm -rf ${gcov_reports_dir}
 mkdir ${gcov_reports_dir}
 # move the coverage results to gcov_reports_dir
 find . -maxdepth 1 -iname '*.gcov' -exec mv {} ${gcov_reports_dir} ';'
+echo "Reports saved to ${gcov_reports_dir}"
 
 # Analyse
 print_text_box "Analyse coverage reports"
-chmod +x .sonar/sonar-scanner/bin/sonar-scanner
-chmod +x .sonar/sonar-scanner/jre/bin/java
-.sonar/sonar-scanner/bin/sonar-scanner \
+${SONAR_SAVE_DIR}/sonar-scanner/bin/sonar-scanner \
     -X \
-    -Dsonar.verbose=false \
+    -Dsonar.verbose=true \
     -Dsonar.token=${SONAR_TOKEN} \
     -Dsonar.organization=deltares \
     -Dsonar.projectKey=Deltares_UGrid \

@@ -397,35 +397,15 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 
-# # Prerequisites
-# *.d
-
-# # Compiled Object files
-# *.slo
-# *.lo
-# *.o
-# *.obj
-
-# # Precompiled Headers
-# *.gch
-# *.pch
-
-# # Building
+# Building
 build*
-# xbuild
-
-# # Visual Studio
-# .vs
-# .vscode
 
 # User specific
-post_build.bat
 /tests/utils/include/TestUtils/Definitions.hpp
 /include/Version/Version.hpp
 /tests/data/written_files/*.nc
 
 # coverage
-.sonar
 gcov_reports_dir
 sonar_analysis
 
