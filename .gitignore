@@ -398,7 +398,7 @@ FodyWeavers.xsd
 *.sln.iml
 
 # Building
-build*
+/build*
 
 # User specific
 /tests/utils/include/TestUtils/Definitions.hpp
