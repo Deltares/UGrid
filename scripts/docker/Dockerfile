@@ -5,15 +5,13 @@ WORKDIR /workspace
 COPY . /workspace
 
 ENV CLEAN_BUILD="false"
-
 ENV BUILD_TYPE="Release"
-
 ENV VERBOSE_BUILD="false"
 
 ARG RUN_SONAR_SCANNER="false"
 ENV RUN_SONAR_SCANNER=${RUN_SONAR_SCANNER}
-
 ENV SONAR_TOKEN=""
+ENV BRANCH_NAME=""
 
 RUN chmod +x /workspace/scripts/docker/dnf_install.sh
 RUN /workspace/scripts/docker/dnf_install.sh

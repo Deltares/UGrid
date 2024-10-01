@@ -62,7 +62,7 @@ ${SONAR_SAVE_DIR}/sonar-scanner/bin/sonar-scanner \
     -Dsonar.sources=libs \
     -Dsonar.cfamily.build-wrapper-output=${sonar_out_dir} \
     -Dsonar.host.url=https://sonarcloud.io \
-    -Dsonar.branch.name=%teamcity.build.branch% \
+    -Dsonar.branch.name=${BRANCH_NAME} \
     -Dsonar.cpp.std=c++20 \
     -Dsonar.cfamily.gcov.reportsPath=${gcov_reports_dir} \
     -Dsonar.cpd.exclusions=libs/UGridNET/**/*
