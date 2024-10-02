@@ -53,6 +53,8 @@ echo "Reports saved to ${gcov_reports_dir}"
 
 # Analyse
 print_text_box "Analyse coverage reports"
+git config --global user.name "UGrid TeamCity"
+git config --global user.email "teamcity@deltares.nl"
 ${SONAR_SAVE_DIR}/sonar-scanner/bin/sonar-scanner \
     -X \
     -Dsonar.verbose=true \
