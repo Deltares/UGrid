@@ -143,7 +143,7 @@ namespace ugridapi
         it->second.getVar(&data);
     }
 
-    static netCDF::NcVar const& get_variable(int file_id, std::string const& name)
+    static netCDF::NcVar get_variable(int file_id, std::string const& name)
     {
         // Get all variables
         const auto vars = ugrid_states[file_id].m_ncFile->getVars();
