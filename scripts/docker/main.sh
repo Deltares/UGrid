@@ -2,6 +2,8 @@
 
 set -e
 
+export netCDFCxx_DIR=${THIRD_PARTY_INSTALL_DIR}/netcdf_cxx4/lib64/cmake/netCDF/
+
 source /workspace/scripts/docker/error.sh
 source /workspace/scripts/docker/utilities.sh
 source /workspace/scripts/docker/build_and_test.sh
