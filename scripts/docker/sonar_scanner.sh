@@ -10,9 +10,8 @@ sonar_build_dir="/workspace/build_sonar"
 # ========================
 if [[ "${CLEAN_BUILD}" = "true" && -d ${sonar_build_dir} ]]; then
   print_text_box "Clean build"
-  # cmake --build ${sonar_build_dir} --target clean ||
-  #   error "[cmake] Failed to clean project"
-  rm -frv ${sonar_build_dir}
+  rm -fr ${sonar_build_dir}
+  echo "Removed ${sonar_build_dir}"
 fi
 
 # ========================

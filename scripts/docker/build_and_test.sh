@@ -9,9 +9,8 @@ build_dir="/workspace/build"
 # ========================
 if [[ "${CLEAN_BUILD}" = "true" && -d ${build_dir} ]]; then
   print_text_box "Clean build"
-  # cmake --build ${build_dir} --target clean ||
-  #   error "[cmake] Failed to clean project"
   rm -fr ${build_dir}
+  echo "Removed ${build_dir}"
 fi
 
 # ========================
