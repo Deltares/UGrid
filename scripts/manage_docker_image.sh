@@ -5,6 +5,8 @@ set -e
 function usage() {
   echo "Usage: $0 \
 --repo_path <REPO_PATH> \
+--harbor_username <HARBOR_USERNAME> \
+--harbor_password <HARBOR_PASSWORD> \
 --server_address <SERVER_ADDRESS> \
 --project_path <PROJECT_PATH> \
 --docker_image_name <DOCKER_IMAGE_NAME> \
@@ -22,6 +24,14 @@ function parse_args() {
       ;;
     --repo_path)
       declare -g REPO_PATH=$(realpath "$2")
+      shift 2
+      ;;
+    --harbor_username)
+      declare -g HARBOR_USERNAME="$2"
+      shift 2
+      ;;
+    --harbor_password)
+      declare -g HARBOR_PASSWORD="$2"
       shift 2
       ;;
     --server_address)
@@ -62,6 +72,8 @@ function parse_args() {
 
   # ensure all required arguments are provided
   if [ -z "${REPO_PATH}" ] ||
+    [ -z "${HARBOR_USERNAME}" ] ||
+    [ -z "${HARBOR_PASSWORD}" ] ||
     [ -z "${SERVER_ADDRESS}" ] ||
     [ -z "${PROJECT_PATH}" ] ||
     [ -z "${DOCKER_IMAGE_NAME}" ] ||
@@ -75,10 +87,10 @@ function parse_args() {
 }
 
 function docker_login() {
-  local docker_username=$1
-  local docker_password=$2
+  local harbor_username=$1
+  local harbor_password=$2
   local server_address=$3
-  echo "${docker_password}" | docker login "${server_address}" --username "${docker_username}" --password-stdin
+  echo ${harbor_password} | docker login "${server_address}" --username "${harbor_username}" --password-stdin
 }
 
 function docker_logut() {
@@ -164,6 +176,8 @@ function main() {
   echo "repo path     : ${REPO_PATH}"
   echo "server name   : ${SERVER_ADDRESS}"
   echo "project path  : ${PROJECT_PATH}"
+  echo "user name     : ${HARBOR_USERNAME}"
+  echo "password      : ${HARBOR_PASSWORD}"
   echo "image name    : ${DOCKER_IMAGE_NAME}"
   echo "image tag     : ${DOCKER_IMAGE_TAG}"
   echo "full name     : ${SERVER_ADDRESS}/${PROJECT_PATH}/${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}"
@@ -173,6 +187,8 @@ function main() {
     echo "               ${file_to_check}"
   done
 
+  docker_login ${HARBOR_USERNAME} ${HARBOR_PASSWORD} ${SERVER_ADDRESS}
+
   manage_docker_image "${REPO_PATH}" \
     "${SERVER_ADDRESS}" \
     "${PROJECT_PATH}" \
@@ -180,6 +196,8 @@ function main() {
     "${DOCKER_IMAGE_TAG}" \
     "${DOCKER_FILE_NAME}" \
     FILES_TO_CHECK[@]
+
+  docker_logout
 }
 
 main "$@"
