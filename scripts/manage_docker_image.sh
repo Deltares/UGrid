@@ -202,8 +202,8 @@ function docker_pull() {
 
 function get_default_branch_name() {
   local repo_path="$1"
-  git fetch --unshallow
-  git remote set-head origin --auto
+  git -C ${repo_path} fetch --unshallow
+  git -C ${repo_path} remote set-head origin --auto
   echo $(
     git -C "${repo_path}" symbolic-ref refs/remotes/origin/HEAD |
       sed 's@^refs/remotes/origin/@@'
@@ -212,8 +212,8 @@ function get_default_branch_name() {
 
 function get_parent_branch_name() {
   local repo_path="$1"
-  git fetch --unshallow
-  git remote set-head origin --auto
+  git -C ${repo_path} fetch --unshallow
+  git -C ${repo_path} remote set-head origin --auto
   echo $(
     git -C ${repo_path} show-branch |
       grep '\*' |
