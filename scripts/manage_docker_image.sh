@@ -3,91 +3,136 @@
 set -e
 
 function usage() {
-  echo "Usage: $0 \
---repo_path <REPO_PATH> \
---harbor_username <HARBOR_USERNAME> \
---harbor_password <HARBOR_PASSWORD> \
---server_address <SERVER_ADDRESS> \
---project_path <PROJECT_PATH> \
---docker_image_name <DOCKER_IMAGE_NAME> \
---docker_image_tag <DOCKER_IMAGE_TAG> \
---docker_file_name <DOCKER_FILE_NAME>"
+  echo "Usage: "
+  echo "$0 \\"
+  echo "  --repo_path <REPO_PATH> \\"
+  echo "  --harbor_username <HARBOR_USERNAME> \\"
+  echo "  --harbor_password <HARBOR_PASSWORD> \\"
+  echo "  --server_address <SERVER_ADDRESS> \\"
+  echo "  --project_path <PROJECT_PATH> \\"
+  echo "  --docker_image_name <DOCKER_IMAGE_NAME> \\"
+  echo "  --docker_image_tag <DOCKER_IMAGE_TAG> \\"
+  echo "  --docker_file_name <DOCKER_FILE_NAME> \\"
+  echo "  --files_to_check <FILE_1> <FILE_2>... <FILE_N>"
+  echo "or"
+  echo "$0 --json <JSON_CONFIG>"
+  echo "JSON configutaion template:"
+  echo "{"
+  echo "  \"repo_path\": \"<REPO_PATH>\","
+  echo "  \"harbor_username\": \"<HARBOR_USERNAME>\","
+  echo "  \"harbor_password\": \"<HARBOR_PASSWORD>\","
+  echo "  \"server_address\": \"<SERVER_ADDRESS>\","
+  echo "  \"project_path\": \"<PROJECT_PATH>\","
+  echo "  \"docker_image_name\": \"<DOCKER_IMAGE_NAME>\","
+  echo "  \"docker_image_tag\": \"<DOCKER_IMAGE_TAG>\","
+  echo "  \"docker_file_name\": \"<DOCKER_FILE_NAME>\","
+  echo "  \"files_to_check\": ["
+  echo "    \"<FILE_1>\","
+  echo "    \"<FILE_2>\","
+  echo "    ."
+  echo "    ."
+  echo "    ."
+  echo "    \"<FILE_N>\","
+  echo "  ]"
+  echo "}"
+}
+
+function load_json_config() {
+  local json_config="$1"
+  declare -g REPO_PATH=$(jq -r '.repo_path' "${json_config}")
+  declare -g HARBOR_USERNAME=$(jq -r '.harbor_username' "${json_config}")
+  declare -g HARBOR_PASSWORD=$(jq -r '.harbor_password' "${json_config}")
+  declare -g SERVER_ADDRESS=$(jq -r '.server_address' "${json_config}")
+  declare -g PROJECT_PATH=$(jq -r '.project_path' "${json_config}")
+  declare -g DOCKER_IMAGE_NAME=$(jq -r '.docker_image_name' "${json_config}")
+  declare -g DOCKER_IMAGE_TAG=$(jq -r '.docker_image_tag' "${json_config}")
+  declare -g DOCKER_FILE_NAME=$(jq -r '.docker_file_name' "${json_config}")
+  mapfile -t FILES_TO_CHECK < <(jq -r '.files_to_check[]' "${json_config}")
 }
 
 function parse_args() {
   local do_exit=false
-  while [[ $# -gt 0 ]]; do
-    key="$1"
-    case ${key} in
-    --help)
-      usage
-      exit 0
-      ;;
-    --repo_path)
-      declare -g REPO_PATH=$(realpath "$2")
+
+  # store the args to allow resetting their position in case a json config is not provided
+  local args=("$@")
+
+  local json_config=""
+  while [[ "$#" -gt 0 ]]; do
+    case "$1" in
+    --json)
+      json_config=$(realpath "$2")
+      echo "json_config: ${json_config}"
+      load_json_config "${json_config}"
       shift 2
-      ;;
-    --harbor_username)
-      declare -g HARBOR_USERNAME="$2"
-      shift 2
-      ;;
-    --harbor_password)
-      declare -g HARBOR_PASSWORD="$2"
-      shift 2
-      ;;
-    --server_address)
-      declare -g SERVER_ADDRESS="$2"
-      shift 2
-      ;;
-    --project_path)
-      declare -g PROJECT_PATH="$2"
-      shift 2
-      ;;
-    --docker_image_name)
-      declare -g DOCKER_IMAGE_NAME="$2"
-      shift 2
-      ;;
-    --docker_image_tag)
-      declare -g DOCKER_IMAGE_TAG="$2"
-      shift 2
-      ;;
-    --docker_file_name)
-      declare -g DOCKER_FILE_NAME=$(realpath "$2")
-      shift 2
-      ;;
-    --files_to_check)
-      shift 1
-      declare -ag FILES_TO_CHECK=()
-      while [[ "$#" -gt 0 && "$1" != --* ]]; do
-        FILES_TO_CHECK+=($(realpath "$1"))
-        shift
-      done
-      ;;
-    -* | --*)
-      echo "Unknown named parameter $1"
-      shift 2
-      do_exit=true
+      break
       ;;
     *)
-      echo "Unauthorised positional argument: ${key}"
       shift
-      do_exit=true
       ;;
     esac
   done
 
-  # ensure all required arguments are provided
-  if [ -z "${REPO_PATH}" ] ||
-    [ -z "${HARBOR_USERNAME}" ] ||
-    [ -z "${HARBOR_PASSWORD}" ] ||
-    [ -z "${SERVER_ADDRESS}" ] ||
-    [ -z "${PROJECT_PATH}" ] ||
-    [ -z "${DOCKER_IMAGE_NAME}" ] ||
-    [ -z "${DOCKER_IMAGE_TAG}" ] ||
-    [ -z "${DOCKER_FILE_NAME}" ] ||
-    [ "${#FILES_TO_CHECK[@]}" -eq 0 ]; then
-    echo "Missing parameter --."
-    do_exit=true
+  if [[ -z "${json_config}" ]]; then
+    set -- "${args[@]}"
+    while [[ $# -gt 0 ]]; do
+      key="$1"
+      case ${key} in
+      --help)
+        usage
+        exit 0
+        ;;
+      --repo_path)
+        declare -g REPO_PATH=$(realpath "$2")
+        shift 2
+        ;;
+      --harbor_username)
+        declare -g HARBOR_USERNAME="$2"
+        shift 2
+        ;;
+      --harbor_password)
+        declare -g HARBOR_PASSWORD="$2"
+        shift 2
+        ;;
+      --server_address)
+        declare -g SERVER_ADDRESS="$2"
+        shift 2
+        ;;
+      --project_path)
+        declare -g PROJECT_PATH="$2"
+        shift 2
+        ;;
+      --docker_image_name)
+        declare -g DOCKER_IMAGE_NAME="$2"
+        shift 2
+        ;;
+      --docker_image_tag)
+        declare -g DOCKER_IMAGE_TAG="$2"
+        shift 2
+        ;;
+      --docker_file_name)
+        declare -g DOCKER_FILE_NAME=$(realpath "$2")
+        shift 2
+        ;;
+      --files_to_check)
+        shift 1
+        declare -ag FILES_TO_CHECK=()
+        while [[ "$#" -gt 0 && "$1" != --* ]]; do
+          FILES_TO_CHECK+=($(realpath "$1"))
+          shift
+        done
+        ;;
+      -* | --*)
+        echo "Unknown named parameter $1"
+        shift 2
+        do_exit=true
+        ;;
+      *)
+        echo "Unauthorised positional argument: ${key}"
+        shift
+        do_exit=true
+        ;;
+      esac
+    done
   fi
 
   if [ -z "${REPO_PATH}" ]; then
