@@ -206,11 +206,11 @@ function manage_docker_image() {
   local parent_branch=$(get_parent_branch_name "${repo_path}")
   if has_git_diffs "${repo_path}" "${parent_branch}" files_to_check[@]; then
     echo "Image will be built and pushed"
-    #docker_build_and_push "${full_docker_image_name}" "${docker_file_name}"
+    docker_build_and_push "${full_docker_image_name}" "${docker_file_name}"
   else
     # pull
     echo "Image will be pulled"
-    #docker_pull "${full_docker_image_name}"
+    docker_pull "${full_docker_image_name}"
   fi
 }
 
