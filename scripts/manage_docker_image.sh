@@ -202,7 +202,6 @@ function docker_pull() {
 
 function get_default_branch_name() {
   local repo_path="$1"
-  #git -C ${repo_path} fetch --unshallow
   git -C ${repo_path} fetch --depth=10000
   git -C ${repo_path} fetch --all
   git -C ${repo_path} remote set-head origin --auto
@@ -214,7 +213,6 @@ function get_default_branch_name() {
 
 function get_parent_branch_name() {
   local repo_path="$1"
-  #git -C ${repo_path} fetch --unshallow
   git -C ${repo_path} fetch --depth=10000
   git -C ${repo_path} fetch --all
   git -C ${repo_path} remote set-head origin --auto
@@ -256,8 +254,8 @@ function manage_docker_image() {
 
   local full_docker_image_name="${server_address}/${project_path}/${docker_image_name}:${docker_image_tag}"
 
-  local parent_branch=$(get_parent_branch_name "${repo_path}")
-  #local parent_branch=$(get_default_branch_name "${repo_path}")
+  #local parent_branch=$(get_parent_branch_name "${repo_path}")
+  local parent_branch=$(get_default_branch_name "${repo_path}")
   echo "Parent branch: ${parent_branch}"
   if has_git_diffs "${repo_path}" "${parent_branch}" files_to_check[@]; then
     echo "Image will be built and pushed"
