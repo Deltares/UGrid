@@ -249,6 +249,7 @@ function manage_docker_image() {
   local full_docker_image_name="${server_address}/${project_path}/${docker_image_name}:${docker_image_tag}"
 
   local parent_branch=$(get_parent_branch_name "${repo_path}")
+  echo "Parent branch: ${parent_branch}"
   if has_git_diffs "${repo_path}" "${parent_branch}" files_to_check[@]; then
     echo "Image will be built and pushed"
     docker_build_and_push "${full_docker_image_name}" "${docker_file_name}"
