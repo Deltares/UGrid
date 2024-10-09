@@ -215,11 +215,11 @@ function has_git_diffs() {
     git -C ${repo_path} diff --name-status $(git rev-parse HEAD~1) -- "${files_to_check[@]}"
   )
   if [[ -n "${changes}" ]]; then
-    echo "Found changes with respect to branch ${parent_branch}:"
+    echo "Found changes with respect to the previous commit:"
     echo "${changes}"
     return 0
   else
-    echo "No changes found with respect to branch ${parent_branch}"
+    echo "No changes found with respect to previous commit."
     return 1
   fi
 }
@@ -246,7 +246,6 @@ function manage_docker_image() {
   local reformatted_docker_image_tag=$(replace_special_chars_in_docker_tag "${docker_image_tag}")
   local full_docker_image_name="${server_address}/${project_path}/${docker_image_name}:${reformatted_docker_image_tag}"
 
-  echo "Parent branch: ${parent_branch}"
   if has_git_diffs "${repo_path}" files_to_check[@]; then
     echo "Image will be built and pushed"
     docker_build_and_push "${full_docker_image_name}" "${docker_file_name}"
