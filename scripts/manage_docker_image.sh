@@ -222,6 +222,8 @@ function get_parent_branch_name() {
   #     sed 's/.*\[//g' | sed 's/\].*//g'
   # )
 
+  git -C ${repo_path} fetch --depth=10000
+  git -C ${repo_path} fetch --all
   echo $(
     git -C ${repo_path} remote show origin |
       grep "  HEAD branch: " |
