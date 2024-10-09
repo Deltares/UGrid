@@ -239,7 +239,7 @@ function has_git_diffs() {
   declare -a files_to_check=("${!3}")
 
   local changes=$(
-    git -C ${repo_path} diff --name-status "${parent_branch}" -- "${files_to_check[@]}"
+    git -C ${repo_path} diff --name-status "origin/${parent_branch}" -- "${files_to_check[@]}"
   )
   if [[ -n "${changes}" ]]; then
     echo "Found changes with respect to branch ${parent_branch}:"
