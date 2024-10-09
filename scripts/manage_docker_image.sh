@@ -250,6 +250,16 @@ function has_git_diffs() {
   fi
 }
 
+# Docker tags can only contain letters, digits, periods, hyphens and underscores.
+# This function replaces anything else by underscores,
+# This is particularly useful when an image is tagged by the name of the branch.
+# Branches such as release/vx.y.z or feature/feature_name can result in failed tagging.
+# Therefore, they are reformatted as release_vx.y.z or feature_feature_name.
+function replace_special_chars_in_docker_tag() {
+  local input="$1"
+  echo "${input//[^a-zA-Z0-9._-]/_}"
+}
+
 function manage_docker_image() {
   local repo_path="$1"
   local server_address="$2"
@@ -259,7 +269,8 @@ function manage_docker_image() {
   local docker_file_name="$6"
   declare -a files_to_check=("${!7}")
 
-  local full_docker_image_name="${server_address}/${project_path}/${docker_image_name}:${docker_image_tag}"
+  local reformatted_docker_image_tag=$(replace_special_chars_in_docker_tag "${docker_image_tag}")
+  local full_docker_image_name="${server_address}/${project_path}/${docker_image_name}:${reformatted_docker_image_tag}"
 
   #local parent_branch=$(get_parent_branch_name "${repo_path}")
   local parent_branch=$(get_default_branch_name "${repo_path}")
