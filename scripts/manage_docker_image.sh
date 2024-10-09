@@ -212,14 +212,20 @@ function get_default_branch_name() {
 
 function get_parent_branch_name() {
   local repo_path="$1"
-  git -C ${repo_path} fetch --depth=10000
-  git -C ${repo_path} fetch --all
+  # git -C ${repo_path} fetch --depth=10000
+  # git -C ${repo_path} fetch --all
+  # echo $(
+  #   git -C ${repo_path} show-branch |
+  #     grep '\*' |
+  #     grep -v $(git -C "${repo_path}" rev-parse --abbrev-ref HEAD) |
+  #     head -n1 |
+  #     sed 's/.*\[//g' | sed 's/\].*//g'
+  # )
+
   echo $(
-    git -C ${repo_path} show-branch |
-      grep '\*' |
-      grep -v $(git -C "${repo_path}" rev-parse --abbrev-ref HEAD) |
-      head -n1 |
-      sed 's/.*\[//g' | sed 's/\].*//g'
+    git -C ${repo_path} remote show origin |
+      grep "  HEAD branch: " |
+      sed 's@^  HEAD branch: @@'
   )
 }
 
