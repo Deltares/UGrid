@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-set -x
 set -e
 
 function usage() {
@@ -204,15 +203,15 @@ function docker_pull() {
 function get_default_branch_name() {
   local repo_path="$1"
 
-  # git -C ${repo_path} fetch --depth=10000
-  # git -C ${repo_path} fetch --all
+  git -C ${repo_path} fetch --depth=10000
+  git -C ${repo_path} fetch --all
+
+  # this is better but does not work with shallow clones
   # echo $(
   #   git -C "${repo_path}" symbolic-ref refs/remotes/origin/HEAD |
   #     sed 's@^refs/remotes/origin/@@'
   # )
-
-  git -C ${repo_path} fetch --depth=10000
-  git -C ${repo_path} fetch --all
+  # this works
   echo $(
     git -C ${repo_path} remote show origin |
       grep "  HEAD branch: " |
@@ -304,5 +303,3 @@ function main() {
 }
 
 main "$@"
-
-set +x
