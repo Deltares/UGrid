@@ -204,7 +204,6 @@ function get_default_branch_name() {
   local repo_path="$1"
   git -C ${repo_path} fetch --depth=10000
   git -C ${repo_path} fetch --all
-  git -C ${repo_path} remote set-head origin --auto
   echo $(
     git -C "${repo_path}" symbolic-ref refs/remotes/origin/HEAD |
       sed 's@^refs/remotes/origin/@@'
@@ -215,7 +214,6 @@ function get_parent_branch_name() {
   local repo_path="$1"
   git -C ${repo_path} fetch --depth=10000
   git -C ${repo_path} fetch --all
-  git -C ${repo_path} remote set-head origin --auto
   echo $(
     git -C ${repo_path} show-branch |
       grep '\*' |
