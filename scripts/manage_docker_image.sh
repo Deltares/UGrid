@@ -200,45 +200,19 @@ function docker_pull() {
   docker pull "${full_docker_image_name}"
 }
 
-function get_default_branch_name() {
-  local repo_path="$1"
-
-  git -C ${repo_path} fetch --depth=10000
-  git -C ${repo_path} fetch --all
-
-  # this is better but does not work with shallow clones
-  # echo $(
-  #   git -C "${repo_path}" symbolic-ref refs/remotes/origin/HEAD |
-  #     sed 's@^refs/remotes/origin/@@'
-  # )
-  # this works
-  echo $(
-    git -C ${repo_path} remote show origin |
-      grep "  HEAD branch: " |
-      sed 's@^  HEAD branch: @@'
-  )
-}
-
-function get_parent_branch_name() {
-  local repo_path="$1"
-  git -C ${repo_path} fetch --depth=10000
-  git -C ${repo_path} fetch --all
-  echo $(
-    git -C ${repo_path} show-branch |
-      grep '\*' |
-      grep -v $(git -C "${repo_path}" rev-parse --abbrev-ref HEAD) |
-      head -n1 |
-      sed 's/.*\[//g' | sed 's/\].*//g'
-  )
-}
-
+# One should not compare the current branch to the parent branch
+# from which the current branch has been created.
+# This does not work if the current and parent branches are the same.
+# Ideally, look for the diffs between last 2 push events to the current branch.
+# This can account for multiple commits. But this requires github CLI and complicates things a lot.
+# Instead, look for diffs with respect to the last commit. If everything is done by squashed PRs,
+# things should be ok.
 function has_git_diffs() {
   local repo_path="$1"
-  local parent_branch="$2"
-  declare -a files_to_check=("${!3}")
+  declare -a files_to_check=("${!2}")
 
   local changes=$(
-    git -C ${repo_path} diff --name-status "origin/${parent_branch}" -- "${files_to_check[@]}"
+    git -C ${repo_path} diff --name-status $(git rev-parse HEAD~1) -- "${files_to_check[@]}"
   )
   if [[ -n "${changes}" ]]; then
     echo "Found changes with respect to branch ${parent_branch}:"
@@ -272,10 +246,8 @@ function manage_docker_image() {
   local reformatted_docker_image_tag=$(replace_special_chars_in_docker_tag "${docker_image_tag}")
   local full_docker_image_name="${server_address}/${project_path}/${docker_image_name}:${reformatted_docker_image_tag}"
 
-  #local parent_branch=$(get_parent_branch_name "${repo_path}")
-  local parent_branch=$(get_default_branch_name "${repo_path}")
   echo "Parent branch: ${parent_branch}"
-  if has_git_diffs "${repo_path}" "${parent_branch}" files_to_check[@]; then
+  if has_git_diffs "${repo_path}" files_to_check[@]; then
     echo "Image will be built and pushed"
     docker_build_and_push "${full_docker_image_name}" "${docker_file_name}"
   else
