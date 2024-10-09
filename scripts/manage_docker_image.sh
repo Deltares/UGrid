@@ -202,24 +202,12 @@ function docker_pull() {
 
 function get_default_branch_name() {
   local repo_path="$1"
-  git -C ${repo_path} fetch --depth=10000
-  git -C ${repo_path} fetch --all
-  echo $(
-    git -C "${repo_path}" symbolic-ref refs/remotes/origin/HEAD |
-      sed 's@^refs/remotes/origin/@@'
-  )
-}
 
-function get_parent_branch_name() {
-  local repo_path="$1"
   # git -C ${repo_path} fetch --depth=10000
   # git -C ${repo_path} fetch --all
   # echo $(
-  #   git -C ${repo_path} show-branch |
-  #     grep '\*' |
-  #     grep -v $(git -C "${repo_path}" rev-parse --abbrev-ref HEAD) |
-  #     head -n1 |
-  #     sed 's/.*\[//g' | sed 's/\].*//g'
+  #   git -C "${repo_path}" symbolic-ref refs/remotes/origin/HEAD |
+  #     sed 's@^refs/remotes/origin/@@'
   # )
 
   git -C ${repo_path} fetch --depth=10000
@@ -228,6 +216,19 @@ function get_parent_branch_name() {
     git -C ${repo_path} remote show origin |
       grep "  HEAD branch: " |
       sed 's@^  HEAD branch: @@'
+  )
+}
+
+function get_parent_branch_name() {
+  local repo_path="$1"
+  git -C ${repo_path} fetch --depth=10000
+  git -C ${repo_path} fetch --all
+  echo $(
+    git -C ${repo_path} show-branch |
+      grep '\*' |
+      grep -v $(git -C "${repo_path}" rev-parse --abbrev-ref HEAD) |
+      head -n1 |
+      sed 's/.*\[//g' | sed 's/\].*//g'
   )
 }
 
