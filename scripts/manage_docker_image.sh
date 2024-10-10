@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+set -x
 set -e
 
 function usage() {
@@ -285,3 +285,4 @@ function main() {
 }
 
 main "$@"
+set +x
