@@ -149,7 +149,7 @@ delete_docker_image() {
         )
         ;;
       *)
-        # remove artifact by exact tag, for example a specific feature
+        # remove specific artifact by exact tag, for example a specific feature
         # use with extreme care: can be used to delete any artifact including ones tagged as main or release_vx.y.z
         digests_of_artifacts_to_delete=$(
           echo "${artifacts}" |

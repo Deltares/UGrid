@@ -212,7 +212,7 @@ function has_git_diffs() {
   declare -a files_to_check=("${!2}")
 
   local changes=$(
-    git -C ${repo_path} diff --name-status $(git rev-parse HEAD~1) -- "${files_to_check[@]}"
+    git -C ${repo_path} diff --name-status HEAD~1 HEAD -- "${files_to_check[@]}"
   )
   if [[ -n "${changes}" ]]; then
     echo "Found changes with respect to the previous commit:"
