@@ -10,7 +10,7 @@ endif()
 set(
   GLOB_UGRID_PROJECT_VERSION 
   "${UGRID_PROJECT_VERSION_MAJOR}.${UGRID_PROJECT_VERSION_MINOR}.${UGRID_PROJECT_VERSION_PATCH}.${UGRID_PROJECT_VERSION_TWEAK}"
-  CACHE STRING ".NET target framework"
+  CACHE STRING "Project version"
 )
 
 # year
@@ -19,7 +19,12 @@ set(GLOB_CURRENT_YEAR ${GLOB_CURRENT_YEAR} CACHE STRING "Current year")
 
 # .NET config
 if(WIN32 AND BUILD_DOTNET_WRAPPER)
-  set(GLOB_DOTNET_TARGET_FRAMEWORK "net481" CACHE STRING ".NET target framework")
+  set(GLOB_LIB_DOTNET_TARGET_FRAMEWORK "netstandard2.0;net481;net6.0;net8.0" CACHE STRING "Library .NET target framework")
+  set(GLOB_TEST_DOTNET_TARGET_FRAMEWORK "net481;net6.0;net8.0" CACHE STRING "Test .NET target framework")
+
+  #set(GLOB_LIB_DOTNET_TARGET_FRAMEWORK "netstandard2.0" CACHE STRING "Library .NET target framework")
+  #set(GLOB_TEST_DOTNET_TARGET_FRAMEWORK "net481" CACHE STRING "Test .NET target framework")
+
   set(GLOB_DOTNET_TARGET_FRAMEWORK_VERSION "v4.8.1" CACHE STRING ".NET target framework version")
   set(GLOB_DOTNET_SDK "Microsoft.NET.Sdk" CACHE STRING ".NET SDK")
   set(GLOB_CSHARP_LANGUAGE_VERSION "7.3" CACHE STRING "C# Compiler Options for language feature rules") 

@@ -15,7 +15,7 @@ namespace UGridNET.Tests
             {
                 int result = -1;
 
-                const string filePath = "..\\..\\..\\..\\..\\tests\\data\\AllUGridEntities.nc";
+                const string filePath = "..\\..\\..\\..\\..\\..\\tests\\data\\AllUGridEntities.nc";
                 int fileMode = -1;
 
                 result = UGrid.ug_file_read_mode(ref fileMode);

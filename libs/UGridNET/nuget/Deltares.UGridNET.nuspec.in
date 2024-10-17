@@ -12,15 +12,8 @@
         <readme>README.md</readme>
 
         <dependencies>
-            <group targetFramework=".NETFramework@DOTNET_TARGET_FRAMEWORK_VERSION_WITHOUT_V_PREFIX@" />
         </dependencies>
     </metadata>
     <files>
-        <file src="@CMAKE_BINARY_DIR@\libs\UGridNET\dll\Release\UGridNET.dll" target="lib\@GLOB_DOTNET_TARGET_FRAMEWORK@\UGridNET.dll" />
-        <file src="@CMAKE_BINARY_DIR@\libs\UGridNET\SWIG\Release\UGridCSharpWrapper.dll" target="runtimes\win-x64\native\" />
-        <file src="@CMAKE_BINARY_DIR@\libs\UGridNET\SWIG\Release\UGridCSharpWrapper.lib" target="runtimes\win-x64\native\" />
-        <file src="@CMAKE_BINARY_DIR@\libs\UGridNET\SWIG\Release\UGridCSharpWrapper.exp" target="runtimes\win-x64\native\" />
-        <file src="@CMAKE_BINARY_DIR@\libs\UGridNET\nuget\Deltares.UGridNET.targets" target="build\@GLOB_DOTNET_TARGET_FRAMEWORK@\" />
-        <file src="@CMAKE_BINARY_DIR@\libs\UGridNET\nuget\README.md" target="" />
     </files>
 </package>

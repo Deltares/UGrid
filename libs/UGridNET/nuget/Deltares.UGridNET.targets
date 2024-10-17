@@ -3,13 +3,13 @@
     xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <Target Name="UGridNETPostBuild" AfterTargets="Build">
         <ItemGroup>
-            <_FilesToCopyUGridNET Include="$(MSBuildThisFileDirectory)..\..\runtimes\win-x64\native\**\*"/>
+            <_FilesToCopyUGridNET Include="$(MSBuildThisFileDirectory)..\..\..\runtimes\win-x64\native\**\*"/>
         </ItemGroup>
         <Copy SourceFiles="@(_FilesToCopyUGridNET)" DestinationFolder="$(OutDir)\%(RecursiveDir)" SkipUnchangedFiles="true"/>
     </Target>
     <Target Name="UGridNETClean" AfterTargets="Clean">
         <ItemGroup>
-            <_OriginalFilesUGridNET Include="$(MSBuildThisFileDirectory)..\..\runtimes\win-x64\native\**\*"/>
+            <_OriginalFilesUGridNET Include="$(MSBuildThisFileDirectory)..\..\..\runtimes\win-x64\native\**\*"/>
             <_FilesToCleanUGridNET Include="$(OutDir)\win-x64\native\%(_OriginalFilesUGridNET.RecursiveDir)%(_OriginalFilesUGridNET.FileName)%(_OriginalFilesUGridNET.Extension)"/>
         </ItemGroup>
         <Delete Files="@(_FilesToCleanUGridNET)"/>
