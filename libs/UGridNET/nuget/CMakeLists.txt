@@ -8,8 +8,6 @@ project(
 
 set(TARGET_NAME ${PROJECT_NAME})
 
-string(SUBSTRING ${GLOB_DOTNET_TARGET_FRAMEWORK_VERSION} 1 -1 DOTNET_TARGET_FRAMEWORK_VERSION_WITHOUT_V_PREFIX)
-
 include(${CMAKE_SOURCE_DIR}/cmake/git_helpers.cmake)
 set(VERSION_SUFFIX "")
 if(${GIT_FOUND})
@@ -25,7 +23,7 @@ execute_process(
   COMMAND ${Python_EXECUTABLE} ${CMAKE_SOURCE_DIR}/scripts/configure_nuspec.py
     --template ${CMAKE_CURRENT_SOURCE_DIR}/Deltares.UGridNET.nuspec.in
     --destination ${CMAKE_CURRENT_BINARY_DIR}/Deltares.UGridNET.nuspec.preconfig
-    --dotnet_target_frameworks ${GLOB_LIB_DOTNET_TARGET_FRAMEWORK}
+    --dotnet_target_frameworks ${GLOB_LIB_DOTNET_TARGET_FRAMEWORKS}
   OUTPUT_VARIABLE PACKAGE_REFERENCES
   RESULT_VARIABLE RETURN_CODE
   OUTPUT_STRIP_TRAILING_WHITESPACE
