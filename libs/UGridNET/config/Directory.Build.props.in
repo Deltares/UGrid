@@ -8,6 +8,5 @@
 		<Version>@PROJECT_VERSION_MAJOR@.@PROJECT_VERSION_MINOR@.@PROJECT_VERSION_PATCH@.@PROJECT_VERSION_TWEAK@</Version>
 		<FileVersion>@PROJECT_VERSION_MAJOR@.@PROJECT_VERSION_MINOR@.@PROJECT_VERSION_PATCH@.@PROJECT_VERSION_TWEAK@</FileVersion>
 		<TargetFrameworks>@PROJECT_DOTNET_TARGET_FRAMEWORKS@</TargetFrameworks>
-		<PublishWithAspNetCoreTargetManifest>false</PublishWithAspNetCoreTargetManifest>
 	</PropertyGroup>
 </Project>
