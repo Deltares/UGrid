@@ -19,8 +19,8 @@ set(GLOB_CURRENT_YEAR ${GLOB_CURRENT_YEAR} CACHE STRING "Current year")
 
 # .NET config
 if(WIN32 AND BUILD_DOTNET_WRAPPER)
-  set(GLOB_LIB_DOTNET_TARGET_FRAMEWORK "netstandard2.0;net481;net6.0;net8.0" CACHE STRING "Library .NET target framework")
-  set(GLOB_TEST_DOTNET_TARGET_FRAMEWORK "net481;net6.0;net8.0" CACHE STRING "Test .NET target framework")
+  set(GLOB_LIB_DOTNET_TARGET_FRAMEWORK "netstandard2.0;net481;net8.0" CACHE STRING "Library .NET target framework")
+  set(GLOB_TEST_DOTNET_TARGET_FRAMEWORK "net481;net8.0" CACHE STRING "Test .NET target framework")
 
   #set(GLOB_LIB_DOTNET_TARGET_FRAMEWORK "netstandard2.0" CACHE STRING "Library .NET target framework")
   #set(GLOB_TEST_DOTNET_TARGET_FRAMEWORK "net481" CACHE STRING "Test .NET target framework")
