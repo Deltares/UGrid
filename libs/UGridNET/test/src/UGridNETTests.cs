@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using NUnit.Framework;
 
 namespace UGridNET.Tests
@@ -7,6 +8,28 @@ namespace UGridNET.Tests
     [TestFixture]
     public class UGridNetTests
     {
+
+        private static string GetTestDataPath()
+        {
+            string path = Environment.GetEnvironmentVariable("UGRID_TEST_DATA_DIR");
+
+            // Check if the environment variable is set
+            if (string.IsNullOrEmpty(path))
+            {
+                throw new InvalidOperationException("The UGRID_TEST_DATA_DIR environment variable is not set.");
+            }
+
+            // Check if the path is absolute and that it exists
+            if (!(Path.IsPathRooted(path) && Directory.Exists(path)))
+            {
+                throw new InvalidOperationException($"The specified UGRID_TEST_DATA_DIR path must be absolute and should exist. UGRID_TEST_DATA_DIR={path}");
+            }
+
+            return path;
+        }
+
+        private static readonly string TestDataPath = GetTestDataPath();
+
         [Test]
         public void TestMesh1DReadAndInquire()
         {
@@ -15,7 +38,9 @@ namespace UGridNET.Tests
             {
                 int result = -1;
 
-                const string filePath = "..\\..\\..\\..\\..\\tests\\data\\AllUGridEntities.nc";
+                string filePath = Path.Combine(TestDataPath, "AllUGridEntities.nc");
+
+                Console.WriteLine(filePath);
                 int fileMode = -1;
 
                 result = UGrid.ug_file_read_mode(ref fileMode);

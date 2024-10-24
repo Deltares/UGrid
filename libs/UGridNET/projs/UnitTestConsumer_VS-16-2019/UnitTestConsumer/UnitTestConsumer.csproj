@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFrameworks>net481</TargetFrameworks>
+		<Platforms>AnyCPU;x64</Platforms>
+	</PropertyGroup>
+	<ItemGroup>
+	  <Compile Include="..\..\..\test\src\UGridNETTests.cs" Link="UGridNETTests.cs" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Deltares.UGridNET" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" />
+		<PackageReference Include="NUnit" />
+		<PackageReference Include="NUnit.ConsoleRunner" />
+		<PackageReference Include="NUnit3TestAdapter" />
+		<PackageReference Include="System.Reflection" />
+	</ItemGroup>
+</Project>
