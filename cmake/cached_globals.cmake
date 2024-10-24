@@ -22,7 +22,7 @@ if(WIN32 AND BUILD_DOTNET_WRAPPER)
   # .NET SDK
   set(GLOB_DOTNET_SDK "Microsoft.NET.Sdk" CACHE STRING ".NET SDK")
   # .NET target frameworks
-  # Note: Even if the list consists of a single element, make sure to terminate wirth a semicolon
+  # Note: Even if the list consists of a single element, make sure to terminate with a semicolon
   #       For ex: set(LIST_OF_DOTNET_TARGET_FRAMEWORKS "net481;" CACHE STRING "Supported .NET target framework")
   #       Otherwise, Visual Studio will not create subdir net481 under Release (of whichever build config is used) in the CMake binary dir
   #       <TargetFramework>net481</TargetFramework> works (notice the singular form in xml element "TargetFramework")
