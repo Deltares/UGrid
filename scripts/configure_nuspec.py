@@ -88,7 +88,6 @@ def configure_nuspec(
         raise ValueError("Could not find <files> section in the nuspec file.")
     # Create the <file> elements for the DLL
     for framework in frameworks:
-        # Create the <file> elements for the DLL and the .targets
         file_dll = ET.Element(
             "file",
             src=f"@CMAKE_BINARY_DIR@/libs/UGridNET/dll/Release/{framework}/UGridNET.dll",
@@ -98,7 +97,6 @@ def configure_nuspec(
 
     # Create the <file> elements for the targets
     for framework in frameworks:
-
         file_targets = ET.Element(
             "file",
             src=f"@CMAKE_BINARY_DIR@/libs/UGridNET/nuget/Deltares.UGridNET.targets",
