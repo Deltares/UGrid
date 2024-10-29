@@ -5,13 +5,29 @@ project(
 
 set(TARGET_NAME ${PROJECT_NAME})
 
+
+set(COPY_COMMANDS)
+
+foreach(LIB_DOTNET_TARGET_FRAMEWORK ${GLOB_LIB_DOTNET_TARGET_FRAMEWORKS})
+  list(
+    APPEND 
+    COPY_COMMANDS
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different "$<TARGET_FILE:UGridCSharpWrapper>" "$<TARGET_FILE_DIR:UGridNET>/${LIB_DOTNET_TARGET_FRAMEWORK}")
+endforeach()
+
+foreach(TEST_DOTNET_TARGET_FRAMEWORK ${GLOB_TEST_DOTNET_TARGET_FRAMEWORKS})
+  list(
+    APPEND 
+    COPY_COMMANDS
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different "$<TARGET_FILE:UGridCSharpWrapper>" "$<TARGET_FILE_DIR:UGridNET.Tests>/${TEST_DOTNET_TARGET_FRAMEWORK}")
+endforeach()
+
 add_custom_target(
   ${TARGET_NAME} ALL
   DEPENDS
     "$<TARGET_NAME:UGridCSharpWrapper>"
     "$<TARGET_NAME:UGridNET>"
     "$<TARGET_NAME:UGridNET.Tests>"
-  COMMAND ${CMAKE_COMMAND} -E copy_if_different "$<TARGET_FILE:UGridCSharpWrapper>" "$<TARGET_FILE_DIR:UGridNET>"
-  COMMAND ${CMAKE_COMMAND} -E copy_if_different "$<TARGET_FILE:UGridCSharpWrapper>" "$<TARGET_FILE_DIR:UGridNET.Tests>"
+  ${COPY_COMMANDS}
   COMMENT "Copy $<TARGET_FILE:UGridCSharpWrapper> to $<TARGET_FILE_DIR:UGridNET> and $<TARGET_FILE_DIR:UGridNET.Tests>"
 )

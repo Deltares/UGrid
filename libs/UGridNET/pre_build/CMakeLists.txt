@@ -11,7 +11,7 @@ add_custom_target(
       -Force
       -NoHttpCache
       -Verbosity detailed
-      -ConfigFile ${CMAKE_CURRENT_BINARY_DIR}/../test/NuGet.config
+      -ConfigFile ${CMAKE_CURRENT_BINARY_DIR}/../dll/NuGet.config
     COMMAND ${NUGET_EXECUTABLE} restore ${CMAKE_CURRENT_BINARY_DIR}/../test/UGridNET.Tests.sln
       -Force
       -NoHttpCache

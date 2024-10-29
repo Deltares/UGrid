@@ -34,23 +34,25 @@ def get_paths_of_dlls_to_sign(build_dir: Path) -> List[Path]:
     vs_proj_types = ("vcxproj", "csproj")
     vs_proj_paths = []
     for vs_proj_type in vs_proj_types:
-        vs_proj_paths.extend(Path(f"{build_dir}/libs").glob(f"*/*.{vs_proj_type}"))
-        vs_proj_paths.extend(Path(f"{build_dir}/libs").glob(f"*/*/*.{vs_proj_type}"))
+        vs_proj_paths.extend((build_dir / Path("libs")).rglob(f"*.{vs_proj_type}"))
 
     dll_paths = []
     for vs_proj_path in vs_proj_paths:
         parent = vs_proj_path.parent
         stem = vs_proj_path.stem
-        dll_path = Path(f"{parent}/Release/{stem}.dll")
-        if dll_path.exists() and "test" not in stem.lower():
-            dll_paths.append(dll_path)
+        dll_search_path = Path(f"{parent}/Release/")
+        dll_name = f"{stem}.dll"
+        dll_path = list(dll_search_path.rglob(dll_name))
+
+        if dll_path and "test" not in stem.lower():
+            dll_paths.extend(dll_path)
 
     return dll_paths
 
 
 def generate_json_mapping_content(
     build_dir: Path,
-    dll_paths: List[Path],
+    dll_paths: list[Path],
 ) -> dict:
     """
     Generate the json mapping file, with which the signed dlls can be restored to their original paths.
@@ -66,7 +68,7 @@ def generate_json_mapping_content(
         "mapping": list(
             (
                 {
-                    "dll": dll_path.name,
+                    "dll": str(dll_path.relative_to(build_dir / Path("libs"))),
                     "path": str(dll_path.relative_to(build_dir)),
                 }
                 for dll_path in dll_paths
@@ -121,7 +123,10 @@ def harvest_to_sign_dlls(
     print("DLLs to sign:")
     for dll_path in dll_paths:
         print(" -", dll_path)
-        shutil.move(str(dll_path), str(sign_dir))
+        shutil.move(
+            str(dll_path),
+            str(sign_dir / dll_path.relative_to(build_dir / Path("libs")).parent),
+        )
 
 
 def restore_signed_dlls(build_dir: Path, dll_mapping: dict, sign_dir) -> None:
@@ -156,6 +161,11 @@ def harvest(build_dir: Path) -> None:
     sign_dir = build_dir / Path(TO_SIGN_DIR_NAME)
     if not (sign_dir.exists() and sign_dir.is_dir()):
         sign_dir.mkdir(parents=True)
+        for dll_path in dll_paths:
+            dll_subdir = (
+                sign_dir / Path(dll_path).relative_to(build_dir / Path("libs")).parent
+            )
+            dll_subdir.mkdir(parents=True)
 
     dll_mapping = generate_json_mapping_content(build_dir, dll_paths)
     write_json_mapping_file(sign_dir, dll_mapping)

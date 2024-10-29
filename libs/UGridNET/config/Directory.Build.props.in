@@ -7,13 +7,7 @@
 		<Product>UGrid</Product>
 		<Version>@PROJECT_VERSION_MAJOR@.@PROJECT_VERSION_MINOR@.@PROJECT_VERSION_PATCH@.@PROJECT_VERSION_TWEAK@</Version>
 		<FileVersion>@PROJECT_VERSION_MAJOR@.@PROJECT_VERSION_MINOR@.@PROJECT_VERSION_PATCH@.@PROJECT_VERSION_TWEAK@</FileVersion>
-
-		<TargetFramework>@GLOB_DOTNET_TARGET_FRAMEWORK@</TargetFramework>
-
-        <!--  <GenerateAssemblyInfo>true</GenerateAssemblyInfo> -->
-		<!-- <OutputPath>$(SolutionDir)$(Configuration)\</OutputPath> -->
-		<!-- <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath> -->
-		<!-- <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath> -->
-		<!-- <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies> -->
+		<TargetFrameworks>@PROJECT_DOTNET_TARGET_FRAMEWORKS@</TargetFrameworks>
+		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
 	</PropertyGroup>
 </Project>

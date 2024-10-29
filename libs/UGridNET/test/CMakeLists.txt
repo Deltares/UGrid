@@ -8,13 +8,6 @@ project(
 # target name
 set(TARGET_NAME ${PROJECT_NAME})
 
-set(APP_CONFIG ${CMAKE_CURRENT_BINARY_DIR}/App.config)
-configure_file(
-  ${CMAKE_CURRENT_SOURCE_DIR}/../config/App.config.in
-  ${APP_CONFIG}
-  @ONLY
-)
-
 set(NUGET_CONFIG ${CMAKE_CURRENT_BINARY_DIR}/NuGet.config)
 configure_file(
   ${CMAKE_CURRENT_SOURCE_DIR}/../config/NuGet.config
@@ -22,6 +15,7 @@ configure_file(
   COPYONLY
 )
 
+set(PROJECT_DOTNET_TARGET_FRAMEWORKS ${GLOB_TEST_DOTNET_TARGET_FRAMEWORKS})
 set(DIRECTORY_BUILD_PROPS ${CMAKE_CURRENT_BINARY_DIR}/Directory.Build.props)
 configure_file(
   ${CMAKE_CURRENT_SOURCE_DIR}/../config/Directory.Build.props.in
@@ -46,9 +40,9 @@ execute_process(
   COMMAND_ERROR_IS_FATAL LAST
 )
 
-add_library(${TARGET_NAME} 
+add_library(
+  ${TARGET_NAME} 
   SHARED
-  ${APP_CONFIG}
   ${NUGET_CONFIG}
   ${DIRECTORY_PACKAGES_PROPS}
   ${DIRECTORY_BUILD_PROPS}
@@ -60,9 +54,7 @@ target_link_libraries(${TARGET_NAME} PRIVATE "$<TARGET_NAME:UGridNET>")
 set_target_properties(
   ${TARGET_NAME}
   PROPERTIES
-    DOTNET_TARGET_FRAMEWORK ${GLOB_DOTNET_TARGET_FRAMEWORK}
-    DOTNET_TARGET_FRAMEWORK_VERSION ${GLOB_DOTNET_TARGET_FRAMEWORK_VERSION}
+    DOTNET_TARGET_FRAMEWORK "${GLOB_TEST_DOTNET_TARGET_FRAMEWORKS}"
     DOTNET_SDK ${GLOB_DOTNET_SDK}
-    VS_DOTNET_REFERENCES "System;System.Runtime.CompilerServices.Unsafe"
     VS_PACKAGE_REFERENCES "${PACKAGE_REFERENCES}"
 )
