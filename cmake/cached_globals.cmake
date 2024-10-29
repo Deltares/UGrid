@@ -28,7 +28,6 @@ if(WIN32 AND BUILD_DOTNET_WRAPPER)
   #       <TargetFramework>net481</TargetFramework> works (notice the singular form in xml element "TargetFramework")
   #       <TargetFrameworks>net481</TargetFrameworks> does not work (notice the plural form in xml element "TargetFrameworks")
   #       <TargetFrameworks>net481;</TargetFrameworks> works (notice the plural form in xml element "TargetFrameworks" and the semicolon after "net481")
-  #       Is this a VS bug? "TargetFramework" should be a special case of "TargetFrameworks" when the length of the list is 1.
   set(GLOB_LIB_DOTNET_TARGET_FRAMEWORKS "netstandard2.0;net481" CACHE STRING "Library .NET target framework")
   set(GLOB_TEST_DOTNET_TARGET_FRAMEWORKS "net481;" CACHE STRING "Test .NET target framework")
   # .NET language version
