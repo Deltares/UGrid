@@ -56,3 +56,5 @@ set_target_properties(
     DOTNET_SDK ${GLOB_DOTNET_SDK}
     VS_PACKAGE_REFERENCES "${PACKAGE_REFERENCES}"
 )
+
+# target_compile_options(${TARGET_NAME} PRIVATE "/unsafe")
