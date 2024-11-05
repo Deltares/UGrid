@@ -35,6 +35,8 @@
 
 #include <map>
 #include <sstream>
+#include <string>
+#include <unordered_map>
 #include <vector>
 
 #include <ncFile.h>
@@ -52,6 +54,20 @@ namespace ugridapi
 {
     static std::map<int, UGridState> ugrid_states;
     static char exceptionMessage[512] = "";
+
+    /// @brief Hash table mapping locations to location names
+    static const std::unordered_map<MeshLocations, std::string> locations_attribute_names{
+        {MeshLocations::Faces, "face"},
+        {MeshLocations::Nodes, "node"},
+        {MeshLocations::Edges, "edge"},
+
+    };
+
+    /// @brief Hash table mapping locations to ugrid dimensions
+    static const std::unordered_map<MeshLocations, ugrid::UGridFileDimensions> locations_ugrid_dimensions{
+        {MeshLocations::Faces, ugrid::UGridFileDimensions::face},
+        {MeshLocations::Nodes, ugrid::UGridFileDimensions::node},
+        {MeshLocations::Edges, ugrid::UGridFileDimensions::edge}};
 
     static int HandleExceptions(const std::exception_ptr exceptionPtr)
     {

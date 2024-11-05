@@ -73,20 +73,6 @@ namespace ugridapi
             Edges = 2, ///< Edges
         };
 
-        /// @brief Hash table mapping locations to location names
-        static std::unordered_map<MeshLocations, std::string> locations_attribute_names{
-            {MeshLocations::Faces, "face"},
-            {MeshLocations::Nodes, "node"},
-            {MeshLocations::Edges, "edge"},
-
-        };
-
-        /// @brief Hash table mapping locations to ugrid dimensions
-        static std::unordered_map<MeshLocations, ugrid::UGridFileDimensions> locations_ugrid_dimensions{
-            {MeshLocations::Faces, ugrid::UGridFileDimensions::face},
-            {MeshLocations::Nodes, ugrid::UGridFileDimensions::node},
-            {MeshLocations::Edges, ugrid::UGridFileDimensions::edge}};
-
         /// @brief Gets pointer to the exception message.
         /// @param[out] error_message The pointer to the latest error message
         /// @returns Error code
