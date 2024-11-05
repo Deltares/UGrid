@@ -16,7 +16,6 @@
   #include "UGridAPI/Mesh2D.hpp"
   #include "UGridAPI/Network1D.hpp"
   #include "UGridAPI/UGrid.hpp"
-  #include "UGridAPI/UGridState.hpp"
 %}
 
 %include "UGridAPI/Contacts.hpp"
@@ -24,4 +23,3 @@
 %include "UGridAPI/Mesh2D.hpp"
 %include "UGridAPI/Network1D.hpp"
 %include "UGridAPI/UGrid.hpp"
-%include "UGridAPI/UGridState.hpp"
