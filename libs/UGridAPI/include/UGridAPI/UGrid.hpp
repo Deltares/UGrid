@@ -50,7 +50,7 @@ namespace ugridapi
     {
 #endif
         /// @brief Enumeration for the topology type
-        enum UGridTopologyType
+        enum TopologyType
         {
             Network1dTopology = 0,
             Mesh1dTopology = 1,
@@ -104,50 +104,30 @@ namespace ugridapi
         /// @return Error code
         UGRID_API int ug_entity_get_face_location_enum(int& location);
 
-        /// @brief Gets the integer identifying the network topology type
-        /// @param[out] topology_enum The integer identifying the network topology type
-        /// @return Error code
-        UGRID_API int ug_topology_get_network1d_enum(int& topology_enum);
-
-        /// @brief Gets the integer identifying the mesh1d topology type
-        /// @param[out] topology_enum The integer identifying the mesh1d topology type
-        /// @return Error code
-        UGRID_API int ug_topology_get_mesh1d_enum(int& topology_enum);
-
-        /// @brief Gets the integer identifying the mesh2d topology type
-        /// @param[out] topology_enum The integer identifying the mesh2d topology type
-        /// @return Error code
-        UGRID_API int ug_topology_get_mesh2d_enum(int& topology_enum);
-
-        /// @brief Gets the integer identifying the contact topology type
-        /// @param[out] topology_enum The integer identifying the contact topology type
-        /// @return Error code
-        UGRID_API int ug_topology_get_contacts_enum(int& topology_enum);
-
         /// @brief Gets the number of topologies of a specific type
         /// @param[in] file_id The file id
         /// @param[in] topology_type The topology type
         /// @param[in] topology_count The number of topologies of the specific type
         /// @return Error code
-        UGRID_API int ug_topology_get_count(int file_id, int topology_type, int& topology_count);
+        UGRID_API int ug_topology_get_count(int file_id, TopologyType topology_type, int& topology_count);
 
         /// @brief Get the number of data variables for a specific topology on a specific location
         /// @param[in] file_id The file id
-        /// @param[in] topology_type The topology type
         /// @param[in] topology_id The topology id
+        /// @param[in] topology_type The topology type
         /// @param[in] location The location (node, edge, face)
         /// @param[out] data_variable_count The number of data variables on the topology
         /// @return Error code
-        UGRID_API int ug_topology_count_data_variables(int file_id, int topology_type, int topology_id, int location, int& data_variable_count);
+        UGRID_API int ug_topology_count_data_variables(int file_id, int topology_id, TopologyType topology_type, int location, int& data_variable_count);
 
         /// @brief Get the names of data variables for a specific topology on a specific location
         /// @param[in] file_id  The file id
-        /// @param[in] topology_type The topology type
         /// @param[in] topology_id The topology id
+        /// @param[in] topology_type The topology type
         /// @param[in] location The location on the topology (e.g. node, edge or face)
         /// @param[out] data_variables_names_result The names of the data variables
         /// @return Error code
-        UGRID_API int ug_topology_get_data_variables_names(int file_id, int topology_type, int topology_id, int location, char* data_variables_names_result);
+        UGRID_API int ug_topology_get_data_variables_names(int file_id, int topology_id, TopologyType topology_type, int location, char* data_variables_names_result);
 
         /// @brief Get the names of data variables for a specific topology on a specific location
         /// @param[in] file_id The file id
@@ -159,8 +139,8 @@ namespace ugridapi
         /// @param[in] dimension_value The dimension value
         /// @return Error code
         UGRID_API int ug_topology_define_double_variable_on_location(int file_id,
-                                                                     int topology_type,
                                                                      int topology_id,
+                                                                     TopologyType topology_type,
                                                                      int location,
                                                                      const char* variable_name,
                                                                      const char* dimension_name,

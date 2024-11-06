@@ -98,11 +98,8 @@ TEST(ApiTest, InquireAndGet_OneMesh2D_ShouldReadMesh2d)
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
     // Get the number of topologies
-    int topology_type;
-    error_code = ugridapi::ug_topology_get_mesh2d_enum(topology_type);
-    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
     int num_mesh2d_topologies;
-    error_code = ugridapi::ug_topology_get_count(file_id, topology_type, num_mesh2d_topologies);
+    error_code = ugridapi::ug_topology_get_count(file_id, ugridapi::TopologyType::Mesh2dTopology, num_mesh2d_topologies);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
     ASSERT_EQ(num_mesh2d_topologies, 1);
 
@@ -331,11 +328,8 @@ TEST(ApiTest, InquireAndGet_OneNetwork1D_ShouldReadNetwork1D)
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
     // get the number of topologies
-    int topology_type;
-    error_code = ugridapi::ug_topology_get_network1d_enum(topology_type);
-    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
     int num_topologies;
-    error_code = ugridapi::ug_topology_get_count(file_id, topology_type, num_topologies);
+    error_code = ugridapi::ug_topology_get_count(file_id, ugridapi::TopologyType::Network1dTopology, num_topologies);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
     ASSERT_EQ(num_topologies, 1);
 
@@ -536,11 +530,8 @@ TEST(ApiTest, InquireAndGet_OneMesh1D_ShouldReadMesh1D)
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
     // get the number of topologies
-    int topology_type;
-    error_code = ugridapi::ug_topology_get_mesh1d_enum(topology_type);
-    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
     int num_topologies;
-    error_code = ugridapi::ug_topology_get_count(file_id, topology_type, num_topologies);
+    error_code = ugridapi::ug_topology_get_count(file_id, ugridapi::TopologyType::Mesh1dTopology, num_topologies);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
     ASSERT_EQ(num_topologies, 1);
 
@@ -720,11 +711,8 @@ TEST(ApiTest, InquireAndGet_OneContact_ShouldReadContact)
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
     // get the number of topologies
-    int topology_type;
-    error_code = ugridapi::ug_topology_get_contacts_enum(topology_type);
-    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
     int num_topologies;
-    error_code = ugridapi::ug_topology_get_count(file_id, topology_type, num_topologies);
+    error_code = ugridapi::ug_topology_get_count(file_id, ugridapi::TopologyType::ContactsTopology, num_topologies);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
     ASSERT_EQ(num_topologies, 1);
 
@@ -1295,9 +1283,6 @@ TEST(ApiTest, TopologyDefineDoubleVariableOnLocation_OnExistingFile_ShouldDefine
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
     // Write s0 double variable on topology
-    int topology_enum;
-    error_code = ugridapi::ug_topology_get_mesh2d_enum(topology_enum);
-    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
     int location_enum;
     error_code = ugridapi::ug_get_nodes_location_type(location_enum);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
@@ -1308,7 +1293,7 @@ TEST(ApiTest, TopologyDefineDoubleVariableOnLocation_OnExistingFile_ShouldDefine
     std::vector<char> dimension_name(name_long_length);
     string_to_char_array("numTimeSteps", name_long_length, dimension_name.data());
 
-    error_code = ugridapi::ug_topology_define_double_variable_on_location(file_id, 0, topology_enum, location_enum, variable_name.data(), dimension_name.data(), 10);
+    error_code = ugridapi::ug_topology_define_double_variable_on_location(file_id, 0, ugridapi::TopologyType::Mesh2dTopology, location_enum, variable_name.data(), dimension_name.data(), 10);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
     define_variable_attributes(file_id, "mesh2d_s0", "standard_name", "sea_surface_height");
@@ -1335,11 +1320,8 @@ TEST(ApiTest, InquireAndGetFaceEdges_OneMesh2D_ShouldReadMesh2D)
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
     // get the number of topologies
-    int topology_type;
-    error_code = ugridapi::ug_topology_get_network1d_enum(topology_type);
-    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
     int num_topologies;
-    error_code = ugridapi::ug_topology_get_count(file_id, topology_type, num_topologies);
+    error_code = ugridapi::ug_topology_get_count(file_id, ugridapi::TopologyType::Network1dTopology, num_topologies);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
     ASSERT_EQ(num_topologies, 1);
 

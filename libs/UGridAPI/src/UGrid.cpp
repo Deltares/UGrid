@@ -82,7 +82,7 @@ namespace ugridapi
         }
     }
 
-    static std::unique_ptr<ugrid::UGridEntity> get_topology(int file_id, int topology_id, int topology_type)
+    static std::unique_ptr<ugrid::UGridEntity> get_topology(int file_id, int topology_id, TopologyType topology_type)
     {
         switch (topology_type)
         {
@@ -174,7 +174,7 @@ namespace ugridapi
         return it->second;
     }
 
-    static std::string get_coordinate_variable_string(int file_id, int topology_id, int topology_type, std::string const& var_name)
+    static std::string get_coordinate_variable_string(int file_id, int topology_id, TopologyType topology_type, std::string const& var_name)
     {
         auto topology = get_topology(file_id, topology_id, topology_type);
 
@@ -224,42 +224,17 @@ namespace ugridapi
         return Success;
     }
 
-    UGRID_API int ug_topology_get_network1d_enum(int& topology_enum)
-    {
-        topology_enum = static_cast<int>(Network1dTopology);
-        return Success;
-    }
-
-    UGRID_API int ug_topology_get_mesh1d_enum(int& topology_enum)
-    {
-        topology_enum = static_cast<int>(Mesh1dTopology);
-        return Success;
-    }
-
-    UGRID_API int ug_topology_get_mesh2d_enum(int& topology_enum)
-    {
-        topology_enum = static_cast<int>(Mesh2dTopology);
-        return Success;
-    }
-
-    UGRID_API int ug_topology_get_contacts_enum(int& topology_enum)
-    {
-        topology_enum = static_cast<int>(ContactsTopology);
-        return Success;
-    }
-
-    UGRID_API int ug_topology_get_count(int file_id, int topology_type, int& topology_count)
+    UGRID_API int ug_topology_get_count(int file_id, TopologyType topology_type, int& topology_count)
     {
         int exit_code = Success;
         try
         {
-            switch (static_cast<UGridTopologyType>(topology_type))
+            switch (topology_type)
             {
             case Network1dTopology:
                 topology_count = static_cast<int>(ugrid_states[file_id].m_network1d.size());
                 break;
             case Mesh1dTopology:
-
                 topology_count = static_cast<int>(ugrid_states[file_id].m_mesh1d.size());
                 break;
             case Mesh2dTopology:
@@ -280,7 +255,7 @@ namespace ugridapi
         return exit_code;
     }
 
-    UGRID_API int ug_topology_count_data_variables(int file_id, int topology_type, int topology_id, int location, int& data_variable_count)
+    UGRID_API int ug_topology_count_data_variables(int file_id, int topology_id, TopologyType topology_type, int location, int& data_variable_count)
     {
         int exit_code = Success;
         try
@@ -306,7 +281,7 @@ namespace ugridapi
         return exit_code;
     }
 
-    UGRID_API int ug_topology_get_data_variables_names(int file_id, int topology_type, int topology_id, int location, char* data_variables_names_result)
+    UGRID_API int ug_topology_get_data_variables_names(int file_id, int topology_id, TopologyType topology_type, int location, char* data_variables_names_result)
     {
 
         int exit_code = Success;
@@ -334,7 +309,7 @@ namespace ugridapi
 
     UGRID_API int ug_topology_define_double_variable_on_location(int file_id,
                                                                  int topology_id,
-                                                                 int topology_type,
+                                                                 TopologyType topology_type,
                                                                  int mesh_location,
                                                                  char const* variable_name,
                                                                  char const* dimension_name,
