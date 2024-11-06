@@ -206,24 +206,6 @@ namespace ugridapi
         return Success;
     }
 
-    UGRID_API int ug_entity_get_node_location_enum(int& location)
-    {
-        location = static_cast<int>(ugrid::UGridEntityLocations::node);
-        return Success;
-    }
-
-    UGRID_API int ug_entity_get_edge_location_enum(int& location)
-    {
-        location = static_cast<int>(ugrid::UGridEntityLocations::edge);
-        return Success;
-    }
-
-    UGRID_API int ug_entity_get_face_location_enum(int& location)
-    {
-        location = static_cast<int>(ugrid::UGridEntityLocations::face);
-        return Success;
-    }
-
     UGRID_API int ug_topology_get_count(int file_id, TopologyType topology_type, int& topology_count)
     {
         int exit_code = Success;
@@ -255,7 +237,11 @@ namespace ugridapi
         return exit_code;
     }
 
-    UGRID_API int ug_topology_count_data_variables(int file_id, int topology_id, TopologyType topology_type, int location, int& data_variable_count)
+    UGRID_API int ug_topology_count_data_variables(int file_id,
+                                                   int topology_id,
+                                                   TopologyType topology_type,
+                                                   MeshLocations location,
+                                                   int& data_variable_count)
     {
         int exit_code = Success;
         try
@@ -267,7 +253,7 @@ namespace ugridapi
 
             auto const topology = get_topology(file_id, topology_id, topology_type);
 
-            auto const location_string = ugrid::from_location_integer_to_location_string(location);
+            auto const location_string = ugrid::from_location_integer_to_location_string(static_cast<int>(location));
 
             auto const data_variables_names = topology->get_data_variables_names(location_string);
 
@@ -281,7 +267,11 @@ namespace ugridapi
         return exit_code;
     }
 
-    UGRID_API int ug_topology_get_data_variables_names(int file_id, int topology_id, TopologyType topology_type, int location, char* data_variables_names_result)
+    UGRID_API int ug_topology_get_data_variables_names(int file_id,
+                                                       int topology_id,
+                                                       TopologyType topology_type,
+                                                       MeshLocations location,
+                                                       char* data_variables_names_result)
     {
 
         int exit_code = Success;
@@ -294,7 +284,7 @@ namespace ugridapi
 
             auto const topology = get_topology(file_id, topology_id, topology_type);
 
-            auto const location_string = ugrid::from_location_integer_to_location_string(location);
+            auto const location_string = ugrid::from_location_integer_to_location_string(static_cast<int>(location));
 
             auto const data_variables_names = topology->get_data_variables_names(location_string);
 
@@ -310,7 +300,7 @@ namespace ugridapi
     UGRID_API int ug_topology_define_double_variable_on_location(int file_id,
                                                                  int topology_id,
                                                                  TopologyType topology_type,
-                                                                 int mesh_location,
+                                                                 MeshLocations location,
                                                                  char const* variable_name,
                                                                  char const* dimension_name,
                                                                  const int dimension_value)
@@ -329,10 +319,8 @@ namespace ugridapi
 
             const auto mesh = topology->get_name();
 
-            const auto mesh_location_enum = static_cast<MeshLocations>(mesh_location);
-
-            const auto location = locations_attribute_names.at(mesh_location_enum);
-            const auto coordinates = get_coordinate_variable_string(file_id, topology_id, topology_type, location + "_coordinates");
+            const auto location_str = locations_attribute_names.at(location);
+            const auto coordinates = get_coordinate_variable_string(file_id, topology_id, topology_type, location_str + "_coordinates");
 
             // Set additional variable dimension on the file
             const auto local_dimension_name = ugrid::char_array_to_string(dimension_name, ugrid::name_long_length);
@@ -340,11 +328,13 @@ namespace ugridapi
 
             // First dimension is the additional dimension on the file, the second variable is a topological variable
             const auto variable_first_dimension = ugrid_states[file_id].get_dimension(local_dimension_name);
-            const auto variable_second_dimension = topology->get_dimension(locations_ugrid_dimensions.at(mesh_location_enum));
+            const auto variable_second_dimension = topology->get_dimension(locations_ugrid_dimensions.at(location));
 
-            auto variable = ugrid_states[file_id].m_ncFile->addVar(local_variable_name, netCDF::NcType::nc_DOUBLE, {variable_first_dimension, variable_second_dimension});
+            auto variable = ugrid_states[file_id].m_ncFile->addVar(local_variable_name,
+                                                                   netCDF::NcType::nc_DOUBLE,
+                                                                   {variable_first_dimension, variable_second_dimension});
             variable.putAtt("mesh", netCDF::NcType::nc_CHAR, mesh.size(), mesh.c_str());
-            variable.putAtt("location", netCDF::NcType::nc_CHAR, location.size(), location.c_str());
+            variable.putAtt("location", netCDF::NcType::nc_CHAR, location_str.size(), location_str.c_str());
             variable.putAtt("coordinates", netCDF::NcType::nc_CHAR, coordinates.size(), coordinates.c_str());
         }
         catch (...)
@@ -975,7 +965,11 @@ namespace ugridapi
         return exit_code;
     }
 
-    UGRID_API int ug_attribute_int_define(int file_id, char const* variable_name, char const* att_name, int const* attribute_values, int num_values)
+    UGRID_API int ug_attribute_int_define(int file_id,
+                                          char const* variable_name,
+                                          char const* att_name,
+                                          int const* attribute_values,
+                                          int num_values)
     {
         int exit_code = Success;
         try
@@ -1004,7 +998,11 @@ namespace ugridapi
         return exit_code;
     }
 
-    UGRID_API int ug_attribute_char_define(int file_id, char const* variable_name, char const* att_name, char const* attribute_values, int num_values)
+    UGRID_API int ug_attribute_char_define(int file_id,
+                                           char const* variable_name,
+                                           char const* att_name,
+                                           char const* attribute_values,
+                                           int num_values)
     {
         int exit_code = Success;
         try
@@ -1033,7 +1031,11 @@ namespace ugridapi
         return exit_code;
     }
 
-    UGRID_API int ug_attribute_double_define(int file_id, char const* variable_name, char const* att_name, double const* attribute_values, int num_values)
+    UGRID_API int ug_attribute_double_define(int file_id,
+                                             char const* variable_name,
+                                             char const* att_name,
+                                             double const* attribute_values,
+                                             int num_values)
     {
         int exit_code = Success;
         try
@@ -1062,7 +1064,10 @@ namespace ugridapi
         return exit_code;
     }
 
-    UGRID_API int ug_attribute_global_char_define(int file_id, char const* att_name, char const* attribute_values, int num_values)
+    UGRID_API int ug_attribute_global_char_define(int file_id,
+                                                  char const* att_name,
+                                                  char const* attribute_values,
+                                                  int num_values)
     {
         int exit_code = Success;
         try

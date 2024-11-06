@@ -5,11 +5,6 @@
 %array_class(int, SwigIntArray);
 %array_class(double, SwigDoubleArray);
 
-%include "cpointer.i"
-%pointer_class(int, SwigIntPointer);
-%pointer_class(double, SwigDoublePointer);
-
-
 %define %TypeRefParam(TYPE)
     %apply TYPE& INPUT { TYPE& };
     %apply TYPE& OUTPUT { TYPE& };

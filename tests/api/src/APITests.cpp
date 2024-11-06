@@ -837,15 +837,8 @@ TEST(ApiTest, DefineAndPut_OneContact_ShouldWriteAContact)
     std::vector<char> mesh_to_name(name_long_length);
     string_to_char_array("mesh1d", name_long_length, mesh_to_name.data());
     contacts.mesh_to_name = mesh_to_name.data();
-
-    int face_location_enum;
-    error_code = ugridapi::ug_entity_get_face_location_enum(face_location_enum);
-    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
-    contacts.mesh_from_location = face_location_enum;
-
-    ugridapi::ug_entity_get_face_location_enum(face_location_enum);
-    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
-    contacts.mesh_to_location = face_location_enum;
+    contacts.mesh_from_location = ugridapi::MeshLocations::Faces;
+    contacts.mesh_to_location = ugridapi::MeshLocations::Faces;
 
     std::vector<int> contact_type{3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3};
     contacts.contact_type = contact_type.data();
@@ -1283,9 +1276,6 @@ TEST(ApiTest, TopologyDefineDoubleVariableOnLocation_OnExistingFile_ShouldDefine
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
     // Write s0 double variable on topology
-    int location_enum;
-    error_code = ugridapi::ug_get_nodes_location_type(location_enum);
-    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
     std::vector<char> variable_name(name_long_length);
     string_to_char_array("mesh2d_s0", name_long_length, variable_name.data());
@@ -1293,7 +1283,13 @@ TEST(ApiTest, TopologyDefineDoubleVariableOnLocation_OnExistingFile_ShouldDefine
     std::vector<char> dimension_name(name_long_length);
     string_to_char_array("numTimeSteps", name_long_length, dimension_name.data());
 
-    error_code = ugridapi::ug_topology_define_double_variable_on_location(file_id, 0, ugridapi::TopologyType::Mesh2dTopology, location_enum, variable_name.data(), dimension_name.data(), 10);
+    error_code = ugridapi::ug_topology_define_double_variable_on_location(file_id,
+                                                                          0,
+                                                                          ugridapi::TopologyType::Mesh2dTopology,
+                                                                          ugridapi::MeshLocations::Nodes,
+                                                                          variable_name.data(),
+                                                                          dimension_name.data(),
+                                                                          10);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
     define_variable_attributes(file_id, "mesh2d_s0", "standard_name", "sea_surface_height");

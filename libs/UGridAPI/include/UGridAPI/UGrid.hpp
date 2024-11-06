@@ -38,6 +38,7 @@
 #include <UGridAPI/Contacts.hpp>
 #include <UGridAPI/Mesh1D.hpp>
 #include <UGridAPI/Mesh2D.hpp>
+#include <UGridAPI/MeshLocations.hpp>
 #include <UGridAPI/Network1D.hpp>
 
 /// \namespace ugridapi
@@ -65,14 +66,6 @@ namespace ugridapi
             Exception = 1,
         };
 
-        /// @brief MeshLocations locations
-        enum class MeshLocations
-        {
-            Faces = 0, ///< Faces
-            Nodes = 1, ///< Nodes
-            Edges = 2, ///< Edges
-        };
-
         /// @brief Gets pointer to the exception message.
         /// @param[out] error_message The pointer to the latest error message
         /// @returns Error code
@@ -89,21 +82,6 @@ namespace ugridapi
         /// @return Error code
         UGRID_API int ug_name_get_long_length(int& length);
 
-        /// @brief Gets the integer identifying a node location
-        /// @param[out] location The integer identifying a node location
-        /// @return Error code
-        UGRID_API int ug_entity_get_node_location_enum(int& location);
-
-        /// @brief Gets the integer identifying an edge location
-        /// @param[out] location The integer identifying an edge location
-        /// @return Error code
-        UGRID_API int ug_entity_get_edge_location_enum(int& location);
-
-        /// @brief Gets the integer identifying an face location
-        /// @param[out] location The integer identifying a face location
-        /// @return Error code
-        UGRID_API int ug_entity_get_face_location_enum(int& location);
-
         /// @brief Gets the number of topologies of a specific type
         /// @param[in] file_id The file id
         /// @param[in] topology_type The topology type
@@ -118,7 +96,11 @@ namespace ugridapi
         /// @param[in] location The location (node, edge, face)
         /// @param[out] data_variable_count The number of data variables on the topology
         /// @return Error code
-        UGRID_API int ug_topology_count_data_variables(int file_id, int topology_id, TopologyType topology_type, int location, int& data_variable_count);
+        UGRID_API int ug_topology_count_data_variables(int file_id,
+                                                       int topology_id,
+                                                       TopologyType topology_type,
+                                                       MeshLocations location,
+                                                       int& data_variable_count);
 
         /// @brief Get the names of data variables for a specific topology on a specific location
         /// @param[in] file_id  The file id
@@ -127,12 +109,16 @@ namespace ugridapi
         /// @param[in] location The location on the topology (e.g. node, edge or face)
         /// @param[out] data_variables_names_result The names of the data variables
         /// @return Error code
-        UGRID_API int ug_topology_get_data_variables_names(int file_id, int topology_id, TopologyType topology_type, int location, char* data_variables_names_result);
+        UGRID_API int ug_topology_get_data_variables_names(int file_id,
+                                                           int topology_id,
+                                                           TopologyType topology_type,
+                                                           MeshLocations location,
+                                                           char* data_variables_names_result);
 
         /// @brief Get the names of data variables for a specific topology on a specific location
         /// @param[in] file_id The file id
-        /// @param[in] topology_type The topology type
         /// @param[in] topology_id The topology id
+        /// @param[in] topology_type The topology type
         /// @param[in] location The location on the topology (e.g. node, edge or face)
         /// @param[in] variable_name The variable name
         /// @param[in] dimension_name The name of the dimension not related to a topology (e.g "numTimeSteps")
@@ -141,7 +127,7 @@ namespace ugridapi
         UGRID_API int ug_topology_define_double_variable_on_location(int file_id,
                                                                      int topology_id,
                                                                      TopologyType topology_type,
-                                                                     int location,
+                                                                     MeshLocations location,
                                                                      const char* variable_name,
                                                                      const char* dimension_name,
                                                                      const int dimension_value);
@@ -354,7 +340,11 @@ namespace ugridapi
         /// @param[in] attribute_values The attribute values
         /// @param[in] num_values The number of attribute values
         /// @return Error code
-        UGRID_API int ug_attribute_int_define(int file_id, char const* variable_name, char const* attribute_name, int const* attribute_values, int num_values);
+        UGRID_API int ug_attribute_int_define(int file_id,
+                                              char const* variable_name,
+                                              char const* attribute_name,
+                                              int const* attribute_values,
+                                              int num_values);
 
         /// @brief Add a char attributes to an existing variable
         /// @param[in] file_id The file id
@@ -363,7 +353,11 @@ namespace ugridapi
         /// @param[in] attribute_values The attribute values
         /// @param[in] num_values The number of attribute values
         /// @return Error code
-        UGRID_API int ug_attribute_char_define(int file_id, char const* variable_name, char const* attribute_name, char const* attribute_values, int num_values);
+        UGRID_API int ug_attribute_char_define(int file_id,
+                                               char const* variable_name,
+                                               char const* attribute_name,
+                                               char const* attribute_values,
+                                               int num_values);
 
         /// @brief Add a double attributes to an existing variable
         /// @param[in] file_id The file id
@@ -372,7 +366,11 @@ namespace ugridapi
         /// @param[in] attribute_values The attribute values
         /// @param[in] num_values The number of attribute values
         /// @return Error code
-        UGRID_API int ug_attribute_double_define(int file_id, char const* variable_name, char const* attribute_name, double const* attribute_values, int num_values);
+        UGRID_API int ug_attribute_double_define(int file_id,
+                                                 char const* variable_name,
+                                                 char const* attribute_name,
+                                                 double const* attribute_values,
+                                                 int num_values);
 
         /// @brief Add a char attributes as global and not related to a variable
         /// @param[in] file_id The file id
@@ -380,7 +378,10 @@ namespace ugridapi
         /// @param[in] attribute_values The attribute values
         /// @param[in] num_values The number of values
         /// @return Error code
-        UGRID_API int ug_attribute_global_char_define(int file_id, char const* att_name, char const* attribute_values, int num_values);
+        UGRID_API int ug_attribute_global_char_define(int file_id,
+                                                      char const* att_name,
+                                                      char const* attribute_values,
+                                                      int num_values);
 
         /// @brief Gets an int indicating the edge location type
         /// @param[out] type The int indicating the edge location type
