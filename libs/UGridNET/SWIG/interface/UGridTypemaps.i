@@ -1,15 +1,13 @@
 %include "typemaps.i"
-%include "arrays_csharp.i"
 
-%include "carrays.i"
-%array_class(int, SwigIntArray);
-%array_class(double, SwigDoubleArray);
+%include "arrays_csharp.i"
 
 %define %TypeRefParam(TYPE)
     %apply TYPE& INPUT { TYPE& };
     %apply TYPE& OUTPUT { TYPE& };
     %apply TYPE& INOUT { TYPE& };
 %enddef
+
 %TypeRefParam(bool)
 %TypeRefParam(signed char)
 %TypeRefParam(unsigned char)
@@ -76,3 +74,25 @@
 // %apply double FIXED[] { double const* attribute_values } %{
 //     int ug_attribute_double_define(int file_id, char const* variable_name, char const* attribute_name, double const* attribute_values, int num_values);
 // %}
+
+%define %TreatTypeAsSystemIntPtr(TYPE)
+    %typemap(ctype)  TYPE* "TYPE*"
+    %typemap(imtype) TYPE* "System.IntPtr"
+    %typemap(cstype) TYPE* "System.IntPtr"
+    %typemap(csin)   TYPE* "$csinput"
+    %typemap(in)     TYPE* %{ $1 = $input; %}
+    %typemap(out)    TYPE* %{ $result = $1; %}
+    %typemap(csout, excode=SWIGEXCODE) TYPE* %{
+        System.IntPtr cPtr = $imcall;$excode
+        return cPtr;
+    %}
+    %typemap(csvarout, excode=SWIGEXCODE2) TYPE* %{
+        get {
+            System.IntPtr cPtr = $imcall;$excode
+            return cPtr;
+        }
+    %}
+%enddef
+
+%TreatTypeAsSystemIntPtr(int)
+%TreatTypeAsSystemIntPtr(double)
