@@ -33,6 +33,7 @@
 #define UGRID_API __attribute__((visibility("default")))
 #endif
 
+#include <cstring>
 #include <map>
 #include <sstream>
 #include <string>
@@ -53,7 +54,11 @@
 namespace ugridapi
 {
     static std::map<int, UGridState> ugrid_states;
-    static char exceptionMessage[512] = "";
+
+    static size_t constexpr buffer_size = 512;
+    static size_t constexpr max_chars_to_copy = buffer_size - 1; // make sure destination string is null-terminated when strncpy is used
+    static char exceptionMessage[buffer_size] = "";
+    static UGridioApiErrors last_exit_code = UGridioApiErrors::Success;
 
     /// @brief Hash table mapping locations to location names
     static const std::unordered_map<MeshLocations, std::string> locations_attribute_names{
@@ -69,7 +74,7 @@ namespace ugridapi
         {MeshLocations::Nodes, ugrid::UGridFileDimensions::node},
         {MeshLocations::Edges, ugrid::UGridFileDimensions::edge}};
 
-    static int HandleExceptions(const std::exception_ptr exceptionPtr)
+    static UGridioApiErrors HandleExceptions(const std::exception_ptr exceptionPtr)
     {
         try
         {
@@ -77,7 +82,7 @@ namespace ugridapi
         }
         catch (const std::exception& e)
         {
-            strcpy(exceptionMessage, e.what());
+            std::strncpy(exceptionMessage, e.what(), max_chars_to_copy);
             return Exception;
         }
     }
@@ -188,27 +193,29 @@ namespace ugridapi
         return result;
     }
 
-    UGRID_API int ug_error_get(const char*& error_message)
+    UGRID_API int ug_error_get(char* error_message)
     {
-        error_message = exceptionMessage;
-        return Success;
+        std::memcpy(error_message, exceptionMessage, sizeof exceptionMessage);
+        return last_exit_code;
     }
 
     UGRID_API int ug_name_get_length(int& length)
     {
+        last_exit_code = Success;
         length = static_cast<int>(ugrid::name_length);
-        return Success;
+        return last_exit_code;
     }
 
     UGRID_API int ug_name_get_long_length(int& length)
     {
+        last_exit_code = Success;
         length = static_cast<int>(ugrid::name_long_length);
-        return Success;
+        return last_exit_code;
     }
 
     UGRID_API int ug_topology_get_count(int file_id, TopologyType topology_type, int& topology_count)
     {
-        int exit_code = Success;
+        last_exit_code = Success;
         try
         {
             switch (topology_type)
@@ -231,10 +238,10 @@ namespace ugridapi
         }
         catch (...)
         {
-            exit_code = HandleExceptions(std::current_exception());
+            last_exit_code = HandleExceptions(std::current_exception());
         }
 
-        return exit_code;
+        return last_exit_code;
     }
 
     UGRID_API int ug_topology_count_data_variables(int file_id,
@@ -243,7 +250,7 @@ namespace ugridapi
                                                    MeshLocations location,
                                                    int& data_variable_count)
     {
-        int exit_code = Success;
+        last_exit_code = Success;
         try
         {
             if (ugrid_states.count(file_id) == 0)
@@ -262,9 +269,9 @@ namespace ugridapi
         }
         catch (...)
         {
-            exit_code = HandleExceptions(std::current_exception());
+            last_exit_code = HandleExceptions(std::current_exception());
         }
-        return exit_code;
+        return last_exit_code;
     }
 
     UGRID_API int ug_topology_get_data_variables_names(int file_id,
@@ -274,7 +281,7 @@ namespace ugridapi
                                                        char* data_variables_names_result)
     {
 
-        int exit_code = Success;
+        last_exit_code = Success;
         try
         {
             if (ugrid_states.count(file_id) == 0)
@@ -292,9 +299,9 @@ namespace ugridapi
         }
         catch (...)
         {
-            exit_code = HandleExceptions(std::current_exception());
+            last_exit_code = HandleExceptions(std::current_exception());
         }
-        return exit_code;
+        return last_exit_code;
     }
 
     UGRID_API int ug_topology_define_double_variable_on_location(int file_id,
@@ -305,7 +312,7 @@ namespace ugridapi
                                                                  char const* dimension_name,
                                                                  const int dimension_value)
     {
-        int exit_code = Success;
+        last_exit_code = Success;
         try
         {
             if (ugrid_states.count(file_id) == 0)
@@ -339,14 +346,14 @@ namespace ugridapi
         }
         catch (...)
         {
-            exit_code = HandleExceptions(std::current_exception());
+            last_exit_code = HandleExceptions(std::current_exception());
         }
-        return exit_code;
+        return last_exit_code;
     }
 
     UGRID_API int ug_variable_count_attributes(int file_id, char const* variable_name, int& attributes_count)
     {
-        int exit_code = Success;
+        last_exit_code = Success;
         try
         {
             if (ugrid_states.count(file_id) == 0)
@@ -372,14 +379,14 @@ namespace ugridapi
         }
         catch (...)
         {
-            exit_code = HandleExceptions(std::current_exception());
+            last_exit_code = HandleExceptions(std::current_exception());
         }
-        return exit_code;
+        return last_exit_code;
     }
 
     UGRID_API int ug_variable_get_attributes_values(int file_id, char const* variable_name, char* values)
     {
-        int exit_code = Success;
+        last_exit_code = Success;
         try
         {
             if (ugrid_states.count(file_id) == 0)
@@ -406,14 +413,14 @@ namespace ugridapi
         }
         catch (...)
         {
-            exit_code = HandleExceptions(std::current_exception());
+            last_exit_code = HandleExceptions(std::current_exception());
         }
-        return exit_code;
+        return last_exit_code;
     }
 
     UGRID_API int ug_variable_get_attributes_names(int file_id, char const* variable_name, char* names)
     {
-        int exit_code = Success;
+        last_exit_code = Success;
         try
         {
             if (ugrid_states.count(file_id) == 0)
@@ -445,14 +452,14 @@ namespace ugridapi
         }
         catch (...)
         {
-            exit_code = HandleExceptions(std::current_exception());
+            last_exit_code = HandleExceptions(std::current_exception());
         }
-        return exit_code;
+        return last_exit_code;
     }
 
     UGRID_API int ug_variable_count_dimensions(int file_id, char const* variable_name, int& dimensions_count)
     {
-        int exit_code = Success;
+        last_exit_code = Success;
         try
         {
             if (ugrid_states.count(file_id) == 0)
@@ -478,14 +485,14 @@ namespace ugridapi
         }
         catch (...)
         {
-            exit_code = HandleExceptions(std::current_exception());
+            last_exit_code = HandleExceptions(std::current_exception());
         }
-        return exit_code;
+        return last_exit_code;
     }
 
     UGRID_API int ug_variable_get_data_dimensions(int file_id, char const* variable_name, int* dimension_vec)
     {
-        int exit_code = Success;
+        last_exit_code = Success;
         try
         {
             if (ugrid_states.count(file_id) == 0)
@@ -515,14 +522,14 @@ namespace ugridapi
         }
         catch (...)
         {
-            exit_code = HandleExceptions(std::current_exception());
+            last_exit_code = HandleExceptions(std::current_exception());
         }
-        return exit_code;
+        return last_exit_code;
     }
 
     UGRID_API int ug_variable_get_data_double(int file_id, char const* variable_name, double* data)
     {
-        int exit_code = Success;
+        last_exit_code = Success;
         try
         {
             if (ugrid_states.count(file_id) == 0)
@@ -534,14 +541,14 @@ namespace ugridapi
         }
         catch (...)
         {
-            exit_code = HandleExceptions(std::current_exception());
+            last_exit_code = HandleExceptions(std::current_exception());
         }
-        return exit_code;
+        return last_exit_code;
     }
 
     UGRID_API int ug_variable_get_data_int(int file_id, char const* variable_name, int* data)
     {
-        int exit_code = Success;
+        last_exit_code = Success;
         try
         {
             if (ugrid_states.count(file_id) == 0)
@@ -553,14 +560,14 @@ namespace ugridapi
         }
         catch (...)
         {
-            exit_code = HandleExceptions(std::current_exception());
+            last_exit_code = HandleExceptions(std::current_exception());
         }
-        return exit_code;
+        return last_exit_code;
     }
 
     UGRID_API int ug_variable_get_data_char(int file_id, char const* variable_name, char* data)
     {
-        int exit_code = Success;
+        last_exit_code = Success;
         try
         {
             if (ugrid_states.count(file_id) == 0)
@@ -572,32 +579,35 @@ namespace ugridapi
         }
         catch (...)
         {
-            exit_code = HandleExceptions(std::current_exception());
+            last_exit_code = HandleExceptions(std::current_exception());
         }
-        return exit_code;
+        return last_exit_code;
     }
 
     UGRID_API int ug_file_read_mode(int& mode)
     {
+        last_exit_code = Success;
         mode = static_cast<int>(netCDF::NcFile::read);
-        return Success;
+        return last_exit_code;
     }
 
     UGRID_API int ug_file_write_mode(int& mode)
     {
+        last_exit_code = Success;
         mode = static_cast<int>(netCDF::NcFile::write);
-        return Success;
+        return last_exit_code;
     }
 
     UGRID_API int ug_file_replace_mode(int& mode) noexcept
     {
+        last_exit_code = Success;
         mode = static_cast<int>(netCDF::NcFile::replace);
-        return Success;
+        return last_exit_code;
     }
 
     UGRID_API int ug_file_open(char const* file_path, int mode, int& file_id)
     {
-        int exit_code = Success;
+        last_exit_code = Success;
         try
         {
             auto local_mode = static_cast<netCDF::NcFile::FileMode>(mode);
@@ -615,14 +625,14 @@ namespace ugridapi
         }
         catch (...)
         {
-            exit_code = HandleExceptions(std::current_exception());
+            last_exit_code = HandleExceptions(std::current_exception());
         }
-        return exit_code;
+        return last_exit_code;
     }
 
     UGRID_API int ug_file_close(int file_id)
     {
-        int exit_code = Success;
+        last_exit_code = Success;
         try
         {
             if (ugrid_states.count(file_id) == 0)
@@ -634,14 +644,14 @@ namespace ugridapi
         }
         catch (...)
         {
-            exit_code = HandleExceptions(std::current_exception());
+            last_exit_code = HandleExceptions(std::current_exception());
         }
-        return exit_code;
+        return last_exit_code;
     }
 
     UGRID_API int ug_network1d_def(int file_id, Network1D const& network1d_api, int& topology_id)
     {
-        int exit_code = Success;
+        last_exit_code = Success;
         try
         {
             if (ugrid_states.count(file_id) == 0)
@@ -656,14 +666,14 @@ namespace ugridapi
         }
         catch (...)
         {
-            exit_code = HandleExceptions(std::current_exception());
+            last_exit_code = HandleExceptions(std::current_exception());
         }
-        return exit_code;
+        return last_exit_code;
     }
 
     UGRID_API int ug_network1d_put(int file_id, int topology_id, Network1D const& network1d_api)
     {
-        int exit_code = Success;
+        last_exit_code = Success;
         try
         {
             if (ugrid_states.count(file_id) == 0)
@@ -675,14 +685,14 @@ namespace ugridapi
         }
         catch (...)
         {
-            exit_code = HandleExceptions(std::current_exception());
+            last_exit_code = HandleExceptions(std::current_exception());
         }
-        return exit_code;
+        return last_exit_code;
     }
 
     UGRID_API int ug_network1d_inq(int file_id, int topology_id, Network1D& network1d_api)
     {
-        int exit_code = Success;
+        last_exit_code = Success;
         try
         {
             if (ugrid_states.count(file_id) == 0)
@@ -694,28 +704,28 @@ namespace ugridapi
         }
         catch (...)
         {
-            exit_code = HandleExceptions(std::current_exception());
+            last_exit_code = HandleExceptions(std::current_exception());
         }
-        return exit_code;
+        return last_exit_code;
     }
 
     UGRID_API int ug_network1d_get(int file_id, int topology_id, Network1D& network1d_api)
     {
-        int exit_code = Success;
+        last_exit_code = Success;
         try
         {
             ugrid_states[file_id].m_network1d[topology_id].get(network1d_api);
         }
         catch (...)
         {
-            exit_code = HandleExceptions(std::current_exception());
+            last_exit_code = HandleExceptions(std::current_exception());
         }
-        return exit_code;
+        return last_exit_code;
     }
 
     UGRID_API int ug_mesh1d_def(int file_id, Mesh1D const& mesh1d_api, int& topology_id)
     {
-        int exit_code = Success;
+        last_exit_code = Success;
         try
         {
             if (ugrid_states.count(file_id) == 0)
@@ -730,14 +740,14 @@ namespace ugridapi
         }
         catch (...)
         {
-            exit_code = HandleExceptions(std::current_exception());
+            last_exit_code = HandleExceptions(std::current_exception());
         }
-        return exit_code;
+        return last_exit_code;
     }
 
     UGRID_API int ug_mesh1d_put(int file_id, int topology_id, Mesh1D const& mesh1d_api)
     {
-        int exit_code = Success;
+        last_exit_code = Success;
         try
         {
             if (ugrid_states.count(file_id) == 0)
@@ -749,14 +759,14 @@ namespace ugridapi
         }
         catch (...)
         {
-            exit_code = HandleExceptions(std::current_exception());
+            last_exit_code = HandleExceptions(std::current_exception());
         }
-        return exit_code;
+        return last_exit_code;
     }
 
     UGRID_API int ug_mesh1d_inq(int file_id, int topology_id, Mesh1D& mesh1d_api)
     {
-        int exit_code = Success;
+        last_exit_code = Success;
         try
         {
             if (ugrid_states.count(file_id) == 0)
@@ -768,14 +778,14 @@ namespace ugridapi
         }
         catch (...)
         {
-            exit_code = HandleExceptions(std::current_exception());
+            last_exit_code = HandleExceptions(std::current_exception());
         }
-        return exit_code;
+        return last_exit_code;
     }
 
     UGRID_API int ug_mesh1d_get(int file_id, int topology_id, Mesh1D& mesh1d_api)
     {
-        int exit_code = Success;
+        last_exit_code = Success;
         try
         {
             if (ugrid_states.count(file_id) == 0)
@@ -787,14 +797,14 @@ namespace ugridapi
         }
         catch (...)
         {
-            exit_code = HandleExceptions(std::current_exception());
+            last_exit_code = HandleExceptions(std::current_exception());
         }
-        return exit_code;
+        return last_exit_code;
     }
 
     UGRID_API int ug_mesh2d_def(int file_id, Mesh2D const& mesh2d_api, int& topology_id)
     {
-        int exit_code = Success;
+        last_exit_code = Success;
         try
         {
             if (ugrid_states.count(file_id) == 0)
@@ -809,14 +819,14 @@ namespace ugridapi
         }
         catch (...)
         {
-            exit_code = HandleExceptions(std::current_exception());
+            last_exit_code = HandleExceptions(std::current_exception());
         }
-        return exit_code;
+        return last_exit_code;
     }
 
     UGRID_API int ug_mesh2d_put(int file_id, int topology_id, Mesh2D const& mesh2d_api)
     {
-        int exit_code = Success;
+        last_exit_code = Success;
         try
         {
             if (ugrid_states.count(file_id) == 0)
@@ -828,14 +838,14 @@ namespace ugridapi
         }
         catch (...)
         {
-            exit_code = HandleExceptions(std::current_exception());
+            last_exit_code = HandleExceptions(std::current_exception());
         }
-        return exit_code;
+        return last_exit_code;
     }
 
     UGRID_API int ug_mesh2d_inq(int file_id, int topology_id, Mesh2D& mesh2d_api)
     {
-        int exit_code = Success;
+        last_exit_code = Success;
         try
         {
             if (ugrid_states.count(file_id) == 0)
@@ -847,28 +857,28 @@ namespace ugridapi
         }
         catch (...)
         {
-            exit_code = HandleExceptions(std::current_exception());
+            last_exit_code = HandleExceptions(std::current_exception());
         }
-        return exit_code;
+        return last_exit_code;
     }
 
     UGRID_API int ug_mesh2d_get(int file_id, int topology_id, Mesh2D& mesh2d_api)
     {
-        int exit_code = Success;
+        last_exit_code = Success;
         try
         {
             ugrid_states[file_id].m_mesh2d[topology_id].get(mesh2d_api);
         }
         catch (...)
         {
-            exit_code = HandleExceptions(std::current_exception());
+            last_exit_code = HandleExceptions(std::current_exception());
         }
-        return exit_code;
+        return last_exit_code;
     }
 
     UGRID_API int ug_contacts_def(int file_id, Contacts const& contacts_api, int& topology_id)
     {
-        int exit_code = Success;
+        last_exit_code = Success;
         try
         {
             if (ugrid_states.count(file_id) == 0)
@@ -883,14 +893,14 @@ namespace ugridapi
         }
         catch (...)
         {
-            exit_code = HandleExceptions(std::current_exception());
+            last_exit_code = HandleExceptions(std::current_exception());
         }
-        return exit_code;
+        return last_exit_code;
     }
 
     UGRID_API int ug_contacts_put(int file_id, int topology_id, Contacts const& contacts_api)
     {
-        int exit_code = Success;
+        last_exit_code = Success;
         try
         {
             if (ugrid_states.count(file_id) == 0)
@@ -902,14 +912,14 @@ namespace ugridapi
         }
         catch (...)
         {
-            exit_code = HandleExceptions(std::current_exception());
+            last_exit_code = HandleExceptions(std::current_exception());
         }
-        return exit_code;
+        return last_exit_code;
     }
 
     UGRID_API int ug_contacts_inq(int file_id, int topology_id, Contacts& contacts_api)
     {
-        int exit_code = Success;
+        last_exit_code = Success;
         try
         {
             if (ugrid_states.count(file_id) == 0)
@@ -921,14 +931,14 @@ namespace ugridapi
         }
         catch (...)
         {
-            exit_code = HandleExceptions(std::current_exception());
+            last_exit_code = HandleExceptions(std::current_exception());
         }
-        return exit_code;
+        return last_exit_code;
     }
 
     UGRID_API int ug_contacts_get(int file_id, int topology_id, Contacts& contacts_api)
     {
-        int exit_code = Success;
+        last_exit_code = Success;
         try
         {
             if (ugrid_states.count(file_id) == 0)
@@ -940,14 +950,14 @@ namespace ugridapi
         }
         catch (...)
         {
-            exit_code = HandleExceptions(std::current_exception());
+            last_exit_code = HandleExceptions(std::current_exception());
         }
-        return exit_code;
+        return last_exit_code;
     }
 
     UGRID_API int ug_variable_int_define(int file_id, char const* variable_name)
     {
-        int exit_code = Success;
+        last_exit_code = Success;
         try
         {
             if (ugrid_states.count(file_id) == 0)
@@ -960,9 +970,9 @@ namespace ugridapi
         }
         catch (...)
         {
-            exit_code = HandleExceptions(std::current_exception());
+            last_exit_code = HandleExceptions(std::current_exception());
         }
-        return exit_code;
+        return last_exit_code;
     }
 
     UGRID_API int ug_attribute_int_define(int file_id,
@@ -971,7 +981,7 @@ namespace ugridapi
                                           int const* attribute_values,
                                           int num_values)
     {
-        int exit_code = Success;
+        last_exit_code = Success;
         try
         {
             if (ugrid_states.count(file_id) == 0)
@@ -993,9 +1003,9 @@ namespace ugridapi
         }
         catch (...)
         {
-            exit_code = HandleExceptions(std::current_exception());
+            last_exit_code = HandleExceptions(std::current_exception());
         }
-        return exit_code;
+        return last_exit_code;
     }
 
     UGRID_API int ug_attribute_char_define(int file_id,
@@ -1004,7 +1014,7 @@ namespace ugridapi
                                            char const* attribute_values,
                                            int num_values)
     {
-        int exit_code = Success;
+        last_exit_code = Success;
         try
         {
             if (ugrid_states.count(file_id) == 0)
@@ -1026,9 +1036,9 @@ namespace ugridapi
         }
         catch (...)
         {
-            exit_code = HandleExceptions(std::current_exception());
+            last_exit_code = HandleExceptions(std::current_exception());
         }
-        return exit_code;
+        return last_exit_code;
     }
 
     UGRID_API int ug_attribute_double_define(int file_id,
@@ -1037,7 +1047,7 @@ namespace ugridapi
                                              double const* attribute_values,
                                              int num_values)
     {
-        int exit_code = Success;
+        last_exit_code = Success;
         try
         {
             if (ugrid_states.count(file_id) == 0)
@@ -1059,9 +1069,9 @@ namespace ugridapi
         }
         catch (...)
         {
-            exit_code = HandleExceptions(std::current_exception());
+            last_exit_code = HandleExceptions(std::current_exception());
         }
-        return exit_code;
+        return last_exit_code;
     }
 
     UGRID_API int ug_attribute_global_char_define(int file_id,
@@ -1069,7 +1079,7 @@ namespace ugridapi
                                                   char const* attribute_values,
                                                   int num_values)
     {
-        int exit_code = Success;
+        last_exit_code = Success;
         try
         {
             if (ugrid_states.count(file_id) == 0)
@@ -1085,35 +1095,22 @@ namespace ugridapi
         }
         catch (...)
         {
-            exit_code = HandleExceptions(std::current_exception());
+            last_exit_code = HandleExceptions(std::current_exception());
         }
-        return exit_code;
+        return last_exit_code;
     }
 
-    UGRID_API int ug_get_edges_location_type(int& type)
-    {
-        type = static_cast<int>(MeshLocations::Edges);
-        return Success;
-    }
-    UGRID_API int ug_get_nodes_location_type(int& type)
-    {
-        type = static_cast<int>(MeshLocations::Nodes);
-        return Success;
-    }
-    UGRID_API int ug_get_faces_location_type(int& type)
-    {
-        type = static_cast<int>(MeshLocations::Faces);
-        return Success;
-    }
     UGRID_API int ug_get_int_fill_value(int& fillValue)
     {
+        last_exit_code = Success;
         fillValue = ugrid::int_missing_value;
-        return Success;
+        return last_exit_code;
     }
     UGRID_API int ug_get_double_fill_value(double& fillValue)
     {
+        last_exit_code = Success;
         fillValue = ugrid::double_missing_value;
-        return Success;
+        return last_exit_code;
     }
 
 } // namespace ugridapi

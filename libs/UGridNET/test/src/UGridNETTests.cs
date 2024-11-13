@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Reflection;
 using System.Runtime.InteropServices;
 using NUnit.Framework;
 using UGridNET.Tests.TopologyExtensions;
@@ -36,7 +34,7 @@ namespace UGridNET.Tests
             }
             else
             {
-                throw new NotSupportedException("Currently only double and int are supported.");
+                throw new NotSupportedException("Currently only int and double data types are supported.");
             }
 
             return array;
@@ -65,28 +63,32 @@ namespace UGridNET.Tests
             }
             else
             {
-                throw new NotSupportedException("Currently only int and double are supported");
+                throw new NotSupportedException("Currently only int and double data types are supported.");
             }
         }
     }
 
     namespace TopologyExtensions
     {
+        internal static class Constants
+        {
+            public static readonly int intBytes = Marshal.SizeOf<int>();
+            public static int doubleBytes = Marshal.SizeOf<double>();
+        }
+
+
         internal static class Mesh1DExtensions
         {
-
             public static void Allocate(this Mesh1D mesh1D)
             {
-                int int_bytes = Marshal.SizeOf<int>();
-                int double_bytes = Marshal.SizeOf<double>();
-                mesh1D.node_x = Marshal.AllocHGlobal(mesh1D.num_nodes * double_bytes);
-                mesh1D.node_y = Marshal.AllocHGlobal(mesh1D.num_nodes * double_bytes);
-                mesh1D.edge_x = Marshal.AllocHGlobal(mesh1D.num_edges * double_bytes);
-                mesh1D.edge_y = Marshal.AllocHGlobal(mesh1D.num_edges * double_bytes);
-                mesh1D.edge_nodes = Marshal.AllocHGlobal(mesh1D.num_edges * 2 * int_bytes);
-                mesh1D.edge_edge_id = Marshal.AllocHGlobal(mesh1D.num_nodes * int_bytes); // size?
-                mesh1D.node_edge_id = Marshal.AllocHGlobal(mesh1D.num_nodes * int_bytes); // size?
-                mesh1D.node_edge_offset = Marshal.AllocHGlobal(mesh1D.num_nodes * double_bytes);
+                mesh1D.node_x = Marshal.AllocHGlobal(mesh1D.num_nodes * Constants.doubleBytes);
+                mesh1D.node_y = Marshal.AllocHGlobal(mesh1D.num_nodes * Constants.doubleBytes);
+                mesh1D.edge_x = Marshal.AllocHGlobal(mesh1D.num_edges * Constants.doubleBytes);
+                mesh1D.edge_y = Marshal.AllocHGlobal(mesh1D.num_edges * Constants.doubleBytes);
+                mesh1D.edge_nodes = Marshal.AllocHGlobal(mesh1D.num_edges * 2 * Constants.intBytes);
+                mesh1D.edge_edge_id = Marshal.AllocHGlobal(mesh1D.num_nodes * Constants.intBytes); // size?
+                mesh1D.node_edge_id = Marshal.AllocHGlobal(mesh1D.num_nodes * Constants.intBytes); // size?
+                mesh1D.node_edge_offset = Marshal.AllocHGlobal(mesh1D.num_nodes * Constants.doubleBytes);
             }
 
             // This should be done in Dispose. How can i do this without inheritance?
@@ -96,7 +98,7 @@ namespace UGridNET.Tests
                 if (mesh1D.node_x != IntPtr.Zero) Marshal.FreeHGlobal(mesh1D.node_x);
                 if (mesh1D.node_y != IntPtr.Zero) Marshal.FreeHGlobal(mesh1D.node_y);
                 if (mesh1D.edge_x != IntPtr.Zero) Marshal.FreeHGlobal(mesh1D.edge_x);
-                if (mesh1D.edge_y != IntPtr.Zero) Marshal.FreeHGlobal(mesh1D.edge_x);
+                if (mesh1D.edge_y != IntPtr.Zero) Marshal.FreeHGlobal(mesh1D.edge_y);
                 if (mesh1D.edge_nodes != IntPtr.Zero) Marshal.FreeHGlobal(mesh1D.edge_nodes);
                 if (mesh1D.edge_edge_id != IntPtr.Zero) Marshal.FreeHGlobal(mesh1D.edge_edge_id);
                 if (mesh1D.node_edge_id != IntPtr.Zero) Marshal.FreeHGlobal(mesh1D.node_edge_id);
@@ -108,22 +110,20 @@ namespace UGridNET.Tests
         {
             public static void Allocate(this Mesh2D mesh2D)
             {
-                int int_bytes = Marshal.SizeOf<int>();
-                int double_bytes = Marshal.SizeOf<double>();
-                mesh2D.node_x = Marshal.AllocHGlobal(mesh2D.num_nodes * double_bytes);
-                mesh2D.node_y = Marshal.AllocHGlobal(mesh2D.num_nodes * double_bytes);
-                mesh2D.node_z = Marshal.AllocHGlobal(mesh2D.num_nodes * double_bytes);
-                mesh2D.edge_x = Marshal.AllocHGlobal(mesh2D.num_edges * double_bytes);
-                mesh2D.edge_y = Marshal.AllocHGlobal(mesh2D.num_edges * double_bytes);
-                mesh2D.edge_z = Marshal.AllocHGlobal(mesh2D.num_edges * double_bytes);
-                mesh2D.face_x = Marshal.AllocHGlobal(mesh2D.num_faces * double_bytes);
-                mesh2D.face_y = Marshal.AllocHGlobal(mesh2D.num_faces * double_bytes);
-                mesh2D.face_z = Marshal.AllocHGlobal(mesh2D.num_faces * double_bytes);
-                mesh2D.edge_nodes = Marshal.AllocHGlobal(mesh2D.num_edges * 2 * int_bytes);
-                mesh2D.edge_faces = Marshal.AllocHGlobal(mesh2D.num_edges * 2 * int_bytes);
-                mesh2D.face_nodes = Marshal.AllocHGlobal(mesh2D.num_faces * mesh2D.num_face_nodes_max * int_bytes);
-                mesh2D.face_edges = Marshal.AllocHGlobal(mesh2D.num_faces * mesh2D.num_face_nodes_max * int_bytes);
-                mesh2D.face_faces = Marshal.AllocHGlobal(mesh2D.num_faces * mesh2D.num_face_nodes_max * int_bytes);
+                mesh2D.node_x = Marshal.AllocHGlobal(mesh2D.num_nodes * Constants.doubleBytes);
+                mesh2D.node_y = Marshal.AllocHGlobal(mesh2D.num_nodes * Constants.doubleBytes);
+                mesh2D.node_z = Marshal.AllocHGlobal(mesh2D.num_nodes * Constants.doubleBytes);
+                mesh2D.edge_x = Marshal.AllocHGlobal(mesh2D.num_edges * Constants.doubleBytes);
+                mesh2D.edge_y = Marshal.AllocHGlobal(mesh2D.num_edges * Constants.doubleBytes);
+                mesh2D.edge_z = Marshal.AllocHGlobal(mesh2D.num_edges * Constants.doubleBytes);
+                mesh2D.face_x = Marshal.AllocHGlobal(mesh2D.num_faces * Constants.doubleBytes);
+                mesh2D.face_y = Marshal.AllocHGlobal(mesh2D.num_faces * Constants.doubleBytes);
+                mesh2D.face_z = Marshal.AllocHGlobal(mesh2D.num_faces * Constants.doubleBytes);
+                mesh2D.edge_nodes = Marshal.AllocHGlobal(mesh2D.num_edges * 2 * Constants.intBytes);
+                mesh2D.edge_faces = Marshal.AllocHGlobal(mesh2D.num_edges * 2 * Constants.intBytes);
+                mesh2D.face_nodes = Marshal.AllocHGlobal(mesh2D.num_faces * mesh2D.num_face_nodes_max * Constants.intBytes);
+                mesh2D.face_edges = Marshal.AllocHGlobal(mesh2D.num_faces * mesh2D.num_face_nodes_max * Constants.intBytes);
+                mesh2D.face_faces = Marshal.AllocHGlobal(mesh2D.num_faces * mesh2D.num_face_nodes_max * Constants.intBytes);
             }
 
             // This should be done in Dispose. How can i do this without inheritance?
@@ -151,29 +151,45 @@ namespace UGridNET.Tests
         {
             public static void Allocate(this Contacts contacts)
             {
-                throw new NotImplementedException("TODO: ContactsExtensions::Allocate");
+                contacts.edges = Marshal.AllocHGlobal(contacts.num_contacts * 2 * Constants.intBytes);
+                contacts.contact_type = Marshal.AllocHGlobal(contacts.num_contacts * Constants.intBytes);
             }
 
             // This should be done in Dispose. How can i do this without inheritance?
             // Can probably extend Contacts in the SWIG config and have it dump the extension directly in the generated class?
-            public static void Free(this Contacts mesh2D)
+            public static void Free(this Contacts contacts)
             {
-                throw new NotImplementedException("TODO: ContactsExtensions::Free");
+                if (contacts.edges != IntPtr.Zero) Marshal.FreeHGlobal(contacts.edges);
+                if (contacts.contact_type != IntPtr.Zero) Marshal.FreeHGlobal(contacts.contact_type);
             }
         }
 
         internal static class Network1DExtensions
         {
-            public static void Allocate(this Network1D contacts)
+            public static void Allocate(this Network1D network)
             {
-                throw new NotImplementedException("TODO: Network1DExtensions::Allocate");
+                network.node_x = Marshal.AllocHGlobal(network.num_nodes * Constants.doubleBytes);
+                network.node_y = Marshal.AllocHGlobal(network.num_nodes * Constants.doubleBytes);
+                network.edge_nodes = Marshal.AllocHGlobal(network.num_edges * 2 * Constants.intBytes);
+                network.edge_length = Marshal.AllocHGlobal(network.num_edges * Constants.doubleBytes);
+                network.edge_order = Marshal.AllocHGlobal(network.num_edges * Constants.intBytes);
+                network.geometry_nodes_x = Marshal.AllocHGlobal(network.num_geometry_nodes * Constants.doubleBytes);
+                network.geometry_nodes_y = Marshal.AllocHGlobal(network.num_geometry_nodes * Constants.doubleBytes);
+                network.num_edge_geometry_nodes = Marshal.AllocHGlobal(network.num_edges * Constants.intBytes);
             }
 
             // This should be done in Dispose. How can i do this without inheritance?
             // Can probably extend Network1D in the SWIG config and have it dump the extension directly in the generated class?
-            public static void Free(this Network1D mesh2D)
+            public static void Free(this Network1D network)
             {
-                throw new NotImplementedException("TODO: Network1DExtensions::Free");
+                if (network.node_x != IntPtr.Zero) Marshal.FreeHGlobal(network.node_x);
+                if (network.node_y != IntPtr.Zero) Marshal.FreeHGlobal(network.node_y);
+                if (network.edge_nodes != IntPtr.Zero) Marshal.FreeHGlobal(network.edge_nodes);
+                if (network.edge_length != IntPtr.Zero) Marshal.FreeHGlobal(network.edge_length);
+                if (network.edge_order != IntPtr.Zero) Marshal.FreeHGlobal(network.edge_order);
+                if (network.geometry_nodes_x != IntPtr.Zero) Marshal.FreeHGlobal(network.geometry_nodes_x);
+                if (network.geometry_nodes_y != IntPtr.Zero) Marshal.FreeHGlobal(network.geometry_nodes_y);
+                if (network.num_edge_geometry_nodes != IntPtr.Zero) Marshal.FreeHGlobal(network.num_edge_geometry_nodes);
             }
         }
     }
@@ -183,15 +199,13 @@ namespace UGridNET.Tests
         // requires using log4net;
         //private static readonly ILog log = LogManager.GetLogger(typeof(UGridWrapper));
 
-
         private int fileId = -1;
-        private int exitCode = -1;
+        //private int exitCode = -1;
 
-        private List<Mesh1D> mesh1DList;
-        private List<Mesh2D> mesh2DList;
-        private List<Contacts> contactsList;
-        private List<Network1D> network1DList;
-
+        private List<Mesh1D> mesh1DList = new List<Mesh1D>();
+        private List<Mesh2D> mesh2DList = new List<Mesh2D>();
+        private List<Contacts> contactsList = new List<Contacts>();
+        private List<Network1D> network1DList = new List<Network1D>();
 
         public UGridWrapper(string path)
         {
@@ -206,10 +220,13 @@ namespace UGridNET.Tests
         {
             if (disposing)
             {
+                // free memory allocated by the constructor
                 mesh1DList.ForEach(item => item.Free());
                 mesh2DList.ForEach(item => item.Free());
                 contactsList.ForEach(item => item.Free());
                 network1DList.ForEach(item => item.Free());
+
+                // close the file
                 UGrid.ug_file_close(fileId);
             }
         }
@@ -220,32 +237,51 @@ namespace UGridNET.Tests
             GC.SuppressFinalize(this);
         }
 
-        private void ProcessExitCode(int exitCode)
+        private static void ProcessExitCode(int exitCode)
         {
-            string message = "";
-            UGrid.ug_error_get(message);
-
-            if (!string.IsNullOrWhiteSpace(message))
+            if (exitCode != 0)
             {
-                //log.Error(errorMessage);
-                // log to standard output for now
-                Console.WriteLine(message);
+                string message = new string(' ', 512);
+                //byte[] message = new byte[512];
+                UGrid.ug_error_get(message);
+
+                //if (!string.IsNullOrWhiteSpace(message))
+                {
+                    //log.Error(errorMessage);
+                    // log to standard output for now
+                    //Console.WriteLine(BitConverter.ToString(message));
+
+                    throw new Exception(message);
+                }
             }
         }
+
+        private static void Invoke(Func<int> func)
+        {
+            int exitCode = func();
+            ProcessExitCode(exitCode);
+        }
+
 
         private void Read(string path)
         {
             int fileMode = -1;
-            exitCode = UGrid.ug_file_read_mode(ref fileMode);
+            //exitCode = UGrid.ug_file_read_mode(ref fileMode);
+            //ProcessExitCode(exitCode);
+
+            Invoke(() => UGrid.ug_file_read_mode(ref fileMode));
+
+
+            int exitCode = UGrid.ug_file_open(path, fileMode, ref fileId);
             ProcessExitCode(exitCode);
-            exitCode = UGrid.ug_file_open(path, fileMode, ref fileId);
-            ProcessExitCode(exitCode);
+
+            //Invoke(() => UGrid.ug_file_open("brrrrrrrrrrr", fileMode, ref fileId));
         }
 
         private void GetMesh1D()
         {
-            int count = -1;
-            exitCode = UGrid.ug_topology_get_count(fileId, TopologyType.Mesh1dTopology, ref count);
+            int count = 0;
+            int exitCode = UGrid.ug_topology_get_count(fileId, TopologyType.Mesh1dTopology, ref count);
             ProcessExitCode(exitCode);
             if (count > 0)
             {
@@ -264,8 +300,8 @@ namespace UGridNET.Tests
 
         private void GetMesh2D()
         {
-            int count = -1;
-            exitCode = UGrid.ug_topology_get_count(fileId, TopologyType.Mesh2dTopology, ref count);
+            int count = 0;
+            int exitCode = UGrid.ug_topology_get_count(fileId, TopologyType.Mesh2dTopology, ref count);
             ProcessExitCode(exitCode);
             if (count > 0)
             {
@@ -284,8 +320,8 @@ namespace UGridNET.Tests
 
         private void GetContacts()
         {
-            int count = -1;
-            exitCode = UGrid.ug_topology_get_count(fileId, TopologyType.ContactsTopology, ref count);
+            int count = 0;
+            int exitCode = UGrid.ug_topology_get_count(fileId, TopologyType.ContactsTopology, ref count);
             ProcessExitCode(exitCode);
             if (count > 0)
             {
@@ -303,8 +339,8 @@ namespace UGridNET.Tests
         }
         private void GetNetwork1D()
         {
-            int count = -1;
-            exitCode = UGrid.ug_topology_get_count(fileId, TopologyType.ContactsTopology, ref count);
+            int count = 0;
+            int exitCode = UGrid.ug_topology_get_count(fileId, TopologyType.Network1dTopology, ref count);
             ProcessExitCode(exitCode);
             if (count > 0)
             {
@@ -319,6 +355,44 @@ namespace UGridNET.Tests
                     network1DList.Add(network1D);
                 }
             }
+        }
+
+        public T[] GetVariableByName<T>(string variableName)
+        {
+            int dimensionsCount = 0;
+            int exitCode = UGrid.ug_variable_count_dimensions(fileId, variableName, ref dimensionsCount);
+            ProcessExitCode(exitCode);
+
+            int[] dimensionVec = new int[dimensionsCount];
+            exitCode = UGrid.ug_variable_get_data_dimensions(fileId, variableName, dimensionVec);
+            ProcessExitCode(exitCode);
+
+            int totalDimension = 1;
+            for (int i = 0; i < dimensionsCount; i++)
+            {
+                totalDimension *= dimensionVec[i];
+            }
+
+            T[] data = new T[totalDimension];
+
+            if (typeof(T) == typeof(double))
+            {
+                UGrid.ug_variable_get_data_double(fileId, variableName, data as double[]);
+            }
+            else if (typeof(T) == typeof(int))
+            {
+                UGrid.ug_variable_get_data_int(fileId, variableName, data as int[]);
+            }
+            else if (typeof(T) == typeof(string))
+            {
+                UGrid.ug_variable_get_data_char(fileId, variableName, data as string);
+            }
+            else
+            {
+                throw new NotSupportedException("Currently only int, double and string data types are supported.");
+            }
+
+            return data;
         }
 
     }
@@ -349,6 +423,27 @@ namespace UGridNET.Tests
         }
 
         private static readonly string TestDataPath = GetTestDataPath();
+
+        [Test]
+        public void TestWrapper()
+        {
+            string filePath = Path.Combine(TestDataPath, "AllUGridEntities.nc");
+            UGridWrapper ugrid = null;
+
+            try
+            {
+                ugrid = new UGridWrapper(filePath);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("An error occurred: " + ex.Message);
+            }
+            finally
+            {
+                ugrid.Dispose();
+            }
+
+        }
 
         [Test]
         public void GetDoubleDataByVariableName()
@@ -410,7 +505,6 @@ namespace UGridNET.Tests
                 0.9
             };
 
-            //for (int i = 86; i < 106; i++)
             for (int i = 0; i < sampleSize; i++)
             {
                 Assert.That(data[i + offset], Is.EqualTo(expectedData[i]));
@@ -451,10 +545,8 @@ namespace UGridNET.Tests
                 Assert.That(mesh1D.num_nodes, Is.EqualTo(25));
                 Assert.That(mesh1D.num_edges, Is.EqualTo(24));
 
-                int int_bytes = Marshal.SizeOf<int>();
-                int double_bytes = Marshal.SizeOf<double>();
-                mesh1D.node_x = Marshal.AllocHGlobal(mesh1D.num_nodes * double_bytes);
-                mesh1D.edge_nodes = Marshal.AllocHGlobal(mesh1D.num_edges * 2 * int_bytes);
+                mesh1D.node_x = Marshal.AllocHGlobal(mesh1D.num_nodes * Constants.doubleBytes);
+                mesh1D.edge_nodes = Marshal.AllocHGlobal(mesh1D.num_edges * 2 * Constants.intBytes);
 
 
 
@@ -474,10 +566,10 @@ namespace UGridNET.Tests
 
                 var arr_2 = mesh1D.edge_nodes.CopyToArray<int>(mesh1D.num_edges * 2);
 
-                for (uint i = 0; i < mesh1D.num_edges * 2; i++)
-                {
-                    Console.WriteLine("{0} : {1}", arr_1[i], arr_2[i]);
-                }
+                //for (uint i = 0; i < mesh1D.num_edges * 2; i++)
+                //{
+                //    Console.WriteLine("{0} : {1}", arr_1[i], arr_2[i]);
+                //}
 
                 Marshal.FreeHGlobal(mesh1D.node_x);
                 Marshal.FreeHGlobal(mesh1D.edge_nodes);

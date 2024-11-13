@@ -23,59 +23,65 @@
 %TypeRefParam(double)
 //%TypeRefParam(long double)
 
-%apply double INOUT[] { double* data } %{
-    int ug_variable_get_data_double(int file_id, char const* variable_name, double* data);
-%}
+// %apply double INOUT[] { double* data } %{
+//     int ug_variable_get_data_double(int file_id, char const* variable_name, double* data);
+// %}
 
-%apply int INOUT[] { int* data } %{
-    int ug_variable_get_data_int(int file_id, char const* variable_name, int* data);
-%}
+// %apply int INOUT[] { int* data } %{
+//     int ug_variable_get_data_int(int file_id, char const* variable_name, int* data);
+// %}
 
-%apply int INOUT[] { int* dimension_vec } %{
-    int ug_variable_get_data_dimensions(int file_id, char const* variable_name, int* dimension_vec);
-%}
+// %apply int INOUT[] { int* dimension_vec } %{
+//     int ug_variable_get_data_dimensions(int file_id, char const* variable_name, int* dimension_vec);
+// %}
 
-%apply int INPUT[] { int const* attribute_values } %{
-    int ug_attribute_int_define(int file_id, char const* variable_name, char const* attribute_name, int const* attribute_values, int num_values);
-%}
+// %apply int INPUT[] { int const* attribute_values } %{
+//     int ug_attribute_int_define(int file_id, char const* variable_name, char const* attribute_name, int const* attribute_values, int num_values);
+// %}
 
-%apply double INPUT[] { double const* attribute_values } %{
-    int ug_attribute_double_define(int file_id, char const* variable_name, char const* attribute_name, double const* attribute_values, int num_values);
-%}
+// %apply double INPUT[] { double const* attribute_values } %{
+//     int ug_attribute_double_define(int file_id, char const* variable_name, char const* attribute_name, double const* attribute_values, int num_values);
+// %}
 
-%apply double INPUT[] { double const* attribute_values } %{
-    int ug_attribute_double_define(int file_id, char const* variable_name, char const* attribute_name, double const* attribute_values, int num_values);
-%}
+// %apply double INPUT[] { double const* attribute_values } %{
+//     int ug_attribute_double_define(int file_id, char const* variable_name, char const* attribute_name, double const* attribute_values, int num_values);
+// %}
 
 //--------
 // pinning
 //--------
-// %csmethodmodifiers ug_variable_get_data_double "public unsafe";
-// %apply double FIXED[] { double *data } %{ 
-//     int ug_variable_get_data_double(int file_id, char const* variable_name, double* data);
+
+// %csmethodmodifiers ug_error_get "public unsafe";
+// %apply char FIXED[ANY] { char* error_message } %{ 
+//     int ug_error_get(char* error_message);
 // %}
 
-// %csmethodmodifiers ug_variable_get_data_int "public unsafe";
-// %apply int FIXED[] {int *data} %{
-//     int ug_variable_get_data_int(int file_id, char const* variable_name, int* data);
-// %}
+%csmethodmodifiers ug_variable_get_data_double "public unsafe";
+%apply double FIXED[] { double *data } %{ 
+    int ug_variable_get_data_double(int file_id, char const* variable_name, double* data);
+%}
 
-// %csmethodmodifiers ug_variable_get_data_dimensions "public unsafe";
-// %apply int FIXED[] {int *dimension_vec} %{
-//     int ug_variable_get_data_dimensions(int file_id, char const* variable_name, int* dimension_vec);
-// %}
+%csmethodmodifiers ug_variable_get_data_int "public unsafe";
+%apply int FIXED[] {int *data} %{
+    int ug_variable_get_data_int(int file_id, char const* variable_name, int* data);
+%}
 
-// %csmethodmodifiers ug_attribute_int_define "public unsafe";
-// %apply int FIXED[] { int const* attribute_values } %{
-//     int ug_attribute_int_define(int file_id, char const* variable_name, char const* attribute_name, int const* attribute_values, int num_values);
-// %}
+%csmethodmodifiers ug_variable_get_data_dimensions "public unsafe";
+%apply int FIXED[] {int *dimension_vec} %{
+    int ug_variable_get_data_dimensions(int file_id, char const* variable_name, int* dimension_vec);
+%}
 
-// %csmethodmodifiers ug_attribute_double_define "public unsafe";
-// %apply double FIXED[] { double const* attribute_values } %{
-//     int ug_attribute_double_define(int file_id, char const* variable_name, char const* attribute_name, double const* attribute_values, int num_values);
-// %}
+%csmethodmodifiers ug_attribute_int_define "public unsafe";
+%apply int FIXED[] { int const* attribute_values } %{
+    int ug_attribute_int_define(int file_id, char const* variable_name, char const* attribute_name, int const* attribute_values, int num_values);
+%}
 
-%define %TreatTypeAsSystemIntPtr(TYPE)
+%csmethodmodifiers ug_attribute_double_define "public unsafe";
+%apply double FIXED[] { double const* attribute_values } %{
+    int ug_attribute_double_define(int file_id, char const* variable_name, char const* attribute_name, double const* attribute_values, int num_values);
+%}
+
+%define %TreatPointerToTypeAsSystemIntPtr(TYPE)
     %typemap(ctype)  TYPE* "TYPE*"
     %typemap(imtype) TYPE* "System.IntPtr"
     %typemap(cstype) TYPE* "System.IntPtr"
@@ -94,5 +100,6 @@
     %}
 %enddef
 
-%TreatTypeAsSystemIntPtr(int)
-%TreatTypeAsSystemIntPtr(double)
+%TreatPointerToTypeAsSystemIntPtr(int)
+%TreatPointerToTypeAsSystemIntPtr(double)
+// %TreatPointerToTypeAsSystemIntPtr(char)

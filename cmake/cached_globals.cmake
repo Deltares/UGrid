@@ -21,14 +21,14 @@ set(GLOB_CURRENT_YEAR ${GLOB_CURRENT_YEAR} CACHE STRING "Current year")
 if(WIN32 AND BUILD_DOTNET_WRAPPER)
   # .NET SDK
   set(GLOB_DOTNET_SDK "Microsoft.NET.Sdk" CACHE STRING ".NET SDK")
-  # .NET target frameworks
+  # List of .NET target frameworks (semicolon-delimited)
   # Note: Even if the list consists of a single element, make sure to terminate with a semicolon
   #       For ex: set(LIST_OF_DOTNET_TARGET_FRAMEWORKS "net481;" CACHE STRING "Supported .NET target framework")
   #       Otherwise, Visual Studio will not create subdir net481 under Release (of whichever build config is used) in the CMake binary dir
   #       <TargetFramework>net481</TargetFramework> works (notice the singular form in xml element "TargetFramework")
   #       <TargetFrameworks>net481</TargetFrameworks> does not work (notice the plural form in xml element "TargetFrameworks")
   #       <TargetFrameworks>net481;</TargetFrameworks> works (notice the plural form in xml element "TargetFrameworks" and the semicolon after "net481")
-  set(GLOB_LIB_DOTNET_TARGET_FRAMEWORKS "netstandard2.0;net481" CACHE STRING "Library .NET target framework")
+  set(GLOB_LIB_DOTNET_TARGET_FRAMEWORKS "net481;netstandard2.0" CACHE STRING "Library .NET target framework")
   set(GLOB_TEST_DOTNET_TARGET_FRAMEWORKS "net481;" CACHE STRING "Test .NET target framework")
   # .NET language version
   set(GLOB_CSHARP_LANGUAGE_VERSION "7.3" CACHE STRING "C# Compiler Options for language feature rules") 

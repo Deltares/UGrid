@@ -69,7 +69,7 @@ namespace ugridapi
         /// @brief Gets pointer to the exception message.
         /// @param[out] error_message The pointer to the latest error message
         /// @returns Error code
-        UGRID_API int ug_error_get(const char*& error_message);
+        UGRID_API int ug_error_get(char* error_message);
 
         /// @brief Gets the length of a name
         /// @param[out] length The length of names
@@ -382,21 +382,6 @@ namespace ugridapi
                                                       char const* att_name,
                                                       char const* attribute_values,
                                                       int num_values);
-
-        /// @brief Gets an int indicating the edge location type
-        /// @param[out] type The int indicating the edge location type
-        /// @returns Error code
-        UGRID_API int ug_get_edges_location_type(int& type);
-
-        /// @brief Gets an int indicating the node location type
-        /// @param[out] type The int indicating the node location type
-        /// @returns Error code
-        UGRID_API int ug_get_nodes_location_type(int& type);
-
-        /// @brief Gets an int indicating the faces location type
-        /// @param[out] type The int indicating the face location type
-        /// @returns Error code
-        UGRID_API int ug_get_faces_location_type(int& type);
 
         /// @brief Gets the int fill value
         /// @param[out] fillValue The int indicating the fill value

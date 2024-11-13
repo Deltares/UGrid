@@ -15,6 +15,12 @@ configure_file(
   COPYONLY
 )
 
+list(LENGTH GLOB_LIB_DOTNET_TARGET_FRAMEWORKS LIST_LENGTH)
+if(${LIST_LENGTH} EQUAL 1)
+    set(PROJECT_DOTNET_TARGET_FRAMEWORKS_TAG "TargetFramework")
+else()
+    set(PROJECT_DOTNET_TARGET_FRAMEWORKS_TAG "TargetFrameworks")
+endif()
 set(PROJECT_DOTNET_TARGET_FRAMEWORKS ${GLOB_LIB_DOTNET_TARGET_FRAMEWORKS})
 set(DIRECTORY_BUILD_PROPS ${CMAKE_CURRENT_BINARY_DIR}/Directory.Build.props)
 configure_file(
@@ -57,4 +63,4 @@ set_target_properties(
     VS_PACKAGE_REFERENCES "${PACKAGE_REFERENCES}"
 )
 
-# target_compile_options(${TARGET_NAME} PRIVATE "/unsafe")
+target_compile_options(${TARGET_NAME} PRIVATE "/unsafe")

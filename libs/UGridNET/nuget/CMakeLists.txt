@@ -23,6 +23,7 @@ execute_process(
   COMMAND ${Python_EXECUTABLE} ${CMAKE_SOURCE_DIR}/scripts/configure_nuspec.py
     --template ${CMAKE_CURRENT_SOURCE_DIR}/Deltares.UGridNET.nuspec.in
     --destination ${CMAKE_CURRENT_BINARY_DIR}/Deltares.UGridNET.nuspec.preconfig
+    --build_type ${CMAKE_BUILD_TYPE} # undefined for multi-config generators... so must configure with -DCMAKE_BUILD_TYPE anyway
     --dotnet_target_frameworks ${GLOB_LIB_DOTNET_TARGET_FRAMEWORKS}
   OUTPUT_VARIABLE PACKAGE_REFERENCES
   RESULT_VARIABLE RETURN_CODE
