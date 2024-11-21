@@ -13,8 +13,8 @@ namespace UGridNET
         // requires using log4net;
         //private static readonly ILog log = LogManager.GetLogger(typeof(UGridWrapper));
 
+        private bool disposed = false;
         private int fileID = -1;
-        private bool isOpen = false;
         private List<Mesh1D> mesh1DList = new List<Mesh1D>();
         private List<Mesh2D> mesh2DList = new List<Mesh2D>();
         private List<Contacts> contactsList = new List<Contacts>();
@@ -23,29 +23,27 @@ namespace UGridNET
 
         public UGridWrapper(string path)
         {
-            Read(path);
-            GetMesh1D();
-            GetMesh2D();
-            GetContacts();
-            GetNetwork1D();
+            try
+            {
+                Read(path);
+                GetMesh1D();
+                GetMesh2D();
+                GetContacts();
+                GetNetwork1D();
+            }
+            catch
+            {
+                // If initialization fails, dispose of any partially initialized resources
+                Dispose();
+                // Rethrow to inform the caller of the failure
+                throw;
+            }
         }
 
-        private void Dispose(bool disposing)
+        ~UGridWrapper()
         {
-            if (disposing)
-            {
-                // free memory allocated by the constructor
-                mesh1DList.ForEach(item => item.Free());
-                mesh2DList.ForEach(item => item.Free());
-                contactsList.ForEach(item => item.Free());
-                network1DList.ForEach(item => item.Free());
-
-                // close the file
-                if (isOpen)
-                {
-                    UGrid.ug_file_close(fileID);
-                }
-            }
+            // Cleanup in case Dispose wasn't called
+            Dispose(false);
         }
 
         public void Dispose()
@@ -53,6 +51,28 @@ namespace UGridNET
             Dispose(true);
             GC.SuppressFinalize(this);
         }
+
+        private void Dispose(bool disposing)
+        {
+            if (!disposed)
+            {
+                if (disposing)
+                {
+                    // Free memory allocated by the constructor
+                    mesh1DList.ForEach(item => item.Free());
+                    mesh2DList.ForEach(item => item.Free());
+                    contactsList.ForEach(item => item.Free());
+                    network1DList.ForEach(item => item.Free());
+
+                    // Close the file
+                    UGrid.ug_file_close(fileID);
+                }
+
+                disposed = true;
+            }
+        }
+
+
 
         public bool HasMesh1D() { return mesh1DList.Count > 0; }
 
@@ -95,34 +115,22 @@ namespace UGridNET
         private void Read(string path)
         {
             int fileMode = -1;
-            int exitCode = UGrid.ug_file_read_mode(ref fileMode);
-            ProcessExitCode(exitCode);
-
-            //Invoke(() => UGrid.ug_file_read_mode(ref fileMode));
-
-
-            exitCode = UGrid.ug_file_open(System.Text.Encoding.Default.GetBytes(path), fileMode, ref fileID);
-            isOpen = exitCode == 0;
-            ProcessExitCode(exitCode);
-
-            //Invoke(() => UGrid.ug_file_open(System.Text.Encoding.Default.GetBytes(path), fileMode, ref fileID));
+            Invoke(() => UGrid.ug_file_read_mode(ref fileMode));
+            Invoke(() => UGrid.ug_file_open(System.Text.Encoding.Default.GetBytes(path), fileMode, ref fileID));
         }
 
         private void GetMesh1D()
         {
             int count = 0;
-            int exitCode = UGrid.ug_topology_get_count(fileID, TopologyType.Mesh1dTopology, ref count);
-            ProcessExitCode(exitCode);
+            Invoke(() => UGrid.ug_topology_get_count(fileID, TopologyType.Mesh1dTopology, ref count));
             if (count > 0)
             {
                 for (int i = 0; i < count; i++)
                 {
                     Mesh1D mesh1D = new Mesh1D();
-                    exitCode = UGrid.ug_mesh1d_inq(fileID, i, mesh1D);
-                    ProcessExitCode(exitCode);
+                    Invoke(() => UGrid.ug_mesh1d_inq(fileID, i, mesh1D));
                     mesh1D.Allocate();
-                    exitCode = UGrid.ug_mesh1d_get(fileID, i, mesh1D);
-                    ProcessExitCode(exitCode);
+                    Invoke(() => UGrid.ug_mesh1d_get(fileID, i, mesh1D));
                     mesh1DList.Add(mesh1D);
                 }
             }
@@ -131,24 +139,22 @@ namespace UGridNET
         private void GetMesh2D()
         {
             int count = 0;
-            int exitCode = UGrid.ug_topology_get_count(fileID, TopologyType.Mesh2dTopology, ref count);
-            ProcessExitCode(exitCode);
+            Invoke(() => UGrid.ug_topology_get_count(fileID, TopologyType.Mesh2dTopology, ref count));
             if (count > 0)
             {
                 for (int i = 0; i < count; i++)
                 {
                     Mesh2D mesh2D = new Mesh2D();
-                    exitCode = UGrid.ug_mesh2d_inq(fileID, i, mesh2D);
-                    ProcessExitCode(exitCode);
+                    Invoke(() => UGrid.ug_mesh2d_inq(fileID, i, mesh2D));
                     mesh2D.Allocate();
-                    exitCode = UGrid.ug_mesh2d_get(fileID, i, mesh2D);
-                    ProcessExitCode(exitCode);
+                    Invoke(() => UGrid.ug_mesh2d_get(fileID, i, mesh2D));
                     mesh2DList.Add(mesh2D);
+
                     //var name = mesh2D.name.CopyToArray<byte>(UGrid.name_long_length);
                     //Console.WriteLine(">>> name: {0}", System.Text.Encoding.UTF8.GetString(name));
 
-                    var name = Marshal.PtrToStringAnsi(mesh2D.name);
-                    Console.WriteLine(">>> name: {0}", name);
+                    //var name = Marshal.PtrToStringAnsi(mesh2D.name);
+                    //Console.WriteLine(">>> name: {0}", name);
                 }
             }
         }
@@ -156,18 +162,15 @@ namespace UGridNET
         private void GetContacts()
         {
             int count = 0;
-            int exitCode = UGrid.ug_topology_get_count(fileID, TopologyType.ContactsTopology, ref count);
-            ProcessExitCode(exitCode);
+            Invoke(() => UGrid.ug_topology_get_count(fileID, TopologyType.ContactsTopology, ref count));
             if (count > 0)
             {
                 for (int i = 0; i < count; i++)
                 {
                     Contacts contacts = new Contacts();
-                    exitCode = UGrid.ug_contacts_inq(fileID, i, contacts);
-                    ProcessExitCode(exitCode);
+                    Invoke(() => UGrid.ug_contacts_inq(fileID, i, contacts));
                     contacts.Allocate();
-                    exitCode = UGrid.ug_contacts_get(fileID, i, contacts);
-                    ProcessExitCode(exitCode);
+                    Invoke(() => UGrid.ug_contacts_get(fileID, i, contacts));
                     contactsList.Add(contacts);
                 }
             }
@@ -175,18 +178,15 @@ namespace UGridNET
         private void GetNetwork1D()
         {
             int count = 0;
-            int exitCode = UGrid.ug_topology_get_count(fileID, TopologyType.Network1dTopology, ref count);
-            ProcessExitCode(exitCode);
+            Invoke(() => UGrid.ug_topology_get_count(fileID, TopologyType.Network1dTopology, ref count));
             if (count > 0)
             {
                 for (int i = 0; i < count; i++)
                 {
                     Network1D network1D = new Network1D();
-                    exitCode = UGrid.ug_network1d_inq(fileID, i, network1D);
-                    ProcessExitCode(exitCode);
+                    Invoke(() => UGrid.ug_network1d_inq(fileID, i, network1D));
                     network1D.Allocate();
-                    exitCode = UGrid.ug_network1d_get(fileID, i, network1D);
-                    ProcessExitCode(exitCode);
+                    Invoke(() => UGrid.ug_network1d_get(fileID, i, network1D));
                     network1DList.Add(network1D);
                 }
             }
@@ -195,22 +195,21 @@ namespace UGridNET
         // static private byte[] Name()
         // {
         //     int length = 0;
-        //     int exit_code = UGrid.ug_name_get_length(ref length);
+        //     Invoke(() => UGrid.ug_name_get_length(ref length));
         //     return new byte[length];
         // }
 
         // static private byte[] LongName()
         // {
         //     int length = 0;
-        //     int exit_code = UGrid.ug_name_get_long_length(ref length);
+        //     Invoke(() => UGrid.ug_name_get_long_length(ref length));
         //     return new byte[length];
         // }
 
         public string GetDataVariablesNames(int topologyID, TopologyType topologyType, MeshLocations meshLocation)
         {
             byte[] names = new byte[512];
-            int exitCode = UGrid.ug_topology_get_data_variables_names(fileID, topologyID, topologyType, meshLocation, names);
-            ProcessExitCode(exitCode);
+            Invoke(() => UGrid.ug_topology_get_data_variables_names(fileID, topologyID, topologyType, meshLocation, names));
             return System.Text.Encoding.Default.GetString(names);
         }
 
@@ -218,12 +217,10 @@ namespace UGridNET
         {
             int dimensionsCount = 0;
             byte[] variableName = System.Text.Encoding.Default.GetBytes(variableNameStr);
-            int exitCode = UGrid.ug_variable_count_dimensions(fileID, variableName, ref dimensionsCount);
-            ProcessExitCode(exitCode);
+            Invoke(() => UGrid.ug_variable_count_dimensions(fileID, variableName, ref dimensionsCount));
 
             int[] dimensionVec = new int[dimensionsCount];
-            exitCode = UGrid.ug_variable_get_data_dimensions(fileID, variableName, dimensionVec);
-            ProcessExitCode(exitCode);
+            Invoke(() => UGrid.ug_variable_get_data_dimensions(fileID, variableName, dimensionVec));
 
             int totalDimension = 1;
             for (int i = 0; i < dimensionsCount; i++)
@@ -235,22 +232,20 @@ namespace UGridNET
 
             if (typeof(T) == typeof(double))
             {
-                exitCode = UGrid.ug_variable_get_data_double(fileID, variableName, data as double[]);
+                Invoke(() => UGrid.ug_variable_get_data_double(fileID, variableName, data as double[]));
             }
             else if (typeof(T) == typeof(int))
             {
-                exitCode = UGrid.ug_variable_get_data_int(fileID, variableName, data as int[]);
+                Invoke(() => UGrid.ug_variable_get_data_int(fileID, variableName, data as int[]));
             }
             else if (typeof(T) == typeof(byte))
             {
-                exitCode = UGrid.ug_variable_get_data_char(fileID, variableName, data as byte[]);
+                Invoke(() => UGrid.ug_variable_get_data_char(fileID, variableName, data as byte[]));
             }
             else
             {
                 throw new NotSupportedException("Currently only int, double and char data types are supported.");
             }
-
-            ProcessExitCode(exitCode);
 
             return data;
         }

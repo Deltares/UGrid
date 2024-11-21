@@ -77,14 +77,10 @@ namespace UGridNET.Tests
             try
             {
                 Assert.Throws<Exception>(() => ugrid = new UGridWrapper(filePath));
-
             }
             finally
             {
-                if (ugrid != null)
-                {
-                    ugrid.Dispose();
-                }
+                ugrid?.Dispose();
             }
 
         }
@@ -109,10 +105,7 @@ namespace UGridNET.Tests
             }
             finally
             {
-                if (ugrid != null)
-                {
-                    ugrid.Dispose();
-                }
+                ugrid?.Dispose();
             }
 
         }
