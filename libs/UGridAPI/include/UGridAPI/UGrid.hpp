@@ -50,6 +50,11 @@ namespace ugridapi
     extern "C"
     {
 #endif
+
+        static const int name_length = ugrid::name_length;
+
+        static const int name_long_length = ugrid::name_long_length;
+
         /// @brief Enumeration for the topology type
         enum TopologyType
         {
@@ -137,56 +142,56 @@ namespace ugridapi
         /// @param[in] variable_name The variable name
         /// @param[out] attributes_count The number of attributes
         /// @return Error code
-        UGRID_API int ug_variable_count_attributes(int file_id, char const* variable_name, int& attributes_count);
+        UGRID_API int ug_variable_count_attributes(int file_id, const char* variable_name, int& attributes_count);
 
         /// @brief Get the attributes values of a specific variable
         /// @param[in] file_id The file id
         /// @param[in] variable_name The variable name
         /// @param[out] values The attribute values
         /// @return Error code
-        UGRID_API int ug_variable_get_attributes_values(int file_id, char const* variable_name, char* values);
+        UGRID_API int ug_variable_get_attributes_values(int file_id, const char* variable_name, char* values);
 
         /// @brief Get the attributes names of a specific variable
         /// @param[in] file_id The file id
         /// @param[in] variable_name The variable name
         /// @param[out] names The attribute names
         /// @return Error code
-        UGRID_API int ug_variable_get_attributes_names(int file_id, char const* variable_name, char* names);
+        UGRID_API int ug_variable_get_attributes_names(int file_id, const char* variable_name, char* names);
 
         /// @brief Get the number of dimensions of a specific variable
         /// @param[in] file_id The file id
         /// @param[in] variable_name The variable name
         /// @param[in] dimensions_count The number of dimensions
         /// @return Error code
-        UGRID_API int ug_variable_count_dimensions(int file_id, char const* variable_name, int& dimensions_count);
+        UGRID_API int ug_variable_count_dimensions(int file_id, const char* variable_name, int& dimensions_count);
 
         /// @brief Get the dimension values of a specific variable
         /// @param[in] file_id The file id
         /// @param[in] variable_name The variable name
         /// @param[in] dimension_vec The dimension values associated with the variable name
         /// @return Error code
-        UGRID_API int ug_variable_get_data_dimensions(int file_id, char const* variable_name, int* dimension_vec);
+        UGRID_API int ug_variable_get_data_dimensions(int file_id, const char* variable_name, int* dimension_vec);
 
         /// @brief Get the variable data as a flat array of doubles. This might be large, because the arrays can have a large dimensionality
         /// @param[in] file_id The file id
         /// @param[in] variable_name The variable name
         /// @param[out] data The variable data
         /// @return Error code
-        UGRID_API int ug_variable_get_data_double(int file_id, char const* variable_name, double* data);
+        UGRID_API int ug_variable_get_data_double(int file_id, const char* variable_name, double* data);
 
         /// @brief Get the variable data as a flat array of int. This might be large, because the arrays can have a large dimensionality
         /// @param[in] file_id  The file id
         /// @param[in] variable_name The variable name
         /// @param[out] data The variable data
         /// @return Error code
-        UGRID_API int ug_variable_get_data_int(int file_id, char const* variable_name, int* data);
+        UGRID_API int ug_variable_get_data_int(int file_id, const char* variable_name, int* data);
 
         /// @brief Get the variable data as a flat array of char. This might be large, because the arrays can have a large dimensionality
         /// @param[in] file_id The file id
         /// @param[in] variable_name The variable name
         /// @param[out] data The variable data
         /// @return Error code
-        UGRID_API int ug_variable_get_data_char(int file_id, char const* variable_name, char* data);
+        UGRID_API int ug_variable_get_data_char(int file_id, const char* variable_name, char* data);
 
         /// @brief Gets the integer identifying the file read mode
         /// @param[out] mode the integer identifying the file read mode
@@ -208,7 +213,7 @@ namespace ugridapi
         /// @param[in] mode The opening mode
         /// @param[out] file_id The file id
         /// @return Error code
-        UGRID_API int ug_file_open(char const* file_path, int mode, int& file_id);
+        UGRID_API int ug_file_open(const char* file_path, int mode, int& file_id);
 
         /// @brief Closes a file
         /// @param[in] file_id The file id
@@ -331,7 +336,7 @@ namespace ugridapi
         /// @param[in] file_id The file id
         /// @param[in] variable_name The variable name
         /// @return Error code
-        UGRID_API int ug_variable_int_define(int file_id, char const* variable_name);
+        UGRID_API int ug_variable_int_define(int file_id, const char* variable_name);
 
         /// @brief Add integer attributes to an existing variable
         /// @param[in] file_id The file id
@@ -341,8 +346,8 @@ namespace ugridapi
         /// @param[in] num_values The number of attribute values
         /// @return Error code
         UGRID_API int ug_attribute_int_define(int file_id,
-                                              char const* variable_name,
-                                              char const* attribute_name,
+                                              const char* variable_name,
+                                              const char* attribute_name,
                                               int const* attribute_values,
                                               int num_values);
 
@@ -354,9 +359,9 @@ namespace ugridapi
         /// @param[in] num_values The number of attribute values
         /// @return Error code
         UGRID_API int ug_attribute_char_define(int file_id,
-                                               char const* variable_name,
-                                               char const* attribute_name,
-                                               char const* attribute_values,
+                                               const char* variable_name,
+                                               const char* attribute_name,
+                                               const char* attribute_values,
                                                int num_values);
 
         /// @brief Add a double attributes to an existing variable
@@ -367,20 +372,20 @@ namespace ugridapi
         /// @param[in] num_values The number of attribute values
         /// @return Error code
         UGRID_API int ug_attribute_double_define(int file_id,
-                                                 char const* variable_name,
-                                                 char const* attribute_name,
+                                                 const char* variable_name,
+                                                 const char* attribute_name,
                                                  double const* attribute_values,
                                                  int num_values);
 
         /// @brief Add a char attributes as global and not related to a variable
         /// @param[in] file_id The file id
-        /// @param[in] att_name The attribute name
+        /// @param[in] attribute_name The attribute name
         /// @param[in] attribute_values The attribute values
         /// @param[in] num_values The number of values
         /// @return Error code
         UGRID_API int ug_attribute_global_char_define(int file_id,
-                                                      char const* att_name,
-                                                      char const* attribute_values,
+                                                      const char* attribute_name,
+                                                      const char* attribute_values,
                                                       int num_values);
 
         /// @brief Gets the int fill value
