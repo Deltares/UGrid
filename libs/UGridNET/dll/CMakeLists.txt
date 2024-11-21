@@ -46,13 +46,25 @@ execute_process(
   COMMAND_ERROR_IS_FATAL LAST
 )
 
+set(SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
+set(
+  SOURCES 
+    ${SWIG_GENERATED_CSHARP_SRCS}
+    ${SOURCE_DIR}/ContactsExtensions.cs
+    ${SOURCE_DIR}/ExtensionsConstants.cs
+    ${SOURCE_DIR}/IntPtrExtensions.cs
+    ${SOURCE_DIR}/Mesh1DExtensions.cs
+    ${SOURCE_DIR}/Mesh2DExtensions.cs
+    ${SOURCE_DIR}/Network1DExtensions.cs
+    ${SOURCE_DIR}/UGridWrapper.cs
+)
 add_library(
   ${TARGET_NAME}
   SHARED 
   ${NUGET_CONFIG}
   ${DIRECTORY_PACKAGES_PROPS}
   ${DIRECTORY_BUILD_PROPS}
-  ${SWIG_GENERATED_CSHARP_SRCS}
+  ${SOURCES}
 )
 
 set_target_properties(
