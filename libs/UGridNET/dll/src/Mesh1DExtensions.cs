@@ -9,6 +9,9 @@ namespace UGridNET
         {
             public static void Allocate(this Mesh1D mesh1D)
             {
+                mesh1D.name = Marshal.AllocHGlobal(UGrid.name_long_length);
+                mesh1D.node_long_name = Marshal.AllocHGlobal(UGrid.name_long_length * mesh1D.num_nodes);
+                mesh1D.network_name = Marshal.AllocHGlobal(UGrid.name_long_length);
                 mesh1D.node_x = Marshal.AllocHGlobal(mesh1D.num_nodes * Constants.doubleBytes);
                 mesh1D.node_y = Marshal.AllocHGlobal(mesh1D.num_nodes * Constants.doubleBytes);
                 mesh1D.edge_x = Marshal.AllocHGlobal(mesh1D.num_edges * Constants.doubleBytes);
@@ -21,6 +24,9 @@ namespace UGridNET
 
             public static void Free(this Mesh1D mesh1D)
             {
+                if (mesh1D.name != IntPtr.Zero) Marshal.FreeHGlobal(mesh1D.name);
+                if (mesh1D.node_long_name != IntPtr.Zero) Marshal.FreeHGlobal(mesh1D.node_long_name);
+                if (mesh1D.network_name != IntPtr.Zero) Marshal.FreeHGlobal(mesh1D.network_name);
                 if (mesh1D.node_x != IntPtr.Zero) Marshal.FreeHGlobal(mesh1D.node_x);
                 if (mesh1D.node_y != IntPtr.Zero) Marshal.FreeHGlobal(mesh1D.node_y);
                 if (mesh1D.edge_x != IntPtr.Zero) Marshal.FreeHGlobal(mesh1D.edge_x);

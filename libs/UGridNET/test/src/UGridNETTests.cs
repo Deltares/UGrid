@@ -38,10 +38,6 @@ namespace UGridNET.Tests
     }
 
 
-
-
-
-
     [TestFixture]
     public class UGridNetTests
     {
