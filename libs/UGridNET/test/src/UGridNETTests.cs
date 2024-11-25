@@ -111,6 +111,48 @@ namespace UGridNET.Tests
         }
 
         [Test]
+        public void OpenNonExistentFileThrows2()
+        {
+            string filePath = "nonExistentFile.nc";
+            UGridReader ugrid = null;
+
+            try
+            {
+                Assert.Throws<Exception>(() => ugrid = new UGridReader(filePath));
+            }
+            finally
+            {
+                ugrid?.Dispose();
+            }
+
+        }
+
+        [Test]
+        public void OpenSucceeds2()
+        {
+            string filePath = Path.Combine(TestDataPath, "AllUGridEntities.nc");
+            UGridReader ugrid = null;
+
+            try
+            {
+                ugrid = new UGridReader(filePath);
+                var mesh2D = ugrid.Mesh2DList();
+                var node_x = mesh2D[0].node_x.CopyToArray<double>(mesh2D[0].num_nodes);
+                var node_y = mesh2D[0].node_y.CopyToArray<double>(mesh2D[0].num_nodes);
+                // for (int i = 0; i < node_x.Length; i++)
+                // {
+                //     Console.WriteLine("x = {0}, y = {1}", node_x[i], node_y[i]);
+                // }
+
+            }
+            finally
+            {
+                ugrid?.Dispose();
+            }
+
+        }
+
+        [Test]
         public void GetDoubleDataByVariableName()
         {
             int result = -1;
