@@ -9,24 +9,33 @@ namespace UGridNET
         {
             public static void Allocate(this Contacts contacts)
             {
-                contacts.name = Marshal.AllocHGlobal(UGrid.name_long_length);
-                contacts.contact_name_id = Marshal.AllocHGlobal(UGrid.name_length * contacts.num_contacts);
-                contacts.mesh_from_name = Marshal.AllocHGlobal(UGrid.name_long_length);
-                contacts.mesh_to_name = Marshal.AllocHGlobal(UGrid.name_long_length);
-                contacts.contact_name_long = Marshal.AllocHGlobal(UGrid.name_long_length * contacts.num_contacts);
-                contacts.edges = Marshal.AllocHGlobal(contacts.num_contacts * 2 * Constants.intBytes);
-                contacts.contact_type = Marshal.AllocHGlobal(contacts.num_contacts * Constants.intBytes);
+                try
+                {
+                    contacts.name = IntPtrHelpers.Allocate(UGrid.name_long_length);
+                    contacts.contact_name_id = IntPtrHelpers.Allocate(UGrid.name_length * contacts.num_contacts);
+                    contacts.mesh_from_name = IntPtrHelpers.Allocate(UGrid.name_long_length);
+                    contacts.mesh_to_name = IntPtrHelpers.Allocate(UGrid.name_long_length);
+                    contacts.contact_name_long = IntPtrHelpers.Allocate(UGrid.name_long_length * contacts.num_contacts);
+                    contacts.edges = IntPtrHelpers.Allocate(contacts.num_contacts * 2 * IntPtrHelpers.Constants.intBytes);
+                    contacts.contact_type = IntPtrHelpers.Allocate(contacts.num_contacts * IntPtrHelpers.Constants.intBytes);
+                }
+                catch
+                {
+                    // AllocHGlobal may throw OutOfMemoryException exception, clean up and re-throw
+                    contacts.Free();
+                    throw;
+                }
             }
 
             public static void Free(this Contacts contacts)
             {
-                if (contacts.name != IntPtr.Zero) Marshal.FreeHGlobal(contacts.name);
-                if (contacts.contact_name_id != IntPtr.Zero) Marshal.FreeHGlobal(contacts.contact_name_id);
-                if (contacts.mesh_from_name != IntPtr.Zero) Marshal.FreeHGlobal(contacts.mesh_from_name);
-                if (contacts.mesh_to_name != IntPtr.Zero) Marshal.FreeHGlobal(contacts.mesh_to_name);
-                if (contacts.contact_name_long != IntPtr.Zero) Marshal.FreeHGlobal(contacts.contact_name_long);
-                if (contacts.edges != IntPtr.Zero) Marshal.FreeHGlobal(contacts.edges);
-                if (contacts.contact_type != IntPtr.Zero) Marshal.FreeHGlobal(contacts.contact_type);
+                IntPtrHelpers.Free(contacts.name);
+                IntPtrHelpers.Free(contacts.contact_name_id);
+                IntPtrHelpers.Free(contacts.mesh_from_name);
+                IntPtrHelpers.Free(contacts.mesh_to_name);
+                IntPtrHelpers.Free(contacts.contact_name_long);
+                IntPtrHelpers.Free(contacts.edges);
+                IntPtrHelpers.Free(contacts.contact_type);
             }
         }
     }

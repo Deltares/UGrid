@@ -51,8 +51,8 @@ set(
   SOURCES 
     ${SWIG_GENERATED_CSHARP_SRCS}
     ${SOURCE_DIR}/ContactsExtensions.cs
-    ${SOURCE_DIR}/ExtensionsConstants.cs
     ${SOURCE_DIR}/IntPtrExtensions.cs
+    ${SOURCE_DIR}/IntPtrHelpers.cs
     ${SOURCE_DIR}/Mesh1DExtensions.cs
     ${SOURCE_DIR}/Mesh2DExtensions.cs
     ${SOURCE_DIR}/Network1DExtensions.cs

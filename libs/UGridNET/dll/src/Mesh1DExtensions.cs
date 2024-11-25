@@ -9,32 +9,41 @@ namespace UGridNET
         {
             public static void Allocate(this Mesh1D mesh1D)
             {
-                mesh1D.name = Marshal.AllocHGlobal(UGrid.name_long_length);
-                mesh1D.node_long_name = Marshal.AllocHGlobal(UGrid.name_long_length * mesh1D.num_nodes);
-                mesh1D.network_name = Marshal.AllocHGlobal(UGrid.name_long_length);
-                mesh1D.node_x = Marshal.AllocHGlobal(mesh1D.num_nodes * Constants.doubleBytes);
-                mesh1D.node_y = Marshal.AllocHGlobal(mesh1D.num_nodes * Constants.doubleBytes);
-                mesh1D.edge_x = Marshal.AllocHGlobal(mesh1D.num_edges * Constants.doubleBytes);
-                mesh1D.edge_y = Marshal.AllocHGlobal(mesh1D.num_edges * Constants.doubleBytes);
-                mesh1D.edge_nodes = Marshal.AllocHGlobal(mesh1D.num_edges * 2 * Constants.intBytes);
-                mesh1D.edge_edge_id = Marshal.AllocHGlobal(mesh1D.num_nodes * Constants.intBytes); // size?
-                mesh1D.node_edge_id = Marshal.AllocHGlobal(mesh1D.num_nodes * Constants.intBytes); // size?
-                mesh1D.node_edge_offset = Marshal.AllocHGlobal(mesh1D.num_nodes * Constants.doubleBytes);
+                try
+                {
+                    mesh1D.name = IntPtrHelpers.Allocate(UGrid.name_long_length);
+                    mesh1D.node_long_name = IntPtrHelpers.Allocate(UGrid.name_long_length * mesh1D.num_nodes);
+                    mesh1D.network_name = IntPtrHelpers.Allocate(UGrid.name_long_length);
+                    mesh1D.node_x = IntPtrHelpers.Allocate(mesh1D.num_nodes * IntPtrHelpers.Constants.doubleBytes);
+                    mesh1D.node_y = IntPtrHelpers.Allocate(mesh1D.num_nodes * IntPtrHelpers.Constants.doubleBytes);
+                    mesh1D.edge_x = IntPtrHelpers.Allocate(mesh1D.num_edges * IntPtrHelpers.Constants.doubleBytes);
+                    mesh1D.edge_y = IntPtrHelpers.Allocate(mesh1D.num_edges * IntPtrHelpers.Constants.doubleBytes);
+                    mesh1D.edge_nodes = IntPtrHelpers.Allocate(mesh1D.num_edges * 2 * IntPtrHelpers.Constants.intBytes);
+                    mesh1D.edge_edge_id = IntPtrHelpers.Allocate(mesh1D.num_nodes * IntPtrHelpers.Constants.intBytes); // size?
+                    mesh1D.node_edge_id = IntPtrHelpers.Allocate(mesh1D.num_nodes * IntPtrHelpers.Constants.intBytes); // size?
+                    mesh1D.node_edge_offset = IntPtrHelpers.Allocate(mesh1D.num_nodes * IntPtrHelpers.Constants.doubleBytes);
+                }
+                catch
+                {
+                    // AllocHGlobal may throw OutOfMemoryException exception, clean up and re-throw
+                    mesh1D.Free();
+                    throw;
+                }
             }
 
             public static void Free(this Mesh1D mesh1D)
             {
-                if (mesh1D.name != IntPtr.Zero) Marshal.FreeHGlobal(mesh1D.name);
-                if (mesh1D.node_long_name != IntPtr.Zero) Marshal.FreeHGlobal(mesh1D.node_long_name);
-                if (mesh1D.network_name != IntPtr.Zero) Marshal.FreeHGlobal(mesh1D.network_name);
-                if (mesh1D.node_x != IntPtr.Zero) Marshal.FreeHGlobal(mesh1D.node_x);
-                if (mesh1D.node_y != IntPtr.Zero) Marshal.FreeHGlobal(mesh1D.node_y);
-                if (mesh1D.edge_x != IntPtr.Zero) Marshal.FreeHGlobal(mesh1D.edge_x);
-                if (mesh1D.edge_y != IntPtr.Zero) Marshal.FreeHGlobal(mesh1D.edge_y);
-                if (mesh1D.edge_nodes != IntPtr.Zero) Marshal.FreeHGlobal(mesh1D.edge_nodes);
-                if (mesh1D.edge_edge_id != IntPtr.Zero) Marshal.FreeHGlobal(mesh1D.edge_edge_id);
-                if (mesh1D.node_edge_id != IntPtr.Zero) Marshal.FreeHGlobal(mesh1D.node_edge_id);
-                if (mesh1D.node_edge_offset != IntPtr.Zero) Marshal.FreeHGlobal(mesh1D.node_edge_offset);
+                IntPtrHelpers.Free(mesh1D.name);
+                IntPtrHelpers.Free(mesh1D.node_long_name);
+                IntPtrHelpers.Free(mesh1D.network_name);
+                IntPtrHelpers.Free(mesh1D.node_x);
+                IntPtrHelpers.Free(mesh1D.node_y);
+                IntPtrHelpers.Free(mesh1D.edge_x);
+                IntPtrHelpers.Free(mesh1D.edge_y);
+                IntPtrHelpers.Free(mesh1D.edge_nodes);
+                IntPtrHelpers.Free(mesh1D.edge_edge_id);
+                IntPtrHelpers.Free(mesh1D.node_edge_id);
+                IntPtrHelpers.Free(mesh1D.node_edge_offset);
             }
         }
     }
