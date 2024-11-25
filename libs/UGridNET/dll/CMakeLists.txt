@@ -57,6 +57,7 @@ set(
     ${SOURCE_DIR}/Mesh2DExtensions.cs
     ${SOURCE_DIR}/Network1DExtensions.cs
     ${SOURCE_DIR}/UGridWrapper.cs
+    ${SOURCE_DIR}/UGridReader.cs
 )
 add_library(
   ${TARGET_NAME}
