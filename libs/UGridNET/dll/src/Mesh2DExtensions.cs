@@ -1,12 +1,12 @@
-using System;
-using System.Runtime.InteropServices;
-
 namespace UGridNET
 {
     namespace Extensions
     {
         internal static class Mesh2DExtensions
         {
+            /// <summary> Allocates unmanaged memory for all required properties of the <see cref="Mesh2D"/> instance. </summary>
+            /// <param name="mesh2D"> Instance of <see cref="Mesh2D"/>. </param>
+            /// <remarks> Memory allocated by this method must be freed by <see cref="Free"> </remarks>
             public static void Allocate(this Mesh2D mesh2D)
             {
                 try
@@ -35,6 +35,8 @@ namespace UGridNET
                 }
             }
 
+            /// <summary> Frees unmanaged memory allocated by <see cref="Allocate"/> for all required properties of the <see cref="Mesh2D"/> instance. </summary>
+            /// <param name="mesh2D"> Instance of <see cref="Mesh2D"/>. </param>
             public static void Free(this Mesh2D mesh2D)
             {
                 IntPtrHelpers.Free(mesh2D.name);

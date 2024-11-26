@@ -1,12 +1,12 @@
-using System;
-using System.Runtime.InteropServices;
-
 namespace UGridNET
 {
     namespace Extensions
     {
         internal static class ContactsExtensions
         {
+            /// <summary> Allocates unmanaged memory for all required properties of the <see cref="Contacts"/> instance. </summary>
+            /// <param name="contacts"> Instance of <see cref="Contacts"/>. </param>
+            /// <remarks> Memory allocated by this method must be freed by <see cref="Free"> </remarks>
             public static void Allocate(this Contacts contacts)
             {
                 try
@@ -27,6 +27,8 @@ namespace UGridNET
                 }
             }
 
+            /// <summary> Frees unmanaged memory allocated by <see cref="Allocate"/> for all required properties of the <see cref="Contacts"/> instance. </summary>
+            /// <param name="contacts"> Instance of <see cref="Contacts"/>. </param>
             public static void Free(this Contacts contacts)
             {
                 IntPtrHelpers.Free(contacts.name);

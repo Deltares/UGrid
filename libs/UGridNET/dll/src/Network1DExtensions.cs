@@ -1,12 +1,12 @@
-using System;
-using System.Runtime.InteropServices;
-
 namespace UGridNET
 {
     namespace Extensions
     {
         internal static class Network1DExtensions
         {
+            /// <summary> Allocates unmanaged memory for all required properties of the <see cref="Network1D"/> instance. </summary>
+            /// <param name="network1D"> Instance of <see cref="Network1D"/>. </param>
+            /// <remarks> Memory allocated by this method must be freed by <see cref="Free"> </remarks>
             public static void Allocate(this Network1D network1D)
             {
                 try
@@ -33,6 +33,8 @@ namespace UGridNET
                 }
             }
 
+            /// <summary> Frees unmanaged memory allocated by <see cref="Allocate"/> for all required properties of the <see cref="Network1D"/> instance. </summary>
+            /// <param name="network1D"> Instance of <see cref="Network1D"/>. </param>
             public static void Free(this Network1D network1D)
             {
                 IntPtrHelpers.Free(network1D.name);
