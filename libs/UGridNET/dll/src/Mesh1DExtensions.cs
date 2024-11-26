@@ -11,17 +11,17 @@ namespace UGridNET
             {
                 try
                 {
-                    mesh1D.name = IntPtrHelpers.Allocate(UGrid.name_long_length);
-                    mesh1D.node_long_name = IntPtrHelpers.Allocate(UGrid.name_long_length * mesh1D.num_nodes);
-                    mesh1D.network_name = IntPtrHelpers.Allocate(UGrid.name_long_length);
-                    mesh1D.node_x = IntPtrHelpers.Allocate(mesh1D.num_nodes * IntPtrHelpers.Constants.doubleBytes);
-                    mesh1D.node_y = IntPtrHelpers.Allocate(mesh1D.num_nodes * IntPtrHelpers.Constants.doubleBytes);
-                    mesh1D.edge_x = IntPtrHelpers.Allocate(mesh1D.num_edges * IntPtrHelpers.Constants.doubleBytes);
-                    mesh1D.edge_y = IntPtrHelpers.Allocate(mesh1D.num_edges * IntPtrHelpers.Constants.doubleBytes);
-                    mesh1D.edge_nodes = IntPtrHelpers.Allocate(mesh1D.num_edges * 2 * IntPtrHelpers.Constants.intBytes);
-                    mesh1D.edge_edge_id = IntPtrHelpers.Allocate(mesh1D.num_nodes * IntPtrHelpers.Constants.intBytes); // size?
-                    mesh1D.node_edge_id = IntPtrHelpers.Allocate(mesh1D.num_nodes * IntPtrHelpers.Constants.intBytes); // size?
-                    mesh1D.node_edge_offset = IntPtrHelpers.Allocate(mesh1D.num_nodes * IntPtrHelpers.Constants.doubleBytes);
+                    mesh1D.name = IntPtrHelpers.Allocate<byte>(UGrid.name_long_length);
+                    mesh1D.node_long_name = IntPtrHelpers.Allocate<byte>(UGrid.name_long_length * mesh1D.num_nodes);
+                    mesh1D.network_name = IntPtrHelpers.Allocate<byte>(UGrid.name_long_length);
+                    mesh1D.node_x = IntPtrHelpers.Allocate<double>(mesh1D.num_nodes);
+                    mesh1D.node_y = IntPtrHelpers.Allocate<double>(mesh1D.num_nodes);
+                    mesh1D.edge_x = IntPtrHelpers.Allocate<double>(mesh1D.num_edges);
+                    mesh1D.edge_y = IntPtrHelpers.Allocate<double>(mesh1D.num_edges);
+                    mesh1D.edge_nodes = IntPtrHelpers.Allocate<int>(mesh1D.num_edges * 2);
+                    mesh1D.edge_edge_id = IntPtrHelpers.Allocate<int>(mesh1D.num_nodes); // size?
+                    mesh1D.node_edge_id = IntPtrHelpers.Allocate<int>(mesh1D.num_nodes); // size?
+                    mesh1D.node_edge_offset = IntPtrHelpers.Allocate<double>(mesh1D.num_nodes);
                 }
                 catch
                 {

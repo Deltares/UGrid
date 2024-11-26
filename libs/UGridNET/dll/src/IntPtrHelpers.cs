@@ -5,15 +5,14 @@ namespace UGridNET
 {
     internal static class IntPtrHelpers
     {
-        internal static class Constants
+        public static IntPtr Allocate<T>(int count) where T : struct
         {
-            public static readonly int intBytes = Marshal.SizeOf<int>();
-            public static readonly int doubleBytes = Marshal.SizeOf<double>();
-            public static readonly int byteBytes = Marshal.SizeOf<byte>();
-        }
-        public static IntPtr Allocate(int size)
-        {
-            return Marshal.AllocHGlobal(size);
+            if (count <= 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(count), "Count must be greater than zero.");
+            }
+
+            return Marshal.AllocHGlobal(count * Marshal.SizeOf<T>());
         }
 
         public static void Free(IntPtr ptr)
@@ -21,7 +20,6 @@ namespace UGridNET
             if (ptr != IntPtr.Zero)
             {
                 Marshal.FreeHGlobal(ptr);
-                ptr = IntPtr.Zero;
             }
         }
     }
