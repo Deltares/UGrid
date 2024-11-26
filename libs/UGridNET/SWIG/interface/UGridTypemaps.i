@@ -83,8 +83,8 @@ CSHARP_ARRAYS(char, byte)
 %csmethodmodifiers ug_topology_get_data_variables_names "public unsafe";
 %apply char FIXED[] { char* data_variables_names_result } %{ 
     int ug_topology_get_data_variables_names(int file_id,
-                                             int topology_id,
                                              ugridapi::TopologyType topology_type,
+                                             int topology_id,
                                              ugridapi::MeshLocations location,
                                              char* data_variables_names_result);
 %}
@@ -94,8 +94,8 @@ CSHARP_ARRAYS(char, byte)
 %apply char FIXED[] { const char* dimension_name };
  %{ 
     int ug_topology_define_double_variable_on_location(int file_id,
-                                                       int topology_id,
                                                        ugridapi::TopologyType topology_type,
+                                                       int topology_id,
                                                        ugridapi::MeshLocations location,
                                                        const char* variable_name,
                                                        const char* dimension_name,

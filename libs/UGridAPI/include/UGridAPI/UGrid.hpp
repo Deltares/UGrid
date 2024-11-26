@@ -51,6 +51,8 @@ namespace ugridapi
     {
 #endif
 
+        static const size_t error_message_buffer_size = 512;
+
         static const int name_length = ugrid::name_length;
 
         static const int name_long_length = ugrid::name_long_length;
@@ -102,8 +104,8 @@ namespace ugridapi
         /// @param[out] data_variable_count The number of data variables on the topology
         /// @return Error code
         UGRID_API int ug_topology_count_data_variables(int file_id,
-                                                       int topology_id,
                                                        TopologyType topology_type,
+                                                       int topology_id,
                                                        MeshLocations location,
                                                        int& data_variable_count);
 
@@ -115,8 +117,8 @@ namespace ugridapi
         /// @param[out] data_variables_names_result The names of the data variables
         /// @return Error code
         UGRID_API int ug_topology_get_data_variables_names(int file_id,
-                                                           int topology_id,
                                                            TopologyType topology_type,
+                                                           int topology_id,
                                                            MeshLocations location,
                                                            char* data_variables_names_result);
 
@@ -130,8 +132,8 @@ namespace ugridapi
         /// @param[in] dimension_value The dimension value
         /// @return Error code
         UGRID_API int ug_topology_define_double_variable_on_location(int file_id,
-                                                                     int topology_id,
                                                                      TopologyType topology_type,
+                                                                     int topology_id,
                                                                      MeshLocations location,
                                                                      const char* variable_name,
                                                                      const char* dimension_name,

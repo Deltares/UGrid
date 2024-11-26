@@ -87,7 +87,7 @@ namespace UGridNET
         {
             if (exitCode != 0)
             {
-                byte[] messageBytes = new byte[512];
+                byte[] messageBytes = new byte[UGrid.error_message_buffer_size];
                 UGrid.ug_error_get(messageBytes);
                 string messageStr = System.Text.Encoding.Default.GetString(messageBytes);
 
@@ -110,10 +110,10 @@ namespace UGridNET
             Invoke(() => UGrid.ug_file_open(System.Text.Encoding.Default.GetBytes(path), openMode, ref fileID));
         }
 
-        public string GetDataVariablesNames(int topologyID, TopologyType topologyType, MeshLocations meshLocation)
+        public string GetDataVariablesNames(TopologyType topologyType, int topologyID, MeshLocations meshLocation)
         {
-            byte[] names = new byte[512];
-            Invoke(() => UGrid.ug_topology_get_data_variables_names(fileID, topologyID, topologyType, meshLocation, names));
+            byte[] names = new byte[UGrid.error_message_buffer_size];
+            Invoke(() => UGrid.ug_topology_get_data_variables_names(fileID, topologyType, topologyID, meshLocation, names));
             return System.Text.Encoding.Default.GetString(names);
         }
 

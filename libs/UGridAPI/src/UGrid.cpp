@@ -54,10 +54,8 @@
 namespace ugridapi
 {
     static std::map<int, UGridState> ugrid_states;
-
-    static size_t constexpr buffer_size = 512;
-    static size_t constexpr max_chars_to_copy = buffer_size - 1; // make sure destination string is null-terminated when strncpy is used
-    static char exceptionMessage[buffer_size] = "";
+    static size_t constexpr max_chars_to_copy = error_message_buffer_size - 1; // make sure destination string is null-terminated when strncpy is used
+    static char exceptionMessage[error_message_buffer_size] = "";
 
     /// @brief Hash table mapping locations to location names
     static const std::unordered_map<MeshLocations, std::string> locations_attribute_names{
@@ -86,7 +84,9 @@ namespace ugridapi
         }
     }
 
-    static std::unique_ptr<ugrid::UGridEntity> get_topology(int file_id, int topology_id, TopologyType topology_type)
+    static std::unique_ptr<ugrid::UGridEntity> get_topology(int file_id,
+                                                            TopologyType topology_type,
+                                                            int topology_id)
     {
         switch (topology_type)
         {
@@ -178,9 +178,12 @@ namespace ugridapi
         return it->second;
     }
 
-    static std::string get_coordinate_variable_string(int file_id, int topology_id, TopologyType topology_type, std::string const& var_name)
+    static std::string get_coordinate_variable_string(int file_id,
+                                                      TopologyType topology_type,
+                                                      int topology_id,
+                                                      std::string const& var_name)
     {
-        auto topology = get_topology(file_id, topology_id, topology_type);
+        auto topology = get_topology(file_id, topology_type, topology_id);
 
         auto coordinates_vector_variables = topology->get_topology_attribute_variable(var_name);
         std::string result;
@@ -245,8 +248,8 @@ namespace ugridapi
     }
 
     UGRID_API int ug_topology_count_data_variables(int file_id,
-                                                   int topology_id,
                                                    TopologyType topology_type,
+                                                   int topology_id,
                                                    MeshLocations location,
                                                    int& data_variable_count)
     {
@@ -258,7 +261,7 @@ namespace ugridapi
                 throw std::invalid_argument("UGrid: The selected file_id does not exist.");
             }
 
-            auto const topology = get_topology(file_id, topology_id, topology_type);
+            auto const topology = get_topology(file_id, topology_type, topology_id);
 
             auto const location_string = ugrid::from_location_integer_to_location_string(static_cast<int>(location));
 
@@ -275,8 +278,8 @@ namespace ugridapi
     }
 
     UGRID_API int ug_topology_get_data_variables_names(int file_id,
-                                                       int topology_id,
                                                        TopologyType topology_type,
+                                                       int topology_id,
                                                        MeshLocations location,
                                                        char* data_variables_names_result)
     {
@@ -289,7 +292,7 @@ namespace ugridapi
                 throw std::invalid_argument("UGrid: The selected file_id does not exist.");
             }
 
-            auto const topology = get_topology(file_id, topology_id, topology_type);
+            auto const topology = get_topology(file_id, topology_type, topology_id);
 
             auto const location_string = ugrid::from_location_integer_to_location_string(static_cast<int>(location));
 
@@ -305,8 +308,8 @@ namespace ugridapi
     }
 
     UGRID_API int ug_topology_define_double_variable_on_location(int file_id,
-                                                                 int topology_id,
                                                                  TopologyType topology_type,
+                                                                 int topology_id,
                                                                  MeshLocations location,
                                                                  const char* variable_name,
                                                                  const char* dimension_name,
@@ -322,12 +325,12 @@ namespace ugridapi
 
             const auto local_variable_name = ugrid::char_array_to_string(variable_name, ugrid::name_long_length);
 
-            const auto topology = get_topology(file_id, topology_id, topology_type);
+            const auto topology = get_topology(file_id, topology_type, topology_id);
 
             const auto mesh = topology->get_name();
 
             const auto location_str = locations_attribute_names.at(location);
-            const auto coordinates = get_coordinate_variable_string(file_id, topology_id, topology_type, location_str + "_coordinates");
+            const auto coordinates = get_coordinate_variable_string(file_id, topology_type, topology_id, location_str + "_coordinates");
 
             // Set additional variable dimension on the file
             const auto local_dimension_name = ugrid::char_array_to_string(dimension_name, ugrid::name_long_length);

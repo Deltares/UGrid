@@ -1284,8 +1284,8 @@ TEST(ApiTest, TopologyDefineDoubleVariableOnLocation_OnExistingFile_ShouldDefine
     string_to_char_array("numTimeSteps", name_long_length, dimension_name.data());
 
     error_code = ugridapi::ug_topology_define_double_variable_on_location(file_id,
-                                                                          0,
                                                                           ugridapi::TopologyType::Mesh2dTopology,
+                                                                          0,
                                                                           ugridapi::MeshLocations::Nodes,
                                                                           variable_name.data(),
                                                                           dimension_name.data(),
