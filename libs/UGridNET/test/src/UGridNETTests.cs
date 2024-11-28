@@ -10,34 +10,6 @@ using UGridNET.Extensions;
 namespace UGridNET.Tests
 {
 
-    internal static class ByteArrayExtensions
-    {
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="bytes"></param>
-        /// <returns></returns>
-        /// <exception cref="ArgumentNullException"></exception>
-        public static string ToString(this byte[] bytes)
-        {
-            if (bytes == null)
-            {
-                throw new ArgumentNullException(nameof(bytes));
-            }
-            return System.Text.Encoding.UTF8.GetString(bytes);
-        }
-
-        public static byte[] FromString(string str)
-        {
-            if (str == null)
-            {
-                throw new ArgumentNullException(nameof(str));
-            }
-            return System.Text.Encoding.UTF8.GetBytes(str);
-        }
-    }
-
-
     [TestFixture]
     public class UGridNetTests
     {
@@ -84,7 +56,7 @@ namespace UGridNET.Tests
         [Test]
         public void OpenSucceeds()
         {
-            string filePath = Path.Combine(TestDataPath, "AllUGridEntities.nc");
+            string filePath = Path.Combine(TestDataPath, "OneMesh2D.nc");
             UGridReader ugrid = null;
 
             try
@@ -97,13 +69,124 @@ namespace UGridNET.Tests
                 // {
                 //     Console.WriteLine("x = {0}, y = {1}", node_x[i], node_y[i]);
                 // }
+                //ugrid.GetMesh2DAttributesByID(0);
+                //Console.WriteLine("long name = {0}", ugrid.GetMesh2DLongName());
 
+            }
+            // catch (Exception ex)
+            // {
+            //     Console.WriteLine(ex.Message);
+            // }
+            finally
+            {
+                ugrid?.Dispose();
+            }
+
+        }
+
+        [Test]
+        public void GetEPSGCode()
+        {
+            string filePath = Path.Combine(TestDataPath, "OneMesh2D.nc");
+            UGridReader ugrid = null;
+
+            try
+            {
+                ugrid = new UGridReader(filePath);
+                string EPSGCode = ugrid.GetEPSGCode();
+                Assert.That(EPSGCode, Is.EqualTo("EPSG:0"));
+                Console.WriteLine("EPSG code (test): {0}", EPSGCode);
             }
             finally
             {
                 ugrid?.Dispose();
             }
 
+        }
+
+        [Test]
+        public void GetConventions()
+        {
+            string filePath = Path.Combine(TestDataPath, "OneMesh2D.nc");
+            UGridReader ugrid = null;
+
+            try
+            {
+                ugrid = new UGridReader(filePath);
+
+                string conventions = ugrid.GetConventions();
+                Console.WriteLine("conventions (test): \"{0}\"", conventions);
+                Assert.That(conventions, Is.EqualTo("CF-1.8 UGRID-1.0 Deltares-0.10"));
+            }
+            finally
+            {
+                ugrid?.Dispose();
+            }
+
+        }
+
+        [Test]
+        public void GetMesh2DAttributesByID()
+        {
+            string filePath = Path.Combine(TestDataPath, "OneMesh2D.nc");
+            UGridReader ugrid = null;
+
+            try
+            {
+                ugrid = new UGridReader(filePath);
+                var attributes = ugrid.GetMesh2DAttributesByID(0);
+            }
+            finally
+            {
+                ugrid?.Dispose();
+            }
+        }
+
+        [Test]
+        public void GetMesh2DAttributesByName()
+        {
+            string filePath = Path.Combine(TestDataPath, "OneMesh2D.nc");
+            UGridReader ugrid = null;
+
+            try
+            {
+                ugrid = new UGridReader(filePath);
+                var attributes = ugrid.GetMesh2DAttributesByName("mesh2d");
+                Assert.That(attributes["cf_role"], Is.EqualTo("mesh_topology"));
+                Assert.That(attributes["long_name"], Is.EqualTo("Topology data of 2D mesh"));
+                Assert.That(attributes["topology_dimension"], Is.EqualTo("2"));
+                Assert.That(attributes["node_coordinates"], Is.EqualTo("mesh2d_node_x mesh2d_node_y"));
+                Assert.That(attributes["node_dimension"], Is.EqualTo("mesh2d_nNodes"));
+                Assert.That(attributes["max_face_nodes_dimension"], Is.EqualTo("mesh2d_nMax_face_nodes"));
+                Assert.That(attributes["edge_node_connectivity"], Is.EqualTo("mesh2d_edge_nodes"));
+                Assert.That(attributes["edge_dimension"], Is.EqualTo("mesh2d_nEdges"));
+                Assert.That(attributes["edge_coordinates"], Is.EqualTo("mesh2d_edge_x mesh2d_edge_y"));
+                Assert.That(attributes["face_node_connectivity"], Is.EqualTo("mesh2d_face_nodes"));
+                Assert.That(attributes["face_dimension"], Is.EqualTo("mesh2d_nFaces"));
+                Assert.That(attributes["face_coordinates"], Is.EqualTo("mesh2d_face_x mesh2d_face_y"));
+            }
+            finally
+            {
+                ugrid?.Dispose();
+            }
+        }
+
+        [Test]
+        public void GetMesh2DAttributesByNameThrows()
+        {
+            string filePath = Path.Combine(TestDataPath, "OneMesh2D.nc");
+            UGridReader ugrid = null;
+
+            try
+            {
+                ugrid = new UGridReader(filePath);
+                var attributes = new Dictionary<string, string>();
+                Assert.Throws<InvalidOperationException>(() => attributes = ugrid.GetMesh2DAttributesByName("brrrrrrr"));
+            }
+            finally
+            {
+                ugrid?.Dispose();
+            }
         }
 
         [Test]

@@ -1,5 +1,8 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using UGridNET.Extensions;
+using System.Runtime.InteropServices;
 
 namespace UGridNET
 {
@@ -90,7 +93,7 @@ namespace UGridNET
                     mesh2DList.Add(mesh2D);
 
                     //var name = mesh2D.name.CopyToArray<byte>(UGrid.name_long_length);
-                    //Console.WriteLine(">>> name: {0}", System.Text.Encoding.UTF8.GetString(name));
+                    //Console.WriteLine(">>> name: {0}", name.GetString());
 
                     //var name = Marshal.PtrToStringAnsi(mesh2D.name);
                     //Console.WriteLine(">>> name: {0}", name);
@@ -129,6 +132,75 @@ namespace UGridNET
                     network1DList.Add(network1D);
                 }
             }
+        }
+
+        private Dictionary<string, string> GetVariableAttributes(string variableNameStr, bool strIsPadded = false)
+        {
+            var variableName = variableNameStr.PadRightUpTo(UGrid.name_long_length).GetBytes();
+
+            int attributesCount = 0;
+            Invoke(() => UGrid.ug_variable_count_attributes(fileID, variableName, ref attributesCount));
+
+            var attributeNames = new byte[attributesCount * UGrid.name_long_length];
+            Invoke(() => UGrid.ug_variable_get_attributes_names(fileID, variableName, attributeNames));
+            List<string> dictionaryKeys = attributeNames.GetString().SplitIntoSizedTokens(UGrid.name_long_length);
+
+            var attributeValues = new byte[attributesCount * UGrid.name_long_length];
+            Invoke(() => UGrid.ug_variable_get_attributes_values(fileID, variableName, attributeValues));
+            List<string> dictionaryValues = attributeValues.GetString().SplitIntoSizedTokens(UGrid.name_long_length);
+
+            var dictionary = new Dictionary<string, string>();
+            for (int i = 0; i < attributesCount; i++)
+            {
+                dictionary.Add(dictionaryKeys[i], dictionaryValues[i]);
+            }
+
+            return dictionary;
+        }
+
+        public string GetConventions()
+        {
+            var attributeNameStr = "Conventions";
+            var attributeName = attributeNameStr.PadRightUpTo(UGrid.name_long_length).GetBytes();
+            var attributeValue = new byte[UGrid.name_long_length];
+            Invoke(() => UGrid.ug_attribute_global_char_get(fileID, attributeName, attributeValue));
+            return attributeValue.GetString();
+        }
+
+        public Dictionary<string, string> GetMesh2DAttributesByID(int topologyID)
+        {
+            var name = Marshal.PtrToStringAnsi(mesh2DList[topologyID].name);
+            //Console.WriteLine("name: \"{0}\"", name);
+            var dict = GetVariableAttributes(name, true);
+            // foreach (var item in dict)
+            // {
+            //     Console.WriteLine($"Key: {item.Key}, Value: {item.Value}");
+            // }
+            return dict;
+        }
+
+        public Dictionary<string, string> GetMesh2DAttributesByName(string name)
+        {
+            int index = mesh2DList.FindIndex(item => Marshal.PtrToStringAnsi(item.name).TrimEnd() == name);
+            if (index == -1)
+            {
+                throw new InvalidOperationException($"No item found with name '{name}'");
+            }
+            return GetMesh2DAttributesByID(index);
+        }
+
+        public string GetEPSGCode()
+        {
+            string variableName = "projected_coordinate_system";
+            var attributes = GetVariableAttributes(variableName);
+            return attributes["EPSG_code"];
+        }
+
+        public string GetMesh2DLongName()
+        {
+            string variableName = "mesh2d";
+            var attributes = GetVariableAttributes(variableName);
+            return attributes["long_name"];
         }
 
     }

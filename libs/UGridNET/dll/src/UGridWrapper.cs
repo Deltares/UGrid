@@ -89,7 +89,7 @@ namespace UGridNET
             {
                 byte[] messageBytes = new byte[UGrid.error_message_buffer_size];
                 UGrid.ug_error_get(messageBytes);
-                string messageStr = System.Text.Encoding.Default.GetString(messageBytes);
+                string messageStr = messageBytes.GetString();
 
                 if (!string.IsNullOrWhiteSpace(messageStr))
                 {
@@ -107,20 +107,20 @@ namespace UGridNET
 
         private void Open(string path, int openMode)
         {
-            Invoke(() => UGrid.ug_file_open(System.Text.Encoding.Default.GetBytes(path), openMode, ref fileID));
+            Invoke(() => UGrid.ug_file_open(path.GetBytes(), openMode, ref fileID));
         }
 
         public string GetDataVariablesNames(TopologyType topologyType, int topologyID, MeshLocations meshLocation)
         {
             byte[] names = new byte[UGrid.error_message_buffer_size];
             Invoke(() => UGrid.ug_topology_get_data_variables_names(fileID, topologyType, topologyID, meshLocation, names));
-            return System.Text.Encoding.Default.GetString(names);
+            return names.GetString();
         }
 
         public T[] GetVariableByName<T>(string variableNameStr)
         {
             int dimensionsCount = 0;
-            byte[] variableName = System.Text.Encoding.Default.GetBytes(variableNameStr);
+            byte[] variableName = variableNameStr.GetBytes();
             Invoke(() => UGrid.ug_variable_count_dimensions(fileID, variableName, ref dimensionsCount));
 
             int[] dimensionVec = new int[dimensionsCount];
