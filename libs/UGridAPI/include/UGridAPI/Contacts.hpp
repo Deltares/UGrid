@@ -27,6 +27,8 @@
 
 #pragma once
 
+#include <UGridAPI/MeshLocations.hpp>
+
 namespace ugridapi
 {
     /// @brief A struct used to describe UGrid contact in a C-compatible manner
@@ -54,10 +56,10 @@ namespace ugridapi
         char* mesh_to_name = nullptr;
 
         /// @brief The location type (node, edge or face) at the contact start
-        int mesh_from_location = 0;
+        MeshLocations mesh_from_location = MeshLocations::Unknown;
 
         /// @brief The location type (node, edge or face) at the contact end
-        int mesh_to_location = 0;
+        MeshLocations mesh_to_location = MeshLocations::Unknown;
 
         /// @brief The number of contact
         int num_contacts = 0;

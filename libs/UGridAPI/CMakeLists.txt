@@ -28,6 +28,7 @@ set(
   ${DOMAIN_INC_DIR}/Contacts.hpp
   ${DOMAIN_INC_DIR}/Mesh1D.hpp
   ${DOMAIN_INC_DIR}/Mesh2D.hpp
+  ${DOMAIN_INC_DIR}/MeshLocations.hpp
   ${DOMAIN_INC_DIR}/Network1D.hpp
   ${DOMAIN_INC_DIR}/UGrid.hpp
   ${DOMAIN_INC_DIR}/UGridState.hpp
