@@ -36,6 +36,22 @@ namespace UGridNET
                 return str + padding;
             }
 
+            public static string TrimTrailingWhitespace(this string str)
+            {
+                if (string.IsNullOrEmpty(str))
+                {
+                    return str;
+                }
+
+                int endIndex = str.Length - 1;
+                while (endIndex >= 0 && char.IsWhiteSpace(str[endIndex]))
+                {
+                    endIndex--;
+                }
+
+                return str.Substring(0, endIndex + 1);
+            }
+
             public static List<string> SplitIntoSizedTokens(this string str, int tokenLength)
             {
                 List<string> tokens = new List<string>();
@@ -53,6 +69,25 @@ namespace UGridNET
                     {
                         tokens.Add(token);
                     }
+                }
+
+                return tokens;
+            }
+
+            public static List<List<string>> SplitString(string str, int tokenLength)
+            {
+                List<List<string>> tokens = new List<List<string>>();
+                int currentIndex = 0;
+
+                while (currentIndex < str.Length)
+                {
+                    // Get the next token of the specified length
+                    string token = str.Substring(currentIndex, Math.Min(tokenLength, str.Length - currentIndex));
+                    currentIndex += tokenLength;
+
+                    // Split the token into substrings and add to the list
+                    string[] substrings = token.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                    tokens.Add(new List<string>(substrings));
                 }
 
                 return tokens;

@@ -50,15 +50,18 @@ set(SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 set(
   SOURCES 
     ${SWIG_GENERATED_CSHARP_SRCS}
+    ${SOURCE_DIR}/ByteArrayExtensions.cs
     ${SOURCE_DIR}/ContactsExtensions.cs
     ${SOURCE_DIR}/IntPtrExtensions.cs
     ${SOURCE_DIR}/IntPtrHelpers.cs
     ${SOURCE_DIR}/Mesh1DExtensions.cs
     ${SOURCE_DIR}/Mesh2DExtensions.cs
     ${SOURCE_DIR}/Network1DExtensions.cs
+    ${SOURCE_DIR}/StringExtensions.cs
     ${SOURCE_DIR}/UGridWrapper.cs
     ${SOURCE_DIR}/UGridReader.cs
 )
+
 add_library(
   ${TARGET_NAME}
   SHARED 
