@@ -390,6 +390,15 @@ namespace ugridapi
                                                       const char* attribute_values,
                                                       int num_values);
 
+        /// @brief Gets a char global attribute
+        /// @param[in] file_id The file id
+        /// @param[in] attribute_name The attribute name
+        /// @param[out] attribute_values The attribute values
+        /// @return Error code
+        UGRID_API int ug_attribute_global_char_get(int file_id,
+                                                   const char* attribute_name,
+                                                   char* attribute_values);
+
         /// @brief Gets the int fill value
         /// @param[out] fillValue The int indicating the fill value
         /// @returns Error code

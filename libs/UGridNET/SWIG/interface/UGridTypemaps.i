@@ -107,6 +107,15 @@ CSHARP_ARRAYS(char, byte)
 %csmethodmodifiers ug_variable_int_define "public unsafe";
 %csmethodmodifiers ug_attribute_global_char_define "public unsafe";
 
+%csmethodmodifiers ug_attribute_global_char_get "public unsafe";
+%apply char FIXED[] { const char* attribute_name };
+%apply char FIXED[] { char* attribute_values };
+%{
+    int ug_attribute_global_char_get(int file_id,
+                                     const char* attribute_name,
+                                     char* attribute_values);
+%}
+
 
 %csmethodmodifiers ug_variable_get_attributes_values "public unsafe";
 %apply char FIXED[] { char* values } %{ 

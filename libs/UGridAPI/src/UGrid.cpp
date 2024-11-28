@@ -147,7 +147,6 @@ namespace ugridapi
             {
                 throw std::invalid_argument("get_attributes_values_as_strings: Invalid attribute value type.");
             }
-            std::cout << "done with " << name << std::endl;
         }
         return result;
     }
@@ -1109,6 +1108,34 @@ namespace ugridapi
 
             // Put the attribute values
             ugrid_states[file_id].m_ncFile->putAtt(attribute_name_str, netCDF::NcType::nc_CHAR, num_values, attribute_values);
+        }
+        catch (...)
+        {
+            exit_code = HandleExceptions(std::current_exception());
+        }
+        return exit_code;
+    }
+
+    UGRID_API int ug_attribute_global_char_get(int file_id,
+                                               const char* attribute_name,
+                                               char* attribute_values)
+    {
+        int exit_code = Success;
+        try
+        {
+            if (ugrid_states.count(file_id) == 0)
+            {
+                throw std::invalid_argument("UGrid: The selected file_id does not exist.");
+            }
+
+            // Get the attribute name
+            const auto attribute_name_str = ugrid::char_array_to_string(attribute_name, ugrid::name_long_length);
+
+            // Put the attribute values
+            netCDF::NcGroupAtt attribute = ugrid_states[file_id].m_ncFile->getAtt(attribute_name_str);
+            std::string value;
+            attribute.getValues(value);
+            ugrid::string_to_char_array(value, ugrid::name_long_length, attribute_values);
         }
         catch (...)
         {
