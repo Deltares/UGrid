@@ -112,7 +112,8 @@ namespace ugridapi
         auto const attributes = nc_var.getAtts();
         for (auto const& [name, value] : attributes)
         {
-            if (value.getType() == netCDF::NcType::nc_INT)
+            netCDF::NcType const type = value.getType();
+            if (type == netCDF::NcType::nc_INT)
             {
                 auto const attribute_length = value.getAttLength();
                 std::vector<int> items(attribute_length);
@@ -124,7 +125,19 @@ namespace ugridapi
                 }
                 result.emplace_back(os.str());
             }
-            else if (value.getType() == netCDF::NcType::nc_CHAR)
+            else if (type == netCDF::NcType::nc_DOUBLE)
+            {
+                auto const attribute_length = value.getAttLength();
+                std::vector<double> items(attribute_length);
+                value.getValues(&items[0]);
+                std::stringstream os;
+                for (auto const& item : items)
+                {
+                    os << item << " ";
+                }
+                result.emplace_back(os.str());
+            }
+            else if (type == netCDF::NcType::nc_CHAR)
             {
                 std::string item;
                 value.getValues(item);
@@ -134,6 +147,7 @@ namespace ugridapi
             {
                 throw std::invalid_argument("get_attributes_values_as_strings: Invalid attribute value type.");
             }
+            std::cout << "done with " << name << std::endl;
         }
         return result;
     }
@@ -172,7 +186,7 @@ namespace ugridapi
         const auto it = vars.find(name);
         if (it == vars.end())
         {
-            throw std::invalid_argument("ug_variable_count_dimensions: The variable name is not present in the netcdf file.");
+            throw std::invalid_argument("get_variable: The variable name is not present in the netcdf file.");
         }
 
         return it->second;
@@ -374,7 +388,7 @@ namespace ugridapi
             const auto it = vars.find(name);
             if (it == vars.end())
             {
-                throw std::invalid_argument("ug_variable_count_dimensions: The variable name is not present in the netcdf file.");
+                throw std::invalid_argument("ug_variable_count_attributes: The variable name is not present in the netcdf file.");
             }
 
             // Get the dimensions
@@ -446,12 +460,12 @@ namespace ugridapi
 
             // Get the attribute names
             auto const attributes = it->second.getAtts();
-            std::vector<std::string> atrribute_names;
+            std::vector<std::string> attribute_names;
             for (auto const& attribute : attributes)
             {
-                atrribute_names.emplace_back(attribute.second.getName());
+                attribute_names.emplace_back(attribute.second.getName());
             }
-            ugrid::vector_of_strings_to_char_array(atrribute_names, ugrid::name_long_length, names);
+            ugrid::vector_of_strings_to_char_array(attribute_names, ugrid::name_long_length, names);
         }
         catch (...)
         {
