@@ -37,7 +37,27 @@ namespace UGridNET.Tests
         private static readonly string TestDataPath = GetTestDataPath();
 
         [Test]
-        public void OpenNonExistentFileThrows()
+        public void OpenExistingFileSucceeds()
+        {
+            string filePath = Path.Combine(TestDataPath, "OneMesh2D.nc");
+            UGridReader ugrid = null;
+
+            try
+            {
+                Assert.DoesNotThrow(() => ugrid = new UGridReader(filePath));
+                var mesh2D = ugrid.Mesh2DList();
+                var node_x = mesh2D[0].node_x.CopyToArray<double>(mesh2D[0].num_nodes);
+                var node_y = mesh2D[0].node_y.CopyToArray<double>(mesh2D[0].num_nodes);
+            }
+            finally
+            {
+                ugrid?.Dispose();
+            }
+
+        }
+
+        [Test]
+        public void OpenNonExistingFileFails()
         {
             string filePath = "nonExistentFile.nc";
             UGridReader ugrid = null;
@@ -53,36 +73,6 @@ namespace UGridNET.Tests
 
         }
 
-        [Test]
-        public void OpenSucceeds()
-        {
-            string filePath = Path.Combine(TestDataPath, "OneMesh2D.nc");
-            UGridReader ugrid = null;
-
-            try
-            {
-                ugrid = new UGridReader(filePath);
-                var mesh2D = ugrid.Mesh2DList();
-                var node_x = mesh2D[0].node_x.CopyToArray<double>(mesh2D[0].num_nodes);
-                var node_y = mesh2D[0].node_y.CopyToArray<double>(mesh2D[0].num_nodes);
-                // for (int i = 0; i < node_x.Length; i++)
-                // {
-                //     Console.WriteLine("x = {0}, y = {1}", node_x[i], node_y[i]);
-                // }
-                //ugrid.GetMesh2DAttributesByID(0);
-                //Console.WriteLine("long name = {0}", ugrid.GetMesh2DLongName());
-
-            }
-            // catch (Exception ex)
-            // {
-            //     Console.WriteLine(ex.Message);
-            // }
-            finally
-            {
-                ugrid?.Dispose();
-            }
-
-        }
 
         [Test]
         public void GetEPSGCode()
@@ -135,6 +125,18 @@ namespace UGridNET.Tests
             {
                 ugrid = new UGridReader(filePath);
                 var attributes = ugrid.GetMesh2DAttributesByID(0);
+                Assert.That(attributes["cf_role"], Is.EqualTo("mesh_topology"));
+                Assert.That(attributes["long_name"], Is.EqualTo("Topology data of 2D mesh"));
+                Assert.That(attributes["topology_dimension"], Is.EqualTo("2"));
+                Assert.That(attributes["node_coordinates"], Is.EqualTo("mesh2d_node_x mesh2d_node_y"));
+                Assert.That(attributes["node_dimension"], Is.EqualTo("mesh2d_nNodes"));
+                Assert.That(attributes["max_face_nodes_dimension"], Is.EqualTo("mesh2d_nMax_face_nodes"));
+                Assert.That(attributes["edge_node_connectivity"], Is.EqualTo("mesh2d_edge_nodes"));
+                Assert.That(attributes["edge_dimension"], Is.EqualTo("mesh2d_nEdges"));
+                Assert.That(attributes["edge_coordinates"], Is.EqualTo("mesh2d_edge_x mesh2d_edge_y"));
+                Assert.That(attributes["face_node_connectivity"], Is.EqualTo("mesh2d_face_nodes"));
+                Assert.That(attributes["face_dimension"], Is.EqualTo("mesh2d_nFaces"));
+                Assert.That(attributes["face_coordinates"], Is.EqualTo("mesh2d_face_x mesh2d_face_y"));
             }
             finally
             {

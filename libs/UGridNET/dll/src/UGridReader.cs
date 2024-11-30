@@ -138,17 +138,21 @@ namespace UGridNET
         {
             var variableName = variableNameStr.PadRightUpTo(UGrid.name_long_length).GetBytes();
 
+            // get number of attributes
             int attributesCount = 0;
             Invoke(() => UGrid.ug_variable_count_attributes(fileID, variableName, ref attributesCount));
 
+            // get names of attributes
             var attributeNames = new byte[attributesCount * UGrid.name_long_length];
             Invoke(() => UGrid.ug_variable_get_attributes_names(fileID, variableName, attributeNames));
             List<string> dictionaryKeys = attributeNames.GetString().SplitIntoSizedTokens(UGrid.name_long_length);
 
+            // get value of attributes
             var attributeValues = new byte[attributesCount * UGrid.name_long_length];
             Invoke(() => UGrid.ug_variable_get_attributes_values(fileID, variableName, attributeValues));
             List<string> dictionaryValues = attributeValues.GetString().SplitIntoSizedTokens(UGrid.name_long_length);
 
+            // populate the dictionary with the name-value pairs
             var dictionary = new Dictionary<string, string>();
             for (int i = 0; i < attributesCount; i++)
             {
@@ -167,10 +171,16 @@ namespace UGridNET
             return attributeValue.GetString();
         }
 
+        public string GetEPSGCode()
+        {
+            string variableName = "projected_coordinate_system";
+            var attributes = GetVariableAttributes(variableName);
+            return attributes["EPSG_code"];
+        }
+
         public Dictionary<string, string> GetMesh2DAttributesByID(int topologyID)
         {
             var name = Marshal.PtrToStringAnsi(mesh2DList[topologyID].name);
-            //Console.WriteLine("name: \"{0}\"", name);
             var dict = GetVariableAttributes(name, true);
             // foreach (var item in dict)
             // {
@@ -189,19 +199,7 @@ namespace UGridNET
             return GetMesh2DAttributesByID(index);
         }
 
-        public string GetEPSGCode()
-        {
-            string variableName = "projected_coordinate_system";
-            var attributes = GetVariableAttributes(variableName);
-            return attributes["EPSG_code"];
-        }
 
-        public string GetMesh2DLongName()
-        {
-            string variableName = "mesh2d";
-            var attributes = GetVariableAttributes(variableName);
-            return attributes["long_name"];
-        }
 
     }
 
