@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 
 namespace UGridNET.Tests
 {
-    public class IntPtrHelpersTests
+    public class IntPtrHelpersBasicTests
     {
         private static IEnumerable<TestCaseData> AllocateTestCases()
         {
@@ -16,32 +16,22 @@ namespace UGridNET.Tests
 
         private IntPtr AllocateHelper(Type type, int count)
         {
-            // type matching not supported using current language std.
-            switch (type)
+            if (type == typeof(int))
             {
-                case Type t when t == typeof(int):
-                    return IntPtrHelpers.Allocate<int>(count);
-                case Type t when t == typeof(double):
-                    return IntPtrHelpers.Allocate<double>(count);
-                case Type t when t == typeof(byte):
-                    return IntPtrHelpers.Allocate<byte>(count);
-                default:
-                    throw new ArgumentException("Type not covered by test", nameof(type));
+                return IntPtrHelpers.Allocate<int>(count);
             }
-
-            //if (type == typeof(int))
-            //{
-            //    return IntPtrHelpers.Allocate<int>(count);
-            //}
-            //if (type == typeof(double))
-            //{
-            //    return IntPtrHelpers.Allocate<double>(count);
-            //}
-            //if (type == typeof(byte))
-            //{
-            //    return IntPtrHelpers.Allocate<byte>(count);
-            //}
-            //throw new ArgumentException("Type not covered by test", nameof(type));
+            else if (type == typeof(double))
+            {
+                return IntPtrHelpers.Allocate<double>(count);
+            }
+            else if (type == typeof(byte))
+            {
+                return IntPtrHelpers.Allocate<byte>(count);
+            }
+            else
+            {
+                throw new ArgumentException("Type not covered by test", nameof(type));
+            }
         }
 
         [Test, TestCaseSource(nameof(AllocateTestCases))]
@@ -50,7 +40,6 @@ namespace UGridNET.Tests
             var ptr = IntPtr.Zero;
             Assert.DoesNotThrow(() => ptr = AllocateHelper(type, count));
             Assert.That(ptr, Is.Not.EqualTo(IntPtr.Zero));
-            //IntPtrHelpers.Free(() => ptr, value => ptr = value);
             IntPtrHelpers.Free(ref ptr);
             Assert.That(ptr, Is.EqualTo(IntPtr.Zero));
         }
