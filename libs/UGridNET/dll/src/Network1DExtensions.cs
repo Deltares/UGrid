@@ -37,19 +37,19 @@ namespace UGridNET
             /// <param name="network1D"> Instance of <see cref="Network1D"/>. </param>
             public static void Free(this Network1D network1D)
             {
-                IntPtrHelpers.Free(network1D.name);
-                IntPtrHelpers.Free(network1D.node_id);
-                IntPtrHelpers.Free(network1D.node_long_name);
-                IntPtrHelpers.Free(network1D.edge_id);
-                IntPtrHelpers.Free(network1D.edge_long_name);
-                IntPtrHelpers.Free(network1D.node_x);
-                IntPtrHelpers.Free(network1D.node_y);
-                IntPtrHelpers.Free(network1D.edge_nodes);
-                IntPtrHelpers.Free(network1D.edge_length);
-                IntPtrHelpers.Free(network1D.edge_order);
-                IntPtrHelpers.Free(network1D.geometry_nodes_x);
-                IntPtrHelpers.Free(network1D.geometry_nodes_y);
-                IntPtrHelpers.Free(network1D.num_edge_geometry_nodes);
+                IntPtrHelpers.Free(() => network1D.name, value => network1D.name = value);
+                IntPtrHelpers.Free(() => network1D.node_id, value => network1D.node_id = value);
+                IntPtrHelpers.Free(() => network1D.node_long_name, value => network1D.node_long_name = value);
+                IntPtrHelpers.Free(() => network1D.edge_id, value => network1D.edge_id = value);
+                IntPtrHelpers.Free(() => network1D.edge_long_name, value => network1D.edge_long_name = value);
+                IntPtrHelpers.Free(() => network1D.node_x, value => network1D.node_x = value);
+                IntPtrHelpers.Free(() => network1D.node_y, value => network1D.node_y = value);
+                IntPtrHelpers.Free(() => network1D.edge_nodes, value => network1D.edge_nodes = value);
+                IntPtrHelpers.Free(() => network1D.edge_length, value => network1D.edge_length = value);
+                IntPtrHelpers.Free(() => network1D.edge_order, value => network1D.edge_order = value);
+                IntPtrHelpers.Free(() => network1D.geometry_nodes_x, value => network1D.geometry_nodes_x = value);
+                IntPtrHelpers.Free(() => network1D.geometry_nodes_y, value => network1D.geometry_nodes_y = value);
+                IntPtrHelpers.Free(() => network1D.num_edge_geometry_nodes, value => network1D.num_edge_geometry_nodes = value);
             }
         }
     }

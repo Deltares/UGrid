@@ -1,3 +1,5 @@
+using System;
+
 namespace UGridNET
 {
     namespace Extensions
@@ -28,24 +30,28 @@ namespace UGridNET
                     // AllocHGlobal may throw OutOfMemoryException exception, clean up and re-throw
                     mesh1D.Free();
                     throw;
+
                 }
             }
+
+            private static IntPtr MemoryPointer { get; set; }
+
 
             /// <summary> Frees unmanaged memory allocated by <see cref="Allocate"/> for all required properties of the <see cref="Mesh1D"/> instance. </summary>
             /// <param name="mesh1D"> Instance of <see cref="Mesh1D"/>. </param>
             public static void Free(this Mesh1D mesh1D)
             {
-                IntPtrHelpers.Free(mesh1D.name);
-                IntPtrHelpers.Free(mesh1D.node_long_name);
-                IntPtrHelpers.Free(mesh1D.network_name);
-                IntPtrHelpers.Free(mesh1D.node_x);
-                IntPtrHelpers.Free(mesh1D.node_y);
-                IntPtrHelpers.Free(mesh1D.edge_x);
-                IntPtrHelpers.Free(mesh1D.edge_y);
-                IntPtrHelpers.Free(mesh1D.edge_nodes);
-                IntPtrHelpers.Free(mesh1D.edge_edge_id);
-                IntPtrHelpers.Free(mesh1D.node_edge_id);
-                IntPtrHelpers.Free(mesh1D.node_edge_offset);
+                IntPtrHelpers.Free(() => mesh1D.name, value => mesh1D.name = value);
+                IntPtrHelpers.Free(() => mesh1D.node_long_name, value => mesh1D.node_long_name = value);
+                IntPtrHelpers.Free(() => mesh1D.network_name, value => mesh1D.network_name = value);
+                IntPtrHelpers.Free(() => mesh1D.node_x, value => mesh1D.node_x = value);
+                IntPtrHelpers.Free(() => mesh1D.node_y, value => mesh1D.node_y = value);
+                IntPtrHelpers.Free(() => mesh1D.edge_x, value => mesh1D.edge_x = value);
+                IntPtrHelpers.Free(() => mesh1D.edge_y, value => mesh1D.edge_y = value);
+                IntPtrHelpers.Free(() => mesh1D.edge_nodes, value => mesh1D.edge_nodes = value);
+                IntPtrHelpers.Free(() => mesh1D.edge_edge_id, value => mesh1D.edge_edge_id = value);
+                IntPtrHelpers.Free(() => mesh1D.node_edge_id, value => mesh1D.node_edge_id = value);
+                IntPtrHelpers.Free(() => mesh1D.node_edge_offset, value => mesh1D.node_edge_offset = value);
             }
         }
     }

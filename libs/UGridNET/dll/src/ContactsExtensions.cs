@@ -29,15 +29,16 @@ namespace UGridNET
 
             /// <summary> Frees unmanaged memory allocated by <see cref="Allocate"/> for all required properties of the <see cref="Contacts"/> instance. </summary>
             /// <param name="contacts"> Instance of <see cref="Contacts"/>. </param>
+            //public static void Free(this Contacts contacts)
             public static void Free(this Contacts contacts)
             {
-                IntPtrHelpers.Free(contacts.name);
-                IntPtrHelpers.Free(contacts.contact_name_id);
-                IntPtrHelpers.Free(contacts.mesh_from_name);
-                IntPtrHelpers.Free(contacts.mesh_to_name);
-                IntPtrHelpers.Free(contacts.contact_name_long);
-                IntPtrHelpers.Free(contacts.edges);
-                IntPtrHelpers.Free(contacts.contact_type);
+                IntPtrHelpers.Free(() => contacts.name, value => contacts.name = value);
+                IntPtrHelpers.Free(() => contacts.contact_name_id, value => contacts.contact_name_id = value);
+                IntPtrHelpers.Free(() => contacts.mesh_from_name, value => contacts.mesh_from_name = value);
+                IntPtrHelpers.Free(() => contacts.mesh_to_name, value => contacts.mesh_to_name = value);
+                IntPtrHelpers.Free(() => contacts.contact_name_long, value => contacts.contact_name_long = value);
+                IntPtrHelpers.Free(() => contacts.edges, value => contacts.edges = value);
+                IntPtrHelpers.Free(() => contacts.contact_type, value => contacts.contact_type = value);
             }
         }
     }

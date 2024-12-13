@@ -39,21 +39,21 @@ namespace UGridNET
             /// <param name="mesh2D"> Instance of <see cref="Mesh2D"/>. </param>
             public static void Free(this Mesh2D mesh2D)
             {
-                IntPtrHelpers.Free(mesh2D.name);
-                IntPtrHelpers.Free(mesh2D.node_x);
-                IntPtrHelpers.Free(mesh2D.node_y);
-                IntPtrHelpers.Free(mesh2D.node_z);
-                IntPtrHelpers.Free(mesh2D.edge_x);
-                IntPtrHelpers.Free(mesh2D.edge_y);
-                IntPtrHelpers.Free(mesh2D.edge_z);
-                IntPtrHelpers.Free(mesh2D.face_x);
-                IntPtrHelpers.Free(mesh2D.face_y);
-                IntPtrHelpers.Free(mesh2D.face_z);
-                IntPtrHelpers.Free(mesh2D.edge_nodes);
-                IntPtrHelpers.Free(mesh2D.edge_faces);
-                IntPtrHelpers.Free(mesh2D.face_nodes);
-                IntPtrHelpers.Free(mesh2D.face_edges);
-                IntPtrHelpers.Free(mesh2D.face_faces);
+                IntPtrHelpers.Free(() => mesh2D.name, value => mesh2D.name = value);
+                IntPtrHelpers.Free(() => mesh2D.node_x, value => mesh2D.node_x = value);
+                IntPtrHelpers.Free(() => mesh2D.node_y, value => mesh2D.node_y = value);
+                IntPtrHelpers.Free(() => mesh2D.node_z, value => mesh2D.node_z = value);
+                IntPtrHelpers.Free(() => mesh2D.edge_x, value => mesh2D.edge_x = value);
+                IntPtrHelpers.Free(() => mesh2D.edge_y, value => mesh2D.edge_y = value);
+                IntPtrHelpers.Free(() => mesh2D.edge_z, value => mesh2D.edge_z = value);
+                IntPtrHelpers.Free(() => mesh2D.face_x, value => mesh2D.face_x = value);
+                IntPtrHelpers.Free(() => mesh2D.face_y, value => mesh2D.face_y = value);
+                IntPtrHelpers.Free(() => mesh2D.face_z, value => mesh2D.face_z = value);
+                IntPtrHelpers.Free(() => mesh2D.edge_nodes, value => mesh2D.edge_nodes = value);
+                IntPtrHelpers.Free(() => mesh2D.edge_faces, value => mesh2D.edge_faces = value);
+                IntPtrHelpers.Free(() => mesh2D.face_nodes, value => mesh2D.face_nodes = value);
+                IntPtrHelpers.Free(() => mesh2D.face_edges, value => mesh2D.face_edges = value);
+                IntPtrHelpers.Free(() => mesh2D.face_faces, value => mesh2D.face_faces = value);
             }
         }
     }
