@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Text;
+
+[assembly: InternalsVisibleToAttribute("UGridNET.Tests")]
 
 namespace UGridNET
 {
@@ -10,65 +13,76 @@ namespace UGridNET
         {
             public static byte[] GetBytes(this string str)
             {
-                if (str == null)
-                {
-                    throw new ArgumentNullException(nameof(str), "String cannot be null.");
-                }
+                // if (str == null)
+                // {
+                //     throw new ArgumentNullException(nameof(str), "String cannot be null.");
+                // }
 
                 return Encoding.UTF8.GetBytes(str);
             }
 
-            public static string PadRightUpTo(this string str, int maxLength)
+            public static byte[] GetRightPaddedNullTerminatedBytes(this string str, int length)
             {
                 if (str == null)
                 {
                     throw new ArgumentNullException(nameof(str), "String cannot be null.");
                 }
 
-                if (maxLength <= str.Length)
+                if (length < 0)
                 {
-                    return str;
+                    throw new ArgumentOutOfRangeException(nameof(length), "Length cannot be negative.");
                 }
 
-                int paddingLength = maxLength - str.Length;
-                string padding = new string(' ', paddingLength);
+                if (str.Length > length - 1)
+                {
+                    throw new ArgumentException("String length exceeds the allowed length minus one for the null terminator.", nameof(str));
+                }
 
-                return str + padding;
+                // Trim then pad the string, reserve the last char for the null character
+                var paddedString = str.Trim().PadRight(length - 1);
+
+                // Convert the string to bytes
+                var bytesFromPaddedString = Encoding.UTF8.GetBytes(paddedString);
+
+                // Create a new array with an extra byte for the null terminator
+                var bytes = new byte[length];
+
+                // Copy the bytes of the string to the newly created bytes array as the
+                Array.Copy(bytesFromPaddedString, bytes, length - 1);
+
+                // Explicitly Set last element to null even though this is not really necessary as
+                // the declaration var bytes = new byte[length]; initializes all elements to null.
+                bytes[length - 1] = 0x00;
+
+                return bytes;
             }
 
-            public static string TrimTrailingWhitespace(this string str)
+            public static List<string> Tokenize(this string str, int maxTokenLength)
             {
-                if (string.IsNullOrEmpty(str))
+                if (str == null)
                 {
-                    return str;
+                    throw new ArgumentNullException(nameof(str), "String cannot be null.");
                 }
 
-                int endIndex = str.Length - 1;
-                while (endIndex >= 0 && char.IsWhiteSpace(str[endIndex]))
+                if (str.Length == 0)
                 {
-                    endIndex--;
+                    throw new ArgumentException("String cannot be null.", nameof(str));
                 }
 
-                return str.Substring(0, endIndex + 1);
-            }
+                if (maxTokenLength <= 0)
+                {
+                    throw new ArgumentException("Maximum token length must be strictly positive.", nameof(maxTokenLength));
+                }
 
-            public static List<string> SplitIntoSizedTokens(this string str, int tokenLength)
-            {
                 List<string> tokens = new List<string>();
                 int currentIndex = 0;
 
                 while (currentIndex < str.Length)
                 {
                     // Get the next token of the specified length
-                    string token = str.Substring(currentIndex, Math.Min(tokenLength, str.Length - currentIndex));
-                    currentIndex += tokenLength;
-
-                    // Trim the token and add to the list if it's not empty
-                    token = token.Trim();
-                    if (!string.IsNullOrEmpty(token))
-                    {
-                        tokens.Add(token);
-                    }
+                    string token = str.Substring(currentIndex, maxTokenLength); //Math.Min(maxTokenLength, str.Length - currentIndex));
+                    currentIndex += maxTokenLength;
+                    tokens.Add(token.Trim());
                 }
 
                 return tokens;
