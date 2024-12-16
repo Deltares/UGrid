@@ -104,7 +104,7 @@ namespace UGridNET.Tests
         }
 
         [Test]
-        public void GetTokenizeThrowsDueToNegativeMAximumTokenLength()
+        public void GetTokenizeThrowsDueToNegativeMaximumTokenLength()
         {
             int maxTokenLength = -40;
             var str = "I am not a number, I am a free man!";

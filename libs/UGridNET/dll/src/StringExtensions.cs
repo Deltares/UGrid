@@ -9,18 +9,35 @@ namespace UGridNET
 {
     namespace Extensions
     {
+
+        /// <summary>
+        /// Provides extension methods for the <see cref="string"/> class.
+        /// </summary>
         internal static class StringExtensions
         {
+            /// <summary>
+            /// Converts the specified string to a byte array using UTF-8 encoding.
+            /// </summary>
+            /// <param name="str">The string to convert.</param>
+            /// <returns>A byte array representing the UTF-8 encoded string.</returns>
             public static byte[] GetBytes(this string str)
             {
-                // if (str == null)
-                // {
-                //     throw new ArgumentNullException(nameof(str), "String cannot be null.");
-                // }
-
                 return Encoding.UTF8.GetBytes(str);
             }
 
+            /// <summary>
+            /// Converts the specified string to a right-padded, null-terminated byte
+            /// array of the specified length using UTF-8 encoding.
+            /// </summary>
+            /// <param name="str">The string to convert.</param>
+            /// <param name="length">The length of the resulting byte array.</param>
+            /// <returns>
+            /// A byte array of the specified length, containing the UTF-8 encoded string,
+            /// right-padded with spaces and null-terminated.
+            /// </returns>
+            /// <exception cref="ArgumentNullException">Thrown when the string is null.</exception>
+            /// <exception cref="ArgumentOutOfRangeException">Thrown when the length is negative.</exception>
+            /// <exception cref="ArgumentException">Thrown when the string length exceeds the allowed length minus one for the null terminator.</exception>
             public static byte[] GetRightPaddedNullTerminatedBytes(this string str, int length)
             {
                 if (str == null)
@@ -57,6 +74,12 @@ namespace UGridNET
                 return bytes;
             }
 
+            /// <summary>Splits the specified string into tokens of the specified maximum length.</summary>
+            /// <param name="str">The string to tokenize.</param>
+            /// <param name="maxTokenLength">The maximum length of each token.</param>
+            /// <returns>A list of tokens.</returns>
+            /// <exception cref="ArgumentNullException">Thrown when the string is null.</exception>
+            /// <exception cref="ArgumentException">Thrown when the string is empty or the maximum token length is not positive.</exception>
             public static List<string> Tokenize(this string str, int maxTokenLength)
             {
                 if (str == null)
@@ -74,34 +97,13 @@ namespace UGridNET
                     throw new ArgumentException("Maximum token length must be strictly positive.", nameof(maxTokenLength));
                 }
 
-                List<string> tokens = new List<string>();
+                var tokens = new List<string>();
                 int currentIndex = 0;
-
                 while (currentIndex < str.Length)
                 {
-                    // Get the next token of the specified length
-                    string token = str.Substring(currentIndex, maxTokenLength); //Math.Min(maxTokenLength, str.Length - currentIndex));
-                    currentIndex += maxTokenLength;
+                    var token = str.Substring(currentIndex, maxTokenLength);
                     tokens.Add(token.Trim());
-                }
-
-                return tokens;
-            }
-
-            public static List<List<string>> SplitString(string str, int tokenLength)
-            {
-                List<List<string>> tokens = new List<List<string>>();
-                int currentIndex = 0;
-
-                while (currentIndex < str.Length)
-                {
-                    // Get the next token of the specified length
-                    string token = str.Substring(currentIndex, Math.Min(tokenLength, str.Length - currentIndex));
-                    currentIndex += tokenLength;
-
-                    // Split the token into substrings and add to the list
-                    string[] substrings = token.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-                    tokens.Add(new List<string>(substrings));
+                    currentIndex += maxTokenLength;
                 }
 
                 return tokens;
