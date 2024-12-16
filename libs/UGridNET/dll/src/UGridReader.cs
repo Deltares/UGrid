@@ -3,15 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using UGridNET.Extensions;
 using System.Runtime.InteropServices;
+using System.Diagnostics.CodeAnalysis;
 
 namespace UGridNET
 {
 
     public sealed class UGridReader : UGridBase
     {
-        // requires using log4net;
-        //private static readonly ILog log = LogManager.GetLogger(typeof(UGridReader));
-
         private bool disposed = false;
 
         public UGridReader(string path) : base(path, 0)
@@ -69,7 +67,7 @@ namespace UGridNET
             {
                 for (int i = 0; i < count; i++)
                 {
-                    Mesh1D mesh1D = new Mesh1D();
+                    var mesh1D = new Mesh1D();
                     Invoke(() => UGrid.ug_mesh1d_inq(fileID, i, mesh1D));
                     mesh1D.Allocate();
                     Invoke(() => UGrid.ug_mesh1d_get(fileID, i, mesh1D));
@@ -86,17 +84,11 @@ namespace UGridNET
             {
                 for (int i = 0; i < count; i++)
                 {
-                    Mesh2D mesh2D = new Mesh2D();
+                    var mesh2D = new Mesh2D();
                     Invoke(() => UGrid.ug_mesh2d_inq(fileID, i, mesh2D));
                     mesh2D.Allocate();
                     Invoke(() => UGrid.ug_mesh2d_get(fileID, i, mesh2D));
                     mesh2DList.Add(mesh2D);
-
-                    //var name = mesh2D.name.CopyToArray<byte>(UGrid.name_long_length);
-                    //Console.WriteLine(">>> name: {0}", name.GetString());
-
-                    //var name = Marshal.PtrToStringAnsi(mesh2D.name);
-                    //Console.WriteLine(">>> name: {0}", name);
                 }
             }
         }
@@ -109,7 +101,7 @@ namespace UGridNET
             {
                 for (int i = 0; i < count; i++)
                 {
-                    Contacts contacts = new Contacts();
+                    var contacts = new Contacts();
                     Invoke(() => UGrid.ug_contacts_inq(fileID, i, contacts));
                     contacts.Allocate();
                     Invoke(() => UGrid.ug_contacts_get(fileID, i, contacts));
@@ -125,7 +117,7 @@ namespace UGridNET
             {
                 for (int i = 0; i < count; i++)
                 {
-                    Network1D network1D = new Network1D();
+                    var network1D = new Network1D();
                     Invoke(() => UGrid.ug_network1d_inq(fileID, i, network1D));
                     network1D.Allocate();
                     Invoke(() => UGrid.ug_network1d_get(fileID, i, network1D));
@@ -134,9 +126,11 @@ namespace UGridNET
             }
         }
 
-        private Dictionary<string, string> GetVariableAttributes(string variableNameStr, bool strIsPadded = false)
+        private Dictionary<string, string> GetVariableAttributes(string variableNameStr, bool isLongUGridString = false)
         {
-            var variableName = variableNameStr.PadRightUpTo(UGrid.name_long_length).GetBytes();
+            byte[] variableName = isLongUGridString
+               ? variableNameStr.GetBytes()
+               : variableNameStr.GetRightPaddedNullTerminatedBytes(UGrid.name_long_length);
 
             // get number of attributes
             int attributesCount = 0;
@@ -145,12 +139,12 @@ namespace UGridNET
             // get names of attributes
             var attributeNames = new byte[attributesCount * UGrid.name_long_length];
             Invoke(() => UGrid.ug_variable_get_attributes_names(fileID, variableName, attributeNames));
-            List<string> dictionaryKeys = attributeNames.GetString().SplitIntoSizedTokens(UGrid.name_long_length);
+            List<string> dictionaryKeys = attributeNames.GetStringFromNullTerminatedArray().Tokenize(UGrid.name_long_length);
 
-            // get value of attributes
+            // get values of attributes
             var attributeValues = new byte[attributesCount * UGrid.name_long_length];
             Invoke(() => UGrid.ug_variable_get_attributes_values(fileID, variableName, attributeValues));
-            List<string> dictionaryValues = attributeValues.GetString().SplitIntoSizedTokens(UGrid.name_long_length);
+            List<string> dictionaryValues = attributeValues.GetStringFromNullTerminatedArray().Tokenize(UGrid.name_long_length);
 
             // populate the dictionary with the name-value pairs
             var dictionary = new Dictionary<string, string>();
@@ -164,42 +158,88 @@ namespace UGridNET
 
         public string GetConventions()
         {
-            var attributeNameStr = "Conventions";
-            var attributeName = attributeNameStr.PadRightUpTo(UGrid.name_long_length).GetBytes();
-            var attributeValue = new byte[UGrid.name_long_length];
+            string attributeNameStr = "Conventions";
+            byte[] attributeName = attributeNameStr.GetRightPaddedNullTerminatedBytes(UGrid.name_long_length);
+            byte[] attributeValue = new byte[UGrid.name_long_length];
             Invoke(() => UGrid.ug_attribute_global_char_get(fileID, attributeName, attributeValue));
-            return attributeValue.GetString();
+            return attributeValue.GetStringFromNullTerminatedArray(true);
         }
 
-        public string GetEPSGCode()
+        public int GetEPSGCode()
         {
             string variableName = "projected_coordinate_system";
             var attributes = GetVariableAttributes(variableName);
-            return attributes["EPSG_code"];
+            int epsgCode = -1;
+            bool result = int.TryParse(attributes["epsg"], out epsgCode);
+            if (!result)
+            {
+                throw new UGridNETException($"epsg = {attributes["epsg"]} is not convertible to an integer.");
+            }
+            return epsgCode;
         }
 
-        public Dictionary<string, string> GetMesh2DAttributesByID(int topologyID)
+        public Dictionary<string, string> GetEntityAttributesByIndex(TopologyType topologyType, int index)
         {
-            var name = Marshal.PtrToStringAnsi(mesh2DList[topologyID].name);
-            var dict = GetVariableAttributes(name, true);
-            // foreach (var item in dict)
-            // {
-            //     Console.WriteLine($"Key: {item.Key}, Value: {item.Value}");
-            // }
-            return dict;
+            IntPtr name;
+            switch (topologyType)
+            {
+                case TopologyType.Mesh1dTopology:
+                    name = mesh1DList[index].name;
+                    break;
+                case TopologyType.Mesh2dTopology:
+                    name = mesh2DList[index].name;
+                    break;
+                case TopologyType.Network1dTopology:
+                    name = network1DList[index].name;
+                    break;
+                case TopologyType.ContactsTopology:
+                    name = contactsList[index].name;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(topologyType), "Invalid topology type.");
+            }
+            return GetVariableAttributes(Marshal.PtrToStringAnsi(name), true);
         }
 
-        public Dictionary<string, string> GetMesh2DAttributesByName(string name)
+        public Dictionary<string, string> GetEntityAttributesByName(TopologyType topologyType, string name)
         {
-            int index = mesh2DList.FindIndex(item => Marshal.PtrToStringAnsi(item.name).TrimEnd() == name);
+            int index;
+            switch (topologyType)
+            {
+                case TopologyType.Mesh1dTopology:
+                    index = mesh1DList.FindIndex(item => GetName(item.name) == name);
+                    break;
+                case TopologyType.Mesh2dTopology:
+                    index = mesh2DList.FindIndex(item => GetName(item.name) == name);
+                    break;
+                case TopologyType.Network1dTopology:
+                    index = network1DList.FindIndex(item => GetName(item.name) == name);
+                    break;
+                case TopologyType.ContactsTopology:
+                    index = contactsList.FindIndex(item => GetName(item.name) == name);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(topologyType), "Invalid topology type.");
+            }
+
             if (index == -1)
             {
                 throw new InvalidOperationException($"No item found with name '{name}'");
             }
-            return GetMesh2DAttributesByID(index);
+
+            return GetEntityAttributesByIndex(topologyType, index);
+            string GetName(IntPtr intPtr) => Marshal.PtrToStringAnsi(intPtr)?.Trim();
         }
 
+        [ExcludeFromCodeCoverage]
+        private static void PrintAttributes(Dictionary<string, string> attributes)
+        {
+            foreach (var attribute in attributes)
+            {
+                Console.WriteLine($"{attribute.Key} : {attribute.Value}");
+            }
 
+        }
 
     }
 

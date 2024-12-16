@@ -58,7 +58,8 @@ set(
     ${SOURCE_DIR}/Mesh2DExtensions.cs
     ${SOURCE_DIR}/Network1DExtensions.cs
     ${SOURCE_DIR}/StringExtensions.cs
-    ${SOURCE_DIR}/UGridWrapper.cs
+    ${SOURCE_DIR}/UGridNETException.cs
+    ${SOURCE_DIR}/UGridBase.cs
     ${SOURCE_DIR}/UGridReader.cs
 )
 

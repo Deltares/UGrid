@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data.SqlTypes;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Runtime.InteropServices;
 using UGridNET.Extensions;
@@ -10,11 +11,9 @@ namespace UGridNET
 {
     public class UGridBase : IDisposable
     {
-        // requires using log4net;
-        //private static readonly ILog log = LogManager.GetLogger(typeof(UGridBase));
-
         private bool disposed = false;
         protected int fileID = -1;
+        private readonly string filePath;
         protected List<Mesh1D> mesh1DList = new List<Mesh1D>();
         protected List<Mesh2D> mesh2DList = new List<Mesh2D>();
         protected List<Contacts> contactsList = new List<Contacts>();
@@ -24,7 +23,8 @@ namespace UGridNET
         {
             try
             {
-                Open(path, openMode);
+                filePath = Path.GetFullPath(path);
+                Open(openMode);
             }
             catch
             {
@@ -53,18 +53,23 @@ namespace UGridNET
             {
                 if (disposing)
                 {
-                    // Free memory allocated by the constructor
-                    mesh1DList.ForEach(item => item.Free());
-                    mesh2DList.ForEach(item => item.Free());
-                    contactsList.ForEach(item => item.Free());
-                    network1DList.ForEach(item => item.Free());
+                    // Free unmanaged memory of IntPtrs belonging to the different entities
+                    FreeUnmanagedMemory();
 
                     // Close the file
-                    UGrid.ug_file_close(fileID);
+                    Close();
                 }
 
                 disposed = true;
             }
+        }
+
+        private void FreeUnmanagedMemory()
+        {
+            mesh1DList.ForEach(item => item.Free());
+            mesh2DList.ForEach(item => item.Free());
+            contactsList.ForEach(item => item.Free());
+            network1DList.ForEach(item => item.Free());
         }
 
         public bool HasMesh1D() { return mesh1DList.Count > 0; }
@@ -75,84 +80,87 @@ namespace UGridNET
 
         public bool HasNetwork1D() { return network1DList.Count > 0; }
 
+        [ExcludeFromCodeCoverage]
         public ReadOnlyCollection<Mesh1D> Mesh1DList() { return mesh1DList.AsReadOnly(); }
 
+        [ExcludeFromCodeCoverage]
         public ReadOnlyCollection<Mesh2D> Mesh2DList() { return mesh2DList.AsReadOnly(); }
 
+        [ExcludeFromCodeCoverage]
         public ReadOnlyCollection<Contacts> ContactsList() { return contactsList.AsReadOnly(); }
 
+        [ExcludeFromCodeCoverage]
         public ReadOnlyCollection<Network1D> Network1DList() { return network1DList.AsReadOnly(); }
 
         private static void ProcessExitCode(int exitCode)
         {
             if (exitCode != 0)
             {
-                byte[] messageBytes = new byte[UGrid.error_message_buffer_size];
+                var messageBytes = new byte[UGrid.error_message_buffer_size];
                 UGrid.ug_error_get(messageBytes);
-                string messageStr = messageBytes.GetString();
+                var messageStr = messageBytes.GetStringFromNullTerminatedArray(true);
 
                 if (!string.IsNullOrWhiteSpace(messageStr))
                 {
-                    throw new Exception(messageStr);
+                    throw new UGridNETException(messageStr);
                 }
             }
         }
 
         protected static void Invoke(Func<int> func)
         {
-            int exitCode = func();
-            ProcessExitCode(exitCode);
+            ProcessExitCode(func());
         }
 
 
-        private void Open(string path, int openMode)
+        private void Open(int openMode)
         {
-            Invoke(() => UGrid.ug_file_open(path.GetBytes(), openMode, ref fileID));
+            Invoke(() => UGrid.ug_file_open(filePath.GetBytes(), openMode, ref fileID));
         }
 
-        public string GetDataVariablesNames(TopologyType topologyType, int topologyID, MeshLocations meshLocation)
+        private void Close()
         {
-            byte[] names = new byte[UGrid.error_message_buffer_size];
-            Invoke(() => UGrid.ug_topology_get_data_variables_names(fileID, topologyType, topologyID, meshLocation, names));
-            return names.GetString();
+            Invoke(() => UGrid.ug_file_close(fileID));
         }
 
-        public T[] GetVariableByName<T>(string variableNameStr)
+        public string GetPath()
         {
-            int dimensionsCount = 0;
-            byte[] variableName = variableNameStr.GetBytes();
+            return filePath;
+        }
+
+        public T[] GetVariableByName<T>(string variableNameStr) where T : struct
+        {
+            var dimensionsCount = 0;
+            var variableName = variableNameStr.GetRightPaddedNullTerminatedBytes(UGrid.name_long_length);
             Invoke(() => UGrid.ug_variable_count_dimensions(fileID, variableName, ref dimensionsCount));
 
-            int[] dimensionVec = new int[dimensionsCount];
+            var dimensionVec = new int[dimensionsCount];
             Invoke(() => UGrid.ug_variable_get_data_dimensions(fileID, variableName, dimensionVec));
 
-            int totalDimension = 1;
-            for (int i = 0; i < dimensionsCount; i++)
+            var totalDimension = 1;
+            for (var i = 0; i < dimensionsCount; i++)
             {
                 totalDimension *= dimensionVec[i];
             }
 
-            T[] data = new T[totalDimension];
+            var data = new T[totalDimension];
 
-            if (typeof(T) == typeof(double))
+            switch (data)
             {
-                Invoke(() => UGrid.ug_variable_get_data_double(fileID, variableName, data as double[]));
-            }
-            else if (typeof(T) == typeof(int))
-            {
-                Invoke(() => UGrid.ug_variable_get_data_int(fileID, variableName, data as int[]));
-            }
-            else if (typeof(T) == typeof(byte))
-            {
-                Invoke(() => UGrid.ug_variable_get_data_char(fileID, variableName, data as byte[]));
-            }
-            else
-            {
-                throw new NotSupportedException("Currently only int, double and char data types are supported.");
+                case int[] intData:
+                    Invoke(() => UGrid.ug_variable_get_data_int(fileID, variableName, intData));
+                    break;
+                case double[] doubleData:
+                    Invoke(() => UGrid.ug_variable_get_data_double(fileID, variableName, doubleData));
+                    break;
+                case byte[] byteData:
+                    Invoke(() => UGrid.ug_variable_get_data_char(fileID, variableName, byteData));
+                    break;
+                default:
+                    throw new NotSupportedException("Currently only int, double and byte data types are supported.");
             }
 
             return data;
         }
-
     }
 }
