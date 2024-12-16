@@ -1,4 +1,6 @@
-using System;
+using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleToAttribute("UGridNET.Tests")]
 
 namespace UGridNET
 {
@@ -34,10 +36,10 @@ namespace UGridNET
                 }
             }
 
-            private static IntPtr MemoryPointer { get; set; }
-
-
-            /// <summary> Frees unmanaged memory allocated by <see cref="Allocate"/> for all required properties of the <see cref="Mesh1D"/> instance. </summary>
+            /// <summary> 
+            /// Frees unmanaged memory allocated by <see cref="Allocate"/> for all required properties
+            /// of the <see cref="Mesh1D"/> instance.
+            /// </summary>
             /// <param name="mesh1D"> Instance of <see cref="Mesh1D"/>. </param>
             public static void Free(this Mesh1D mesh1D)
             {

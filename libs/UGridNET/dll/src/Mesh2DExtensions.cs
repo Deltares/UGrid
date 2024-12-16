@@ -1,3 +1,7 @@
+using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleToAttribute("UGridNET.Tests")]
+
 namespace UGridNET
 {
     namespace Extensions
@@ -35,7 +39,10 @@ namespace UGridNET
                 }
             }
 
-            /// <summary> Frees unmanaged memory allocated by <see cref="Allocate"/> for all required properties of the <see cref="Mesh2D"/> instance. </summary>
+            /// <summary> 
+            /// Frees unmanaged memory allocated by <see cref="Allocate"/> for all required properties
+            /// of the <see cref="Mesh2D"/> instance.
+            /// </summary>
             /// <param name="mesh2D"> Instance of <see cref="Mesh2D"/>. </param>
             public static void Free(this Mesh2D mesh2D)
             {

@@ -1,3 +1,8 @@
+using System;
+using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleToAttribute("UGridNET.Tests")]
+
 namespace UGridNET
 {
     namespace Extensions
@@ -27,7 +32,10 @@ namespace UGridNET
                 }
             }
 
-            /// <summary> Frees unmanaged memory allocated by <see cref="Allocate"/> for all required properties of the <see cref="Contacts"/> instance. </summary>
+            /// <summary>
+            /// Frees unmanaged memory allocated by <see cref="Allocate"/> for all required properties
+            /// of the <see cref="Contacts"/> instance.
+            /// </summary>
             /// <param name="contacts"> Instance of <see cref="Contacts"/>. </param>
             //public static void Free(this Contacts contacts)
             public static void Free(this Contacts contacts)
