@@ -52,7 +52,15 @@ add_library(
   ${NUGET_CONFIG}
   ${DIRECTORY_PACKAGES_PROPS}
   ${DIRECTORY_BUILD_PROPS}
-  src/UGridNETTests.cs
+  src/ByteArrayExtensionsTests.cs
+  src/IntPtrExtensionsTests.cs
+  src/IntPtrHelpersTests.cs
+  src/StringExtensionsTests.cs
+  src/SWIGTests.cs
+  src/TestUtilities.cs
+  src/TopologyExtensionsTests.cs
+  src/UGridNETExceptionTests.cs
+  src/UGridReaderTests.cs
 )
 
 target_link_libraries(${TARGET_NAME} PRIVATE "$<TARGET_NAME:UGridNET>")
