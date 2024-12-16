@@ -7,7 +7,6 @@ namespace UGridNET.Tests
 {
 
     [TestFixture]
-
     public class IntPtrExtensionsTests
     {
         private int[] array = null;

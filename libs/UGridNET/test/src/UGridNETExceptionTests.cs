@@ -6,7 +6,6 @@ namespace UGridNET.Tests
 {
 
     [TestFixture]
-
     public class UGridNETExceptionTests
     {
 
