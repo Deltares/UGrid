@@ -23,8 +23,8 @@ namespace UGridNET
                     mesh1D.edge_x = IntPtrHelpers.Allocate<double>(mesh1D.num_edges);
                     mesh1D.edge_y = IntPtrHelpers.Allocate<double>(mesh1D.num_edges);
                     mesh1D.edge_nodes = IntPtrHelpers.Allocate<int>(mesh1D.num_edges * 2);
-                    mesh1D.edge_edge_id = IntPtrHelpers.Allocate<int>(mesh1D.num_nodes); // size?
-                    mesh1D.node_edge_id = IntPtrHelpers.Allocate<int>(mesh1D.num_nodes); // size?
+                    mesh1D.edge_edge_id = IntPtrHelpers.Allocate<int>(mesh1D.num_edges);
+                    mesh1D.node_edge_id = IntPtrHelpers.Allocate<int>(mesh1D.num_nodes);
                     mesh1D.node_edge_offset = IntPtrHelpers.Allocate<double>(mesh1D.num_nodes);
                 }
                 catch
