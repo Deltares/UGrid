@@ -647,23 +647,20 @@ namespace ugridapi
 
     UGRID_API int ug_file_read_mode(int& mode)
     {
-        int exit_code = Success;
         mode = static_cast<int>(netCDF::NcFile::read);
-        return exit_code;
+        return Success;
     }
 
     UGRID_API int ug_file_write_mode(int& mode)
     {
-        int exit_code = Success;
         mode = static_cast<int>(netCDF::NcFile::write);
-        return exit_code;
+        return Success;
     }
 
     UGRID_API int ug_file_replace_mode(int& mode) noexcept
     {
-        int exit_code = Success;
         mode = static_cast<int>(netCDF::NcFile::replace);
-        return exit_code;
+        return Success;
     }
 
     UGRID_API int ug_file_open(const char* file_path, int mode, int& file_id)
