@@ -98,12 +98,10 @@ namespace UGridNET
                 }
 
                 var tokens = new List<string>();
-                int currentIndex = 0;
-                while (currentIndex < str.Length)
+                for (int i = 0; i < str.Length; i += maxTokenLength)
                 {
-                    var token = str.Substring(currentIndex, maxTokenLength);
+                    var token = str.Substring(i, maxTokenLength);
                     tokens.Add(token.Trim());
-                    currentIndex += maxTokenLength;
                 }
 
                 return tokens;
