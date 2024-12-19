@@ -7,6 +7,7 @@ declare -g RUN_TESTS=false
 declare -g REINSTALL=false
 declare -g CLEAN=false
 declare -g BUILD_TYPE="Release"
+declare -g BUILD_TESTS="OFF"
 
 function usage() {
   echo "Usage: $0\
@@ -34,11 +35,12 @@ function parse_args() {
       shift 2
       ;;
     --build_type)
-      BUILD_TYPE=$"$2"
+      BUILD_TYPE="$2"
       shift 2
       ;;
     --run_tests)
       RUN_TESTS=true
+      BUILD_TESTS="ON"
       shift
       ;;
     --reinstall)
@@ -108,9 +110,9 @@ clean() {
 
 function install() {
   # parameters
-  local lib_name=$1
-  local git_url=$2
-  local git_tag=$3
+  local lib_name="$1"
+  local git_url="$2"
+  local git_tag="$3"
   local cmake_config_options="${4:-}"
 
   # create build dir
@@ -142,11 +144,11 @@ function install() {
 
   # test
   if ${RUN_TESTS}; then
-    ctest --test-dir ${build_dir}
+    ctest --test-dir ${build_dir} --build-config ${BUILD_TYPE} --rerun-failed --output-on-failure --verbose || true
   fi
 
   # install
-  cmake --install ${build_dir}
+  cmake --install ${build_dir} --config ${BUILD_TYPE}
 }
 
 function get_shared_lib_extension() {
@@ -168,7 +170,8 @@ function get_shared_lib_extension() {
 }
 
 function get_zlib_path() {
-  echo $(find $(realpath ${INSTALL_DIR}/zlib/lib) -name *.$(get_shared_lib_extension))
+  local zlib_root="$1"
+  echo $(find $(realpath "${zlib_root}/lib") -name *.$(get_shared_lib_extension))
 }
 
 function install_all() {
@@ -187,6 +190,10 @@ function install_all() {
   #    -DCMAKE_PREFIX_PATH=${INSTALL_DIR}/zlib"
 
   # hdf5 1.10.11
+  zlib_root="${INSTALL_DIR}/zlib"
+  zlib_include_dir="${zlib_root}/include"
+  zlib_library=$(get_zlib_path "${zlib_root}")
+  hdf5_root="${INSTALL_DIR}/hdf5"
   install "hdf5" \
     "https://github.com/HDFGroup/hdf5.git" \
     "hdf5-1_10_11" \
@@ -194,12 +201,13 @@ function install_all() {
     -DBUILD_SHARED_LIBS:BOOL=ON \
     -DHDF5_BUILD_TOOLS:BOOL=OFF \
     -DHDF5_BUILD_EXAMPLES:BOOL=OFF \
-    -DBUILD_TESTING:BOOL=ON \
+    -DBUILD_TESTING:BOOL=${BUILD_TESTS} \
     -DZLIB_USE_EXTERNAL:BOOL=OFF \
     -DHDF5_ENABLE_Z_LIB_SUPPORT:BOOL=ON \
-    -DZLIB_ROOT=${INSTALL_DIR}/zlib \
-    -DZLIB_INCLUDE_DIR:PATH=${INSTALL_DIR}/zlib/include \
-    -DZLIB_LIBRARY:FILEPATH=$(get_zlib_path) \
+    -DZLIB_DIR=${zlib_root} \
+    -DZLIB_ROOT=${zlib_root} \
+    -DZLIB_INCLUDE_DIR:PATH=${zlib_include_dir} \
+    -DZLIB_LIBRARY:FILEPATH=${zlib_library} \
     -DCMAKE_PREFIX_PATH=${INSTALL_DIR}"
 
   # netcdf 4.8.1
@@ -207,18 +215,55 @@ function install_all() {
     "https://github.com/Unidata/netcdf-c.git" \
     "v4.8.1" \
     "-DBUILD_SHARED_LIBS:BOOL=ON \
+    -DENABLE_TESTS:BOOL=${BUILD_TESTS} \
     -DENABLE_NETCDF_4:BOOL=ON \
     -DENABLE_DAP:BOOL=OFF \
     -DENABLE_BYTERANG:BOOL=OFF \
-    -DZLIB_ROOT=${INSTALL_DIR}/zlib \
-    -DHDF5_ROOT=${INSTALL_DIR}/hdf5 \
+    -DZLIB_DIR=${zlib_root} \
+    -DZLIB_ROOT=${zlib_root} \
+    -DZLIB_INCLUDE_DIR:PATH=${zlib_include_dir} \
+    -DZLIB_LIBRARY:FILEPATH=${zlib_library} \
+    -DHDF5_ROOT=${hdf5_root} \
     -DCMAKE_PREFIX_PATH=${INSTALL_DIR}"
 
-  # netcdf-cxx4 v4.3.2-development
-  install "netcdf_cxx4" \
-    "https://github.com/Unidata/netcdf-cxx4.git" \
-    "dev" \
-    "-DCMAKE_PREFIX_PATH=${INSTALL_DIR}"
+  local os_type=$(uname)
+  case "${os_type}" in
+  Darwin | Linux)
+    install "netcdf_cxx4" \
+      "https://github.com/Unidata/netcdf-cxx4.git" \
+      "dev" \
+      "-DNCXX_ENABLE_TESTS:BOOL=${BUILD_TESTS} \
+      -DCMAKE_PREFIX_PATH=${INSTALL_DIR}"
+    ;;
+  MINGW* | MSYS* | MYSYS*)
+    local HDF5_C_LIBRARIES="${hdf5_root}/lib/hdf5.lib"
+    local HDF5_INCLUDE_DIRS="${hdf5_root}/include"
+    COMMON_CONFIG_OPTS="-DCMAKE_PREFIX_PATH=${INSTALL_DIR} \
+      -DNCXX_ENABLE_TESTS:BOOL=${BUILD_TESTS} \
+      -DHDF5_C_LIBRARIES=${HDF5_C_LIBRARIES} \
+      -DHDF5_INCLUDE_DIRS=${HDF5_INCLUDE_DIRS} \
+      -DHDF5_C_LIBRARY_hdf5=${HDF5_C_LIBRARIES}"
+    local netcdf_cxx_name="netcdf_cxx4"
+    local necdf_cxx_git_tag="dev"
+    local netcdf_cxx_repo="https://github.com/Unidata/netcdf-cxx4.git"
+    # Shared/static lib build is controlled by BUILD_SHARED_LIBS.
+    # BUILD_STATIC_LIBS does not exist. To install both, first runwith
+    # BUILD_SHARED_LIBS:BOOL=ON (shared)
+    # then with
+    # BUILD_SHARED_LIBS:BOOL=OFF (static)
+    install ${netcdf_cxx_name} \
+      ${netcdf_cxx_repo} \
+      ${necdf_cxx_git_tag} \
+      "-DBUILD_SHARED_LIBS:BOOL=OFF ${COMMON_CONFIG_OPTS}"
+    install ${netcdf_cxx_name} \
+      ${netcdf_cxx_repo} \
+      ${necdf_cxx_git_tag} \
+      "-DBUILD_SHARED_LIBS:BOOL=ON ${COMMON_CONFIG_OPTS}"
+    ;;
+  *)
+    echo "Unsupported OS: ${os_type}"
+    ;;
+  esac
 }
 
 function main() {
