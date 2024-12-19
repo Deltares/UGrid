@@ -123,8 +123,8 @@ void Contacts::define(ugridapi::Contacts const& contacts)
     // Define topology attribute
     define_topological_attribute("cf_role", "mesh_topology_contact");
 
-    auto const mesh_from_location_string = from_location_integer_to_location_string(contacts.mesh_from_location);
-    auto const mesh_to_location_string = from_location_integer_to_location_string(contacts.mesh_to_location);
+    auto const mesh_from_location_string = from_location_integer_to_location_string(static_cast<int>(contacts.mesh_from_location));
+    auto const mesh_to_location_string = from_location_integer_to_location_string(static_cast<int>(contacts.mesh_to_location));
 
     // Define topology attribute from to mesh
     std::stringstream os;

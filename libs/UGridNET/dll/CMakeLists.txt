@@ -15,6 +15,12 @@ configure_file(
   COPYONLY
 )
 
+list(LENGTH GLOB_LIB_DOTNET_TARGET_FRAMEWORKS LIST_LENGTH)
+if(${LIST_LENGTH} EQUAL 1)
+    set(PROJECT_DOTNET_TARGET_FRAMEWORKS_TAG "TargetFramework")
+else()
+    set(PROJECT_DOTNET_TARGET_FRAMEWORKS_TAG "TargetFrameworks")
+endif()
 set(PROJECT_DOTNET_TARGET_FRAMEWORKS ${GLOB_LIB_DOTNET_TARGET_FRAMEWORKS})
 set(DIRECTORY_BUILD_PROPS ${CMAKE_CURRENT_BINARY_DIR}/Directory.Build.props)
 configure_file(
@@ -40,13 +46,30 @@ execute_process(
   COMMAND_ERROR_IS_FATAL LAST
 )
 
+set(SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
+set(
+  SOURCES 
+    ${SWIG_GENERATED_CSHARP_SRCS}
+    ${SOURCE_DIR}/ByteArrayExtensions.cs
+    ${SOURCE_DIR}/ContactsExtensions.cs
+    ${SOURCE_DIR}/IntPtrExtensions.cs
+    ${SOURCE_DIR}/IntPtrHelpers.cs
+    ${SOURCE_DIR}/Mesh1DExtensions.cs
+    ${SOURCE_DIR}/Mesh2DExtensions.cs
+    ${SOURCE_DIR}/Network1DExtensions.cs
+    ${SOURCE_DIR}/StringExtensions.cs
+    ${SOURCE_DIR}/UGridNETException.cs
+    ${SOURCE_DIR}/UGridBase.cs
+    ${SOURCE_DIR}/UGridReader.cs
+)
+
 add_library(
   ${TARGET_NAME}
   SHARED 
   ${NUGET_CONFIG}
   ${DIRECTORY_PACKAGES_PROPS}
   ${DIRECTORY_BUILD_PROPS}
-  ${SWIG_GENERATED_CSHARP_SRCS}
+  ${SOURCES}
 )
 
 set_target_properties(
@@ -56,3 +79,5 @@ set_target_properties(
     DOTNET_SDK ${GLOB_DOTNET_SDK}
     VS_PACKAGE_REFERENCES "${PACKAGE_REFERENCES}"
 )
+
+target_compile_options(${TARGET_NAME} PRIVATE "/unsafe")
