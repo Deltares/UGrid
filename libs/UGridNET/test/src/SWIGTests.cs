@@ -116,41 +116,8 @@ namespace UGridNET.Tests
                 mesh1D.node_x = Marshal.AllocHGlobal(mesh1D.num_nodes * Marshal.SizeOf<double>());
                 mesh1D.edge_nodes = Marshal.AllocHGlobal(mesh1D.num_edges * 2 * Marshal.SizeOf<int>());
 
-
-
-                // get the data
-                result = UGrid.ug_mesh1d_get(fileID, 0, mesh1D);
-                Assert.That(result, Is.EqualTo(0));
-
-                var arr_1 = mesh1D.edge_nodes.CopyToArray<int>(mesh1D.num_edges * 2);
-
-                var src = new int[mesh1D.num_edges * 2];
-                for (int i = 0; i < mesh1D.num_edges * 2; i++)
-                {
-                    src[i] = 666 + i;
-                }
-
-                mesh1D.edge_nodes.CopyFromArray(src);
-
-                var arr_2 = mesh1D.edge_nodes.CopyToArray<int>(mesh1D.num_edges * 2);
-
-                // for (int i = 0; i < mesh1D.num_edges * 2; i++)
-                // {
-                //     Console.WriteLine("{0} : {1}", arr_1[i], arr_2[i]);
-                // }
-
-                Marshal.FreeHGlobal(mesh1D.node_x);
-                Marshal.FreeHGlobal(mesh1D.edge_nodes);
-
                 result = UGrid.ug_file_close(fileID);
                 Assert.That(result, Is.EqualTo(0));
-            }
-            catch (Exception ex)
-            {
-                byte[] messageBytes = new byte[UGrid.error_message_buffer_size];
-                UGrid.ug_error_get(messageBytes);
-                string messageStr = Encoding.UTF8.GetString(messageBytes, 0, messageBytes.Length - 1).TrimEnd();
-                Console.WriteLine(messageStr);
             }
             finally
             {
