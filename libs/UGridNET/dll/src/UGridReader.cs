@@ -10,8 +10,6 @@ namespace UGridNET
 
     public sealed class UGridReader : UGridBase
     {
-        private bool disposed = false;
-
         public UGridReader(string path) : base(path, 0)
         {
             try
@@ -29,35 +27,6 @@ namespace UGridNET
                 throw;
             }
         }
-
-        ~UGridReader()
-        {
-            // Cleanup in case Dispose wasn't called
-            Dispose(false);
-        }
-
-        public new void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-            base.Dispose();
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (!disposed)
-            {
-                if (disposing)
-                {
-                    // clean up
-                }
-
-                disposed = true;
-
-                base.Dispose(disposing);
-            }
-        }
-
 
         private void ReadMesh1D()
         {

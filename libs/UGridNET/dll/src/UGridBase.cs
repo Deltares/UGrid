@@ -51,20 +51,36 @@ namespace UGridNET
         {
             if (!disposed)
             {
+                // Free unmanaged memory of IntPtrs belonging to the different entities
+                FreeUnmanagedMemoryInTopologyLists();
+
+                // Close the file
+                Close();
+
                 if (disposing)
                 {
-                    // Free unmanaged memory of IntPtrs belonging to the different entities
-                    FreeUnmanagedMemory();
-
-                    // Close the file
-                    Close();
+                    DisposeAndClearTopologyLists();
                 }
 
                 disposed = true;
             }
         }
 
-        private void FreeUnmanagedMemory()
+        private void DisposeAndClearLists<T>(List<T> list) where T : IDisposable
+        {
+            list.ForEach(item => item.Dispose());
+            list.Clear();
+        }
+
+        private void DisposeAndClearTopologyLists()
+        {
+            DisposeAndClearLists(mesh1DList);
+            DisposeAndClearLists(mesh2DList);
+            DisposeAndClearLists(contactsList);
+            DisposeAndClearLists(network1DList);
+        }
+
+        private void FreeUnmanagedMemoryInTopologyLists()
         {
             mesh1DList.ForEach(item => item.Free());
             mesh2DList.ForEach(item => item.Free());
