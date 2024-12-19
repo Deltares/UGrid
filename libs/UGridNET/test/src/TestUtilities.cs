@@ -27,8 +27,6 @@ namespace UGridNET.Tests
             }
 
             return path;
-
-            //return "C:\\Users\\sayed\\work\\repositories\\UGrid\\tests\\data";
         }
 
     }
