@@ -5,13 +5,12 @@
         <ItemGroup>
             <_FilesToCopyUGridNET Include="$(MSBuildThisFileDirectory)..\..\runtimes\win-x64\native\**\*"/>
         </ItemGroup>
-        <Message Text="Copying @(_FilesToCopyUGridNET) to $(OutDir)" Importance="High" />
-        <Copy SourceFiles="@(_FilesToCopyUGridNET)" DestinationFolder="$(OutDir)\%(RecursiveDir)" SkipUnchangedFiles="true" Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'"/>
+        <Copy SourceFiles="@(_FilesToCopyUGridNET)" DestinationFolder="$(OutDir)\win-x64\native\%(RecursiveDir)" SkipUnchangedFiles="true" Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'"/>
     </Target>
     <Target Name="UGridNETClean" AfterTargets="Clean">
         <ItemGroup>
             <_OriginalFilesUGridNET Include="$(MSBuildThisFileDirectory)..\..\runtimes\win-x64\native\**\*"/>
-            <_FilesToCleanUGridNET Include="$(OutDir)\%(_OriginalFilesUGridNET.RecursiveDir)%(_OriginalFilesUGridNET.FileName)%(_OriginalFilesUGridNET.Extension)"/>
+            <_FilesToCleanUGridNET Include="$(OutDir)\win-x64\native\%(_OriginalFilesUGridNET.RecursiveDir)%(_OriginalFilesUGridNET.FileName)%(_OriginalFilesUGridNET.Extension)"/>
         </ItemGroup>
         <Delete Files="@(_FilesToCleanUGridNET)"/>
     </Target>
