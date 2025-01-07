@@ -1,7 +1,4 @@
 using System;
-using System.Runtime.CompilerServices;
-
-[assembly: InternalsVisibleToAttribute("UGridNET.Tests")]
 
 namespace UGridNET
 {

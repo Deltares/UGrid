@@ -115,11 +115,7 @@ namespace UGridNET
                 var messageBytes = new byte[UGrid.error_message_buffer_size];
                 UGrid.ug_error_get(messageBytes);
                 var messageStr = messageBytes.GetStringFromNullTerminatedArray(true);
-
-                if (!string.IsNullOrWhiteSpace(messageStr))
-                {
-                    throw new UGridNETException(messageStr);
-                }
+                throw new UGridNETException(string.IsNullOrWhiteSpace(messageStr) ? "Unknown exception" : messageStr);
             }
         }
 

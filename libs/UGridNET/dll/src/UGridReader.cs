@@ -7,7 +7,6 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace UGridNET
 {
-
     public sealed class UGridReader : UGridBase
     {
         public UGridReader(string path) : base(path, 0)

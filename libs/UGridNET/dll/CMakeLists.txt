@@ -50,6 +50,7 @@ set(SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 set(
   SOURCES 
     ${SWIG_GENERATED_CSHARP_SRCS}
+    ${SOURCE_DIR}/AssemblyInfo.cs
     ${SOURCE_DIR}/ByteArrayExtensions.cs
     ${SOURCE_DIR}/ContactsExtensions.cs
     ${SOURCE_DIR}/IntPtrExtensions.cs
