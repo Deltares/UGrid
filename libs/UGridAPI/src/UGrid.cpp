@@ -55,7 +55,6 @@
 namespace ugridapi
 {
     static std::map<int, UGridState> ugrid_states;
-    static size_t constexpr max_chars_to_copy = error_message_buffer_size - 1; // make sure destination string is null-terminated when strncpy is used
     static char exceptionMessage[error_message_buffer_size] = "";
 
     /// @brief Hash table mapping locations to location names
@@ -80,7 +79,8 @@ namespace ugridapi
         }
         catch (const std::exception& e)
         {
-            std::strncpy(exceptionMessage, e.what(), max_chars_to_copy);
+            std::strncpy(exceptionMessage, e.what(), error_message_buffer_size - 1);
+            exceptionMessage[error_message_buffer_size - 1] = '\0';
             return Exception;
         }
     }
@@ -240,7 +240,8 @@ namespace ugridapi
     UGRID_API int ug_error_get(char* error_message)
     {
         int exit_code = Success;
-        std::memcpy(error_message, exceptionMessage, sizeof exceptionMessage);
+        std::strncpy(error_message, exceptionMessage, error_message_buffer_size - 1);
+        error_message[error_message_buffer_size - 1] = '\0';
         return exit_code;
     }
 
