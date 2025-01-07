@@ -79,8 +79,8 @@ namespace ugridapi
         }
         catch (const std::exception& e)
         {
-            std::strncpy(exceptionMessage, e.what(), error_message_buffer_size - 1);
-            exceptionMessage[error_message_buffer_size - 1] = '\0';
+            std::memcpy(exceptionMessage, e.what(), error_message_buffer_size);
+            exceptionMessage[error_message_buffer_size-1]='\0';
             return Exception;
         }
     }
@@ -240,8 +240,8 @@ namespace ugridapi
     UGRID_API int ug_error_get(char* error_message)
     {
         int exit_code = Success;
-        std::strncpy(error_message, exceptionMessage, error_message_buffer_size - 1);
-        error_message[error_message_buffer_size - 1] = '\0';
+        std::memcpy(error_message, exceptionMessage, error_message_buffer_size);
+        error_message[error_message_buffer_size-1]='\0';
         return exit_code;
     }
 
