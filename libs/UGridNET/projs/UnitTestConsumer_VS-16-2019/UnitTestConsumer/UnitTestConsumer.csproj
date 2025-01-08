@@ -4,10 +4,17 @@
 		<Platforms>AnyCPU;x64</Platforms>
 	</PropertyGroup>
 	<ItemGroup>
-	  <Compile Include="..\..\..\test\src\UGridNETTests.cs" Link="UGridNETTests.cs" />
+	  <Compile Include="..\..\..\test\src\ByteArrayExtensionsTests.cs" Link="ByteArrayExtensionsTests.cs" />
+	  <Compile Include="..\..\..\test\src\IntPtrExtensionsTests.cs" Link="IntPtrExtensionsTests.cs" />
+	  <Compile Include="..\..\..\test\src\IntPtrHelpersTests.cs" Link="IntPtrHelpersTests.cs" />
+	  <Compile Include="..\..\..\test\src\StringExtensionsTests.cs" Link="StringExtensionsTests.cs" />
+	  <Compile Include="..\..\..\test\src\SWIGTests.cs" Link="SWIGTests.cs" />
+	  <Compile Include="..\..\..\test\src\TestUtilities.cs" Link="TestUtilities.cs" />
+	  <Compile Include="..\..\..\test\src\TopologyExtensionsTests.cs" Link="TopologyExtensionsTests.cs" />
+	  <Compile Include="..\..\..\test\src\UGridNETExceptionTests.cs" Link="UGridNETExceptionTests.cs" />
+	  <Compile Include="..\..\..\test\src\UGridReaderTests.cs" Link="UGridReaderTests.cs" />
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="Deltares.UGridNET" />
 		<PackageReference Include="Microsoft.NET.Test.Sdk" />
 		<PackageReference Include="NUnit" />
 		<PackageReference Include="NUnit.ConsoleRunner" />
