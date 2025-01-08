@@ -117,7 +117,7 @@ def configure_nuspec(
         file_dll = ET.Element(
             "file",
             src=f"@CMAKE_BINARY_DIR@/libs/UGridNET/dll/{build_type}/{framework}/UGridNET.dll",
-            target=f"lib/{framework}",
+            target=f"lib/{framework}/UGridNET.dll",
         )
         files.append(file_dll)
 
@@ -126,7 +126,7 @@ def configure_nuspec(
         file_targets = ET.Element(
             "file",
             src=f"@CMAKE_BINARY_DIR@/libs/UGridNET/nuget/Deltares.UGridNET.targets",
-            target=f"build/{framework}",
+            target=f"build/{framework}/Deltares.UGridNET.targets",
         )
         files.append(file_targets)
 
@@ -136,7 +136,7 @@ def configure_nuspec(
         file_runtimes = ET.Element(
             "file",
             src=f"@CMAKE_BINARY_DIR@/libs/UGridNET/SWIG/{build_type}/UGridCSharpWrapper.{extension}",
-            target="runtimes/win-x64/native",
+            target=f"runtimes/win-x64/native/UGridCSharpWrapper.{extension}",
         )
         files.append(file_runtimes)
 
@@ -144,7 +144,7 @@ def configure_nuspec(
     file_readme = ET.Element(
         "file",
         src="@CMAKE_BINARY_DIR@/libs/UGridNET/nuget/README.md",
-        target="",
+        target="README.md",
     )
     files.append(file_readme)
 

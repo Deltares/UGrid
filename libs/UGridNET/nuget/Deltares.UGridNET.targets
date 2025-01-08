@@ -5,12 +5,14 @@
         <ItemGroup>
             <_FilesToCopyUGridNET Include="$(MSBuildThisFileDirectory)..\..\runtimes\win-x64\native\**\*"/>
         </ItemGroup>
-        <Copy SourceFiles="@(_FilesToCopyUGridNET)" DestinationFolder="$(OutDir)\win-x64\native\%(RecursiveDir)" SkipUnchangedFiles="true" Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'"/>
+        <!-- <Copy SourceFiles="@(_FilesToCopyUGridNET)" DestinationFolder="$(OutDir)\win-x64\native\%(RecursiveDir)" SkipUnchangedFiles="true"/> -->
+        <Copy SourceFiles="@(_FilesToCopyUGridNET)" DestinationFolder="$(OutDir)\%(RecursiveDir)" SkipUnchangedFiles="true"/>
     </Target>
     <Target Name="UGridNETClean" AfterTargets="Clean">
         <ItemGroup>
             <_OriginalFilesUGridNET Include="$(MSBuildThisFileDirectory)..\..\runtimes\win-x64\native\**\*"/>
-            <_FilesToCleanUGridNET Include="$(OutDir)\win-x64\native\%(_OriginalFilesUGridNET.RecursiveDir)%(_OriginalFilesUGridNET.FileName)%(_OriginalFilesUGridNET.Extension)"/>
+            <!-- <_FilesToCleanUGridNET Include="$(OutDir)\win-x64\native\%(_OriginalFilesUGridNET.RecursiveDir)%(_OriginalFilesUGridNET.FileName)%(_OriginalFilesUGridNET.Extension)"/> -->
+            <_FilesToCleanUGridNET Include="$(OutDir)\%(_OriginalFilesUGridNET.RecursiveDir)%(_OriginalFilesUGridNET.FileName)%(_OriginalFilesUGridNET.Extension)"/>
         </ItemGroup>
         <Delete Files="@(_FilesToCleanUGridNET)"/>
     </Target>
