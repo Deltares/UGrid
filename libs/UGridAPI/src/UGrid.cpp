@@ -241,7 +241,7 @@ namespace ugridapi
     {
         int exit_code = Success;
         std::memcpy(error_message, exceptionMessage, error_message_buffer_size);
-        error_message[error_message_buffer_size -1] = '\0';
+        error_message[error_message_buffer_size - 1] = '\0';
         return exit_code;
     }
 
