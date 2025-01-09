@@ -5,7 +5,7 @@ namespace UGridNET
     /// <summary>
     /// Custom exceptions for errors that occur within the UGridNET library.
     /// </summary>
-    internal sealed class UGridNETException : Exception
+    public sealed class UGridNETException : Exception
     {
         private static readonly string prefix = "UGridNET error";
 
