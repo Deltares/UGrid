@@ -82,3 +82,18 @@ set_target_properties(
 )
 
 target_compile_options(${TARGET_NAME} PRIVATE "/unsafe")
+
+# Set target architecture
+# message(STATUS ">>>>>>>>>>>> Generator platform is set to '${CMAKE_GENERATOR_PLATFORM}'.")
+# if(CMAKE_GENERATOR_PLATFORM STREQUAL "x64")
+#   set(TARGET_PLATFORM "/platform:x64")
+# elseif(CMAKE_GENERATOR_PLATFORM STREQUAL "Win32")
+#   set(TARGET_PLATFORM "/platform:x86")
+# else()
+#   message(WARNING "Generator platform '${CMAKE_GENERATOR_PLATFORM}' is not supported by managed projects. Defaulting to 'AnyCPU'.")
+#   set(TARGET_PLATFORM "/platform:AnyCPU")
+# endif()
+# target_compile_options(${TARGET_NAME} PRIVATE ${TARGET_PLATFORM})
+
+
+target_compile_options(${TARGET_NAME} PRIVATE "/platform:AnyCPU")
