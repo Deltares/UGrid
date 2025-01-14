@@ -5,6 +5,8 @@ project(
   LANGUAGES CSharp
 )
 
+#set(CMAKE_GENERATOR_PLATFORM win32)
+
 # target name
 set(TARGET_NAME ${PROJECT_NAME})
 
@@ -79,21 +81,9 @@ set_target_properties(
     DOTNET_TARGET_FRAMEWORK "${GLOB_LIB_DOTNET_TARGET_FRAMEWORKS}"
     DOTNET_SDK ${GLOB_DOTNET_SDK}
     VS_PACKAGE_REFERENCES "${PACKAGE_REFERENCES}"
+    VS_GLOBAL_PlatformTarget "AnyCPU"
 )
 
 target_compile_options(${TARGET_NAME} PRIVATE "/unsafe")
 
-# Set target architecture
-# message(STATUS ">>>>>>>>>>>> Generator platform is set to '${CMAKE_GENERATOR_PLATFORM}'.")
-# if(CMAKE_GENERATOR_PLATFORM STREQUAL "x64")
-#   set(TARGET_PLATFORM "/platform:x64")
-# elseif(CMAKE_GENERATOR_PLATFORM STREQUAL "Win32")
-#   set(TARGET_PLATFORM "/platform:x86")
-# else()
-#   message(WARNING "Generator platform '${CMAKE_GENERATOR_PLATFORM}' is not supported by managed projects. Defaulting to 'AnyCPU'.")
-#   set(TARGET_PLATFORM "/platform:AnyCPU")
-# endif()
-# target_compile_options(${TARGET_NAME} PRIVATE ${TARGET_PLATFORM})
-
-
-target_compile_options(${TARGET_NAME} PRIVATE "/platform:AnyCPU")
+target_compile_options(${TARGET_NAME} PRIVATE "/platform:anycpu")

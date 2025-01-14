@@ -18,7 +18,7 @@ if(${GIT_FOUND})
   endif()
 endif()
 
-# Add dependencies and files to nuspec ocnfig template
+# Add dependencies and files to nuspec config template
 execute_process(
   COMMAND ${Python_EXECUTABLE} ${CMAKE_SOURCE_DIR}/scripts/configure_nuspec.py
     --template ${CMAKE_CURRENT_SOURCE_DIR}/Deltares.UGridNET.nuspec.in
