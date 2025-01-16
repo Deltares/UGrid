@@ -45,6 +45,22 @@ namespace UGridNET.Tests
         }
 
         [Test]
+        public void OpenEmptyFileFails()
+        {
+            var filePath = Path.Combine(TestDataPath, "EmptyFile.nc");
+            UGridReader file = null;
+
+            try
+            {
+                Assert.Throws<UGridNETException>(() => file = new UGridReader(filePath));
+            }
+            finally
+            {
+                file?.Dispose();
+            }
+        }
+
+        [Test]
         public void GetPath()
         {
             var filePath = Path.Combine(TestDataPath, "OneMesh2D.nc");
