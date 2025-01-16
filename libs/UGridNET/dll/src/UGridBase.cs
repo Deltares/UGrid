@@ -132,7 +132,9 @@ namespace UGridNET
 
         private void Close()
         {
-            Invoke(() => UGrid.ug_file_close(fileID));
+            if (fileID > 0) {
+               Invoke(() => UGrid.ug_file_close(fileID));
+            }
         }
 
         public string GetPath()
