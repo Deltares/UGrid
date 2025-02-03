@@ -5,6 +5,18 @@ if (NOT Boost_FOUND)
   message(FATAL_ERROR "Could not find Boost (minimum required version is ${BOOST_MIN_REQ_VERSION})")
 endif()
 
+# zlib
+find_package(ZLIB)
+if (ZLIB_FOUND)
+  message(STATUS "Found ZLIB ${ZLIB_VERSION}")
+endif()
+
+# hdf5
+find_package(HDF5 COMPONENTS C HL)
+if (HDF5_FOUND)
+  message(STATUS "Found HDF5 ${HDF5_VERSION}")
+endif()
+
 # netCDF
 find_package(netCDF REQUIRED COMPONENTS C)
 if (netCDF_FOUND)
@@ -16,29 +28,22 @@ endif()
 # netCDFCxx
 find_package(netCDFCxx REQUIRED)
 if (netCDFCxx_FOUND)
-    message(STATUS "Found NetCDFCxx ${netCDFCxx_VERSION}")
+  message(STATUS "Found NetCDFCxx ${netCDFCxx_VERSION}")
 else()
     message(FATAL_ERROR "Could not find NetCDFCxx")
-endif()
-
-# hdf5
-find_package(HDF5)
-if (HDF5_FOUND)
-    message(STATUS "Found HDF5 ${HDF5_VERSION}")
 endif()
 
 # python
 set(Python_FIND_VIRTUALENV FIRST)
 find_package(Python REQUIRED COMPONENTS Interpreter)
 if (Python_FOUND)
-    message(STATUS "Found Python ${Python_VERSION}")
+  message(STATUS "Found Python ${Python_VERSION}")
 else()
-    message(FATAL_ERROR "Could not find Python")
+  message(FATAL_ERROR "Could not find Python")
 endif()
 
 # git
 find_package(Git)
 if (Git_FOUND)
-    message(STATUS "Found Git ${GIT_VERSION_STRING}")
+  message(STATUS "Found Git ${GIT_VERSION_STRING}")
 endif()
-

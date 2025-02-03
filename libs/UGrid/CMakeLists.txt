@@ -107,3 +107,41 @@ source_group("Header Files" FILES ${INC_LIST})
 # if(ENABLE_UNIT_TESTING)
 #   add_subdirectory(tests)
 # endif()
+
+# get_target_property(NetCDF_DLL_PATH netCDF::netcdf LOCATION)
+# get_target_property(NetCDFCxx_DLL_PATH netCDF::netcdf-cxx4 LOCATION)
+# get_target_property(HDF5_DLL_PATH hdf5::hdf5 LOCATION)
+# get_target_property(HDF5_HL_DLL_PATH hdf5::hdf5_hl LOCATION)
+# get_target_property(ZLIB_DLL_PATH ZLIB::ZLIB LOCATION)
+
+# add_custom_command(
+#   TARGET ${TARGET_NAME}
+#   POST_BUILD
+#   COMMAND ${CMAKE_COMMAND} -E copy ${NetCDF_DLL_PATH} $<TARGET_FILE_DIR:${TARGET_NAME}>
+#   COMMAND ${CMAKE_COMMAND} -E copy ${NetCDFCxx_DLL_PATH} $<TARGET_FILE_DIR:${TARGET_NAME}>
+#   COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:hdf5::hdf5> $<TARGET_FILE_DIR:${TARGET_NAME}>
+#   COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:hdf5::hdf5_hl> $<TARGET_FILE_DIR:${TARGET_NAME}>
+#   COMMAND ${CMAKE_COMMAND} -E copy ${ZLIB_DLL_PATH} $<TARGET_FILE_DIR:${TARGET_NAME}>
+# )
+
+
+get_target_property(NetCDF_TARGET_TYPE netCDF::netcdf TYPE)
+get_target_property(NetCDFCxx_TARGET_TYPE netCDF::netcdf-cxx4 TYPE)
+get_target_property(HDF5_TARGET_TYPE hdf5::hdf5 TYPE)
+get_target_property(HDF5_HL_TARGET_TYPE hdf5::hdf5_hl TYPE)
+get_target_property(ZLIB_TARGET_TYPE ZLIB::ZLIB TYPE)
+message(STATUS "netCDF ${NetCDF_TARGET_TYPE}")
+message(STATUS "netcdfCxx ${NetCDFCxx_TARGET_TYPE}")
+message(STATUS "hdf5 ${HDF5_TARGET_TYPE}")
+message(STATUS "hdf5_hl ${HDF5_HL_TARGET_TYPE}")
+message(STATUS "zlib ${ZLIB_TARGET_TYPE}")
+
+add_custom_command(
+  TARGET ${TARGET_NAME}
+  POST_BUILD
+  COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:netCDF::netcdf> $<TARGET_FILE_DIR:${TARGET_NAME}>
+  COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:netCDF::netcdf-cxx4> $<TARGET_FILE_DIR:${TARGET_NAME}>
+  COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:hdf5::hdf5> $<TARGET_FILE_DIR:${TARGET_NAME}>
+  COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:hdf5::hdf5_hl> $<TARGET_FILE_DIR:${TARGET_NAME}>
+  COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:ZLIB::ZLIB> $<TARGET_FILE_DIR:${TARGET_NAME}>
+)
