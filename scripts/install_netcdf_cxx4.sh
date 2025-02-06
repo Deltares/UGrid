@@ -9,6 +9,9 @@ declare -g CLEAN=false
 declare -g BUILD_TYPE="Release"
 declare -g BUILD_TESTS="OFF"
 
+# other global variables
+declare -g OS_NAME=$(uname)
+
 function usage() {
   echo "Usage: $0\
  <--work_dir WORK_DIR>\
@@ -151,9 +154,8 @@ function install() {
   cmake --install ${build_dir} --config ${BUILD_TYPE}
 }
 
-function get_shared_lib_extension() {
-  local os_type=$(uname)
-  case "${os_type}" in
+function get_lib_extension() {
+  case "${OS_NAME}" in
   Darwin)
     echo "dylib"
     ;;
@@ -161,17 +163,43 @@ function get_shared_lib_extension() {
     echo "so"
     ;;
   MINGW* | MSYS* | MYSYS*)
-    echo "dll"
+    echo "lib" # not to be confused with the static lib extension
     ;;
   *)
-    echo "Unsupported OS: ${os_type}"
+    echo "get_lib_extension: Unsupported OS: ${OS_NAME}"
     ;;
   esac
 }
 
-function get_zlib_path() {
-  local zlib_root="$1"
-  echo $(find $(realpath "${zlib_root}/lib") -name *.$(get_shared_lib_extension))
+# zlib has many nicknames
+function get_zlib_lib_name() {
+  case "${OS_NAME}" in
+  Darwin | Linux)
+    echo "libz"
+    ;;
+  MINGW* | MSYS* | MYSYS*)
+    echo "zlib"
+    ;;
+  *)
+    echo "get_zlib_lib_name: Unsupported OS: ${OS_NAME}"
+    ;;
+  esac
+}
+
+# under windows, curl suffixes the imported library name with "_imp" to avoid
+# conflicts with the static lib, which has the same extension, ".lib"
+function get_curl_lib_name() {
+  case "${OS_NAME}" in
+  Darwin | Linux)
+    echo "libcurl"
+    ;;
+  MINGW* | MSYS* | MYSYS*)
+    echo "libcurl_imp"
+    ;;
+  *)
+    echo "get_curl_lib_name: Unsupported OS: ${OS_NAME}"
+    ;;
+  esac
 }
 
 function install_all() {
@@ -180,24 +208,28 @@ function install_all() {
     "zlib" \
     "https://github.com/madler/zlib.git" \
     "v1.2.13"
+  
+  local zlib_root="${INSTALL_DIR}/zlib"
+  local zlib_include_dir="${zlib_root}/include"
+  local zlib_library="${zlib_root}/lib/$(get_zlib_lib_name).$(get_lib_extension)"
 
-  # # curl curl-8_9_1
-  # install \
-  #   "curl" \
-  #   "https://github.com/curl/curl.git" \
-  #   "curl-8_9_1" \
-  #   "-DCURL_ENABLE_SSL:BOOL=ON \
-  #    -DCMAKE_PREFIX_PATH=${INSTALL_DIR}/zlib"
+  # curl curl-8_9_1
+  install \
+    "curl" \
+    "https://github.com/curl/curl.git" \
+    "curl-8_9_1" \
+    "-DBUILD_SHARED_LIBS:BOOL=ON \
+     -DBUILD_STATIC_LIBS:BOOL=OFF \
+     -DCURL_ENABLE_SSL:BOOL=ON \
+     -DZLIB_ROOT=${zlib_root}"
+  
+  local curl_root="${INSTALL_DIR}/curl"
 
   # hdf5 1.10.11
-  zlib_root="${INSTALL_DIR}/zlib"
-  zlib_include_dir="${zlib_root}/include"
-  zlib_library=$(get_zlib_path "${zlib_root}")
-  hdf5_root="${INSTALL_DIR}/hdf5"
   install "hdf5" \
     "https://github.com/HDFGroup/hdf5.git" \
     "hdf5-1_10_11" \
-    "-DBUILD_STATIC_LIBS:BOOL=OFF \
+    "-DONLY_SHARED_LIBS:BOOL=ON \
     -DBUILD_SHARED_LIBS:BOOL=ON \
     -DHDF5_BUILD_TOOLS:BOOL=OFF \
     -DHDF5_BUILD_EXAMPLES:BOOL=OFF \
@@ -209,6 +241,8 @@ function install_all() {
     -DZLIB_INCLUDE_DIR:PATH=${zlib_include_dir} \
     -DZLIB_LIBRARY:FILEPATH=${zlib_library} \
     -DCMAKE_PREFIX_PATH=${INSTALL_DIR}"
+  
+  local hdf5_root="${INSTALL_DIR}/hdf5"
 
   # netcdf 4.8.1
   install "netcdf" \
@@ -224,44 +258,47 @@ function install_all() {
     -DZLIB_INCLUDE_DIR:PATH=${zlib_include_dir} \
     -DZLIB_LIBRARY:FILEPATH=${zlib_library} \
     -DHDF5_ROOT=${hdf5_root} \
+    -DCURL_ROOT=${curl_root} \
+    -DCURL_LIBRARY=${curl_root}/lib/$(get_curl_lib_name).$(get_lib_extension) \
+    -DCURL_INCLUDE_DIR=${curl_root}/include \
     -DCMAKE_PREFIX_PATH=${INSTALL_DIR}"
 
-  local os_type=$(uname)
-  case "${os_type}" in
+  # netcdf
+  local netcdf_cxx_name="netcdf_cxx4"
+  local netcdf_cxx_repo="https://github.com/Unidata/netcdf-cxx4.git"
+  local necdf_cxx_git_tag="dev"
+  local basic_config_opts="-DNCXX_ENABLE_TESTS:BOOL=${BUILD_TESTS} \
+    -DCMAKE_PREFIX_PATH=${INSTALL_DIR}"
+  case "${OS_NAME}" in
   Darwin | Linux)
-    install "netcdf_cxx4" \
-      "https://github.com/Unidata/netcdf-cxx4.git" \
-      "dev" \
-      "-DNCXX_ENABLE_TESTS:BOOL=${BUILD_TESTS} \
-      -DCMAKE_PREFIX_PATH=${INSTALL_DIR}"
+    install ${netcdf_cxx_name} \
+      ${netcdf_cxx_repo} \
+      ${necdf_cxx_git_tag} \
+      "${basic_config_opts}"
     ;;
   MINGW* | MSYS* | MYSYS*)
     local HDF5_C_LIBRARIES="${hdf5_root}/lib/hdf5.lib"
     local HDF5_INCLUDE_DIRS="${hdf5_root}/include"
-    COMMON_CONFIG_OPTS="-DCMAKE_PREFIX_PATH=${INSTALL_DIR} \
+    local additional_config_opts="-DCMAKE_PREFIX_PATH=${INSTALL_DIR} \
       -DNCXX_ENABLE_TESTS:BOOL=${BUILD_TESTS} \
       -DHDF5_C_LIBRARIES=${HDF5_C_LIBRARIES} \
       -DHDF5_INCLUDE_DIRS=${HDF5_INCLUDE_DIRS} \
       -DHDF5_C_LIBRARY_hdf5=${HDF5_C_LIBRARIES}"
-    local netcdf_cxx_name="netcdf_cxx4"
-    local necdf_cxx_git_tag="dev"
-    local netcdf_cxx_repo="https://github.com/Unidata/netcdf-cxx4.git"
-    # Shared/static lib build is controlled by BUILD_SHARED_LIBS.
-    # BUILD_STATIC_LIBS does not exist. To install both, first runwith
-    # BUILD_SHARED_LIBS:BOOL=ON (shared)
-    # then with
-    # BUILD_SHARED_LIBS:BOOL=OFF (static)
     install ${netcdf_cxx_name} \
       ${netcdf_cxx_repo} \
       ${necdf_cxx_git_tag} \
-      "-DBUILD_SHARED_LIBS:BOOL=OFF ${COMMON_CONFIG_OPTS}"
+      "-DBUILD_SHARED_LIBS:BOOL=OFF \
+      ${basic_config_opts} \
+      ${additional_config_opts}"
     install ${netcdf_cxx_name} \
       ${netcdf_cxx_repo} \
       ${necdf_cxx_git_tag} \
-      "-DBUILD_SHARED_LIBS:BOOL=ON ${COMMON_CONFIG_OPTS}"
+      "-DBUILD_SHARED_LIBS:BOOL=ON \
+      ${basic_config_opts} \
+      ${additional_config_opts}"
     ;;
   *)
-    echo "Unsupported OS: ${os_type}"
+    echo "Unsupported OS: ${OS_NAME}"
     ;;
   esac
 }
