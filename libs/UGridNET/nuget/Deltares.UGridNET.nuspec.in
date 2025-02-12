@@ -2,15 +2,14 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>Deltares.UGridNET</id>
-        <version>@PROJECT_VERSION_MAJOR@.@PROJECT_VERSION_MINOR@.@PROJECT_VERSION_PATCH@.@PROJECT_VERSION_TWEAK@@VERSION_SUFFIX@</version>
+        <version>@VERSION@</version>
         <title>Deltares.UGridNET</title>
         <authors>Stichting Deltares</authors>
         <owners>Stichting Deltares</owners>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>Deltares library for reading/writing UGrid files.</description>
-        <copyright>Copyright © Stichting Deltares @GLOB_CURRENT_YEAR@</copyright>
+        <copyright>Copyright © Stichting Deltares @COPYRIGHT_YEAR@</copyright>
         <readme>README.md</readme>
-
         <dependencies>
         </dependencies>
     </metadata>

@@ -52,7 +52,7 @@ add_test(
 add_custom_command(
   TARGET ${TARGET_NAME}
   POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different "$<TARGET_FILE:UGridAPI>" "$<TARGET_FILE_DIR:UGridAPITests>"
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:UGridAPI> $<TARGET_FILE_DIR:UGridAPITests>
     COMMENT "Copy $<TARGET_FILE:UGridAPI> to $<TARGET_FILE_DIR:UGridAPITests>"
 )
 

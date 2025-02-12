@@ -59,6 +59,14 @@ def parse_args():
         help=".NET target framework",
     )
 
+    parser.add_argument(
+        "--runtime_dependencies",
+        type=str,
+        nargs="+",
+        required=True,
+        help="Runtime dependencies",
+    )
+
     args = parser.parse_args()
     return args
 
@@ -78,6 +86,7 @@ def configure_nuspec(
     output_path: Path,
     build_type: str,
     frameworks: list[str],
+    runtime_dependencies: list[str],
 ) -> None:
     # Parse the template file into an ElementTree object
     tree = ET.parse(nuspec_template_path)
@@ -116,7 +125,7 @@ def configure_nuspec(
     for framework in frameworks:
         file_dll = ET.Element(
             "file",
-            src=f"@CMAKE_BINARY_DIR@/libs/UGridNET/dll/{build_type}/{framework}/UGridNET.dll",
+            src=f"@BUILD_DIR@/libs/UGridNET/dll/{build_type}/{framework}/UGridNET.dll",
             target=f"lib/{framework}/UGridNET.dll",
         )
         files.append(file_dll)
@@ -125,25 +134,25 @@ def configure_nuspec(
     for framework in frameworks:
         file_targets = ET.Element(
             "file",
-            src=f"@CMAKE_BINARY_DIR@/libs/UGridNET/nuget/Deltares.UGridNET.targets",
+            src=f"@BUILD_DIR@/libs/UGridNET/nuget/Deltares.UGridNET.targets",
             target=f"build/{framework}/Deltares.UGridNET.targets",
         )
         files.append(file_targets)
 
-    # Create the <file> elements for the runtimes
-    extensions = ["dll", "lib", "exp"]
-    for extension in extensions:
+    # Create the elements for the runtime dependencies
+    for runtime_dependency in runtime_dependencies:
         file_runtimes = ET.Element(
             "file",
-            src=f"@CMAKE_BINARY_DIR@/libs/UGridNET/SWIG/{build_type}/UGridCSharpWrapper.{extension}",
-            target=f"runtimes/win-x64/native/UGridCSharpWrapper.{extension}",
+            src=f"{runtime_dependency}",
+            target=f"runtimes/win-x64/native/{Path(runtime_dependency).name}",
         )
         files.append(file_runtimes)
+
 
     # Create the <file> element for the readme
     file_readme = ET.Element(
         "file",
-        src="@CMAKE_BINARY_DIR@/libs/UGridNET/nuget/README.md",
+        src="@BUILD_DIR@/libs/UGridNET/nuget/README.md",
         target="README.md",
     )
     files.append(file_readme)
@@ -155,9 +164,6 @@ def configure_nuspec(
     with open(output_path, "w", encoding="utf-8") as f:
         f.write(prettify_xml(xml_str))
 
-    # print(f"Updated nuspec file saved to: {output_path}")
-
-
 if __name__ == "__main__":
     try:
         # parse the args
@@ -168,6 +174,7 @@ if __name__ == "__main__":
             args.destination,
             args.build_type,
             args.dotnet_target_frameworks,
+            args.runtime_dependencies,
         )
     except Exception as e:  # Generic exception handler
         print(f"Error: {e}", file=sys.stderr)  # Print to stderr

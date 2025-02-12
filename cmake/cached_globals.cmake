@@ -18,7 +18,7 @@ string(TIMESTAMP GLOB_CURRENT_YEAR "%Y")
 set(GLOB_CURRENT_YEAR ${GLOB_CURRENT_YEAR} CACHE STRING "Current year")
 
 # .NET config
-if(WIN32 AND BUILD_DOTNET_WRAPPER)
+if(BUILD_DOTNET_WRAPPER)
   # .NET SDK
   set(GLOB_DOTNET_SDK "Microsoft.NET.Sdk" CACHE STRING ".NET SDK")
   # List of .NET target frameworks (semicolon-delimited)
