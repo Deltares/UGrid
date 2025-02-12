@@ -16,8 +16,8 @@ set(
   THIRD_PARTY_RUNTIME_DEPS
   $<TARGET_FILE:netCDF::netcdf>
   $<TARGET_FILE:netCDF::netcdf-cxx4>
-  $<TARGET_FILE:hdf5::hdf5-shared>
-  $<TARGET_FILE:hdf5::hdf5_hl-shared>
+  $<TARGET_FILE:hdf5::hdf5>
+  $<TARGET_FILE:hdf5::hdf5_hl>
   $<TARGET_FILE:ZLIB::ZLIB> # not a element of TARGET_RUNTIME_DLLS
   $<TARGET_FILE:CURL::libcurl>
 )
