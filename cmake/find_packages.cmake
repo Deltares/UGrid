@@ -20,7 +20,8 @@ else()
 endif()
 
 # hdf5
-find_package(HDF5 REQUIRED COMPONENTS C HL)
+# find_package(HDF5 REQUIRED COMPONENTS C HL)
+find_package (HDF5 NAMES hdf5 COMPONENTS C HL shared)
 if (HDF5_FOUND)
   message(STATUS "Found HDF5 ${HDF5_VERSION}")
   #add_library(hdf5::hdf5-shared ALIAS hdf5-shared)
