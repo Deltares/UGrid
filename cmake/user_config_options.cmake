@@ -27,7 +27,7 @@ cmake_dependent_option(
 
 cmake_dependent_option(
   PACK_NUPKG_LOCALLY
-  "Pack the NuGet package locally. Should be used only to validate te NUPKG locally."
+  "Pack the NuGet package locally. Should be used only to validate the NUPKG locally."
   OFF
   "BUILD_DOTNET_WRAPPER"
   OFF
