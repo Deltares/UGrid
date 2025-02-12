@@ -186,7 +186,7 @@ function get_zlib_lib_name() {
   esac
 }
 
-# under windows, curl suffixes the imported library name with "_imp" to avoid
+# under Windows, curl suffixes the imported library name with "_imp" to avoid
 # conflicts with the static lib, which has the same extension, ".lib"
 function get_curl_lib_name() {
   case "${OS_NAME}" in
