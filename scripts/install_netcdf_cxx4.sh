@@ -214,19 +214,14 @@ function install_all() {
   local zlib_library="${zlib_root}/lib/$(get_zlib_lib_name).$(get_lib_extension)"
 
   # curl curl-8_9_1
-  if [[ "${OS_NAME}" == MINGW* || "${OS_NAME}" == MSYS* || "${OS_NAME}" == MYSYS* ]]; then
-    install \
-      "curl" \
-      "https://github.com/curl/curl.git" \
-      "curl-8_9_1" \
-      "-DBUILD_SHARED_LIBS:BOOL=ON \
-      -DBUILD_STATIC_LIBS:BOOL=OFF \
-      -DCURL_ENABLE_SSL:BOOL=ON \
-      -DZLIB_ROOT=${zlib_root}"
-  else
-      echo "TODO: Under Linux and Darwin, building curl from source requires OpenSSL."
-      echo "      Curl wil not be installed. Instead, an attempt to use a system installation will be made."
-  fi
+  install \
+    "curl" \
+    "https://github.com/curl/curl.git" \
+    "curl-8_9_1" \
+    "-DBUILD_SHARED_LIBS:BOOL=ON \
+     -DBUILD_STATIC_LIBS:BOOL=OFF \
+     -DCURL_ENABLE_SSL:BOOL=ON \
+     -DZLIB_ROOT=${zlib_root}"
   
   local curl_root="${INSTALL_DIR}/curl"
 
