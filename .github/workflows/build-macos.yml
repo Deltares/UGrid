@@ -111,7 +111,8 @@ jobs:
       # Step: Configure
       - name: Configure
         run: |
-          export netCDFCxx_DIR=${{ steps.paths.outputs.ext_deps_dir }}/install/netcdf_cxx4/lib/cmake/netCDF/
+          export netCDFCxx_DIR=${{ steps.paths.outputs.ext_deps_dir }}/install/netcdf_cxx4/lib/cmake/netCDF
+          export OPENSSL_ROOT_DIR=$(brew --prefix openssl)
           cmake \
             -S ${{ github.workspace }} \
             -B ${{ steps.paths.outputs.build_dir }} \

@@ -19,7 +19,7 @@ packages=(
   "boost1.78-devel.x86_64"
   "m4"
   "perl"
-  "openssl"
+  "openssl-devel"
   "libcurl-devel"
   ${dev_toolset}
   "doxygen"
