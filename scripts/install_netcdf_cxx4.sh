@@ -186,22 +186,6 @@ function get_zlib_lib_name() {
   esac
 }
 
-# under Windows, curl suffixes the imported library name with "_imp" to avoid
-# conflicts with the static lib, which has the same extension, ".lib"
-function get_curl_lib_name() {
-  case "${OS_NAME}" in
-  Darwin | Linux)
-    echo "libcurl"
-    ;;
-  MINGW* | MSYS* | MYSYS*)
-    echo "libcurl_imp"
-    ;;
-  *)
-    echo "get_curl_lib_name: Unsupported OS: ${OS_NAME}"
-    ;;
-  esac
-}
-
 function install_all() {
   # zlib v1.2.1
   install \
@@ -258,10 +242,7 @@ function install_all() {
     -DZLIB_INCLUDE_DIR:PATH=${zlib_include_dir} \
     -DZLIB_LIBRARY:FILEPATH=${zlib_library} \
     -DHDF5_ROOT=${hdf5_root} \
-    -DCURL_ROOT=${curl_root} \
-    -DCURL_LIBRARY=${curl_root}/lib/$(get_curl_lib_name).$(get_lib_extension) \
-    -DCURL_INCLUDE_DIR=${curl_root}/include \
-    -DCMAKE_PREFIX_PATH=${INSTALL_DIR}"
+    -DCMAKE_PREFIX_PATH=${curl_root}"
 
   # netcdf
   local netcdf_cxx_name="netcdf_cxx4"
