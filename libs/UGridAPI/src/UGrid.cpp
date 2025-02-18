@@ -79,8 +79,7 @@ namespace ugridapi
         }
         catch (const std::exception& e)
         {
-            std::memcpy(exceptionMessage, e.what(), error_message_buffer_size);
-            exceptionMessage[error_message_buffer_size - 1] = '\0';
+            std::strcpy(exceptionMessage, e.what());
             return Exception;
         }
     }
@@ -239,24 +238,20 @@ namespace ugridapi
 
     UGRID_API int ug_error_get(char* error_message)
     {
-        int exit_code = Success;
-        std::memcpy(error_message, exceptionMessage, error_message_buffer_size);
-        error_message[error_message_buffer_size - 1] = '\0';
-        return exit_code;
+        std::strcpy(error_message, exceptionMessage);
+        return Success;
     }
 
     UGRID_API int ug_name_get_length(int& length)
     {
-        int exit_code = Success;
         length = static_cast<int>(ugrid::name_length);
-        return exit_code;
+        return Success;
     }
 
     UGRID_API int ug_name_get_long_length(int& length)
     {
-        int exit_code = Success;
         length = static_cast<int>(ugrid::name_long_length);
-        return exit_code;
+        return Success;
     }
 
     UGRID_API int ug_topology_get_count(int file_id, TopologyType topology_type, int& topology_count)
