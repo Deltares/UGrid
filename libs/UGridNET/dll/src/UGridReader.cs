@@ -137,13 +137,17 @@ namespace UGridNET
         {
             string variableName = "projected_coordinate_system";
             var attributes = GetVariableAttributes(variableName);
-            int epsgCode = -1;
-            bool result = int.TryParse(attributes["epsg"], out epsgCode);
+            var key = "epsg";
+            if(!attributes.ContainsKey(key)) {
+                throw new UGridNETException($"The variable {variableName} does not contain attribute {key}.");
+            }
+            var valueString = attributes[key];
+            bool result = int.TryParse(valueString, out int valueInt);
             if (!result)
             {
-                throw new UGridNETException($"epsg = {attributes["epsg"]} is not convertible to an integer.");
+                throw new UGridNETException($"{key} = {valueString} is not convertible to an integer.");
             }
-            return epsgCode;
+            return valueInt;
         }
 
         public Dictionary<string, string> GetEntityAttributesByIndex(TopologyType topologyType, int index)
