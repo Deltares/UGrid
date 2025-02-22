@@ -92,9 +92,6 @@ target_link_libraries(
   ${TARGET_NAME}
   PUBLIC
     "$<TARGET_NAME:UGrid>"
-  PRIVATE
-    netCDF::netcdf
-    netCDF::netcdf-cxx4
 )
 
 # group the sources in IDE tree

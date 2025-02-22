@@ -4,7 +4,7 @@ if(ENABLE_UNIT_TESTING)
 
 # Fetch googletest
   set(googletest_url "https://github.com/google/googletest.git")
-  set(googletest_tag "v1.13.0")
+  set(googletest_tag "v1.15.1")
   set(cmake_FetchContent_Populate_deprecation_version "3.30.0")
 
   if(CMAKE_VERSION VERSION_GREATER_EQUAL "${cmake_FetchContent_Populate_deprecation_version}")

@@ -7,6 +7,10 @@ declare -g RUN_TESTS=false
 declare -g REINSTALL=false
 declare -g CLEAN=false
 declare -g BUILD_TYPE="Release"
+declare -g BUILD_TESTS="OFF"
+
+# other global variables
+declare -g OS_NAME=$(uname)
 
 function usage() {
   echo "Usage: $0\
@@ -34,11 +38,12 @@ function parse_args() {
       shift 2
       ;;
     --build_type)
-      BUILD_TYPE=$"$2"
+      BUILD_TYPE="$2"
       shift 2
       ;;
     --run_tests)
       RUN_TESTS=true
+      BUILD_TESTS="ON"
       shift
       ;;
     --reinstall)
@@ -108,9 +113,9 @@ clean() {
 
 function install() {
   # parameters
-  local lib_name=$1
-  local git_url=$2
-  local git_tag=$3
+  local lib_name="$1"
+  local git_url="$2"
+  local git_tag="$3"
   local cmake_config_options="${4:-}"
 
   # create build dir
@@ -142,16 +147,15 @@ function install() {
 
   # test
   if ${RUN_TESTS}; then
-    ctest --test-dir ${build_dir}
+    ctest --test-dir ${build_dir} --build-config ${BUILD_TYPE} --rerun-failed --output-on-failure --verbose || true
   fi
 
   # install
-  cmake --install ${build_dir}
+  cmake --install ${build_dir} --config ${BUILD_TYPE}
 }
 
-function get_shared_lib_extension() {
-  local os_type=$(uname)
-  case "${os_type}" in
+function get_lib_extension() {
+  case "${OS_NAME}" in
   Darwin)
     echo "dylib"
     ;;
@@ -159,16 +163,27 @@ function get_shared_lib_extension() {
     echo "so"
     ;;
   MINGW* | MSYS* | MYSYS*)
-    echo "dll"
+    echo "lib" # not to be confused with the static lib extension
     ;;
   *)
-    echo "Unsupported OS: ${os_type}"
+    echo "get_lib_extension: Unsupported OS: ${OS_NAME}"
     ;;
   esac
 }
 
-function get_zlib_path() {
-  echo $(find $(realpath ${INSTALL_DIR}/zlib/lib) -name *.$(get_shared_lib_extension))
+# zlib has many nicknames
+function get_zlib_lib_name() {
+  case "${OS_NAME}" in
+  Darwin | Linux)
+    echo "libz"
+    ;;
+  MINGW* | MSYS* | MYSYS*)
+    echo "zlib"
+    ;;
+  *)
+    echo "get_zlib_lib_name: Unsupported OS: ${OS_NAME}"
+    ;;
+  esac
 }
 
 function install_all() {
@@ -177,48 +192,96 @@ function install_all() {
     "zlib" \
     "https://github.com/madler/zlib.git" \
     "v1.2.13"
+  
+  local zlib_root="${INSTALL_DIR}/zlib"
+  local zlib_include_dir="${zlib_root}/include"
+  local zlib_library="${zlib_root}/lib/$(get_zlib_lib_name).$(get_lib_extension)"
 
-  # # curl curl-8_9_1
-  # install \
-  #   "curl" \
-  #   "https://github.com/curl/curl.git" \
-  #   "curl-8_9_1" \
-  #   "-DCURL_ENABLE_SSL:BOOL=ON \
-  #    -DCMAKE_PREFIX_PATH=${INSTALL_DIR}/zlib"
+  # curl curl-8_9_1
+  install \
+    "curl" \
+    "https://github.com/curl/curl.git" \
+    "curl-8_9_1" \
+    "-DBUILD_SHARED_LIBS:BOOL=ON \
+     -DBUILD_STATIC_LIBS:BOOL=OFF \
+     -DCURL_ENABLE_SSL:BOOL=ON \
+     -DZLIB_ROOT=${zlib_root}"
+  
+  local curl_root="${INSTALL_DIR}/curl"
 
   # hdf5 1.10.11
   install "hdf5" \
     "https://github.com/HDFGroup/hdf5.git" \
     "hdf5-1_10_11" \
-    "-DBUILD_STATIC_LIBS:BOOL=OFF \
+    "-DONLY_SHARED_LIBS:BOOL=ON \
     -DBUILD_SHARED_LIBS:BOOL=ON \
     -DHDF5_BUILD_TOOLS:BOOL=OFF \
     -DHDF5_BUILD_EXAMPLES:BOOL=OFF \
-    -DBUILD_TESTING:BOOL=ON \
+    -DBUILD_TESTING:BOOL=${BUILD_TESTS} \
     -DZLIB_USE_EXTERNAL:BOOL=OFF \
     -DHDF5_ENABLE_Z_LIB_SUPPORT:BOOL=ON \
-    -DZLIB_ROOT=${INSTALL_DIR}/zlib \
-    -DZLIB_INCLUDE_DIR:PATH=${INSTALL_DIR}/zlib/include \
-    -DZLIB_LIBRARY:FILEPATH=$(get_zlib_path) \
+    -DZLIB_DIR=${zlib_root} \
+    -DZLIB_ROOT=${zlib_root} \
+    -DZLIB_INCLUDE_DIR:PATH=${zlib_include_dir} \
+    -DZLIB_LIBRARY:FILEPATH=${zlib_library} \
     -DCMAKE_PREFIX_PATH=${INSTALL_DIR}"
+  
+  local hdf5_root="${INSTALL_DIR}/hdf5"
 
   # netcdf 4.8.1
   install "netcdf" \
     "https://github.com/Unidata/netcdf-c.git" \
     "v4.8.1" \
     "-DBUILD_SHARED_LIBS:BOOL=ON \
+    -DENABLE_TESTS:BOOL=${BUILD_TESTS} \
     -DENABLE_NETCDF_4:BOOL=ON \
     -DENABLE_DAP:BOOL=OFF \
     -DENABLE_BYTERANG:BOOL=OFF \
-    -DZLIB_ROOT=${INSTALL_DIR}/zlib \
-    -DHDF5_ROOT=${INSTALL_DIR}/hdf5 \
-    -DCMAKE_PREFIX_PATH=${INSTALL_DIR}"
+    -DZLIB_DIR=${zlib_root} \
+    -DZLIB_ROOT=${zlib_root} \
+    -DZLIB_INCLUDE_DIR:PATH=${zlib_include_dir} \
+    -DZLIB_LIBRARY:FILEPATH=${zlib_library} \
+    -DHDF5_ROOT=${hdf5_root} \
+    -DCMAKE_PREFIX_PATH=${curl_root}"
 
-  # netcdf-cxx4 v4.3.2-development
-  install "netcdf_cxx4" \
-    "https://github.com/Unidata/netcdf-cxx4.git" \
-    "dev" \
-    "-DCMAKE_PREFIX_PATH=${INSTALL_DIR}"
+  # netcdf
+  local netcdf_cxx_name="netcdf_cxx4"
+  local netcdf_cxx_repo="https://github.com/Unidata/netcdf-cxx4.git"
+  local necdf_cxx_git_tag="dev"
+  local basic_config_opts="-DNCXX_ENABLE_TESTS:BOOL=${BUILD_TESTS} \
+    -DCMAKE_PREFIX_PATH=${INSTALL_DIR}"
+  case "${OS_NAME}" in
+  Darwin | Linux)
+    install ${netcdf_cxx_name} \
+      ${netcdf_cxx_repo} \
+      ${necdf_cxx_git_tag} \
+      "${basic_config_opts}"
+    ;;
+  MINGW* | MSYS* | MYSYS*)
+    local HDF5_C_LIBRARIES="${hdf5_root}/lib/hdf5.lib"
+    local HDF5_INCLUDE_DIRS="${hdf5_root}/include"
+    local additional_config_opts="-DCMAKE_PREFIX_PATH=${INSTALL_DIR} \
+      -DNCXX_ENABLE_TESTS:BOOL=${BUILD_TESTS} \
+      -DHDF5_C_LIBRARIES=${HDF5_C_LIBRARIES} \
+      -DHDF5_INCLUDE_DIRS=${HDF5_INCLUDE_DIRS} \
+      -DHDF5_C_LIBRARY_hdf5=${HDF5_C_LIBRARIES}"
+    install ${netcdf_cxx_name} \
+      ${netcdf_cxx_repo} \
+      ${necdf_cxx_git_tag} \
+      "-DBUILD_SHARED_LIBS:BOOL=OFF \
+      ${basic_config_opts} \
+      ${additional_config_opts}"
+    install ${netcdf_cxx_name} \
+      ${netcdf_cxx_repo} \
+      ${necdf_cxx_git_tag} \
+      "-DBUILD_SHARED_LIBS:BOOL=ON \
+      ${basic_config_opts} \
+      ${additional_config_opts}"
+    ;;
+  *)
+    echo "Unsupported OS: ${OS_NAME}"
+    ;;
+  esac
 }
 
 function main() {

@@ -28,6 +28,7 @@ set(
   ${DOMAIN_INC_DIR}/Contacts.hpp
   ${DOMAIN_INC_DIR}/Mesh1D.hpp
   ${DOMAIN_INC_DIR}/Mesh2D.hpp
+  ${DOMAIN_INC_DIR}/MeshLocations.hpp
   ${DOMAIN_INC_DIR}/Network1D.hpp
   ${DOMAIN_INC_DIR}/UGrid.hpp
   ${DOMAIN_INC_DIR}/UGridState.hpp
@@ -44,7 +45,7 @@ target_sources(
       BASE_DIRS
         ${INC_DIR} ${VERSION_INC_DIR}
       FILES
-        ${INC_LIST} 
+        ${INC_LIST}
 )
 
 # Expose the interface of the shared lib
@@ -55,9 +56,6 @@ target_link_libraries(
   ${TARGET_NAME}
   PUBLIC
     "$<TARGET_NAME:UGrid>"
-  PRIVATE
-    netCDF::netcdf
-    netCDF::netcdf-cxx4
 )
 
 # Make sure that coverage information is produced when using gcc

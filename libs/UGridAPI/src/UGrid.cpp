@@ -33,8 +33,12 @@
 #define UGRID_API __attribute__((visibility("default")))
 #endif
 
+#include <algorithm>
+#include <cstring>
 #include <map>
 #include <sstream>
+#include <string>
+#include <unordered_map>
 #include <vector>
 
 #include <ncFile.h>
@@ -51,9 +55,23 @@
 namespace ugridapi
 {
     static std::map<int, UGridState> ugrid_states;
-    static char exceptionMessage[512] = "";
+    static char exceptionMessage[error_message_buffer_size] = "";
 
-    static int HandleExceptions(const std::exception_ptr exceptionPtr)
+    /// @brief Hash table mapping locations to location names
+    static const std::unordered_map<MeshLocations, std::string> locations_attribute_names{
+        {MeshLocations::Faces, "face"},
+        {MeshLocations::Nodes, "node"},
+        {MeshLocations::Edges, "edge"},
+
+    };
+
+    /// @brief Hash table mapping locations to ugrid dimensions
+    static const std::unordered_map<MeshLocations, ugrid::UGridFileDimensions> locations_ugrid_dimensions{
+        {MeshLocations::Faces, ugrid::UGridFileDimensions::face},
+        {MeshLocations::Nodes, ugrid::UGridFileDimensions::node},
+        {MeshLocations::Edges, ugrid::UGridFileDimensions::edge}};
+
+    static UGridioApiErrors HandleExceptions(const std::exception_ptr exceptionPtr)
     {
         try
         {
@@ -61,12 +79,14 @@ namespace ugridapi
         }
         catch (const std::exception& e)
         {
-            strcpy(exceptionMessage, e.what());
+            std::strcpy(exceptionMessage, e.what());
             return Exception;
         }
     }
 
-    static std::unique_ptr<ugrid::UGridEntity> get_topology(int file_id, int topology_id, int topology_type)
+    static std::unique_ptr<ugrid::UGridEntity> get_topology(int file_id,
+                                                            TopologyType topology_type,
+                                                            int topology_id)
     {
         switch (topology_type)
         {
@@ -83,6 +103,19 @@ namespace ugridapi
         }
     }
 
+    /// @brief Clears and shrink strings consisting exclusively of mull characters
+    /// @param str [in, out] The string
+    static void ClearAndShrinkStringComposedOfNullChars(std::string& str)
+    {
+        // Check if the string consists of only spaces
+        if (std::all_of(str.begin(), str.end(), [](char c)
+                        { return c == '\0'; }))
+        {
+            str.clear();
+            str.shrink_to_fit();
+        }
+    }
+
     /// @brief Gets all attributes values of a netCDF variable
     /// @param nc_var [in] The netCDF variable
     /// @return The attributes values
@@ -92,22 +125,44 @@ namespace ugridapi
         auto const attributes = nc_var.getAtts();
         for (auto const& [name, value] : attributes)
         {
-            if (value.getType() == netCDF::NcType::nc_INT)
+            netCDF::NcType const type = value.getType();
+            if (type == netCDF::NcType::nc_INT)
             {
                 auto const attribute_length = value.getAttLength();
                 std::vector<int> items(attribute_length);
                 value.getValues(&items[0]);
                 std::stringstream os;
-                for (auto const& item : items)
+                for (auto it = items.begin(); it != items.end(); ++it)
                 {
-                    os << item << " ";
+                    os << *it;
+                    if (it != items.end() - 1)
+                    {
+                        os << ' ';
+                    }
                 }
                 result.emplace_back(os.str());
             }
-            else if (value.getType() == netCDF::NcType::nc_CHAR)
+            else if (type == netCDF::NcType::nc_DOUBLE)
+            {
+                auto const attribute_length = value.getAttLength();
+                std::vector<double> items(attribute_length);
+                value.getValues(&items[0]);
+                std::stringstream os;
+                for (auto it = items.begin(); it != items.end(); ++it)
+                {
+                    os << *it;
+                    if (it != items.end() - 1)
+                    {
+                        os << ' ';
+                    }
+                }
+                result.emplace_back(os.str());
+            }
+            else if (type == netCDF::NcType::nc_CHAR)
             {
                 std::string item;
                 value.getValues(item);
+                ClearAndShrinkStringComposedOfNullChars(item);
                 result.emplace_back(item);
             }
             else
@@ -136,7 +191,10 @@ namespace ugridapi
         const auto it = vars.find(variable_name);
         if (it == vars.end())
         {
-            throw std::invalid_argument("get_data_array: The variable name is not present in the netcdf file.");
+            std::string const message = "get_data_array: The variable name " +
+                                        variable_name +
+                                        " is not present in the netcdf file.";
+            throw std::invalid_argument(message);
         }
 
         // Gets the data for all time steps
@@ -152,15 +210,21 @@ namespace ugridapi
         const auto it = vars.find(name);
         if (it == vars.end())
         {
-            throw std::invalid_argument("ug_variable_count_dimensions: The variable name is not present in the netcdf file.");
+            std::string const message = "get_variable: The variable name " +
+                                        name +
+                                        " is not present in the netcdf file.";
+            throw std::invalid_argument(message);
         }
 
         return it->second;
     }
 
-    static std::string get_coordinate_variable_string(int file_id, int topology_id, int topology_type, std::string const& var_name)
+    static std::string get_coordinate_variable_string(int file_id,
+                                                      TopologyType topology_type,
+                                                      int topology_id,
+                                                      std::string const& var_name)
     {
-        auto topology = get_topology(file_id, topology_id, topology_type);
+        auto topology = get_topology(file_id, topology_type, topology_id);
 
         auto coordinates_vector_variables = topology->get_topology_attribute_variable(var_name);
         std::string result;
@@ -172,9 +236,9 @@ namespace ugridapi
         return result;
     }
 
-    UGRID_API int ug_error_get(const char*& error_message)
+    UGRID_API int ug_error_get(char* error_message)
     {
-        error_message = exceptionMessage;
+        std::strcpy(error_message, exceptionMessage);
         return Success;
     }
 
@@ -190,60 +254,17 @@ namespace ugridapi
         return Success;
     }
 
-    UGRID_API int ug_entity_get_node_location_enum(int& location)
-    {
-        location = static_cast<int>(ugrid::UGridEntityLocations::node);
-        return Success;
-    }
-
-    UGRID_API int ug_entity_get_edge_location_enum(int& location)
-    {
-        location = static_cast<int>(ugrid::UGridEntityLocations::edge);
-        return Success;
-    }
-
-    UGRID_API int ug_entity_get_face_location_enum(int& location)
-    {
-        location = static_cast<int>(ugrid::UGridEntityLocations::face);
-        return Success;
-    }
-
-    UGRID_API int ug_topology_get_network1d_enum(int& topology_enum)
-    {
-        topology_enum = static_cast<int>(Network1dTopology);
-        return Success;
-    }
-
-    UGRID_API int ug_topology_get_mesh1d_enum(int& topology_enum)
-    {
-        topology_enum = static_cast<int>(Mesh1dTopology);
-        return Success;
-    }
-
-    UGRID_API int ug_topology_get_mesh2d_enum(int& topology_enum)
-    {
-        topology_enum = static_cast<int>(Mesh2dTopology);
-        return Success;
-    }
-
-    UGRID_API int ug_topology_get_contacts_enum(int& topology_enum)
-    {
-        topology_enum = static_cast<int>(ContactsTopology);
-        return Success;
-    }
-
-    UGRID_API int ug_topology_get_count(int file_id, int topology_type, int& topology_count)
+    UGRID_API int ug_topology_get_count(int file_id, TopologyType topology_type, int& topology_count)
     {
         int exit_code = Success;
         try
         {
-            switch (static_cast<UGridTopologyType>(topology_type))
+            switch (topology_type)
             {
             case Network1dTopology:
                 topology_count = static_cast<int>(ugrid_states[file_id].m_network1d.size());
                 break;
             case Mesh1dTopology:
-
                 topology_count = static_cast<int>(ugrid_states[file_id].m_mesh1d.size());
                 break;
             case Mesh2dTopology:
@@ -264,7 +285,11 @@ namespace ugridapi
         return exit_code;
     }
 
-    UGRID_API int ug_topology_count_data_variables(int file_id, int topology_type, int topology_id, int location, int& data_variable_count)
+    UGRID_API int ug_topology_count_data_variables(int file_id,
+                                                   TopologyType topology_type,
+                                                   int topology_id,
+                                                   MeshLocations location,
+                                                   int& data_variable_count)
     {
         int exit_code = Success;
         try
@@ -274,9 +299,9 @@ namespace ugridapi
                 throw std::invalid_argument("UGrid: The selected file_id does not exist.");
             }
 
-            auto const topology = get_topology(file_id, topology_id, topology_type);
+            auto const topology = get_topology(file_id, topology_type, topology_id);
 
-            auto const location_string = ugrid::from_location_integer_to_location_string(location);
+            auto const location_string = ugrid::from_location_integer_to_location_string(static_cast<int>(location));
 
             auto const data_variables_names = topology->get_data_variables_names(location_string);
 
@@ -290,7 +315,11 @@ namespace ugridapi
         return exit_code;
     }
 
-    UGRID_API int ug_topology_get_data_variables_names(int file_id, int topology_type, int topology_id, int location, char* data_variables_names_result)
+    UGRID_API int ug_topology_get_data_variables_names(int file_id,
+                                                       TopologyType topology_type,
+                                                       int topology_id,
+                                                       MeshLocations location,
+                                                       char* data_variables_names_result)
     {
 
         int exit_code = Success;
@@ -301,9 +330,9 @@ namespace ugridapi
                 throw std::invalid_argument("UGrid: The selected file_id does not exist.");
             }
 
-            auto const topology = get_topology(file_id, topology_id, topology_type);
+            auto const topology = get_topology(file_id, topology_type, topology_id);
 
-            auto const location_string = ugrid::from_location_integer_to_location_string(location);
+            auto const location_string = ugrid::from_location_integer_to_location_string(static_cast<int>(location));
 
             auto const data_variables_names = topology->get_data_variables_names(location_string);
 
@@ -317,11 +346,11 @@ namespace ugridapi
     }
 
     UGRID_API int ug_topology_define_double_variable_on_location(int file_id,
+                                                                 TopologyType topology_type,
                                                                  int topology_id,
-                                                                 int topology_type,
-                                                                 int mesh_location,
-                                                                 char const* variable_name,
-                                                                 char const* dimension_name,
+                                                                 MeshLocations location,
+                                                                 const char* variable_name,
+                                                                 const char* dimension_name,
                                                                  const int dimension_value)
     {
         int exit_code = Success;
@@ -334,14 +363,12 @@ namespace ugridapi
 
             const auto local_variable_name = ugrid::char_array_to_string(variable_name, ugrid::name_long_length);
 
-            const auto topology = get_topology(file_id, topology_id, topology_type);
+            const auto topology = get_topology(file_id, topology_type, topology_id);
 
             const auto mesh = topology->get_name();
 
-            const auto mesh_location_enum = static_cast<MeshLocations>(mesh_location);
-
-            const auto location = locations_attribute_names.at(mesh_location_enum);
-            const auto coordinates = get_coordinate_variable_string(file_id, topology_id, topology_type, location + "_coordinates");
+            const auto location_str = locations_attribute_names.at(location);
+            const auto coordinates = get_coordinate_variable_string(file_id, topology_type, topology_id, location_str + "_coordinates");
 
             // Set additional variable dimension on the file
             const auto local_dimension_name = ugrid::char_array_to_string(dimension_name, ugrid::name_long_length);
@@ -349,11 +376,13 @@ namespace ugridapi
 
             // First dimension is the additional dimension on the file, the second variable is a topological variable
             const auto variable_first_dimension = ugrid_states[file_id].get_dimension(local_dimension_name);
-            const auto variable_second_dimension = topology->get_dimension(locations_ugrid_dimensions.at(mesh_location_enum));
+            const auto variable_second_dimension = topology->get_dimension(locations_ugrid_dimensions.at(location));
 
-            auto variable = ugrid_states[file_id].m_ncFile->addVar(local_variable_name, netCDF::NcType::nc_DOUBLE, {variable_first_dimension, variable_second_dimension});
+            auto variable = ugrid_states[file_id].m_ncFile->addVar(local_variable_name,
+                                                                   netCDF::NcType::nc_DOUBLE,
+                                                                   {variable_first_dimension, variable_second_dimension});
             variable.putAtt("mesh", netCDF::NcType::nc_CHAR, mesh.size(), mesh.c_str());
-            variable.putAtt("location", netCDF::NcType::nc_CHAR, location.size(), location.c_str());
+            variable.putAtt("location", netCDF::NcType::nc_CHAR, location_str.size(), location_str.c_str());
             variable.putAtt("coordinates", netCDF::NcType::nc_CHAR, coordinates.size(), coordinates.c_str());
         }
         catch (...)
@@ -363,7 +392,7 @@ namespace ugridapi
         return exit_code;
     }
 
-    UGRID_API int ug_variable_count_attributes(int file_id, char const* variable_name, int& attributes_count)
+    UGRID_API int ug_variable_count_attributes(int file_id, const char* variable_name, int& attributes_count)
     {
         int exit_code = Success;
         try
@@ -383,7 +412,10 @@ namespace ugridapi
             const auto it = vars.find(name);
             if (it == vars.end())
             {
-                throw std::invalid_argument("ug_variable_count_dimensions: The variable name is not present in the netcdf file.");
+                std::string const message = "ug_variable_count_attributes: The variable name " +
+                                            name +
+                                            " is not present in the netcdf file.";
+                throw std::invalid_argument(message);
             }
 
             // Get the dimensions
@@ -396,7 +428,7 @@ namespace ugridapi
         return exit_code;
     }
 
-    UGRID_API int ug_variable_get_attributes_values(int file_id, char const* variable_name, char* values)
+    UGRID_API int ug_variable_get_attributes_values(int file_id, const char* variable_name, char* values)
     {
         int exit_code = Success;
         try
@@ -416,11 +448,15 @@ namespace ugridapi
             const auto it = vars.find(name);
             if (it == vars.end())
             {
-                throw std::invalid_argument("ug_variable_get_attributes_values: The variable name is not present in the netcdf file.");
+                std::string const message = "ug_variable_get_attributes_values: The variable name " +
+                                            name +
+                                            " is not present in the netcdf file.";
+                throw std::invalid_argument(message);
             }
 
             // Get the attribute values
             auto const attribute_values = get_attributes_values_as_strings(it->second);
+
             ugrid::vector_of_strings_to_char_array(attribute_values, ugrid::name_long_length, values);
         }
         catch (...)
@@ -430,7 +466,7 @@ namespace ugridapi
         return exit_code;
     }
 
-    UGRID_API int ug_variable_get_attributes_names(int file_id, char const* variable_name, char* names)
+    UGRID_API int ug_variable_get_attributes_names(int file_id, const char* variable_name, char* names)
     {
         int exit_code = Success;
         try
@@ -450,17 +486,20 @@ namespace ugridapi
             const auto it = vars.find(name);
             if (it == vars.end())
             {
-                throw std::invalid_argument("ug_variable_get_attributes_names: The variable name is not present in the netcdf file.");
+                std::string const message = "ug_variable_get_attributes_names: The variable name " +
+                                            name +
+                                            " is not present in the netcdf file.";
+                throw std::invalid_argument(message);
             }
 
             // Get the attribute names
             auto const attributes = it->second.getAtts();
-            std::vector<std::string> atrribute_names;
+            std::vector<std::string> attribute_names;
             for (auto const& attribute : attributes)
             {
-                atrribute_names.emplace_back(attribute.second.getName());
+                attribute_names.emplace_back(attribute.second.getName());
             }
-            ugrid::vector_of_strings_to_char_array(atrribute_names, ugrid::name_long_length, names);
+            ugrid::vector_of_strings_to_char_array(attribute_names, ugrid::name_long_length, names);
         }
         catch (...)
         {
@@ -469,7 +508,7 @@ namespace ugridapi
         return exit_code;
     }
 
-    UGRID_API int ug_variable_count_dimensions(int file_id, char const* variable_name, int& dimensions_count)
+    UGRID_API int ug_variable_count_dimensions(int file_id, const char* variable_name, int& dimensions_count)
     {
         int exit_code = Success;
         try
@@ -489,7 +528,10 @@ namespace ugridapi
             const auto it = vars.find(name);
             if (it == vars.end())
             {
-                throw std::invalid_argument("ug_variable_count_dimensions: The variable name is not present in the netcdf file.");
+                std::string const message = "ug_variable_count_dimensions: The variable name " +
+                                            name +
+                                            " is not present in the netcdf file.";
+                throw std::invalid_argument(message);
             }
 
             // Get the dimensions
@@ -502,7 +544,7 @@ namespace ugridapi
         return exit_code;
     }
 
-    UGRID_API int ug_variable_get_data_dimensions(int file_id, char const* variable_name, int* dimension_vec)
+    UGRID_API int ug_variable_get_data_dimensions(int file_id, const char* variable_name, int* dimension_vec)
     {
         int exit_code = Success;
         try
@@ -522,7 +564,10 @@ namespace ugridapi
             const auto it = vars.find(name);
             if (it == vars.end())
             {
-                throw std::invalid_argument("ug_variable_get_data_dimensions: The variable name is not present in the netcdf file.");
+                std::string const message = "ug_variable_get_data_dimensions: The variable name " +
+                                            name +
+                                            " is not present in the netcdf file.";
+                throw std::invalid_argument(message);
             }
 
             // Get the dimensions
@@ -539,7 +584,7 @@ namespace ugridapi
         return exit_code;
     }
 
-    UGRID_API int ug_variable_get_data_double(int file_id, char const* variable_name, double* data)
+    UGRID_API int ug_variable_get_data_double(int file_id, const char* variable_name, double* data)
     {
         int exit_code = Success;
         try
@@ -558,7 +603,7 @@ namespace ugridapi
         return exit_code;
     }
 
-    UGRID_API int ug_variable_get_data_int(int file_id, char const* variable_name, int* data)
+    UGRID_API int ug_variable_get_data_int(int file_id, const char* variable_name, int* data)
     {
         int exit_code = Success;
         try
@@ -577,7 +622,7 @@ namespace ugridapi
         return exit_code;
     }
 
-    UGRID_API int ug_variable_get_data_char(int file_id, char const* variable_name, char* data)
+    UGRID_API int ug_variable_get_data_char(int file_id, const char* variable_name, char* data)
     {
         int exit_code = Success;
         try
@@ -614,7 +659,7 @@ namespace ugridapi
         return Success;
     }
 
-    UGRID_API int ug_file_open(char const* file_path, int mode, int& file_id)
+    UGRID_API int ug_file_open(const char* file_path, int mode, int& file_id)
     {
         int exit_code = Success;
         try
@@ -964,7 +1009,7 @@ namespace ugridapi
         return exit_code;
     }
 
-    UGRID_API int ug_variable_int_define(int file_id, char const* variable_name)
+    UGRID_API int ug_variable_int_define(int file_id, const char* variable_name)
     {
         int exit_code = Success;
         try
@@ -984,7 +1029,11 @@ namespace ugridapi
         return exit_code;
     }
 
-    UGRID_API int ug_attribute_int_define(int file_id, char const* variable_name, char const* att_name, int const* attribute_values, int num_values)
+    UGRID_API int ug_attribute_int_define(int file_id,
+                                          const char* variable_name,
+                                          const char* att_name,
+                                          int const* attribute_values,
+                                          int num_values)
     {
         int exit_code = Success;
         try
@@ -1013,7 +1062,11 @@ namespace ugridapi
         return exit_code;
     }
 
-    UGRID_API int ug_attribute_char_define(int file_id, char const* variable_name, char const* att_name, char const* attribute_values, int num_values)
+    UGRID_API int ug_attribute_char_define(int file_id,
+                                           const char* variable_name,
+                                           const char* att_name,
+                                           const char* attribute_values,
+                                           int num_values)
     {
         int exit_code = Success;
         try
@@ -1042,7 +1095,11 @@ namespace ugridapi
         return exit_code;
     }
 
-    UGRID_API int ug_attribute_double_define(int file_id, char const* variable_name, char const* att_name, double const* attribute_values, int num_values)
+    UGRID_API int ug_attribute_double_define(int file_id,
+                                             const char* variable_name,
+                                             const char* att_name,
+                                             double const* attribute_values,
+                                             int num_values)
     {
         int exit_code = Success;
         try
@@ -1071,7 +1128,10 @@ namespace ugridapi
         return exit_code;
     }
 
-    UGRID_API int ug_attribute_global_char_define(int file_id, char const* att_name, char const* attribute_values, int num_values)
+    UGRID_API int ug_attribute_global_char_define(int file_id,
+                                                  const char* attribute_name,
+                                                  const char* attribute_values,
+                                                  int num_values)
     {
         int exit_code = Success;
         try
@@ -1082,10 +1142,10 @@ namespace ugridapi
             }
 
             // Get the attribute name
-            const auto attribute_name = ugrid::char_array_to_string(att_name, ugrid::name_long_length);
+            const auto attribute_name_str = ugrid::char_array_to_string(attribute_name, ugrid::name_long_length);
 
             // Put the attribute values
-            ugrid_states[file_id].m_ncFile->putAtt(attribute_name, netCDF::NcType::nc_CHAR, num_values, attribute_values);
+            ugrid_states[file_id].m_ncFile->putAtt(attribute_name_str, netCDF::NcType::nc_CHAR, num_values, attribute_values);
         }
         catch (...)
         {
@@ -1094,30 +1154,45 @@ namespace ugridapi
         return exit_code;
     }
 
-    UGRID_API int ug_get_edges_location_type(int& type)
+    UGRID_API int ug_attribute_global_char_get(int file_id,
+                                               const char* attribute_name,
+                                               char* attribute_values)
     {
-        type = static_cast<int>(MeshLocations::Edges);
-        return Success;
+        int exit_code = Success;
+        try
+        {
+            if (ugrid_states.count(file_id) == 0)
+            {
+                throw std::invalid_argument("UGrid: The selected file_id does not exist.");
+            }
+
+            // Get the attribute name
+            const auto attribute_name_str = ugrid::char_array_to_string(attribute_name, ugrid::name_long_length);
+
+            // Put the attribute values
+            netCDF::NcGroupAtt attribute = ugrid_states[file_id].m_ncFile->getAtt(attribute_name_str);
+            std::string value;
+            attribute.getValues(value);
+            ugrid::string_to_char_array(value, ugrid::name_long_length, attribute_values);
+        }
+        catch (...)
+        {
+            exit_code = HandleExceptions(std::current_exception());
+        }
+        return exit_code;
     }
-    UGRID_API int ug_get_nodes_location_type(int& type)
-    {
-        type = static_cast<int>(MeshLocations::Nodes);
-        return Success;
-    }
-    UGRID_API int ug_get_faces_location_type(int& type)
-    {
-        type = static_cast<int>(MeshLocations::Faces);
-        return Success;
-    }
+
     UGRID_API int ug_get_int_fill_value(int& fillValue)
     {
+        int exit_code = Success;
         fillValue = ugrid::int_missing_value;
-        return Success;
+        return exit_code;
     }
     UGRID_API int ug_get_double_fill_value(double& fillValue)
     {
+        int exit_code = Success;
         fillValue = ugrid::double_missing_value;
-        return Success;
+        return exit_code;
     }
 
 } // namespace ugridapi

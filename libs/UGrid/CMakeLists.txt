@@ -79,7 +79,7 @@ target_include_directories(${TARGET_NAME} SYSTEM PUBLIC ${Boost_INCLUDE_DIR})
 # link required libraries
 target_link_libraries(
   ${TARGET_NAME}
-  LINK_PUBLIC
+  PUBLIC
     netCDF::netcdf
     netCDF::netcdf-cxx4
 )

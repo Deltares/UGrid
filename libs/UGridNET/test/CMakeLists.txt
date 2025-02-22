@@ -15,6 +15,12 @@ configure_file(
   COPYONLY
 )
 
+list(LENGTH GLOB_TEST_DOTNET_TARGET_FRAMEWORKS LIST_LENGTH)
+if(${LIST_LENGTH} EQUAL 1)
+    set(PROJECT_DOTNET_TARGET_FRAMEWORKS_TAG "TargetFramework")
+else()
+    set(PROJECT_DOTNET_TARGET_FRAMEWORKS_TAG "TargetFrameworks")
+endif()
 set(PROJECT_DOTNET_TARGET_FRAMEWORKS ${GLOB_TEST_DOTNET_TARGET_FRAMEWORKS})
 set(DIRECTORY_BUILD_PROPS ${CMAKE_CURRENT_BINARY_DIR}/Directory.Build.props)
 configure_file(
@@ -46,7 +52,15 @@ add_library(
   ${NUGET_CONFIG}
   ${DIRECTORY_PACKAGES_PROPS}
   ${DIRECTORY_BUILD_PROPS}
-  src/UGridNETTests.cs
+  src/ByteArrayExtensionsTests.cs
+  src/IntPtrExtensionsTests.cs
+  src/IntPtrHelpersTests.cs
+  src/StringExtensionsTests.cs
+  src/SWIGTests.cs
+  src/TestUtilities.cs
+  src/TopologyExtensionsTests.cs
+  src/UGridNETExceptionTests.cs
+  src/UGridReaderTests.cs
 )
 
 target_link_libraries(${TARGET_NAME} PRIVATE "$<TARGET_NAME:UGridNET>")
@@ -57,4 +71,8 @@ set_target_properties(
     DOTNET_TARGET_FRAMEWORK "${GLOB_TEST_DOTNET_TARGET_FRAMEWORKS}"
     DOTNET_SDK ${GLOB_DOTNET_SDK}
     VS_PACKAGE_REFERENCES "${PACKAGE_REFERENCES}"
+    VS_GLOBAL_PlatformTarget "AnyCPU"
+    VS_DOTNET_REFERENCEPROP_UGridNET_TAG_SetTargetFramework "TargetFramework=netstandard2.0"
 )
+
+target_compile_options(${TARGET_NAME} PRIVATE "/platform:anycpu")

@@ -5,6 +5,24 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 from xml.dom import minidom
 
+VALID_BUILD_TYPES = {
+    "Release",
+    "Debug",
+    "RelWithDebInfo",
+    "MinSizeRel",
+}
+
+
+# Custom function to validate input
+def build_type(build_type_str: str) -> str:
+    lower_case_build_type_str = build_type_str.lower()
+    for valid_build_type in VALID_BUILD_TYPES:
+        if valid_build_type.lower() == lower_case_build_type_str:
+            return valid_build_type
+    raise argparse.ArgumentTypeError(
+        f"Invalid build type: {valid_build_type}. valid build type: {VALID_BUILD_TYPES}."
+    )
+
 
 def parse_args():
     """
@@ -27,11 +45,26 @@ def parse_args():
     )
 
     parser.add_argument(
+        "--build_type",
+        type=build_type,
+        required=True,
+        help=f"Build type: one of {VALID_BUILD_TYPES}.",
+    )
+
+    parser.add_argument(
         "--dotnet_target_frameworks",
         type=str,
         nargs="+",
         required=True,
         help=".NET target framework",
+    )
+
+    parser.add_argument(
+        "--runtime_dependencies",
+        type=str,
+        nargs="+",
+        required=True,
+        help="Runtime dependencies",
     )
 
     args = parser.parse_args()
@@ -51,7 +84,9 @@ def prettify_xml(xml_string: str):
 def configure_nuspec(
     nuspec_template_path: Path,
     output_path: Path,
+    build_type: str,
     frameworks: list[str],
+    runtime_dependencies: list[str],
 ) -> None:
     # Parse the template file into an ElementTree object
     tree = ET.parse(nuspec_template_path)
@@ -90,8 +125,8 @@ def configure_nuspec(
     for framework in frameworks:
         file_dll = ET.Element(
             "file",
-            src=f"@CMAKE_BINARY_DIR@/libs/UGridNET/dll/Release/{framework}/UGridNET.dll",
-            target=f"lib/{framework}",
+            src=f"@BUILD_DIR@/libs/UGridNET/dll/{build_type}/{framework}/UGridNET.dll",
+            target=f"lib/{framework}/UGridNET.dll",
         )
         files.append(file_dll)
 
@@ -99,26 +134,26 @@ def configure_nuspec(
     for framework in frameworks:
         file_targets = ET.Element(
             "file",
-            src=f"@CMAKE_BINARY_DIR@/libs/UGridNET/nuget/Deltares.UGridNET.targets",
-            target=f"build/{framework}",
+            src=f"@BUILD_DIR@/libs/UGridNET/nuget/Deltares.UGridNET.targets",
+            target=f"build/{framework}/Deltares.UGridNET.targets",
         )
         files.append(file_targets)
 
-    # Create the <file> elements for the runtimes
-    extensions = ["dll", "lib", "exp"]
-    for extension in extensions:
+    # Create the elements for the runtime dependencies
+    for runtime_dependency in runtime_dependencies:
         file_runtimes = ET.Element(
             "file",
-            src=f"@CMAKE_BINARY_DIR@/libs/UGridNET/SWIG/Release/UGridCSharpWrapper.{extension}",
-            target="runtimes/win-x64/native",
+            src=f"{runtime_dependency}",
+            target=f"runtimes/win-x64/native/{Path(runtime_dependency).name}",
         )
         files.append(file_runtimes)
+
 
     # Create the <file> element for the readme
     file_readme = ET.Element(
         "file",
-        src="@CMAKE_BINARY_DIR@/libs/UGridNET/nuget/README.md",
-        target="",
+        src="@BUILD_DIR@/libs/UGridNET/nuget/README.md",
+        target="README.md",
     )
     files.append(file_readme)
 
@@ -129,15 +164,18 @@ def configure_nuspec(
     with open(output_path, "w", encoding="utf-8") as f:
         f.write(prettify_xml(xml_str))
 
-    # print(f"Updated nuspec file saved to: {output_path}")
-
-
 if __name__ == "__main__":
-    # parse the args
-    args = parse_args()
-    # write the configuration
-    configure_nuspec(
-        args.template,
-        args.destination,
-        args.dotnet_target_frameworks,
-    )
+    try:
+        # parse the args
+        args = parse_args()
+        # write the configuration
+        configure_nuspec(
+            args.template,
+            args.destination,
+            args.build_type,
+            args.dotnet_target_frameworks,
+            args.runtime_dependencies,
+        )
+    except Exception as e:  # Generic exception handler
+        print(f"Error: {e}", file=sys.stderr)  # Print to stderr
+        sys.exit(1)  # Exit with a non-zero status to indicate failure
