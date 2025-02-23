@@ -86,10 +86,10 @@ namespace UGridNET.Tests
             try
             {
                 file = new UGridReader(filePath);
-                Assert.That(file.HasMesh1D(), Is.True);
-                Assert.That(file.HasMesh2D(), Is.True);
-                Assert.That(file.HasContacts(), Is.True);
-                Assert.That(file.HasNetwork1D(), Is.True);
+                Assert.That(file.HasMesh1D, Is.True);
+                Assert.That(file.HasMesh2D, Is.True);
+                Assert.That(file.HasContacts, Is.True);
+                Assert.That(file.HasNetwork1D, Is.True);
             }
             finally
             {
@@ -106,10 +106,10 @@ namespace UGridNET.Tests
             try
             {
                 file = new UGridReader(filePath);
-                Assert.That(file.HasMesh1D(), Is.False);
-                Assert.That(file.HasMesh2D(), Is.True);
-                Assert.That(file.HasContacts(), Is.False);
-                Assert.That(file.HasNetwork1D(), Is.False);
+                Assert.That(file.HasMesh1D, Is.False);
+                Assert.That(file.HasMesh2D, Is.True);
+                Assert.That(file.HasContacts, Is.False);
+                Assert.That(file.HasNetwork1D, Is.False);
             }
             finally
             {

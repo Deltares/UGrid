@@ -107,7 +107,7 @@ namespace ugridapi
     /// @param str [in, out] The string
     static void ClearAndShrinkStringComposedOfNullChars(std::string& str)
     {
-        // Check if the string consists of only spaces
+        // Check if the string consists of only null characters
         if (std::all_of(str.begin(), str.end(), [](char c)
                         { return c == '\0'; }))
         {

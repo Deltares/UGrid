@@ -25,48 +25,6 @@ CSHARP_ARRAYS(char, byte)
 %TypeRefParam(float)
 %TypeRefParam(double)
 
-// %apply char INOUT[] { char* error_message } %{ 
-//     int ug_error_get(char* error_message);
-// %}
-
-// %apply int INOUT[] { int* data } %{
-//     int ug_variable_get_data_int(int file_id,
-//                                  char const* variable_name,
-//                                  int* data);
-// %}
-
-// %apply double INOUT[] { double* data } %{
-//     int ug_variable_get_data_double(int file_id,
-//                                     char const* variable_name,
-//                                     double* data);
-// %}
-
-// %apply int INOUT[] { int* dimension_vec } %{
-//     int ug_variable_get_data_dimensions(int file_id, 
-//                                         char const* variable_name,
-//                                         int* dimension_vec);
-// %}
-
-// %apply int INPUT[] { int const* attribute_values } %{
-//     int ug_attribute_int_define(int file_id,
-//                                 char const* variable_name,
-//                                 char const* attribute_name,
-//                                 int const* attribute_values,
-//                                 int num_values);
-// %}
-
-// %apply double INPUT[] { double const* attribute_values } %{
-//     int ug_attribute_double_define(int file_id,
-//                                    char const* variable_name,
-//                                    char const* attribute_name,
-//                                    double const* attribute_values,
-//                                    int num_values);
-// %}
-
-// --------
-// pinning
-// --------
-
 %csmethodmodifiers ug_error_get "public unsafe";
 %apply char FIXED[] { char* error_message } %{ 
     int ug_error_get(char* error_message);

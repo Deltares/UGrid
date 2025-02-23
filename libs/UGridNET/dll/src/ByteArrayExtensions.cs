@@ -26,7 +26,7 @@ namespace UGridNET
 
                 if (bytes.Length == 0)
                 {
-                    throw new ArgumentException("Byte array cannot be null.", nameof(bytes));
+                    throw new ArgumentException("Byte array cannot be empty.", nameof(bytes));
                 }
 
                 if (bytes[bytes.Length - 1] != 0x00)
