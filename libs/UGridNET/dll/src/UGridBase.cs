@@ -88,25 +88,25 @@ namespace UGridNET
             network1DList.ForEach(item => item.Free());
         }
 
-        public bool HasMesh1D() { return mesh1DList.Count > 0; }
+        public bool HasMesh1D => mesh1DList.Count > 0;
 
-        public bool HasMesh2D() { return mesh2DList.Count > 0; }
+        public bool HasMesh2D => mesh2DList.Count > 0;
 
-        public bool HasContacts() { return contactsList.Count > 0; }
+        public bool HasContacts => contactsList.Count > 0;
 
-        public bool HasNetwork1D() { return network1DList.Count > 0; }
-
-        [ExcludeFromCodeCoverage]
-        public ReadOnlyCollection<Mesh1D> Mesh1DList() { return mesh1DList.AsReadOnly(); }
+        public bool HasNetwork1D => network1DList.Count > 0;
 
         [ExcludeFromCodeCoverage]
-        public ReadOnlyCollection<Mesh2D> Mesh2DList() { return mesh2DList.AsReadOnly(); }
+        public ReadOnlyCollection<Mesh1D> Mesh1DList => mesh1DList.AsReadOnly();
 
         [ExcludeFromCodeCoverage]
-        public ReadOnlyCollection<Contacts> ContactsList() { return contactsList.AsReadOnly(); }
+        public ReadOnlyCollection<Mesh2D> Mesh2DList => mesh2DList.AsReadOnly();
 
         [ExcludeFromCodeCoverage]
-        public ReadOnlyCollection<Network1D> Network1DList() { return network1DList.AsReadOnly(); }
+        public ReadOnlyCollection<Contacts> ContactsList => contactsList.AsReadOnly();
+
+        [ExcludeFromCodeCoverage]
+        public ReadOnlyCollection<Network1D> Network1DList => network1DList.AsReadOnly();
 
         private static void ProcessExitCode(int exitCode)
         {
