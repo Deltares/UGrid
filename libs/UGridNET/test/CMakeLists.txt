@@ -61,6 +61,7 @@ add_library(
   src/TopologyExtensionsTests.cs
   src/UGridNETExceptionTests.cs
   src/UGridReaderTests.cs
+  src/UGridWriterTests.cs
 )
 
 target_link_libraries(${TARGET_NAME} PRIVATE "$<TARGET_NAME:UGridNET>")

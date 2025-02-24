@@ -60,10 +60,12 @@ set(
     ${SOURCE_DIR}/Mesh1DExtensions.cs
     ${SOURCE_DIR}/Mesh2DExtensions.cs
     ${SOURCE_DIR}/Network1DExtensions.cs
+    ${SOURCE_DIR}/ProjectedCoordinateSystem.cs
     ${SOURCE_DIR}/StringExtensions.cs
     ${SOURCE_DIR}/UGridNETException.cs
     ${SOURCE_DIR}/UGridBase.cs
     ${SOURCE_DIR}/UGridReader.cs
+    ${SOURCE_DIR}/UGridWriter.cs
 )
 
 add_library(
