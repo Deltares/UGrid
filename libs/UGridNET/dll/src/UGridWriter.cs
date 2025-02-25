@@ -4,7 +4,7 @@ namespace UGridNET
 {
     public sealed class UGridWriter : UGridBase
     {
-        public UGridWriter(string path) : base(path, 2)
+        public UGridWriter(string path) : base(path, FileMode.Write)
         {
             try
             {

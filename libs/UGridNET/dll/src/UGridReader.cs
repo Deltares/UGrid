@@ -9,7 +9,7 @@ namespace UGridNET
 {
     public sealed class UGridReader : UGridBase
     {
-        public UGridReader(string path) : base(path, 0)
+        public UGridReader(string path) : base(path, FileMode.Read)
         {
             try
             {

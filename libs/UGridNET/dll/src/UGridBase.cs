@@ -19,12 +19,29 @@ namespace UGridNET
         protected List<Contacts> contactsList = new List<Contacts>();
         protected List<Network1D> network1DList = new List<Network1D>();
 
-        public UGridBase(string path, int openMode)
+        protected enum FileMode
+        {
+            /// <summary>
+            /// Opens an existing file for reading.
+            /// <para>The value is equal to NcFile::FileMode::read. The file must exist; otherwise, an error occurs.</para>
+            /// </summary>
+            Read = 0,
+
+            /// <summary>
+            /// Opens a file for writing. If the file exists, its contents are overwritten.
+            /// <para>The value is equal to NcFile::FileMode::replace. If the file does not exist, a new file is created.</para>
+            /// </summary>
+            Write = 2
+        }
+
+        private UGridBase(){}
+
+        protected UGridBase(string path, FileMode fileMode)
         {
             try
             {
                 filePath = Path.GetFullPath(path);
-                Open(openMode);
+                Open(fileMode);
             }
             catch
             {
@@ -125,9 +142,9 @@ namespace UGridNET
         }
 
 
-        private void Open(int openMode)
+        private void Open(FileMode fileMode)
         {
-            Invoke(() => UGrid.ug_file_open(filePath.GetBytes(), openMode, ref fileID));
+            Invoke(() => UGrid.ug_file_open(filePath.GetBytes(), (int)fileMode, ref fileID));
         }
 
         private void Close()
