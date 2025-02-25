@@ -1,9 +1,5 @@
-using System;
-using System.Collections.Generic;
 using System.IO;
 using NUnit.Framework;
-using NUnit.Framework.Interfaces;
-using UGridNET.Extensions;
 
 namespace UGridNET.Tests
 {
@@ -18,7 +14,8 @@ namespace UGridNET.Tests
             var filePath = Path.Combine(TestPath, "test.nc");
             string name = "myMesh2D";
             UGridWriter file = null;
-            double[] nodesX = {1.0, 2.0, 1.0, 2.0, 1.0};
+            int topologyID = -1;
+            double[] nodesX = { 1.0, 2.0, 1.0, 2.0, 1.0 };
             var projectedCoordinateSystem = new ProjectedCoordinateSystem(
                 0,
                 0.0,
@@ -36,11 +33,10 @@ namespace UGridNET.Tests
             try
             {
                 Assert.DoesNotThrow(() => file = new UGridWriter(filePath));
-                Assert.DoesNotThrow(() => file.DefineMesh2D(name, 5, 10, 15));
-                Assert.DoesNotThrow(() => file.PopulateMesh2D(0, nodesX));
-                Assert.DoesNotThrow(() => file.AddProjectedCoordinateSystemAttributes(projectedCoordinateSystem));
-                // Assert.DoesNotThrow(() => file.WriteMesh2D(0));
-                Assert.DoesNotThrow(() => file.Write());
+                Assert.DoesNotThrow(() => topologyID = file.DefineMesh2D(name, 5, 10, 15));
+                Assert.DoesNotThrow(() => file.PopulateMesh2D(topologyID, nodesX));
+                Assert.DoesNotThrow(() => file.AddProjectedCoordinateSystem(projectedCoordinateSystem));
+                Assert.DoesNotThrow(() => file.WriteMesh2D(topologyID));
             }
             finally
             {

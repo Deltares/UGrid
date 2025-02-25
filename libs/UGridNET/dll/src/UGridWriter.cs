@@ -1,9 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using UGridNET.Extensions;
-using System.Runtime.InteropServices;
-using System.Diagnostics.CodeAnalysis;
 
 namespace UGridNET
 {
@@ -24,7 +19,7 @@ namespace UGridNET
             }
         }
 
-        public void DefineMesh1D(string name, int numNodes, int numEdges)
+        public int DefineMesh1D(string name, int numNodes, int numEdges)
         {
             var mesh1D = new Mesh1D();
             mesh1D.num_nodes = numNodes;
@@ -35,9 +30,10 @@ namespace UGridNET
             int topologyID = -1;
             Invoke(() => UGrid.ug_mesh1d_def(fileID, mesh1D, ref topologyID));
             mesh1DList.Add(mesh1D);
+            return topologyID;
         }
 
-        public void DefineMesh2D(string name, int numNodes, int numEdges, int numFaces)
+        public int DefineMesh2D(string name, int numNodes, int numEdges, int numFaces)
         {
             var mesh2D = new Mesh2D();
             mesh2D.num_nodes = numNodes;
@@ -49,9 +45,10 @@ namespace UGridNET
             int topologyID = -1;
             Invoke(() => UGrid.ug_mesh2d_def(fileID, mesh2D, ref topologyID));
             mesh2DList.Add(mesh2D);
+            return topologyID;
         }
 
-         public void DefineContacts(string name, int numContacts)
+        public int DefineContact(string name, int numContacts)
         {
             var contacts = new Contacts();
             contacts.num_contacts = numContacts;
@@ -61,9 +58,10 @@ namespace UGridNET
             int topologyID = -1;
             Invoke(() => UGrid.ug_contacts_def(fileID, contacts, ref topologyID));
             contactsList.Add(contacts);
+            return topologyID;
         }
 
-        public void DefineNetwork1D(string name, int numNodes, int numEdges, int numGeometryNodes)
+        public int DefineNetwork1D(string name, int numNodes, int numEdges, int numGeometryNodes)
         {
             var network1D = new Network1D();
             network1D.num_nodes = numNodes;
@@ -75,26 +73,27 @@ namespace UGridNET
             int topologyID = -1;
             Invoke(() => UGrid.ug_network1d_def(fileID, network1D, ref topologyID));
             network1DList.Add(network1D);
+            return topologyID;
         }
 
         // still need to pass all nodes, edges, faces, edge_nodes
         public void PopulateMesh2D(int topologyID, double[] nodesX)
-        {   
+        {
             mesh2DList[topologyID].node_x.CopyFromArray<double>(nodesX);
         }
 
-        public void AddProjectedCoordinateSystemAttributes(ProjectedCoordinateSystem projectedCoordinateSystem)
-        {   
+        public void AddProjectedCoordinateSystem(ProjectedCoordinateSystem projectedCoordinateSystem)
+        {
             string variableNameStr = "projected_coordinate_system";
             var variableName = variableNameStr.GetRightPaddedNullTerminatedBytes(UGrid.name_long_length);
             Invoke(() => UGrid.ug_variable_int_define(fileID, variableName));
-            
+
             // integer attributes
             Invoke(() => UGrid.ug_attribute_int_define(
                 fileID,
                 variableName,
                 "epsg".GetRightPaddedNullTerminatedBytes(UGrid.name_long_length),
-                new int[] {projectedCoordinateSystem.EPSG}, 
+                new int[] { projectedCoordinateSystem.EPSG },
                 1));
 
             // double attributes
@@ -102,28 +101,28 @@ namespace UGridNET
                 fileID,
                 variableName,
                 "longitude_of_prime_meridian".GetRightPaddedNullTerminatedBytes(UGrid.name_long_length),
-                new double[] {projectedCoordinateSystem.LongitudeOfPrimeMeridian}, 
+                new double[] { projectedCoordinateSystem.LongitudeOfPrimeMeridian },
                 1));
 
             Invoke(() => UGrid.ug_attribute_double_define(
                 fileID,
                 variableName,
                 "semi_major_axis".GetRightPaddedNullTerminatedBytes(UGrid.name_long_length),
-                new double[] {projectedCoordinateSystem.SemiMajorAxis}, 
+                new double[] { projectedCoordinateSystem.SemiMajorAxis },
                 1));
 
             Invoke(() => UGrid.ug_attribute_double_define(
                 fileID,
                 variableName,
                 "semi_minor_axis".GetRightPaddedNullTerminatedBytes(UGrid.name_long_length),
-                new double[] {projectedCoordinateSystem.SemiMinorAxis}, 
+                new double[] { projectedCoordinateSystem.SemiMinorAxis },
                 1));
-            
+
             Invoke(() => UGrid.ug_attribute_double_define(
                 fileID,
                 variableName,
                 "inverse_flattening".GetRightPaddedNullTerminatedBytes(UGrid.name_long_length),
-                new double[] {projectedCoordinateSystem.InverseFlattening}, 
+                new double[] { projectedCoordinateSystem.InverseFlattening },
                 1));
 
             // string attributes
@@ -131,84 +130,100 @@ namespace UGridNET
                 fileID,
                 variableName,
                 "name".GetRightPaddedNullTerminatedBytes(UGrid.name_long_length),
-                projectedCoordinateSystem.Name.GetRightPaddedNullTerminatedBytes(UGrid.name_long_length), 
+                projectedCoordinateSystem.Name.GetRightPaddedNullTerminatedBytes(UGrid.name_long_length),
                 projectedCoordinateSystem.Name.Length));
 
             Invoke(() => UGrid.ug_attribute_char_define(
                 fileID,
                 variableName,
                 "grid_mapping_name".GetRightPaddedNullTerminatedBytes(UGrid.name_long_length),
-                projectedCoordinateSystem.GridMappingName.GetRightPaddedNullTerminatedBytes(UGrid.name_long_length), 
+                projectedCoordinateSystem.GridMappingName.GetRightPaddedNullTerminatedBytes(UGrid.name_long_length),
                 projectedCoordinateSystem.GridMappingName.Length));
 
             Invoke(() => UGrid.ug_attribute_char_define(
                 fileID,
                 variableName,
                 "proj4_params".GetRightPaddedNullTerminatedBytes(UGrid.name_long_length),
-                projectedCoordinateSystem.Proj4Params.GetRightPaddedNullTerminatedBytes(UGrid.name_long_length), 
+                projectedCoordinateSystem.Proj4Params.GetRightPaddedNullTerminatedBytes(UGrid.name_long_length),
                 projectedCoordinateSystem.Proj4Params.Length));
-            
+
             Invoke(() => UGrid.ug_attribute_char_define(
                 fileID,
                 variableName,
                 "EPSG_code".GetRightPaddedNullTerminatedBytes(UGrid.name_long_length),
-                projectedCoordinateSystem.EPSGCode.GetRightPaddedNullTerminatedBytes(UGrid.name_long_length), 
+                projectedCoordinateSystem.EPSGCode.GetRightPaddedNullTerminatedBytes(UGrid.name_long_length),
                 projectedCoordinateSystem.EPSGCode.Length));
 
             Invoke(() => UGrid.ug_attribute_char_define(
                 fileID,
                 variableName,
                 "projection_name".GetRightPaddedNullTerminatedBytes(UGrid.name_long_length),
-                projectedCoordinateSystem.ProjectionName.GetRightPaddedNullTerminatedBytes(UGrid.name_long_length), 
+                projectedCoordinateSystem.ProjectionName.GetRightPaddedNullTerminatedBytes(UGrid.name_long_length),
                 projectedCoordinateSystem.ProjectionName.Length));
 
             Invoke(() => UGrid.ug_attribute_char_define(
                 fileID,
                 variableName,
                 "wkt".GetRightPaddedNullTerminatedBytes(UGrid.name_long_length),
-                projectedCoordinateSystem.WKT.GetRightPaddedNullTerminatedBytes(UGrid.name_long_length), 
-                projectedCoordinateSystem.WKT.Length));            
+                projectedCoordinateSystem.WKT.GetRightPaddedNullTerminatedBytes(UGrid.name_long_length),
+                projectedCoordinateSystem.WKT.Length));
         }
 
-        // public void WriteMesh2D(int topologyID)
-        // {   
-        //     Invoke(() => UGrid.ug_mesh2d_put(fileID, topologyID, mesh2DList[topologyID]));
+        public void WriteMesh1D(int topologyID)
+        {
+            Invoke(() => UGrid.ug_mesh1d_put(fileID, topologyID, mesh1DList[topologyID]));
+        }
+
+        public void WriteMesh2D(int topologyID)
+        {
+            Invoke(() => UGrid.ug_mesh2d_put(fileID, topologyID, mesh2DList[topologyID]));
+        }
+
+        public void WriteContacts(int topologyID)
+        {
+            Invoke(() => UGrid.ug_contacts_put(fileID, topologyID, contactsList[topologyID]));
+        }
+
+        public void WriteNetwork1D(int topologyID)
+        {
+            Invoke(() => UGrid.ug_network1d_put(fileID, topologyID, network1DList[topologyID]));
+        }
+
+        // private void WriteMesh1D()
+        // {
+        //     for(int i = 0; i < mesh1DList.Count; i++) {
+        //         Invoke(() => UGrid.ug_mesh1d_put(fileID, i, mesh1DList[i]));
+        //     }
         // }
 
-        private void WriteMesh1D()
-        {   
-            for(int i = 0; i < mesh1DList.Count; i++) {
-                Invoke(() => UGrid.ug_mesh1d_put(fileID, i, mesh1DList[i]));
-            }
-        }
+        // private void WriteMesh2D()
+        // {
+        //     for(int i = 0; i < mesh2DList.Count; i++) {
+        //         Invoke(() => UGrid.ug_mesh2d_put(fileID, i, mesh2DList[i]));
+        //     }
+        // }
 
-        private void WriteMesh2D()
-        {   
-            for(int i = 0; i < mesh2DList.Count; i++) {
-                Invoke(() => UGrid.ug_mesh2d_put(fileID, i, mesh2DList[i]));
-            }
-        }
+        // private void WriteContacts()
+        // {
+        //     for(int i = 0; i < contactsList.Count; i++) {
+        //         Invoke(() => UGrid.ug_contacts_put(fileID, i, contactsList[i]));
+        //     }
+        // }
 
-        private void WriteContacts()
-        {   
-            for(int i = 0; i < contactsList.Count; i++) {
-                Invoke(() => UGrid.ug_contacts_put(fileID, i, contactsList[i]));
-            }
-        }
+        // private void WriteNetwork1D()
+        // {
+        //     for(int i = 0; i < network1DList.Count; i++) {
+        //         Invoke(() => UGrid.ug_network1d_put(fileID, i, network1DList[i]));
+        //     }
+        // }
 
-        private void WriteNetwork1D()
-        {   
-            for(int i = 0; i < network1DList.Count; i++) {
-                Invoke(() => UGrid.ug_network1d_put(fileID, i, network1DList[i]));
-            }
-        }
-
-        public void Write() {
-            WriteMesh1D();
-            WriteMesh2D();
-            WriteContacts();
-            WriteNetwork1D();
-        }
+        // public void Write()
+        // {
+        //     WriteMesh1D();
+        //     WriteMesh2D();
+        //     WriteContacts();
+        //     WriteNetwork1D();
+        // }
 
     }
 
