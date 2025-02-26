@@ -91,3 +91,29 @@ check_runtime_dependency(hdf5-shared SHARED_LIBRARY)
 check_runtime_dependency(hdf5_hl-shared SHARED_LIBRARY)
 check_runtime_dependency(ZLIB::ZLIB UNKNOWN_LIBRARY)
 check_runtime_dependency(CURL::libcurl SHARED_LIBRARY)
+
+# cache the third-party runtime dependencies
+# It would be cool to use TARGET_RUNTIME_DLLS which is described here
+# https://cmake.org/cmake/help/latest/manual/cmake-generator-expressions.7.html#genex:TARGET_RUNTIME_DLLS
+# Unfortunately ZLIB, which is an HDF5 dependency, does not provide an IMPORTED_LOCATION (dll path),
+# so it does not make it to the list of run time dependencies. 
+# Besides, UGrid is a static library and TARGET_RUNTIME_DLLS works with executables, modules and shared libraries.
+# The runtime dependencies are set manually here.
+set(
+  THIRD_PARTY_RUNTIME_DEPS
+  $<TARGET_FILE:netCDF::netcdf>
+  $<TARGET_FILE:netCDF::netcdf-cxx4>
+  $<TARGET_FILE:hdf5-shared>
+  $<TARGET_FILE:hdf5_hl-shared>
+  $<TARGET_FILE:ZLIB::ZLIB> # not an element of TARGET_RUNTIME_DLLS, helaas speculaas
+  $<TARGET_FILE:CURL::libcurl>
+  CACHE STRING "Third-party runtime dependencies" FORCE
+)
+
+# cache all runtime dependencies
+set(
+  ALL_RUNTIME_DEPS
+  ${THIRD_PARTY_RUNTIME_DEPS}
+  $<TARGET_FILE:UGridCSharpWrapper>
+  CACHE STRING "All runtime dependencies" FORCE
+)
