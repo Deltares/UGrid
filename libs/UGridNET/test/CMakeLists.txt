@@ -73,7 +73,50 @@ set_target_properties(
     DOTNET_SDK ${GLOB_DOTNET_SDK}
     VS_PACKAGE_REFERENCES "${PACKAGE_REFERENCES}"
     VS_GLOBAL_PlatformTarget "AnyCPU"
+    #VS_GLOBAL_AppendTargetFrameworkToOutputPath "true"
     VS_DOTNET_REFERENCEPROP_UGridNET_TAG_SetTargetFramework "TargetFramework=netstandard2.0"
 )
 
 target_compile_options(${TARGET_NAME} PRIVATE "/platform:anycpu")
+
+# add_custom_command(
+#   TARGET ${TARGET_NAME}
+#   PRE_BUILD
+#   COMMAND ${Python_EXECUTABLE}
+#     ${CMAKE_SOURCE_DIR}/scripts/append_target_framework_to_output_path_in_csproj.py
+#     ${CMAKE_CURRENT_BINARY_DIR}/UGridNET.Test.csproj
+#   COMMENT "Configure CS projects to append the target framework to the output path"
+# )
+
+# restore nuget packages
+add_custom_command(
+  TARGET ${TARGET_NAME}
+  PRE_BUILD
+  COMMAND ${NUGET_EXECUTABLE} restore ${CMAKE_CURRENT_BINARY_DIR}/UGridNET.Tests.sln
+    -Force
+    -NoHttpCache
+    -Verbosity detailed
+    -ConfigFile ${CMAKE_CURRENT_BINARY_DIR}//NuGet.config
+  COMMENT "Restore NuGet packages"
+)
+
+# create empty list of the commands which must to be called in the custom target
+set(TARGET_COMMANDS)
+
+# For each test .NET target framework, UGridNET.Test needs the third party dependencies and the SWIG-generated dependencies
+foreach(FRAMEWORK ${GLOB_TEST_DOTNET_TARGET_FRAMEWORKS})
+  list(
+    APPEND
+    TARGET_COMMANDS
+    COMMAND ${CMAKE_COMMAND} -E echo "Copying ${ALL_RUNTIME_DEPS} to $<TARGET_FILE_DIR:UGridNET.Tests>/${FRAMEWORK}"
+    COMMAND ${CMAKE_COMMAND} -E copy -t $<TARGET_FILE_DIR:UGridNET.Tests>/${FRAMEWORK} ${ALL_RUNTIME_DEPS}
+  )
+endforeach()
+
+
+add_custom_command(
+  TARGET ${TARGET_NAME}
+  POST_BUILD
+  ${TARGET_COMMANDS}
+  COMMENT "Copying runtime dependencies..."
+)
