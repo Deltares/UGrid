@@ -58,7 +58,7 @@ source_group("Header Files" FILES ${INC_LIST})
 add_custom_command(
   TARGET ${TARGET_NAME}
   POST_BUILD
-  COMMAND ${CMAKE_COMMAND} -E echo "Copying ${THIRD_PARTY_RUNTIME_DEPS} to $<TARGET_FILE_DIR:UGridAPITests>"
+  #COMMAND ${CMAKE_COMMAND} -E echo "Copying ${THIRD_PARTY_RUNTIME_DEPS} to $<TARGET_FILE_DIR:UGridAPITests>"
   COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:UGridAPI> $<TARGET_FILE_DIR:UGridAPITests>
   COMMAND ${CMAKE_COMMAND} -E copy -t $<TARGET_FILE_DIR:UGridAPITests> ${THIRD_PARTY_RUNTIME_DEPS}
   COMMENT "Copying runtime dependencies..."
