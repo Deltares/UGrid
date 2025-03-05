@@ -34,14 +34,17 @@ namespace UGridNET
             Write = 2
         }
 
+        private readonly FileMode fileMode;
+
         private UGridBase(){}
 
-        protected UGridBase(string path, FileMode fileMode)
+        protected UGridBase(string path, FileMode mode)
         {
             try
             {
                 filePath = Path.GetFullPath(path);
-                Open(fileMode);
+                fileMode = mode;
+                Open();
             }
             catch
             {
@@ -99,10 +102,13 @@ namespace UGridNET
 
         private void FreeUnmanagedMemoryInTopologyLists()
         {
-            mesh1DList.ForEach(item => item.Free());
-            mesh2DList.ForEach(item => item.Free());
-            contactsList.ForEach(item => item.Free());
-            network1DList.ForEach(item => item.Free());
+            if(fileMode == FileMode.Read)
+            {
+                mesh1DList.ForEach(item => item.Free());
+                mesh2DList.ForEach(item => item.Free());
+                contactsList.ForEach(item => item.Free());
+                network1DList.ForEach(item => item.Free());
+            }
         }
 
         public bool HasMesh1D => mesh1DList.Count > 0;
@@ -125,6 +131,10 @@ namespace UGridNET
         [ExcludeFromCodeCoverage]
         public ReadOnlyCollection<Network1D> Network1DList => network1DList.AsReadOnly();
 
+        protected FileMode FileMode1 => FileMode2;
+
+        protected FileMode FileMode2 => fileMode;
+
         private static void ProcessExitCode(int exitCode)
         {
             if (exitCode != 0)
@@ -142,7 +152,7 @@ namespace UGridNET
         }
 
 
-        private void Open(FileMode fileMode)
+        private void Open()
         {
             Invoke(() => UGrid.ug_file_open(filePath.GetBytes(), (int)fileMode, ref fileID));
         }
