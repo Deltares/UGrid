@@ -1,3 +1,5 @@
+using System;
+using System.Runtime.InteropServices;
 using UGridNET.Extensions;
 
 namespace UGridNET
@@ -19,68 +21,72 @@ namespace UGridNET
             }
         }
 
-        public int DefineMesh1D(string name, int numNodes, int numEdges)
-        {
-            var mesh1D = new Mesh1D();
-            mesh1D.num_nodes = numNodes;
-            mesh1D.num_edges = numEdges;
-            mesh1D.Allocate();
-            byte[] bytesFromString = name.GetRightPaddedNullTerminatedBytes(UGrid.name_long_length);
-            mesh1D.name.CopyFromArray<byte>(bytesFromString);
-            int topologyID = -1;
-            Invoke(() => UGrid.ug_mesh1d_def(fileID, mesh1D, ref topologyID));
-            mesh1DList.Add(mesh1D);
-            return topologyID;
-        }
+        // public int DefineMesh1D(string name, int numNodes, int numEdges)
+        // {
+        //     var mesh1D = new Mesh1D();
+        //     mesh1D.num_nodes = numNodes;
+        //     mesh1D.num_edges = numEdges;
+        //     mesh1D.Allocate();
+        //     byte[] bytesFromString = name.GetRightPaddedNullTerminatedBytes(UGrid.name_long_length);
+        //     mesh1D.name.CopyFromArray<byte>(bytesFromString);
+        //     int topologyID = -1;
+        //     Invoke(() => UGrid.ug_mesh1d_def(fileID, mesh1D, ref topologyID));
+        //     mesh1DList.Add(mesh1D);
+        //     return topologyID;
+        // }
 
-        public int DefineMesh2D(string name, int numNodes, int numEdges, int numFaces)
+        // public int DefineMesh2D(string name, int numNodes, int numEdges, int numFaces)
+        // {
+        //     var mesh2D = new Mesh2D();
+        //     mesh2D.num_nodes = numNodes;
+        //     mesh2D.num_edges = numEdges;
+        //     mesh2D.num_faces = numFaces;
+        //     mesh2D.Allocate();
+        //     byte[] bytesFromString = name.GetRightPaddedNullTerminatedBytes(UGrid.name_long_length);
+        //     mesh2D.name.CopyFromArray<byte>(bytesFromString);
+        //     int topologyID = -1;
+        //     Invoke(() => UGrid.ug_mesh2d_def(fileID, mesh2D, ref topologyID));
+        //     mesh2DList.Add(mesh2D);
+        //     return topologyID;
+        // }
+
+        public void AddMesh2D(DisposableMesh2D disposableMesh2D)
         {
-            var mesh2D = new Mesh2D();
-            mesh2D.num_nodes = numNodes;
-            mesh2D.num_edges = numEdges;
-            mesh2D.num_faces = numFaces;
-            mesh2D.Allocate();
-            byte[] bytesFromString = name.GetRightPaddedNullTerminatedBytes(UGrid.name_long_length);
-            mesh2D.name.CopyFromArray<byte>(bytesFromString);
+            var mesh2D = disposableMesh2D.CreateNativeObject();
+            mesh2DList.Add(mesh2D);
             int topologyID = -1;
             Invoke(() => UGrid.ug_mesh2d_def(fileID, mesh2D, ref topologyID));
-            mesh2DList.Add(mesh2D);
-            return topologyID;
+            //Invoke(() => UGrid.ug_mesh2d_put(fileID, topologyID, mesh2DList[topologyID]));
+            //Invoke(() => UGrid.ug_mesh2d_put(fileID, topologyID, mesh2D));
         }
 
-        public int DefineContact(string name, int numContacts)
-        {
-            var contacts = new Contacts();
-            contacts.num_contacts = numContacts;
-            contacts.Allocate();
-            byte[] bytesFromString = name.GetRightPaddedNullTerminatedBytes(UGrid.name_long_length);
-            contacts.name.CopyFromArray<byte>(bytesFromString);
-            int topologyID = -1;
-            Invoke(() => UGrid.ug_contacts_def(fileID, contacts, ref topologyID));
-            contactsList.Add(contacts);
-            return topologyID;
-        }
+        // public int DefineContact(string name, int numContacts)
+        // {
+        //     var contacts = new Contacts();
+        //     contacts.num_contacts = numContacts;
+        //     contacts.Allocate();
+        //     byte[] bytesFromString = name.GetRightPaddedNullTerminatedBytes(UGrid.name_long_length);
+        //     contacts.name.CopyFromArray<byte>(bytesFromString);
+        //     int topologyID = -1;
+        //     Invoke(() => UGrid.ug_contacts_def(fileID, contacts, ref topologyID));
+        //     contactsList.Add(contacts);
+        //     return topologyID;
+        // }
 
-        public int DefineNetwork1D(string name, int numNodes, int numEdges, int numGeometryNodes)
-        {
-            var network1D = new Network1D();
-            network1D.num_nodes = numNodes;
-            network1D.num_edges = numEdges;
-            network1D.num_geometry_nodes = numGeometryNodes;
-            network1D.Allocate();
-            byte[] bytesFromString = name.GetRightPaddedNullTerminatedBytes(UGrid.name_long_length);
-            network1D.name.CopyFromArray<byte>(bytesFromString);
-            int topologyID = -1;
-            Invoke(() => UGrid.ug_network1d_def(fileID, network1D, ref topologyID));
-            network1DList.Add(network1D);
-            return topologyID;
-        }
-
-        // still need to pass all nodes, edges, faces, edge_nodes
-        public void PopulateMesh2D(int topologyID, double[] nodesX)
-        {
-            mesh2DList[topologyID].node_x.CopyFromArray<double>(nodesX);
-        }
+        // public int DefineNetwork1D(string name, int numNodes, int numEdges, int numGeometryNodes)
+        // {
+        //     var network1D = new Network1D();
+        //     network1D.num_nodes = numNodes;
+        //     network1D.num_edges = numEdges;
+        //     network1D.num_geometry_nodes = numGeometryNodes;
+        //     network1D.Allocate();
+        //     byte[] bytesFromString = name.GetRightPaddedNullTerminatedBytes(UGrid.name_long_length);
+        //     network1D.name.CopyFromArray<byte>(bytesFromString);
+        //     int topologyID = -1;
+        //     Invoke(() => UGrid.ug_network1d_def(fileID, network1D, ref topologyID));
+        //     network1DList.Add(network1D);
+        //     return topologyID;
+        // }
 
         public void AddProjectedCoordinateSystem(ProjectedCoordinateSystem projectedCoordinateSystem)
         {
@@ -169,61 +175,41 @@ namespace UGridNET
                 projectedCoordinateSystem.WKT.Length));
         }
 
-        public void WriteMesh1D(int topologyID)
+        private void WriteMesh1D()
         {
-            Invoke(() => UGrid.ug_mesh1d_put(fileID, topologyID, mesh1DList[topologyID]));
+            for(int i = 0; i < mesh1DList.Count; i++) {
+                Invoke(() => UGrid.ug_mesh1d_put(fileID, i, mesh1DList[i]));
+            }
         }
 
-        public void WriteMesh2D(int topologyID)
+        private void WriteMesh2D()
         {
-            Invoke(() => UGrid.ug_mesh2d_put(fileID, topologyID, mesh2DList[topologyID]));
+            for(int i = 0; i < mesh2DList.Count; i++) {
+                Invoke(() => UGrid.ug_mesh2d_put(fileID, i, mesh2DList[i]));
+            }
         }
 
-        public void WriteContacts(int topologyID)
+        private void WriteContacts()
         {
-            Invoke(() => UGrid.ug_contacts_put(fileID, topologyID, contactsList[topologyID]));
+            for(int i = 0; i < contactsList.Count; i++) {
+                Invoke(() => UGrid.ug_contacts_put(fileID, i, contactsList[i]));
+            }
         }
 
-        public void WriteNetwork1D(int topologyID)
+        private void WriteNetwork1D()
         {
-            Invoke(() => UGrid.ug_network1d_put(fileID, topologyID, network1DList[topologyID]));
+            for(int i = 0; i < network1DList.Count; i++) {
+                Invoke(() => UGrid.ug_network1d_put(fileID, i, network1DList[i]));
+            }
         }
 
-        // private void WriteMesh1D()
-        // {
-        //     for(int i = 0; i < mesh1DList.Count; i++) {
-        //         Invoke(() => UGrid.ug_mesh1d_put(fileID, i, mesh1DList[i]));
-        //     }
-        // }
-
-        // private void WriteMesh2D()
-        // {
-        //     for(int i = 0; i < mesh2DList.Count; i++) {
-        //         Invoke(() => UGrid.ug_mesh2d_put(fileID, i, mesh2DList[i]));
-        //     }
-        // }
-
-        // private void WriteContacts()
-        // {
-        //     for(int i = 0; i < contactsList.Count; i++) {
-        //         Invoke(() => UGrid.ug_contacts_put(fileID, i, contactsList[i]));
-        //     }
-        // }
-
-        // private void WriteNetwork1D()
-        // {
-        //     for(int i = 0; i < network1DList.Count; i++) {
-        //         Invoke(() => UGrid.ug_network1d_put(fileID, i, network1DList[i]));
-        //     }
-        // }
-
-        // public void Write()
-        // {
-        //     WriteMesh1D();
-        //     WriteMesh2D();
-        //     WriteContacts();
-        //     WriteNetwork1D();
-        // }
+        public void Write()
+        {
+            WriteMesh1D();
+            WriteMesh2D();
+            WriteContacts();
+            WriteNetwork1D();
+        }
 
     }
 
