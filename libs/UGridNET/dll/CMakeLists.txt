@@ -55,6 +55,7 @@ set(
     ${SOURCE_DIR}/AssemblyInfo.cs
     ${SOURCE_DIR}/ByteArrayExtensions.cs
     ${SOURCE_DIR}/ContactsExtensions.cs
+    ${SOURCE_DIR}/DisposableMesh1D.cs
     ${SOURCE_DIR}/DisposableMesh2D.cs
     ${SOURCE_DIR}/DisposableNativeObject.cs
     ${SOURCE_DIR}/IntPtrExtensions.cs

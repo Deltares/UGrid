@@ -21,34 +21,15 @@ namespace UGridNET
             }
         }
 
-        // public int DefineMesh1D(string name, int numNodes, int numEdges)
-        // {
-        //     var mesh1D = new Mesh1D();
-        //     mesh1D.num_nodes = numNodes;
-        //     mesh1D.num_edges = numEdges;
-        //     mesh1D.Allocate();
-        //     byte[] bytesFromString = name.GetRightPaddedNullTerminatedBytes(UGrid.name_long_length);
-        //     mesh1D.name.CopyFromArray<byte>(bytesFromString);
-        //     int topologyID = -1;
-        //     Invoke(() => UGrid.ug_mesh1d_def(fileID, mesh1D, ref topologyID));
-        //     mesh1DList.Add(mesh1D);
-        //     return topologyID;
-        // }
-
-        // public int DefineMesh2D(string name, int numNodes, int numEdges, int numFaces)
-        // {
-        //     var mesh2D = new Mesh2D();
-        //     mesh2D.num_nodes = numNodes;
-        //     mesh2D.num_edges = numEdges;
-        //     mesh2D.num_faces = numFaces;
-        //     mesh2D.Allocate();
-        //     byte[] bytesFromString = name.GetRightPaddedNullTerminatedBytes(UGrid.name_long_length);
-        //     mesh2D.name.CopyFromArray<byte>(bytesFromString);
-        //     int topologyID = -1;
-        //     Invoke(() => UGrid.ug_mesh2d_def(fileID, mesh2D, ref topologyID));
-        //     mesh2DList.Add(mesh2D);
-        //     return topologyID;
-        // }
+        public void AddMesh1D(DisposableMesh1D disposableMesh1D)
+        {
+            var mesh1D = disposableMesh1D.CreateNativeObject();
+            mesh1DList.Add(mesh1D);
+            int topologyID = -1;
+            Invoke(() => UGrid.ug_mesh1d_def(fileID, mesh1D, ref topologyID));
+            //Invoke(() => UGrid.ug_mesh1d_put(fileID, topologyID, mesh1DList[topologyID]));
+            //Invoke(() => UGrid.ug_mesh1d_put(fileID, topologyID, mesh1D));
+        }
 
         public void AddMesh2D(DisposableMesh2D disposableMesh2D)
         {
