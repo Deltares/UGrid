@@ -34,7 +34,6 @@ namespace UGridNET
             /// of the <see cref="Contacts"/> instance.
             /// </summary>
             /// <param name="contacts"> Instance of <see cref="Contacts"/>. </param>
-            //public static void Free(this Contacts contacts)
             public static void Free(this Contacts contacts)
             {
                 IntPtrHelpers.Free(() => contacts.name, value => contacts.name = value);
