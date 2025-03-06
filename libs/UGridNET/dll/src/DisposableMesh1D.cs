@@ -30,9 +30,6 @@ namespace UGridNET
 
         private int[] edgeNodes;
 
-        
-          
-
         public DisposableMesh1D() {}
 
         public DisposableMesh1D(int nNodes, int nEdges)
