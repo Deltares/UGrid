@@ -7,7 +7,7 @@ namespace UGridNET
     public sealed class ProjectedCoordinateSystem
     {
         // integers
-        private int epsg = 0;
+        private int epsg;
 
         // doubles
         private double longitudeOfPrimeMeridian;
@@ -16,12 +16,12 @@ namespace UGridNET
         private double inverseFlattening;
 
         // strings
-        private string name;
-        private string gridMappingName;
-        private string proj4Params;
-        private string EPSG_code;
-        private string projectionName;
-        private string wkt;
+        private string name = "";
+        private string gridMappingName = "";
+        private string proj4Params = "";
+        private string EPSG_code = "";
+        private string projectionName = "";
+        private string wkt = "";
 
         /// <summary>
         /// Gets or sets the EPSG code.
@@ -121,6 +121,8 @@ namespace UGridNET
             get { return wkt; }
             set { wkt = value; }
         }
+
+        public ProjectedCoordinateSystem() {}
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ProjectedCoordinateSystem"/> class.
