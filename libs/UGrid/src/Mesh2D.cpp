@@ -209,7 +209,7 @@ void Mesh2D::put(ugridapi::Mesh2D const& mesh2d)
     }
     if (auto const it = m_related_variables.find("node_z"); mesh2d.node_z != nullptr && it != m_related_variables.end())
     {
-        m_related_variables.at("node_z").putVar(mesh2d.node_z);
+        it->second.putVar(mesh2d.node_z);
     }
 
     // Edges
@@ -249,7 +249,7 @@ void Mesh2D::put(ugridapi::Mesh2D const& mesh2d)
     }
     if (auto const it = m_topology_attribute_variables.find("face_coordinates"); mesh2d.face_y != nullptr && it != m_topology_attribute_variables.end())
     {
-        it->second.at(0).putVar(mesh2d.face_y);
+        it->second.at(1).putVar(mesh2d.face_y);
     }
     if (mesh2d.num_layers > 0)
     {
@@ -290,6 +290,11 @@ void Mesh2D::get(ugridapi::Mesh2D& mesh2d) const
     if (auto const it = m_topology_attribute_variables.find("node_coordinates"); mesh2d.node_y != nullptr && it != m_topology_attribute_variables.end())
     {
         it->second.at(1).getVar(mesh2d.node_y);
+    }
+
+    if (auto const it = m_related_variables.find("node_z"); mesh2d.node_z != nullptr && it != m_related_variables.end())
+    {
+       it->second.getVar(mesh2d.node_z);
     }
 
     // Edges
