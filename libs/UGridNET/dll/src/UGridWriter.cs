@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UGridNET.Extensions;
 
@@ -37,20 +36,23 @@ namespace UGridNET
             Invoke(() => UGrid.ug_mesh2d_def(fileID, mesh2D, ref topologyID));
         }
 
-        public void AddGlobalAttribute(string attributeName, string attributeValue) {
+        public void AddGlobalAttribute(string attributeName, string attributeValue)
+        {
             Invoke(() => UGrid.ug_attribute_global_char_define(fileID,
                                                                attributeName.GetRightPaddedNullTerminatedBytes(UGrid.name_long_length),
-                                                               attributeValue.GetRightPaddedNullTerminatedBytes(attributeValue.Length+1),
+                                                               attributeValue.GetRightPaddedNullTerminatedBytes(attributeValue.Length + 1),
                                                                attributeValue.Length));
         }
 
-        public void AddGlobalAttributes(Dictionary<string, string> globalAttributes) {
-            foreach (var globalAttribute in globalAttributes) {
+        public void AddGlobalAttributes(Dictionary<string, string> globalAttributes)
+        {
+            foreach (var globalAttribute in globalAttributes)
+            {
                 string key = globalAttribute.Key;
                 string value = globalAttribute.Value;
                 Invoke(() => UGrid.ug_attribute_global_char_define(fileID,
                                                                 key.GetRightPaddedNullTerminatedBytes(UGrid.name_long_length),
-                                                                value.GetRightPaddedNullTerminatedBytes(value.Length+1),
+                                                                value.GetRightPaddedNullTerminatedBytes(value.Length + 1),
                                                                 value.Length));
             }
         }
@@ -144,14 +146,16 @@ namespace UGridNET
 
         private void WriteMesh1D()
         {
-            for(int i = 0; i < mesh1DList.Count; i++) {
+            for (int i = 0; i < mesh1DList.Count; i++)
+            {
                 Invoke(() => UGrid.ug_mesh1d_put(fileID, i, mesh1DList[i]));
             }
         }
 
         private void WriteMesh2D()
         {
-            for(int i = 0; i < mesh2DList.Count; i++) {
+            for (int i = 0; i < mesh2DList.Count; i++)
+            {
                 Invoke(() => UGrid.ug_mesh2d_put(fileID, i, mesh2DList[i]));
             }
         }
