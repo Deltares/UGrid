@@ -122,7 +122,7 @@ namespace UGridNET
             set { wkt = value; }
         }
 
-        public ProjectedCoordinateSystem() {}
+        public ProjectedCoordinateSystem() { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ProjectedCoordinateSystem"/> class.
@@ -160,7 +160,7 @@ namespace UGridNET
             this.gridMappingName = gridMappingName;
             this.proj4Params = proj4Params;
             this.EPSG_code = epsgCode;
-            this.projectionName= projectionName;
+            this.projectionName = projectionName;
             this.wkt = wkt;
         }
     }
