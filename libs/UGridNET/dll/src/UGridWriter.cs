@@ -1,5 +1,5 @@
 using System;
-using System.Runtime.InteropServices;
+using System.Collections.Generic;
 using UGridNET.Extensions;
 
 namespace UGridNET
@@ -27,8 +27,6 @@ namespace UGridNET
             mesh1DList.Add(mesh1D);
             int topologyID = -1;
             Invoke(() => UGrid.ug_mesh1d_def(fileID, mesh1D, ref topologyID));
-            //Invoke(() => UGrid.ug_mesh1d_put(fileID, topologyID, mesh1DList[topologyID]));
-            //Invoke(() => UGrid.ug_mesh1d_put(fileID, topologyID, mesh1D));
         }
 
         public void AddMesh2D(DisposableMesh2D disposableMesh2D)
@@ -37,8 +35,6 @@ namespace UGridNET
             mesh2DList.Add(mesh2D);
             int topologyID = -1;
             Invoke(() => UGrid.ug_mesh2d_def(fileID, mesh2D, ref topologyID));
-            //Invoke(() => UGrid.ug_mesh2d_put(fileID, topologyID, mesh2DList[topologyID]));
-            //Invoke(() => UGrid.ug_mesh2d_put(fileID, topologyID, mesh2D));
         }
 
         public void AddGlobalAttribute(string attributeName, string attributeValue) {
@@ -46,6 +42,17 @@ namespace UGridNET
                                                                attributeName.GetRightPaddedNullTerminatedBytes(UGrid.name_long_length),
                                                                attributeValue.GetRightPaddedNullTerminatedBytes(attributeValue.Length+1),
                                                                attributeValue.Length));
+        }
+
+        public void AddGlobalAttributes(Dictionary<string, string> globalAttributes) {
+            foreach (var globalAttribute in globalAttributes) {
+                string key = globalAttribute.Key;
+                string value = globalAttribute.Value;
+                Invoke(() => UGrid.ug_attribute_global_char_define(fileID,
+                                                                key.GetRightPaddedNullTerminatedBytes(UGrid.name_long_length),
+                                                                value.GetRightPaddedNullTerminatedBytes(value.Length+1),
+                                                                value.Length));
+            }
         }
 
         public void AddProjectedCoordinateSystem(ProjectedCoordinateSystem projectedCoordinateSystem)
