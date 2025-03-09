@@ -294,7 +294,7 @@ void Mesh2D::get(ugridapi::Mesh2D& mesh2d) const
 
     if (auto const it = m_related_variables.find("node_z"); mesh2d.node_z != nullptr && it != m_related_variables.end())
     {
-       it->second.getVar(mesh2d.node_z);
+        it->second.getVar(mesh2d.node_z);
     }
 
     // Edges
