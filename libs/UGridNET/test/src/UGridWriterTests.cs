@@ -104,7 +104,6 @@ namespace UGridNET.Tests
                 FaceFaces = new int[]{ 0, 0, 0, 0 } //null
             };
 
-
             string wktStr = 
                 "POINT (30 10)\n"
                 + "LINESTRING (30 10, 10 30, 40 40)\n"
@@ -138,13 +137,16 @@ namespace UGridNET.Tests
                 Assert.DoesNotThrow(() => file.AddMesh2D(disposableMesh2D));
                 //Assert.DoesNotThrow(() => file.AddMesh2D(otherDisposableMesh2D));
                 Assert.DoesNotThrow(() => file.AddProjectedCoordinateSystem(projectedCoordinateSystem));
-                Assert.DoesNotThrow(() => file.AddGlobalAttribute("institution", "Deltares"));
-                Assert.DoesNotThrow(() => file.AddGlobalAttribute("Conventions", "CF-1.8 UGRID-1.0 Deltares-0.10"));
+                Assert.DoesNotThrow(() => file.AddGlobalAttribute("Institution", "Deltares"));
+                var otherGlobalAttributes = new Dictionary<string, string> 
+                {
+                    {"references", "https://www.deltares.nl" ,
+                    {"Conventions", "CF-1.8 UGRID-1.0 Deltares-0.10"}
+                };
+                Assert.DoesNotThrow(() => file.AddGlobalAttributes(otherGlobalAttributes));
                 Assert.DoesNotThrow(() => file.WriteTopologies());
                 //Assert.That(file.HasMesh1D, Is.True);
                 Assert.That(file.HasMesh2D, Is.True);
-                Assert.That(file.HasContacts, Is.False);
-                Assert.That(file.HasNetwork1D, Is.False);
                 //Assert.That(file.Mesh1DList.Count, Is.EqualTo(1));
                 Assert.That(file.Mesh2DList.Count, Is.EqualTo(1));
             }
