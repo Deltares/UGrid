@@ -1,10 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Data.SqlTypes;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
-using System.Runtime.InteropServices;
 using UGridNET.Extensions;
 
 namespace UGridNET
@@ -19,12 +17,32 @@ namespace UGridNET
         protected List<Contacts> contactsList = new List<Contacts>();
         protected List<Network1D> network1DList = new List<Network1D>();
 
-        public UGridBase(string path, int openMode)
+        protected enum FileMode
+        {
+            /// <summary>
+            /// Opens an existing file for reading.
+            /// <para>The value is equal to NcFile::FileMode::read. The file must exist; otherwise, an error occurs.</para>
+            /// </summary>
+            Read = 0,
+
+            /// <summary>
+            /// Opens a file for writing. If the file exists, its contents are overwritten.
+            /// <para>The value is equal to NcFile::FileMode::replace. If the file does not exist, a new file is created.</para>
+            /// </summary>
+            Write = 2
+        }
+
+        private readonly FileMode fileMode;
+
+        private UGridBase(){}
+
+        protected UGridBase(string path, FileMode mode)
         {
             try
             {
                 filePath = Path.GetFullPath(path);
-                Open(openMode);
+                fileMode = mode;
+                Open();
             }
             catch
             {
@@ -82,10 +100,13 @@ namespace UGridNET
 
         private void FreeUnmanagedMemoryInTopologyLists()
         {
-            mesh1DList.ForEach(item => item.Free());
-            mesh2DList.ForEach(item => item.Free());
-            contactsList.ForEach(item => item.Free());
-            network1DList.ForEach(item => item.Free());
+            if(fileMode == FileMode.Read)
+            {
+                mesh1DList.ForEach(item => item.Free());
+                mesh2DList.ForEach(item => item.Free());
+                contactsList.ForEach(item => item.Free());
+                network1DList.ForEach(item => item.Free());
+            }
         }
 
         public bool HasMesh1D => mesh1DList.Count > 0;
@@ -108,6 +129,10 @@ namespace UGridNET
         [ExcludeFromCodeCoverage]
         public ReadOnlyCollection<Network1D> Network1DList => network1DList.AsReadOnly();
 
+        protected FileMode FileMode1 => FileMode2;
+
+        protected FileMode FileMode2 => fileMode;
+
         private static void ProcessExitCode(int exitCode)
         {
             if (exitCode != 0)
@@ -125,9 +150,9 @@ namespace UGridNET
         }
 
 
-        private void Open(int openMode)
+        private void Open()
         {
-            Invoke(() => UGrid.ug_file_open(filePath.GetBytes(), openMode, ref fileID));
+            Invoke(() => UGrid.ug_file_open(filePath.GetBytes(), (int)fileMode, ref fileID));
         }
 
         private void Close()

@@ -89,17 +89,9 @@ void Contacts::define(ugridapi::Contacts const& contacts)
     {
         throw std::invalid_argument("Contacts::define to mesh to name is empty");
     }
-    if (contacts.name == nullptr)
-    {
-        throw std::invalid_argument("Mesh2D::define mesh name field is empty");
-    }
     if (contacts.num_contacts == 0)
     {
         throw std::invalid_argument("Contacts::define no contact available");
-    }
-    if (contacts.num_contacts < 0)
-    {
-        throw std::invalid_argument("Mesh2D::define no contact present");
     }
 
     // Define additional dimensions, maybe required

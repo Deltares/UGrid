@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using UGridNET.Extensions;
 using System.Runtime.InteropServices;
 using System.Diagnostics.CodeAnalysis;
@@ -9,7 +8,7 @@ namespace UGridNET
 {
     public sealed class UGridReader : UGridBase
     {
-        public UGridReader(string path) : base(path, 0)
+        public UGridReader(string path) : base(path, FileMode.Read)
         {
             try
             {
@@ -138,7 +137,8 @@ namespace UGridNET
             string variableName = "projected_coordinate_system";
             var attributes = GetVariableAttributes(variableName);
             var key = "epsg";
-            if(!attributes.ContainsKey(key)) {
+            if (!attributes.ContainsKey(key))
+            {
                 throw new UGridNETException($"The variable {variableName} does not contain attribute {key}.");
             }
             var valueString = attributes[key];
