@@ -191,7 +191,7 @@ function install_all() {
   install \
     "zlib" \
     "https://github.com/madler/zlib.git" \
-    "v1.2.13"
+    "v1.3.1"
   
   local zlib_root="${INSTALL_DIR}/zlib"
   local zlib_include_dir="${zlib_root}/include"
