@@ -1,0 +1,105 @@
+# escape=`
+
+# Use the latest Windows Server Core 2022 image.
+FROM mcr.microsoft.com/windows/servercore:ltsc2022
+
+# Restore the default Windows shell for correct batch processing.
+SHELL ["cmd", "/S", "/C"]
+
+RUN ECHO "download complete"
+
+RUN ECHO "Start download and install MS build tools" 
+RUN `
+    # Download the Build Tools bootstrapper.
+    curl -SL --output vs_buildtools.exe https://aka.ms/vs/17/release/vs_buildtools.exe `
+    `
+    # Install Build Tools with the Visual Studio Build Tools workload, excluding workloads and components with known issues.
+    && (start /w vs_buildtools.exe --quiet --wait --noUpdateInstaller --norestart --nocache `
+        --installPath "%ProgramFiles(x86)%\Microsoft Visual Studio\2022\BuildTools" `
+        --add Microsoft.VisualStudio.Workload.ManagedDesktopBuildTools;includeRecommended;includeOptional `
+        --add Microsoft.VisualStudio.Workload.MSBuildTools;includeRecommended;includeOptional `
+        --add Microsoft.VisualStudio.Workload.VCTools `
+        --add Microsoft.VisualStudio.Component.VC.Tools.x86.x64 `
+        --add Microsoft.VisualStudio.Workload.AzureBuildTools `
+        --add Microsoft.VisualStudio.Component.VC.CMakeProject `
+        --add Microsoft.VisualStudio.Component.VC.Tools.ARM64 `
+        --add Microsoft.VisualStudio.Component.Windows10SDK.19041 `
+        --remove Microsoft.VisualStudio.Component.Windows10SDK.10240 `
+        --remove Microsoft.VisualStudio.Component.Windows10SDK.10586 `
+        --remove Microsoft.VisualStudio.Component.Windows10SDK.14393 `
+        --remove Microsoft.VisualStudio.Component.Windows81SDK `
+        || IF "%ERRORLEVEL%"=="3010" EXIT /B 0) `
+    && del /q vs_buildtools.exe
+
+RUN ECHO "MS build tools installed."
+
+# Install Chocolatey
+RUN ECHO "Start download and install Chocolatey"
+RUN powershell.exe -Command `
+    Set-ExecutionPolicy Bypass -Scope Process -Force; `
+    [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; `
+    [System.Net.ServicePointManager]::ServerCertificateValidationCallback = {$true}; `
+    (New-Object System.Net.WebClient).DownloadFile('https://community.chocolatey.org/install.ps1', 'choco_install.ps1'); `
+    ./choco_install.ps1
+
+# install required applications using Chocolatey
+RUN choco install cmake strawberryperl openssl curl -y
+
+# Install Python v3.11 using Chocolatey
+RUN choco install python --version=3.11 -y
+
+# Install the latest version of Boost for VS 2022
+RUN choco install boost-msvc-14.3 -y
+
+# Install gitbash, required for running the script to build NetCDF and friends
+RUN powershell.exe -Command `
+    choco install git -y --params "/GitAndUnixToolsOnPath"
+
+# Copy data into the container
+WORKDIR /workspace
+COPY . /workspace
+
+# location where the bash console is installed
+ARG bashexe="C:\\Program Files\\Git\\bin\\bash.exe"
+
+# create folders in which the third party libraries will be installed and built
+RUN MKDIR "C:\third_party\install"
+RUN MKDIR "C:\third_party\work"
+
+RUN setx HDF5_DIR "C:\third_party\install\hdf5\cmake"
+RUN call "%bashexe%" -c "cd / && /c/workspace/scripts/install_netcdf_cxx4.sh --work_dir /c/third_party/work --install_dir /c/third_party/install --build_type Release --clean"
+
+RUN setx ZLIB_ROOT "C:\third_party\install\zlib"
+RUN setx netCDFCxx_DIR "C:\third_party\install\netcdf_cxx4\lib\cmake\netCDF"
+
+# set the ownership permissions of the workspace directory
+RUN git config --global --add safe.directory C:/workspace/
+
+# Remove the workspace directory. use a mount of volume get the data into the container
+WORKDIR C:\
+RUN rmdir /S /Q "C:\workspace"
+
+# Enable long pathnames
+SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'Continue'; $verbosePreference='Continue';"]
+RUN reg add "HKLM\SYSTEM\CurrentControlSet\Control\FileSystem" /v "LongPathsEnabled" /t REG_DWORD /d 1 /f
+
+# # Define the entry point for the docker container.
+# # This entry point starts the developer command prompt and launches the PowerShell shell.
+# ENTRYPOINT ["C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\Common7\\Tools\\VsDevCmd.bat", "&&", "powershell.exe", "-NoLogo", "-ExecutionPolicy", "Bypass"]
+
+
+# usage
+# This windows docker container can be buikd using the following command:
+# docker build -t ugrid-dev-windows:latest -f scripts/docker/DockerfileWindows .
+# This needs to be done from the root of the Ugrid Repository.
+
+# ---- Now the containeer creation is done.
+# you can now use the container for building the ugrid and wrappers
+# docker run -it -v C:\checkouts\MeshKernel\UGrid\:c:\workspace ugrid-dev-windows:latest
+
+# cmake -G "Visual Studio 17 2022" -S . -B build -DBUILD_DOTNET_WRAPPER:BOOL=ON -DPACK_NUPKG_LOCALLY:BOOL=OFF
+# cmake --build build --config Release
+
+# Running tests can be done using:
+# in the folder: build\tests\api\Release
+# UGridAPITests.exe
