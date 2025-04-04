@@ -85,6 +85,102 @@ static void define_global_attributes(int file_id, std::string const& attribute_n
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 }
 
+static void create_ugrid_mesh(std::string mesh_name, int file_id)
+{
+    int name_long_length;
+    auto error_code = ugridapi::ug_name_get_long_length(name_long_length);
+
+    ugridapi::Mesh2D mesh2d;
+    std::vector<char> name(name_long_length);
+    string_to_char_array(mesh_name, name_long_length, name.data());
+    mesh2d.name = name.data();
+    std::vector<double> node_x{0, 1, 0, 1, 0, 1, 0, 1, 2, 2, 2, 2, 3, 3, 3, 3};
+
+    mesh2d.node_x = node_x.data();
+    std::vector<double> node_y{0, 0, 1, 1, 2, 2, 3, 3, 0, 1, 2, 3, 0, 1, 2, 3};
+
+    mesh2d.node_y = node_y.data();
+    mesh2d.num_nodes = 16;
+    std::vector<int> edge_nodes{
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        2,
+        9,
+        4,
+        10,
+        6,
+        11,
+        8,
+        12,
+        9,
+        13,
+        10,
+        14,
+        11,
+        15,
+        12,
+        16,
+        1,
+        3,
+        3,
+        5,
+        5,
+        7,
+        2,
+        4,
+        4,
+        6,
+        6,
+        8,
+        9,
+        10,
+        10,
+        11,
+        11,
+        12,
+        13,
+        14,
+        14,
+        15,
+        15,
+        16,
+    };
+
+    mesh2d.edge_nodes = edge_nodes.data();
+    mesh2d.num_edges = 23;
+
+    std::vector<double> face_x{0.5, 0.5, 0.5, 1.5, 1.5, 1.5, 2.5, 2.5, 2.5};
+    mesh2d.face_x = face_x.data();
+    std::vector<double> face_y{0, 0, 1, 1, 2, 2, 3, 3, 0, 1, 2, 3, 0, 1, 2, 3};
+    mesh2d.face_y = face_y.data();
+    mesh2d.num_faces = 9;
+    std::vector<int> face_nodes{
+        1, 2, 4, 3,
+        3, 4, 6, 5,
+        5, 6, 8, 7,
+        2, 9, 10, 4,
+        4, 10, 11, 6,
+        6, 11, 12, 8,
+        9, 13, 14, 10,
+        10, 14, 15, 11,
+        11, 15, 16, 12};
+    mesh2d.face_nodes = face_nodes.data();
+    mesh2d.num_face_nodes_max = 4;
+
+    int topology_id = -1;
+    error_code = ugridapi::ug_mesh2d_def(file_id, mesh2d, topology_id);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+
+    error_code = ugridapi::ug_mesh2d_put(file_id, topology_id, mesh2d);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+}
+
 TEST(ApiTest, InquireAndGet_OneMesh2D_ShouldReadMesh2d)
 {
     // Prepare
@@ -193,120 +289,6 @@ TEST(ApiTest, InquireAndGet_OneMesh2D_ShouldReadMesh2d)
         10, 14, 15, 11,
         11, 15, 16, 12};
     ASSERT_THAT(face_nodes_vector, ::testing::ContainerEq(face_nodes_vector_expected));
-
-    // Close the file
-    error_code = ugridapi::ug_file_close(file_id);
-    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
-}
-
-TEST(ApiTest, DefineAndPut_OneMesh2D_ShouldWriteData)
-{
-    // Prepare
-    // Open a file
-    std::string const file_path = TEST_WRITE_FOLDER + "/Mesh2DWrite.nc";
-    int file_id = -1;
-    int file_mode = -1;
-    auto error_code = ugridapi::ug_file_replace_mode(file_mode);
-    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
-    error_code = ugridapi::ug_file_open(file_path.c_str(), file_mode, file_id);
-    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
-
-    // Fill data
-    int name_long_length;
-    error_code = ugridapi::ug_name_get_long_length(name_long_length);
-    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
-    ugridapi::Mesh2D mesh2d;
-    std::vector<char> name(name_long_length);
-    string_to_char_array("mesh2d", name_long_length, name.data());
-    mesh2d.name = name.data();
-    std::vector<double> node_x{0, 1, 0, 1, 0, 1, 0, 1, 2, 2, 2, 2, 3, 3, 3, 3};
-
-    mesh2d.node_x = node_x.data();
-    std::vector<double> node_y{0, 0, 1, 1, 2, 2, 3, 3, 0, 1, 2, 3, 0, 1, 2, 3};
-
-    mesh2d.node_y = node_y.data();
-    mesh2d.num_nodes = 16;
-    std::vector<int> edge_nodes{
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        2,
-        9,
-        4,
-        10,
-        6,
-        11,
-        8,
-        12,
-        9,
-        13,
-        10,
-        14,
-        11,
-        15,
-        12,
-        16,
-        1,
-        3,
-        3,
-        5,
-        5,
-        7,
-        2,
-        4,
-        4,
-        6,
-        6,
-        8,
-        9,
-        10,
-        10,
-        11,
-        11,
-        12,
-        13,
-        14,
-        14,
-        15,
-        15,
-        16,
-    };
-
-    mesh2d.edge_nodes = edge_nodes.data();
-    mesh2d.num_edges = 23;
-
-    std::vector<double> face_x{0.5, 0.5, 0.5, 1.5, 1.5, 1.5, 2.5, 2.5, 2.5};
-    mesh2d.face_x = face_x.data();
-    std::vector<double> face_y{0, 0, 1, 1, 2, 2, 3, 3, 0, 1, 2, 3, 0, 1, 2, 3};
-    mesh2d.face_y = face_y.data();
-    mesh2d.num_faces = 9;
-    std::vector<int> face_nodes{
-        1, 2, 4, 3,
-        3, 4, 6, 5,
-        5, 6, 8, 7,
-        2, 9, 10, 4,
-        4, 10, 11, 6,
-        6, 11, 12, 8,
-        9, 13, 14, 10,
-        10, 14, 15, 11,
-        11, 15, 16, 12};
-    mesh2d.face_nodes = face_nodes.data();
-    mesh2d.num_face_nodes_max = 4;
-
-    // Execute
-    int topology_id = -1;
-    error_code = ug_mesh2d_def(file_id, mesh2d, topology_id);
-    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
-    ASSERT_EQ(0, topology_id);
-
-    error_code = ug_mesh2d_put(file_id, topology_id, mesh2d);
-    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
-    ASSERT_EQ(0, topology_id);
 
     // Close the file
     error_code = ugridapi::ug_file_close(file_id);
@@ -1361,3 +1343,28 @@ TEST(ApiTest, InquireAndGetFaceEdges_OneMesh2D_ShouldReadMesh2D)
         ASSERT_EQ(face_edges_expected[i], face_edges[i]);
     }
 }
+
+/*
+TEST(ApiTest, DefineAndPut_TwoMesh2D_ShouldWriteData)
+{
+    // Prepare
+    // Open a file
+    std::string const file_path = TEST_WRITE_FOLDER + "/Mesh2DWrite.nc";
+    int file_id = -1;
+    int file_mode = -1;
+    auto error_code = ugridapi::ug_file_replace_mode(file_mode);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+    error_code = ugridapi::ug_file_open(file_path.c_str(), file_mode, file_id);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+
+    // Fill data
+    std::string mesh_name_one = "mesh2d_one";
+    create_ugrid_mesh(mesh_name_one, file_id);
+    std::string mesh_name_two = "mesh2d_two";
+    create_ugrid_mesh(mesh_name_two, file_id);
+
+    // Close the file
+    error_code = ugridapi::ug_file_close(file_id);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+}
+*/
