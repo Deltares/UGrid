@@ -51,17 +51,16 @@ namespace UGridNET
                 string key = globalAttribute.Key;
                 string value = globalAttribute.Value;
                 Invoke(() => UGrid.ug_attribute_global_char_define(fileID,
-                                                                key.GetRightPaddedNullTerminatedBytes(UGrid.name_long_length),
-                                                                value.GetRightPaddedNullTerminatedBytes(value.Length + 1),
-                                                                value.Length));
+                                                                   key.GetRightPaddedNullTerminatedBytes(UGrid.name_long_length),
+                                                                   value.GetRightPaddedNullTerminatedBytes(value.Length + 1),
+                                                                   value.Length));
             }
         }
 
         public void AddProjectedCoordinateSystem(ProjectedCoordinateSystem projectedCoordinateSystem)
         {
             string variableNameStr = "projected_coordinate_system";
-
-            if (projectedCoordinateSystem.EPSG.Equals("WGS84"))
+            if (projectedCoordinateSystem.EPSG.Equals(4326))
             {
                 variableNameStr = "wgs84";
             }
@@ -71,83 +70,83 @@ namespace UGridNET
 
             // integer attributes
             Invoke(() => UGrid.ug_attribute_int_define(
-                fileID,
-                variableName,
-                "epsg".GetRightPaddedNullTerminatedBytes(UGrid.name_long_length),
-                new int[] { projectedCoordinateSystem.EPSG },
-                1));
+                       fileID,
+                       variableName,
+                       "epsg".GetRightPaddedNullTerminatedBytes(UGrid.name_long_length),
+                       new int[] { projectedCoordinateSystem.EPSG },
+                       1));
 
             // double attributes
             Invoke(() => UGrid.ug_attribute_double_define(
-                fileID,
-                variableName,
-                "longitude_of_prime_meridian".GetRightPaddedNullTerminatedBytes(UGrid.name_long_length),
-                new double[] { projectedCoordinateSystem.LongitudeOfPrimeMeridian },
-                1));
+                       fileID,
+                       variableName,
+                       "longitude_of_prime_meridian".GetRightPaddedNullTerminatedBytes(UGrid.name_long_length),
+                       new double[] { projectedCoordinateSystem.LongitudeOfPrimeMeridian },
+                       1));
 
             Invoke(() => UGrid.ug_attribute_double_define(
-                fileID,
-                variableName,
-                "semi_major_axis".GetRightPaddedNullTerminatedBytes(UGrid.name_long_length),
-                new double[] { projectedCoordinateSystem.SemiMajorAxis },
-                1));
+                       fileID,
+                       variableName,
+                       "semi_major_axis".GetRightPaddedNullTerminatedBytes(UGrid.name_long_length),
+                       new double[] { projectedCoordinateSystem.SemiMajorAxis },
+                       1));
 
             Invoke(() => UGrid.ug_attribute_double_define(
-                fileID,
-                variableName,
-                "semi_minor_axis".GetRightPaddedNullTerminatedBytes(UGrid.name_long_length),
-                new double[] { projectedCoordinateSystem.SemiMinorAxis },
-                1));
+                       fileID,
+                       variableName,
+                       "semi_minor_axis".GetRightPaddedNullTerminatedBytes(UGrid.name_long_length),
+                       new double[] { projectedCoordinateSystem.SemiMinorAxis },
+                       1));
 
             Invoke(() => UGrid.ug_attribute_double_define(
-                fileID,
-                variableName,
-                "inverse_flattening".GetRightPaddedNullTerminatedBytes(UGrid.name_long_length),
-                new double[] { projectedCoordinateSystem.InverseFlattening },
-                1));
+                       fileID,
+                       variableName,
+                       "inverse_flattening".GetRightPaddedNullTerminatedBytes(UGrid.name_long_length),
+                       new double[] { projectedCoordinateSystem.InverseFlattening },
+                       1));
 
             // string attributes
             Invoke(() => UGrid.ug_attribute_char_define(
-                fileID,
-                variableName,
-                "name".GetRightPaddedNullTerminatedBytes(UGrid.name_long_length),
-                projectedCoordinateSystem.Name.GetRightPaddedNullTerminatedBytes(projectedCoordinateSystem.Name.Length + 1),
-                projectedCoordinateSystem.Name.Length));
+                       fileID,
+                       variableName,
+                       "name".GetRightPaddedNullTerminatedBytes(UGrid.name_long_length),
+                       projectedCoordinateSystem.Name.GetRightPaddedNullTerminatedBytes(projectedCoordinateSystem.Name.Length + 1),
+                       projectedCoordinateSystem.Name.Length));
 
             Invoke(() => UGrid.ug_attribute_char_define(
-                fileID,
-                variableName,
-                "grid_mapping_name".GetRightPaddedNullTerminatedBytes(UGrid.name_long_length),
-                projectedCoordinateSystem.GridMappingName.GetRightPaddedNullTerminatedBytes(projectedCoordinateSystem.GridMappingName.Length + 1),
-                projectedCoordinateSystem.GridMappingName.Length));
+                       fileID,
+                       variableName,
+                       "grid_mapping_name".GetRightPaddedNullTerminatedBytes(UGrid.name_long_length),
+                       projectedCoordinateSystem.GridMappingName.GetRightPaddedNullTerminatedBytes(projectedCoordinateSystem.GridMappingName.Length + 1),
+                       projectedCoordinateSystem.GridMappingName.Length));
 
             Invoke(() => UGrid.ug_attribute_char_define(
-                fileID,
-                variableName,
-                "proj4_params".GetRightPaddedNullTerminatedBytes(UGrid.name_long_length),
-                projectedCoordinateSystem.Proj4Params.GetRightPaddedNullTerminatedBytes(projectedCoordinateSystem.Proj4Params.Length + 1),
-                projectedCoordinateSystem.Proj4Params.Length));
+                       fileID,
+                       variableName,
+                       "proj4_params".GetRightPaddedNullTerminatedBytes(UGrid.name_long_length),
+                       projectedCoordinateSystem.Proj4Params.GetRightPaddedNullTerminatedBytes(projectedCoordinateSystem.Proj4Params.Length + 1),
+                       projectedCoordinateSystem.Proj4Params.Length));
 
             Invoke(() => UGrid.ug_attribute_char_define(
-                fileID,
-                variableName,
-                "EPSG_code".GetRightPaddedNullTerminatedBytes(UGrid.name_long_length),
-                projectedCoordinateSystem.EPSGCode.GetRightPaddedNullTerminatedBytes(projectedCoordinateSystem.EPSGCode.Length + 1),
-                projectedCoordinateSystem.EPSGCode.Length));
+                       fileID,
+                       variableName,
+                       "EPSG_code".GetRightPaddedNullTerminatedBytes(UGrid.name_long_length),
+                       projectedCoordinateSystem.EPSGCode.GetRightPaddedNullTerminatedBytes(projectedCoordinateSystem.EPSGCode.Length + 1),
+                       projectedCoordinateSystem.EPSGCode.Length));
 
             Invoke(() => UGrid.ug_attribute_char_define(
-                fileID,
-                variableName,
-                "projection_name".GetRightPaddedNullTerminatedBytes(UGrid.name_long_length),
-                projectedCoordinateSystem.ProjectionName.GetRightPaddedNullTerminatedBytes(projectedCoordinateSystem.ProjectionName.Length + 1),
-                projectedCoordinateSystem.ProjectionName.Length));
+                       fileID,
+                       variableName,
+                       "projection_name".GetRightPaddedNullTerminatedBytes(UGrid.name_long_length),
+                       projectedCoordinateSystem.ProjectionName.GetRightPaddedNullTerminatedBytes(projectedCoordinateSystem.ProjectionName.Length + 1),
+                       projectedCoordinateSystem.ProjectionName.Length));
 
             Invoke(() => UGrid.ug_attribute_char_define(
-                fileID,
-                variableName,
-                "wkt".GetRightPaddedNullTerminatedBytes(UGrid.name_long_length),
-                projectedCoordinateSystem.WKT.GetRightPaddedNullTerminatedBytes(projectedCoordinateSystem.WKT.Length + 1),
-                projectedCoordinateSystem.WKT.Length));
+                       fileID,
+                       variableName,
+                       "wkt".GetRightPaddedNullTerminatedBytes(UGrid.name_long_length),
+                       projectedCoordinateSystem.WKT.GetRightPaddedNullTerminatedBytes(projectedCoordinateSystem.WKT.Length + 1),
+                       projectedCoordinateSystem.WKT.Length));
         }
 
         private void WriteMesh1D()
