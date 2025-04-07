@@ -60,6 +60,12 @@ namespace UGridNET
         public void AddProjectedCoordinateSystem(ProjectedCoordinateSystem projectedCoordinateSystem)
         {
             string variableNameStr = "projected_coordinate_system";
+
+            if (projectedCoordinateSystem.EPSG.Equals("WGS84"))
+            {
+                variableNameStr = "wgs84";
+            }
+
             var variableName = variableNameStr.GetRightPaddedNullTerminatedBytes(UGrid.name_long_length);
             Invoke(() => UGrid.ug_variable_int_define(fileID, variableName));
 
