@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UGridNET.Extensions;
 using System.Runtime.InteropServices;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 
 namespace UGridNET
 {
@@ -95,13 +96,19 @@ namespace UGridNET
 
         private Dictionary<string, string> GetVariableAttributes(string variableNameStr, bool isLongUGridString = false)
         {
+            var result = new Dictionary<string, string>();
+
             byte[] variableName = isLongUGridString
-               ? variableNameStr.GetBytes()
-               : variableNameStr.GetRightPaddedNullTerminatedBytes(UGrid.name_long_length);
+                                      ? variableNameStr.GetBytes()
+                                      : variableNameStr.GetRightPaddedNullTerminatedBytes(UGrid.name_long_length);
 
             // get number of attributes
             int attributesCount = 0;
             Invoke(() => UGrid.ug_variable_count_attributes(fileID, variableName, ref attributesCount));
+            if (attributesCount == 0)
+            {
+                return result;
+            }
 
             // get names of attributes
             var attributeNames = new byte[attributesCount * UGrid.name_long_length];
@@ -114,13 +121,12 @@ namespace UGridNET
             List<string> dictionaryValues = attributeValues.GetStringFromNullTerminatedArray().Tokenize(UGrid.name_long_length);
 
             // populate the dictionary with the name-value pairs
-            var dictionary = new Dictionary<string, string>();
             for (int i = 0; i < attributesCount; i++)
             {
-                dictionary.Add(dictionaryKeys[i], dictionaryValues[i]);
+                result.Add(dictionaryKeys[i], dictionaryValues[i]);
             }
 
-            return dictionary;
+            return result;
         }
 
         public string GetConventions()
@@ -134,20 +140,31 @@ namespace UGridNET
 
         public int GetEPSGCode()
         {
-            string variableName = "projected_coordinate_system";
-            var attributes = GetVariableAttributes(variableName);
-            var key = "epsg";
-            if (!attributes.ContainsKey(key))
+            string[] variableNames = { "projected_coordinate_system", "wgs84" };
+
+            foreach (var name in variableNames)
             {
-                throw new UGridNETException($"The variable {variableName} does not contain attribute {key}.");
+                try
+                {
+                    var attributes = GetVariableAttributes(name);
+                    if (attributes.Count > 0)
+                    {
+                        if (attributes.TryGetValue("epsg", out string valueString) &&
+                            int.TryParse(valueString, out int epsg))
+                        {
+                            return epsg;
+                        }
+
+                        throw new UGridNETException($"The variable {name} does not contain a valid 'epsg' attribute.");
+                    }
+                }
+                catch
+                {
+                    // Ignore all other exceptions and try next
+                }
             }
-            var valueString = attributes[key];
-            bool result = int.TryParse(valueString, out int valueInt);
-            if (!result)
-            {
-                throw new UGridNETException($"{key} = {valueString} is not convertible to an integer.");
-            }
-            return valueInt;
+
+            throw new UGridNETException("Coordinate system not found or 'epsg' attribute missing.");
         }
 
         public Dictionary<string, string> GetEntityAttributesByIndex(TopologyType topologyType, int index)
@@ -155,20 +172,20 @@ namespace UGridNET
             IntPtr name;
             switch (topologyType)
             {
-                case TopologyType.Mesh1dTopology:
-                    name = mesh1DList[index].name;
-                    break;
-                case TopologyType.Mesh2dTopology:
-                    name = mesh2DList[index].name;
-                    break;
-                case TopologyType.Network1dTopology:
-                    name = network1DList[index].name;
-                    break;
-                case TopologyType.ContactsTopology:
-                    name = contactsList[index].name;
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(topologyType), "Invalid topology type.");
+            case TopologyType.Mesh1dTopology:
+                name = mesh1DList[index].name;
+                break;
+            case TopologyType.Mesh2dTopology:
+                name = mesh2DList[index].name;
+                break;
+            case TopologyType.Network1dTopology:
+                name = network1DList[index].name;
+                break;
+            case TopologyType.ContactsTopology:
+                name = contactsList[index].name;
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(topologyType), "Invalid topology type.");
             }
             return GetVariableAttributes(Marshal.PtrToStringAnsi(name), true);
         }
@@ -178,20 +195,20 @@ namespace UGridNET
             int index;
             switch (topologyType)
             {
-                case TopologyType.Mesh1dTopology:
-                    index = mesh1DList.FindIndex(item => GetName(item.name) == name);
-                    break;
-                case TopologyType.Mesh2dTopology:
-                    index = mesh2DList.FindIndex(item => GetName(item.name) == name);
-                    break;
-                case TopologyType.Network1dTopology:
-                    index = network1DList.FindIndex(item => GetName(item.name) == name);
-                    break;
-                case TopologyType.ContactsTopology:
-                    index = contactsList.FindIndex(item => GetName(item.name) == name);
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(topologyType), "Invalid topology type.");
+            case TopologyType.Mesh1dTopology:
+                index = mesh1DList.FindIndex(item => GetName(item.name) == name);
+                break;
+            case TopologyType.Mesh2dTopology:
+                index = mesh2DList.FindIndex(item => GetName(item.name) == name);
+                break;
+            case TopologyType.Network1dTopology:
+                index = network1DList.FindIndex(item => GetName(item.name) == name);
+                break;
+            case TopologyType.ContactsTopology:
+                index = contactsList.FindIndex(item => GetName(item.name) == name);
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(topologyType), "Invalid topology type.");
             }
 
             if (index == -1)
@@ -210,9 +227,7 @@ namespace UGridNET
             {
                 Console.WriteLine($"{attribute.Key} : {attribute.Value}");
             }
-
         }
-
     }
 
 }
