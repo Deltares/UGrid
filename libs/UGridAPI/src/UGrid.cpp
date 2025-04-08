@@ -1182,6 +1182,34 @@ namespace ugridapi
         return exit_code;
     }
 
+    UGRID_API int ug_variable_inq(int file_id, const char* variable_name, int* exists)
+    {
+        int exit_code = Success;
+        try
+        {
+            if (exists == nullptr)
+            {
+                throw std::invalid_argument("UGrid: Output parameter 'exists' is null.");
+            }
+
+            if (ugrid_states.count(file_id) == 0)
+            {
+                throw std::invalid_argument("UGrid: The selected file_id does not exist.");
+            }
+
+            // Figure attribute name string
+            const auto variable_name_str = ugrid::char_array_to_string(variable_name, ugrid::name_long_length);
+            const auto& variable_names = ugrid_states[file_id].m_ncFile->getVars();
+
+            *exists = variable_names.find(variable_name_str) != variable_names.end() ? 1 : 0;
+        }
+        catch (...)
+        {
+            exit_code = HandleExceptions(std::current_exception());
+        }
+        return exit_code;
+    }
+
     UGRID_API int ug_get_int_fill_value(int& fillValue)
     {
         int exit_code = Success;

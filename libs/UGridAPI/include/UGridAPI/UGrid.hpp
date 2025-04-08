@@ -195,6 +195,13 @@ namespace ugridapi
         /// @return Error code
         UGRID_API int ug_variable_get_data_char(int file_id, const char* variable_name, char* data);
 
+        /// @brief Inquires if a variable exists
+        /// @param[in] file_id The file id
+        /// @param[in] variable_name The variable name
+        /// @param[out] exists 1 if the variable exists, 0 otherwise
+        /// @return Error code
+        UGRID_API int ug_variable_inq(int file_id, const char* variable_name, int* exists);
+
         /// @brief Gets the integer identifying the file read mode
         /// @param[out] mode the integer identifying the file read mode
         /// @return Error code

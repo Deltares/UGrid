@@ -94,6 +94,18 @@ namespace UGridNET
             }
         }
 
+        private bool IsVariablePresent(string variableNameStr)
+        {
+            byte[] variableName = variableNameStr.GetRightPaddedNullTerminatedBytes(UGrid.name_long_length);
+            int[] exist = new[] { 0 };
+            Invoke(() => UGrid.ug_variable_inq(fileID, variableName, exist));
+            if (exist[0] == 0)
+            {
+                return false;
+            }
+            return true;
+        }
+
         private Dictionary<string, string> GetVariableAttributes(string variableNameStr, bool isLongUGridString = false)
         {
             var result = new Dictionary<string, string>();
@@ -144,23 +156,19 @@ namespace UGridNET
 
             foreach (var name in variableNames)
             {
-                try
+                if (!IsVariablePresent(name))
                 {
-                    var attributes = GetVariableAttributes(name);
-                    if (attributes.Count > 0)
-                    {
-                        if (attributes.TryGetValue("epsg", out string valueString) &&
-                            int.TryParse(valueString, out int epsg))
-                        {
-                            return epsg;
-                        }
-
-                        throw new UGridNETException($"The variable {name} does not contain a valid 'epsg' attribute.");
-                    }
+                    continue;
                 }
-                catch
+
+                var attributes = GetVariableAttributes(name);
+                if (attributes.Count > 0)
                 {
-                    // Ignore all other exceptions and try next
+                    if (attributes.TryGetValue("epsg", out string valueString) &&
+                        int.TryParse(valueString, out int epsg))
+                    {
+                        return epsg;
+                    }
                 }
             }
 

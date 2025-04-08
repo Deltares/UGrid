@@ -181,6 +181,20 @@ static void create_ugrid_mesh(std::string mesh_name, int file_id)
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 }
 
+std::string make_padded_string(const std::string& name, size_t num_spaces, size_t repetitions)
+{
+    std::string spaces(num_spaces, ' ');
+    std::string result;
+
+    for (size_t i = 0; i < repetitions; ++i)
+    {
+        result += name;
+        result += spaces;
+    }
+
+    return result;
+}
+
 TEST(ApiTest, InquireAndGet_OneMesh2D_ShouldReadMesh2d)
 {
     // Prepare
@@ -475,13 +489,13 @@ TEST(ApiTest, DefineAndPut_OneNetwork1D_ShouldWriteData)
 
     network1d.num_geometry_nodes = 25;
 
-    std::string node_id("nodesids                                nodesids                                ");
+    std::string node_id = make_padded_string("nodesids", ugrid::name_length, 2);
     network1d.node_id = node_id.data();
-    std::string node_long_name("nodeslongNames                                                                  nodeslongNames                                                                  ");
+    std::string node_long_name = make_padded_string("nodeslongNames", ugrid::name_long_length, 2);
     network1d.node_long_name = node_long_name.data();
-    std::string edge_id("branchids                               ");
+    std::string edge_id = make_padded_string("branchids", ugrid::name_length, 1);
     network1d.edge_id = edge_id.data();
-    std::string edge_long_name("branchlongNames                                                                 ");
+    std::string edge_long_name = make_padded_string("branchlongNames", ugrid::name_long_length, 1);
     network1d.edge_long_name = edge_long_name.data();
     std::vector<double> edge_lengths{1165.29};
     network1d.edge_length = edge_lengths.data();
@@ -1342,6 +1356,39 @@ TEST(ApiTest, InquireAndGetFaceEdges_OneMesh2D_ShouldReadMesh2D)
     {
         ASSERT_EQ(face_edges_expected[i], face_edges[i]);
     }
+}
+
+TEST(ApiTest, UGridVariableExists_ShouldReturnCorrectValueForExistingAndNonExistingVariables)
+{
+    std::string const file_path = TEST_FOLDER + "/AllUGridEntities.nc";
+
+    int file_mode = -1;
+    auto error_code = ugridapi::ug_file_read_mode(file_mode);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+
+    int file_id = -1;
+    error_code = ugridapi::ug_file_open(file_path.c_str(), file_mode, file_id);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+
+    // Non-existing variable 
+    std::vector<char> non_existing_var(ugridapi::name_long_length);
+    string_to_char_array("dummy_name", ugridapi::name_long_length, non_existing_var.data());
+
+    int exists = -42; // sentinel value to ensure it gets updated
+    error_code = ugridapi::ug_variable_inq(file_id, non_existing_var.data(), &exists);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+    ASSERT_EQ(0, exists) << "Expected 'exists' to be 0 for non-existing variable";
+
+    // Existing variable 
+    std::vector<char> existing_var(ugridapi::name_long_length);
+    string_to_char_array("mesh2d", ugridapi::name_long_length, existing_var.data());
+
+    exists = -42; // reset to sentinel
+    error_code = ugridapi::ug_variable_inq(file_id, existing_var.data(), &exists);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+    ASSERT_EQ(1, exists) << "Expected 'exists' to be 1 for existing variable";
+
+    ugridapi::ug_file_close(file_id);
 }
 
 /*

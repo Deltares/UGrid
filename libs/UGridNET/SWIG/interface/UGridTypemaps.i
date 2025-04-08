@@ -116,6 +116,14 @@ CSHARP_ARRAYS(char, byte)
                                   char* data);
 %}
 
+%csmethodmodifiers ug_variable_inq "public unsafe";
+%apply char FIXED[] { const char* variable_name };
+%apply int FIXED { int* exists } %{ 
+    int ug_variable_inq(int file_id,
+                        const char* variable_name,
+                        int* exists);
+%}
+
 %csmethodmodifiers ug_variable_get_data_dimensions "public unsafe";
 %apply char FIXED[] { const char* variable_name };
 %apply int FIXED[] {int *dimension_vec} %{
