@@ -1370,7 +1370,7 @@ TEST(ApiTest, UGridVariableExists_ShouldReturnCorrectValueForExistingAndNonExist
     error_code = ugridapi::ug_file_open(file_path.c_str(), file_mode, file_id);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
-    // Non-existing variable 
+    // Non-existing variable
     std::vector<char> non_existing_var(ugridapi::name_long_length);
     string_to_char_array("dummy_name", ugridapi::name_long_length, non_existing_var.data());
 
@@ -1379,7 +1379,7 @@ TEST(ApiTest, UGridVariableExists_ShouldReturnCorrectValueForExistingAndNonExist
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
     ASSERT_EQ(0, exists) << "Expected 'exists' to be 0 for non-existing variable";
 
-    // Existing variable 
+    // Existing variable
     std::vector<char> existing_var(ugridapi::name_long_length);
     string_to_char_array("mesh2d", ugridapi::name_long_length, existing_var.data());
 

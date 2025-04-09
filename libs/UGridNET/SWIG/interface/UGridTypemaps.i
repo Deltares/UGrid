@@ -118,7 +118,7 @@ CSHARP_ARRAYS(char, byte)
 
 %csmethodmodifiers ug_variable_inq "public unsafe";
 %apply char FIXED[] { const char* variable_name };
-%apply int FIXED { int* exists } %{ 
+%apply int FIXED[] { int* exists } %{ 
     int ug_variable_inq(int file_id,
                         const char* variable_name,
                         int* exists);
