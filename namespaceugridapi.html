@@ -175,6 +175,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a3cdbbe3efb38fe068a953dea713f55eb" id="r_a3cdbbe3efb38fe068a953dea713f55eb"><td class="memItemLeft" align="right" valign="top">UGRID_API int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceugridapi.html#a3cdbbe3efb38fe068a953dea713f55eb">ug_variable_get_data_char</a> (int file_id, const char *variable_name, char *data)</td></tr>
 <tr class="memdesc:a3cdbbe3efb38fe068a953dea713f55eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the variable data as a flat array of char. This might be large, because the arrays can have a large dimensionality.  <br /></td></tr>
 <tr class="separator:a3cdbbe3efb38fe068a953dea713f55eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa82b7c856116b47ed2b5a0dbe9cd7afa" id="r_aa82b7c856116b47ed2b5a0dbe9cd7afa"><td class="memItemLeft" align="right" valign="top">UGRID_API int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceugridapi.html#aa82b7c856116b47ed2b5a0dbe9cd7afa">ug_variable_inq</a> (int file_id, const char *variable_name, int *exists)</td></tr>
+<tr class="memdesc:aa82b7c856116b47ed2b5a0dbe9cd7afa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inquires if a variable exists.  <br /></td></tr>
+<tr class="separator:aa82b7c856116b47ed2b5a0dbe9cd7afa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5ba21f83a714bfdfca61e41cbdd1be45" id="r_a5ba21f83a714bfdfca61e41cbdd1be45"><td class="memItemLeft" align="right" valign="top">UGRID_API int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceugridapi.html#a5ba21f83a714bfdfca61e41cbdd1be45">ug_file_read_mode</a> (int &amp;mode)</td></tr>
 <tr class="memdesc:a5ba21f83a714bfdfca61e41cbdd1be45"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the integer identifying the file read mode.  <br /></td></tr>
 <tr class="separator:a5ba21f83a714bfdfca61e41cbdd1be45"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2170,6 +2173,51 @@ Error code </dd></dl>
     <tr><td class="paramdir">[in]</td><td class="paramname">file_id</td><td>The file id </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">variable_name</td><td>The variable name </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">data</td><td>The variable data </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Error code </dd></dl>
+
+</div>
+</div>
+<a id="aa82b7c856116b47ed2b5a0dbe9cd7afa" name="aa82b7c856116b47ed2b5a0dbe9cd7afa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa82b7c856116b47ed2b5a0dbe9cd7afa">&#9670;&#160;</a></span>ug_variable_inq()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">UGRID_API int ugridapi::ug_variable_inq </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>file_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>variable_name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int *&#160;</td>
+          <td class="paramname"><em>exists</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Inquires if a variable exists. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">file_id</td><td>The file id </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">variable_name</td><td>The variable name </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">exists</td><td>1 if the variable exists, 0 otherwise </td></tr>
   </table>
   </dd>
 </dl>
