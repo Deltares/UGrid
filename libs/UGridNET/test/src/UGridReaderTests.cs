@@ -134,6 +134,24 @@ namespace UGridNET.Tests
                 file?.Dispose();
             }
         }
+        
+        [Test]
+        public void GetEPSGCode_28992()
+        {
+            var filePath = Path.Combine(TestDataPath, "1D2D_net.nc");
+            UGridReader file = null;
+
+            try
+            {
+                file = new UGridReader(filePath);
+                int EPSGCode = file.GetEPSGCode();
+                Assert.That(EPSGCode, Is.EqualTo(28992));
+            }
+            finally
+            {
+                file?.Dispose();
+            }
+        }
 
         [Test]
         public void GetEPSGCodeFromAVarWithValuelessAttribute()
