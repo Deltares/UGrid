@@ -1477,6 +1477,7 @@ TEST(ApiTest, OMG)
     std::vector<std::string> expectedAttributeNames{"EPSG_code", "epsg", "grid_mapping_name", "inverse_flattening", "longitude_of_prime_meridian",
                                                     "name", "proj4_params", "projection_name", "semi_major_axis", "semi_minor_axis", "value", "wkt"};
 
+    // The last attribute value will not be checked, as it is too long and complicated to have in the test.
     std::vector<std::string> expectedAttributeValues{"EPSG:28992", "28992", "Unknown projected", "299.153", "0",
                                                      "Amersfoort / RD New",
                                                      "+proj=sterea +lat_0=52.1561605555556 +lon_0=5.38763888888889 +k=0.9999079 +x_0=155000 +y_0=463000 +ellps=bessel +units=m +no_defs",
