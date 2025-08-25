@@ -85,6 +85,14 @@ CSHARP_ARRAYS(char, byte)
 
 %csmethodmodifiers ug_variable_get_attributes_names "public unsafe";
 %apply char FIXED[] { const char* variable_name };
+%{
+int ug_variable_get_attributes_max_length(int file_id,
+					  const char* variable_name,
+					  int& max_length);
+%}
+
+%csmethodmodifiers ug_variable_get_attributes_names "public unsafe";
+%apply char FIXED[] { const char* variable_name };
 %apply char FIXED[] { char* names }
 %{
     int ug_variable_get_attributes_names(int file_id,
