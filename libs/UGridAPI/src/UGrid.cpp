@@ -428,7 +428,54 @@ namespace ugridapi
         return exit_code;
     }
 
-    UGRID_API int ug_variable_get_attributes_values(int file_id, const char* variable_name, char* values)
+    UGRID_API int ug_variable_get_attributes_max_length(int file_id, const char* variable_name, int& max_length)
+    {
+        max_length = 0;
+        int exit_code = Success;
+        try
+        {
+            if (ugrid_states.count(file_id) == 0)
+            {
+                throw std::invalid_argument("UGrid: The selected file_id does not exist.");
+            }
+
+            // Get the variable name
+            const auto name = ugrid::char_array_to_string(variable_name, ugrid::name_long_length);
+
+            // Get all variables
+            const auto vars = ugrid_states[file_id].m_ncFile->getVars();
+
+            // Find the variable name
+            const auto it = vars.find(name);
+            if (it == vars.end())
+            {
+                std::string const message = "ug_variable_count_attributes: The variable name " +
+                                            name +
+                                            " is not present in the netcdf file.";
+                throw std::invalid_argument(message);
+            }
+
+            max_length = 0;
+
+            for (const auto& [key, value] : it->second.getAtts())
+            {
+                max_length = std::max(max_length, static_cast<int>(value.getAttLength()));
+            }
+
+            if (!it->second.getAtts().empty())
+            {
+                // Add 1 for the null termination character
+                max_length += 1;
+            }
+        }
+        catch (...)
+        {
+            exit_code = HandleExceptions(std::current_exception());
+        }
+        return exit_code;
+    }
+
+    UGRID_API int ug_variable_get_attributes_values(int file_id, const char* variable_name, const int max_length, char* values)
     {
         int exit_code = Success;
         try
@@ -457,7 +504,7 @@ namespace ugridapi
             // Get the attribute values
             auto const attribute_values = get_attributes_values_as_strings(it->second);
 
-            ugrid::vector_of_strings_to_char_array(attribute_values, ugrid::name_long_length, values);
+            ugrid::vector_of_strings_to_char_array(attribute_values, max_length, values);
         }
         catch (...)
         {
