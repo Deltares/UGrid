@@ -26,20 +26,20 @@ CSHARP_ARRAYS(char, byte)
 %TypeRefParam(double)
 
 %csmethodmodifiers ug_error_get "public unsafe";
-%apply char FIXED[] { char* error_message } %{ 
+%apply char FIXED[] { char* error_message } %{
     int ug_error_get(char* error_message);
 %}
 
 %csmethodmodifiers ug_file_open "public unsafe";
 %apply char FIXED[] { const char* file_path };
- %{ 
+ %{
     int ug_file_open(const char* file_path,
-                     int mode, 
+                     int mode,
                      int& file_id);
 %}
 
 %csmethodmodifiers ug_topology_get_data_variables_names "public unsafe";
-%apply char FIXED[] { char* data_variables_names_result } %{ 
+%apply char FIXED[] { char* data_variables_names_result } %{
     int ug_topology_get_data_variables_names(int file_id,
                                              ugridapi::TopologyType topology_type,
                                              int topology_id,
@@ -50,7 +50,7 @@ CSHARP_ARRAYS(char, byte)
 %csmethodmodifiers ug_topology_define_double_variable_on_location "public unsafe";
 %apply char FIXED[] { const char* variable_name };
 %apply char FIXED[] { const char* dimension_name };
- %{ 
+ %{
     int ug_topology_define_double_variable_on_location(int file_id,
                                                        ugridapi::TopologyType topology_type,
                                                        int topology_id,
@@ -76,16 +76,17 @@ CSHARP_ARRAYS(char, byte)
 
 
 %csmethodmodifiers ug_variable_get_attributes_values "public unsafe";
-%apply char FIXED[] { char* values } %{ 
+%apply char FIXED[] { char* values } %{
     int ug_variable_get_attributes_values(int file_id,
                                           const char* variable_name,
+					  const int max_length,
                                           char* values);
 %}
 
 %csmethodmodifiers ug_variable_get_attributes_names "public unsafe";
 %apply char FIXED[] { const char* variable_name };
-%apply char FIXED[] { char* names } 
-%{ 
+%apply char FIXED[] { char* names }
+%{
     int ug_variable_get_attributes_names(int file_id,
                                          const char* variable_name,
                                          char* names);
@@ -102,15 +103,15 @@ CSHARP_ARRAYS(char, byte)
 
 %csmethodmodifiers ug_variable_get_data_double "public unsafe";
 %apply char FIXED[] { const char* variable_name };
-%apply double FIXED[] { double *data } %{ 
+%apply double FIXED[] { double *data } %{
     int ug_variable_get_data_double(int file_id,
-                                    const char* variable_name, 
+                                    const char* variable_name,
                                     double* data);
 %}
 
 %csmethodmodifiers ug_variable_get_data_char "public unsafe";
 %apply char FIXED[] { const char* variable_name };
-%apply char FIXED[] { char* data } %{ 
+%apply char FIXED[] { char* data } %{
     int ug_variable_get_data_char(int file_id,
                                   const char* variable_name,
                                   char* data);
@@ -118,7 +119,7 @@ CSHARP_ARRAYS(char, byte)
 
 %csmethodmodifiers ug_variable_inq "public unsafe";
 %apply char FIXED[] { const char* variable_name };
-%apply int FIXED[] { int* exists } %{ 
+%apply int FIXED[] { int* exists } %{
     int ug_variable_inq(int file_id,
                         const char* variable_name,
                         int* exists);
@@ -128,15 +129,15 @@ CSHARP_ARRAYS(char, byte)
 %apply char FIXED[] { const char* variable_name };
 %apply int FIXED[] {int *dimension_vec} %{
     int ug_variable_get_data_dimensions(int file_id,
-                                        const char* variable_name, 
+                                        const char* variable_name,
                                         int* dimension_vec);
 %}
 
 
 %csmethodmodifiers ug_attribute_int_define "public unsafe";
-%apply char FIXED[] { const char* variable_name }; 
+%apply char FIXED[] { const char* variable_name };
 %apply char FIXED[] { const char* attribute_name };
-%apply int FIXED[] { int const* attribute_values }; 
+%apply int FIXED[] { int const* attribute_values };
 %{
     int ug_attribute_int_define(int file_id,
                                 const char* variable_name,
@@ -146,7 +147,7 @@ CSHARP_ARRAYS(char, byte)
 %}
 
 %csmethodmodifiers ug_attribute_double_define "public unsafe";
-%apply char FIXED[] { const char* variable_name }; 
+%apply char FIXED[] { const char* variable_name };
 %apply char FIXED[] { const char* attribute_name };
 %apply double FIXED[] { double const* attribute_values };
 %{
@@ -197,7 +198,7 @@ int ug_attribute_char_define(int file_id,
 // see:
 //  https://www.swig.org/Doc4.2/SWIGDocumentation.html#SWIG_nn25
 //  https://www.swig.org/Doc4.2/SWIGDocumentation.html#Perl5_nn19
-// 
+//
 // Objective: Assign the pointer directly, do not delete then reallocate. Reallocation changes the address of the ptr.
 // Reason: Client code must mange the ptr.
 //
@@ -212,9 +213,9 @@ int ug_attribute_char_define(int file_id,
 // SWIGEXPORT void SWIGSTDCALL CSharp_UGridNET_MyStruct_str_set(void * jarg1, char* jarg2) {
 //   ugridapi::MyStruct *arg1 = (ugridapi::MyStruct *) 0 ;
 //   char *arg2 = (char *) 0 ;
-//  
-//   arg1 = (ugridapi::MyStruct *)jarg1; 
-//   arg2 = jarg2; 
+//
+//   arg1 = (ugridapi::MyStruct *)jarg1;
+//   arg2 = jarg2;
 //   {
 //     delete [] arg1->str;
 //     if (arg2) {
@@ -231,10 +232,10 @@ int ug_attribute_char_define(int file_id,
 // SWIGEXPORT void SWIGSTDCALL CSharp_UGridNET_MyStruct_str_set(void * jarg1, char* jarg2) {
 //   ugridapi::MyStruct *arg1 = (ugridapi::MyStruct *) 0 ;
 //   char *arg2 = (char *) 0 ;
-//  
-//   arg1 = (ugridapi::MyStruct *)jarg1; 
-//   arg2 = jarg2; 
-//   arg1->str = arg2; 
+//
+//   arg1 = (ugridapi::MyStruct *)jarg1;
+//   arg2 = jarg2;
+//   arg1->str = arg2;
 // }
 
 %typemap(memberin) char* %{ $1 = $input; %}
