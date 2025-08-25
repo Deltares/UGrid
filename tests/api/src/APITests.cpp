@@ -1423,3 +1423,77 @@ TEST(ApiTest, DefineAndPut_TwoMesh2D_ShouldWriteData)
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 }
 */
+
+TEST(ApiTest, OMG)
+{
+    std::string const file_path = TEST_FOLDER + "/1D2D_net.nc";
+
+    int file_mode = -1;
+    auto error_code = ugridapi::ug_file_read_mode(file_mode);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+
+    int file_id = -1;
+
+    // Open the file
+    error_code = ugridapi::ug_file_open(file_path.c_str(), file_mode, file_id);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+
+    //--------------------------------
+
+    int long_names_length;
+    error_code = ugridapi::ug_name_get_long_length(long_names_length);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+    std::vector<char> variable_name(long_names_length);
+    string_to_char_array("projected_coordinate_system", long_names_length, variable_name.data());
+    // string_to_char_array("mesh2d_edge_type", long_names_length, variable_name.data());
+
+    // Allocate arrays to get data names and variables
+    int attributes_count = 0;
+    error_code = ugridapi::ug_variable_count_attributes(file_id, variable_name.data(), attributes_count);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+    ASSERT_EQ(attributes_count, 12);
+
+    std::vector<char> attributes_names(attributes_count * long_names_length);
+    error_code = ugridapi::ug_variable_get_attributes_names(file_id, variable_name.data(), attributes_names.data());
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+
+    std::string topology_attributes_names_string(attributes_names.data(), attributes_names.data() + long_names_length * attributes_count);
+    auto names = split_string(topology_attributes_names_string, attributes_count, long_names_length);
+    right_trim_string_vector(names);
+
+    int attributes_max_length = 0;
+    error_code = ugridapi::ug_variable_get_attributes_max_length(file_id, variable_name.data(), attributes_max_length);
+    ASSERT_EQ(attributes_max_length, 817);
+
+    std::vector<char> attributes_values(attributes_count * attributes_max_length);
+    error_code = ugridapi::ug_variable_get_attributes_values(file_id, variable_name.data(), attributes_max_length, attributes_values.data());
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+
+    std::string topology_attributes_values_string(attributes_values.data(), attributes_values.data() + attributes_count * attributes_max_length);
+
+    auto values = split_string(topology_attributes_values_string, attributes_count, attributes_max_length);
+    right_trim_string_vector(values);
+
+    std::vector<std::string> expectedAttributeNames{"EPSG_code", "epsg", "grid_mapping_name", "inverse_flattening", "longitude_of_prime_meridian",
+                                                    "name", "proj4_params", "projection_name", "semi_major_axis", "semi_minor_axis", "value", "wkt"};
+
+    std::vector<std::string> expectedAttributeValues{"EPSG:28992", "28992", "Unknown projected", "299.153", "0",
+                                                     "Amersfoort / RD New",
+                                                     "+proj=sterea +lat_0=52.1561605555556 +lon_0=5.38763888888889 +k=0.9999079 +x_0=155000 +y_0=463000 +ellps=bessel +units=m +no_defs",
+                                                     "unknown", "6.3774e+06", "6.35608e+06", "value is equal to EPSG code", "THIS WILL NOT BE CHECKED, The string is too long"};
+
+    for (size_t i = 0; i < names.size(); ++i)
+    {
+        EXPECT_EQ(names[i], expectedAttributeNames[i]);
+    }
+
+    for (size_t i = 0; i < values.size(); ++i)
+    {
+        if (names[i] != "wkt")
+        {
+            EXPECT_EQ(values[i], expectedAttributeValues[i]);
+        }
+    }
+
+    ugridapi::ug_file_close(file_id);
+}
