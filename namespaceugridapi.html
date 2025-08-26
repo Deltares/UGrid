@@ -154,9 +154,12 @@ Functions</h2></td></tr>
 <tr class="memitem:a950ee9b242d6a7ad7d008d121178b0fe" id="r_a950ee9b242d6a7ad7d008d121178b0fe"><td class="memItemLeft" align="right" valign="top">UGRID_API int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceugridapi.html#a950ee9b242d6a7ad7d008d121178b0fe">ug_variable_count_attributes</a> (int file_id, const char *variable_name, int &amp;attributes_count)</td></tr>
 <tr class="memdesc:a950ee9b242d6a7ad7d008d121178b0fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the number of attributes of a specific variable.  <br /></td></tr>
 <tr class="separator:a950ee9b242d6a7ad7d008d121178b0fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3c4f8dd06692c1d608bed772386e159a" id="r_a3c4f8dd06692c1d608bed772386e159a"><td class="memItemLeft" align="right" valign="top">UGRID_API int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceugridapi.html#a3c4f8dd06692c1d608bed772386e159a">ug_variable_get_attributes_values</a> (int file_id, const char *variable_name, char *values)</td></tr>
-<tr class="memdesc:a3c4f8dd06692c1d608bed772386e159a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the attributes values of a specific variable.  <br /></td></tr>
-<tr class="separator:a3c4f8dd06692c1d608bed772386e159a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a79817bde9807d97631f302986edb0cfa" id="r_a79817bde9807d97631f302986edb0cfa"><td class="memItemLeft" align="right" valign="top">UGRID_API int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceugridapi.html#a79817bde9807d97631f302986edb0cfa">ug_variable_get_attributes_max_length</a> (int file_id, const char *variable_name, int &amp;max_length)</td></tr>
+<tr class="memdesc:a79817bde9807d97631f302986edb0cfa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the maximum length of attribute value strings for a specific variable.  <br /></td></tr>
+<tr class="separator:a79817bde9807d97631f302986edb0cfa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab304ac275d0d219a40a599e54e500444" id="r_ab304ac275d0d219a40a599e54e500444"><td class="memItemLeft" align="right" valign="top">UGRID_API int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceugridapi.html#ab304ac275d0d219a40a599e54e500444">ug_variable_get_attributes_values</a> (int file_id, const char *variable_name, const int max_length, char *values)</td></tr>
+<tr class="memdesc:ab304ac275d0d219a40a599e54e500444"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the attributes values of a specific variable.  <br /></td></tr>
+<tr class="separator:ab304ac275d0d219a40a599e54e500444"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9e480e7df4b5cf7092a1764ec6fdf9d5" id="r_a9e480e7df4b5cf7092a1764ec6fdf9d5"><td class="memItemLeft" align="right" valign="top">UGRID_API int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceugridapi.html#a9e480e7df4b5cf7092a1764ec6fdf9d5">ug_variable_get_attributes_names</a> (int file_id, const char *variable_name, char *names)</td></tr>
 <tr class="memdesc:a9e480e7df4b5cf7092a1764ec6fdf9d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the attributes names of a specific variable.  <br /></td></tr>
 <tr class="separator:a9e480e7df4b5cf7092a1764ec6fdf9d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1910,6 +1913,51 @@ Error code </dd></dl>
 
 </div>
 </div>
+<a id="a79817bde9807d97631f302986edb0cfa" name="a79817bde9807d97631f302986edb0cfa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a79817bde9807d97631f302986edb0cfa">&#9670;&#160;</a></span>ug_variable_get_attributes_max_length()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">UGRID_API int ugridapi::ug_variable_get_attributes_max_length </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>file_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>variable_name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int &amp;&#160;</td>
+          <td class="paramname"><em>max_length</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get the maximum length of attribute value strings for a specific variable. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">file_id</td><td>The file id </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">variable_name</td><td>The variable name </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">max_length</td><td>The maxmum length of the attribute strings. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Error code </dd></dl>
+
+</div>
+</div>
 <a id="a9e480e7df4b5cf7092a1764ec6fdf9d5" name="a9e480e7df4b5cf7092a1764ec6fdf9d5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9e480e7df4b5cf7092a1764ec6fdf9d5">&#9670;&#160;</a></span>ug_variable_get_attributes_names()</h2>
 
@@ -1955,8 +2003,8 @@ Error code </dd></dl>
 
 </div>
 </div>
-<a id="a3c4f8dd06692c1d608bed772386e159a" name="a3c4f8dd06692c1d608bed772386e159a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3c4f8dd06692c1d608bed772386e159a">&#9670;&#160;</a></span>ug_variable_get_attributes_values()</h2>
+<a id="ab304ac275d0d219a40a599e54e500444" name="ab304ac275d0d219a40a599e54e500444"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab304ac275d0d219a40a599e54e500444">&#9670;&#160;</a></span>ug_variable_get_attributes_values()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1972,6 +2020,12 @@ Error code </dd></dl>
           <td></td>
           <td class="paramtype">const char *&#160;</td>
           <td class="paramname"><em>variable_name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>max_length</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -1992,6 +2046,7 @@ Error code </dd></dl>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">file_id</td><td>The file id </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">variable_name</td><td>The variable name </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">max_length</td><td>The maximum length of an attribute string. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">values</td><td>The attribute values </td></tr>
   </table>
   </dd>
