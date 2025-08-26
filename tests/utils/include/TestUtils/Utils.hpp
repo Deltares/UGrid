@@ -31,11 +31,12 @@
 /// @param str [in] The input string
 static void right_trim_string(std::string& str)
 {
-    auto const isalnum_lambda = [](auto const& ch)
+    auto const is_graph = [](auto const& ch)
     {
-        return std::isalnum(ch);
+        return std::isgraph(ch);
     };
-    str.erase(std::find_if(str.rbegin(), str.rend(), isalnum_lambda).base(), str.end());
+
+    str.erase(std::find_if(str.rbegin(), str.rend(), is_graph).base(), str.end());
 }
 
 /// @brief Right trims all entries of a vector of strings
@@ -46,6 +47,34 @@ static void right_trim_string_vector(std::vector<std::string>& str_vector)
     {
         right_trim_string(str);
     }
+}
+
+/// @brief Performs left trim of single string
+/// @param str [in] The input string
+static void left_trim_string(std::string& str)
+{
+    auto const is_graph = [](auto const& ch)
+    {
+        return std::isgraph(ch);
+    };
+
+    str.erase(str.begin(), std::find_if(str.begin(), str.end(), is_graph));
+}
+
+/// @brief Left trims all entries of a vector of strings
+/// @param str_vector [in] The input vector
+static void left_trim_string_vector(std::vector<std::string>& str_vector)
+{
+    for (auto& str : str_vector)
+    {
+        left_trim_string(str);
+    }
+}
+
+static void trim_string_vector(std::vector<std::string>& str_vector)
+{
+    left_trim_string_vector(str_vector);
+    right_trim_string_vector(str_vector);
 }
 
 /// @brief Splits a string in equal sized tokens

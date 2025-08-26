@@ -146,12 +146,20 @@ namespace ugridapi
         /// @return Error code
         UGRID_API int ug_variable_count_attributes(int file_id, const char* variable_name, int& attributes_count);
 
+        /// @brief Get the maximum length of attribute value strings for a specific variable
+        /// @param[in] file_id The file id
+        /// @param[in] variable_name The variable name
+        /// @param[out] max_length The maxmum length of the attribute strings.
+        /// @return Error code
+        UGRID_API int ug_variable_get_attributes_max_length(int file_id, const char* variable_name, int& max_length);
+
         /// @brief Get the attributes values of a specific variable
         /// @param[in] file_id The file id
         /// @param[in] variable_name The variable name
+        /// @param[in] max_length The maximum length of an attribute string.
         /// @param[out] values The attribute values
         /// @return Error code
-        UGRID_API int ug_variable_get_attributes_values(int file_id, const char* variable_name, char* values);
+        UGRID_API int ug_variable_get_attributes_values(int file_id, const char* variable_name, const int max_length, char* values);
 
         /// @brief Get the attributes names of a specific variable
         /// @param[in] file_id The file id
