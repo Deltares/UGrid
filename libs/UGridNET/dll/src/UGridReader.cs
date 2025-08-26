@@ -128,9 +128,11 @@ namespace UGridNET
             List<string> dictionaryKeys = attributeNames.GetStringFromNullTerminatedArray().Tokenize(UGrid.name_long_length);
 
             // get values of attributes
-            var attributeValues = new byte[attributesCount * UGrid.name_long_length];
+            int maxAttributeValueLength;
+            Invoke(() => UGrid.ug_variable_get_attributes_max_length(fileID, variableName, maxAttributeValueLength))
+            var attributeValues = new byte[attributesCount * maxAttributeValueLength];
             Invoke(() => UGrid.ug_variable_get_attributes_values(fileID, variableName, attributeValues));
-            List<string> dictionaryValues = attributeValues.GetStringFromNullTerminatedArray().Tokenize(UGrid.name_long_length);
+            List<string> dictionaryValues = attributeValues.GetStringFromNullTerminatedArray().Tokenize(maxAttributeValueLength);
 
             // populate the dictionary with the name-value pairs
             for (int i = 0; i < attributesCount; i++)
