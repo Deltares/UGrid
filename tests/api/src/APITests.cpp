@@ -1424,7 +1424,7 @@ TEST(ApiTest, DefineAndPut_TwoMesh2D_ShouldWriteData)
 }
 */
 
-TEST(ApiTest, OMG)
+TEST(ApiTest, Enquire_GetAttributeValues_ShouldGetLongAttributeValues)
 {
     std::string const file_path = TEST_FOLDER + "/1D2D_net.nc";
 
