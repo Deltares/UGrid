@@ -13,13 +13,13 @@ namespace UGridNET
             {
                 try
                 {
-                    contacts.name = IntPtrHelpers.Allocate<byte>(UGrid.name_long_length);
-                    contacts.contact_name_id = IntPtrHelpers.Allocate<byte>(UGrid.name_long_length * contacts.num_contacts);
-                    contacts.mesh_from_name = IntPtrHelpers.Allocate<byte>(UGrid.name_long_length);
-                    contacts.mesh_to_name = IntPtrHelpers.Allocate<byte>(UGrid.name_long_length);
-                    contacts.contact_name_long = IntPtrHelpers.Allocate<byte>(UGrid.name_long_length * contacts.num_contacts);
-                    contacts.edges = IntPtrHelpers.Allocate<int>(contacts.num_contacts * 2);
-                    contacts.contact_type = IntPtrHelpers.Allocate<int>(contacts.num_contacts);
+                    contacts.name = IntPtrHelpers.AllocateZeroed<byte>(UGrid.name_long_length);
+                    contacts.contact_name_id = IntPtrHelpers.AllocateZeroed<byte>(UGrid.name_long_length * contacts.num_contacts);
+                    contacts.mesh_from_name = IntPtrHelpers.AllocateZeroed<byte>(UGrid.name_long_length);
+                    contacts.mesh_to_name = IntPtrHelpers.AllocateZeroed<byte>(UGrid.name_long_length);
+                    contacts.contact_name_long = IntPtrHelpers.AllocateZeroed<byte>(UGrid.name_long_length * contacts.num_contacts);
+                    contacts.edges = IntPtrHelpers.AllocateZeroed<int>(contacts.num_contacts * 2);
+                    contacts.contact_type = IntPtrHelpers.AllocateZeroed<int>(contacts.num_contacts);
                 }
                 catch
                 {
