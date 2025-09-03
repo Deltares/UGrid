@@ -40,8 +40,8 @@ jobs:
     # It seems like gcc and g++ are symbolic links to the default clang and clang++ compilers, respectively.
     # CMAKE_CXX_COMPILER_ID will evaluate to AppleClang rather than GNU on macos.
     env:
-      CC: gcc-12
-      CXX: g++-12
+      CC: gcc-13
+      CXX: g++-13
 
     # Build steps
     steps:
@@ -80,7 +80,7 @@ jobs:
           echo "$(brew --prefix)/bin/bash" | sudo tee -a /etc/shells
           sudo chsh -s "$(brew --prefix)/bin/bash"
           brew install boost
-          brew install doxygen 
+          brew install doxygen
           brew install m4
           brew install perl
           brew install openssl
