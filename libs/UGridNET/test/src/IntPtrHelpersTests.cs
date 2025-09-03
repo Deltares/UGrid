@@ -7,41 +7,87 @@ namespace UGridNET.Tests
 {
     public class IntPtrHelpersBasicTests
     {
-        private static IEnumerable<TestCaseData> AllocateTestCases()
+        [Test]
+        public void AllocateValidTypeReturnsNonZeroPointerInt()
         {
-            yield return new TestCaseData(typeof(int), 10);
-            yield return new TestCaseData(typeof(double), 10);
-            yield return new TestCaseData(typeof(byte), 10);
+            AllocateValidTypeReturnsNonZeroPointer<int>(10);
         }
-
-        private IntPtr AllocateHelper(Type type, int count)
+        
+        [Test]
+        public void AllocateValidTypeReturnsNonZeroPointerDouble()
         {
-            if (type == typeof(int))
-            {
-                return IntPtrHelpers.Allocate<int>(count);
-            }
-            else if (type == typeof(double))
-            {
-                return IntPtrHelpers.Allocate<double>(count);
-            }
-            else if (type == typeof(byte))
-            {
-                return IntPtrHelpers.Allocate<byte>(count);
-            }
-            else
-            {
-                throw new ArgumentException("Type not covered by test", nameof(type));
-            }
+            AllocateValidTypeReturnsNonZeroPointer<double>(10);
         }
-
-        [Test, TestCaseSource(nameof(AllocateTestCases))]
-        public void AllocateValidTypeReturnsNonZeroPointer(Type type, int count)
+        
+        [Test]
+        public void AllocateValidTypeReturnsNonZeroPointerByte()
+        {
+            AllocateValidTypeReturnsNonZeroPointer<byte>(10);
+        }
+        
+        private void AllocateValidTypeReturnsNonZeroPointer<T>(int count) where T : struct
         {
             var ptr = IntPtr.Zero;
-            Assert.DoesNotThrow(() => ptr = AllocateHelper(type, count));
+            Assert.DoesNotThrow(() => ptr = IntPtrHelpers.Allocate<T>(count));
             Assert.That(ptr, Is.Not.EqualTo(IntPtr.Zero));
             IntPtrHelpers.Free(ref ptr);
-            Assert.That(ptr, Is.EqualTo(IntPtr.Zero));
+        }
+
+        [Test]
+        public void AllocateZeroedValidTypeReturnsNonZeroPointerInt()
+        {
+            AllocateZeroedValidTypeReturnsNonZeroPointer<int>(10);
+        }
+        
+        [Test]
+        public void AllocateZeroedValidTypeReturnsNonZeroPointerDouble()
+        {
+            AllocateZeroedValidTypeReturnsNonZeroPointer<double>(10);
+        }
+        
+        [Test]
+        public void AllocateZeroedValidTypeReturnsNonZeroPointerByte()
+        {
+            AllocateZeroedValidTypeReturnsNonZeroPointer<byte>(10);
+        }
+        
+        private void AllocateZeroedValidTypeReturnsNonZeroPointer<T>(int count) where T : struct
+        {
+            var ptr = IntPtr.Zero;
+            Assert.DoesNotThrow(() => ptr = IntPtrHelpers.AllocateZeroed<T>(count));
+            Assert.That(ptr, Is.Not.EqualTo(IntPtr.Zero));
+            IntPtrHelpers.Free(ref ptr);
+        }
+
+        [Test]
+        public void AllocateZeroedInitializesMemoryToZeroInt()
+        {
+            AllocateZeroedInitializesMemoryToZero<int>(5);
+        }
+
+        [Test]
+        public void AllocateZeroedInitializesMemoryToZeroDouble()
+        {
+            AllocateZeroedInitializesMemoryToZero<double>(5);
+        }
+
+        [Test]
+        public void AllocateZeroedInitializesMemoryToZeroByte()
+        {
+            AllocateZeroedInitializesMemoryToZero<byte>(5);
+        }
+
+        private void AllocateZeroedInitializesMemoryToZero<T>(int count) where T : struct
+        {
+            var ptr = IntPtrHelpers.AllocateZeroed<T>(count);
+
+            var totalBytes = count * Marshal.SizeOf<T>();
+            var buffer = new byte[totalBytes];
+            Marshal.Copy(ptr, buffer, 0, totalBytes);
+
+            Assert.That(buffer, Is.All.Zero);
+
+            IntPtrHelpers.Free(ref ptr);
         }
     }
 
