@@ -16,7 +16,7 @@ https://ugrid-conventions.github.io/ugrid-conventions/
 
 The requirements are:
 - CMake 3.19 or higher
-- A C++17 compatible compiler
+- A C++20 compatible compiler
 - Git
 - Doxygen (optional)
 
