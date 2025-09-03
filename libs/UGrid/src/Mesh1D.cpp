@@ -103,7 +103,7 @@ void Mesh1D::define(ugridapi::Mesh1D const& mesh1d)
         bool const add_coordinate_variables = mesh1d.node_x != nullptr && mesh1d.node_y != nullptr;
         if (add_coordinate_variables)
         {
-            define_topology_coordinates(UGridFileDimensions::node, "%s of mesh node");
+            define_topology_coordinates(UGridFileDimensions::node, "{} of mesh node");
         }
 
         // Define node id attribute and variable
@@ -172,7 +172,7 @@ void Mesh1D::define(ugridapi::Mesh1D const& mesh1d)
         const bool add_coordinate_variables = mesh1d.edge_x != nullptr && mesh1d.edge_y != nullptr;
         if (add_coordinate_variables)
         {
-            define_topology_coordinates(UGridFileDimensions::edge, "%s of mesh edge");
+            define_topology_coordinates(UGridFileDimensions::edge, "{} of mesh edge");
         }
     }
 
