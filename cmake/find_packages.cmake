@@ -1,12 +1,3 @@
-# Boost
-set(BOOST_MIN_VERSION "1.78.0")
-find_package(Boost ${BOOST_MIN_VERSION} REQUIRED)
-if (Boost_FOUND)
-  message(STATUS "Found Boost ${Boost_VERSION}")
-else()
-  message(FATAL_ERROR "Could not find Boost (minimum required version is ${BOOST_MIN_REQ_VERSION})")
-endif()
-
 # zlib
 if(WIN32)
   # Set the path to the shared library
@@ -33,7 +24,7 @@ find_package (HDF5 NAMES hdf5 COMPONENTS C HL shared)
 if (HDF5_FOUND)
   message(STATUS "Found HDF5 ${HDF5_VERSION}")
 else()
-  message(FATAL_ERROR "Could not find HDF5") 
+  message(FATAL_ERROR "Could not find HDF5")
 endif()
 
 # netCDF
@@ -96,7 +87,7 @@ check_runtime_dependency(CURL::libcurl SHARED_LIBRARY)
 # It would be cool to use TARGET_RUNTIME_DLLS which is described here
 # https://cmake.org/cmake/help/latest/manual/cmake-generator-expressions.7.html#genex:TARGET_RUNTIME_DLLS
 # Unfortunately ZLIB, which is an HDF5 dependency, does not provide an IMPORTED_LOCATION (dll path),
-# so it does not make it to the list of run time dependencies. 
+# so it does not make it to the list of run time dependencies.
 # Besides, UGrid is a static library and TARGET_RUNTIME_DLLS works with executables, modules and shared libraries.
 # The runtime dependencies are set manually here.
 set(

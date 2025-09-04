@@ -25,7 +25,7 @@
 //
 //------------------------------------------------------------------------------
 
-#include <boost/format.hpp>
+#include <format>
 
 #include <UGrid/Constants.hpp>
 #include <UGrid/Operations.hpp>
@@ -165,11 +165,11 @@ UGridEntity::get_location_variable_names(std::string const& location, std::strin
 
     if (!m_spherical_coordinates)
     {
-        location_coordinate_x = (boost::format(name_pattern) % location % "_x").str();
-        location_coordinate_y = (boost::format(name_pattern) % location % "_y").str();
+        location_coordinate_x = std::vformat(name_pattern, std::make_format_args(location, "_x"));
+        location_coordinate_y = std::vformat(name_pattern, std::make_format_args(location, "_y"));
 
-        long_name_x = (boost::format(long_name_pattern) % "x-coordinate").str();
-        long_name_y = (boost::format(long_name_pattern) % "y-coordinate").str();
+        long_name_x = std::vformat(long_name_pattern, std::make_format_args("x-coordinate"));
+        long_name_y = std::vformat(long_name_pattern, std::make_format_args("y-coordinate"));
 
         standard_name_x = "projection_x_coordinate";
         standard_name_y = "projection_y_coordinate";
@@ -179,11 +179,11 @@ UGridEntity::get_location_variable_names(std::string const& location, std::strin
     }
     if (m_spherical_coordinates)
     {
-        location_coordinate_x = (boost::format(name_pattern) % location % "_lon").str();
-        location_coordinate_y = (boost::format(name_pattern) % location % "_lat").str();
+        location_coordinate_x = std::vformat(name_pattern, std::make_format_args(location, "_lon"));
+        location_coordinate_y = std::vformat(name_pattern, std::make_format_args(location, "_lat"));
 
-        long_name_x = (boost::format(long_name_pattern) % "latitude coordinate").str();
-        long_name_y = (boost::format(long_name_pattern) % "longitude coordinate").str();
+        long_name_x = std::vformat(long_name_pattern, std::make_format_args("latitude coordinate"));
+        long_name_y = std::vformat(long_name_pattern, std::make_format_args("longitude coordinate"));
 
         standard_name_x = "latitude";
         standard_name_y = "longitude";

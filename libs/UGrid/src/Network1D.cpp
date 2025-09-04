@@ -101,7 +101,7 @@ void Network1D::define(ugridapi::Network1D const& network1d)
         define_topological_attribute("node_dimension", string_builder.str());
 
         // Define node coordinates variable
-        define_topology_coordinates(UGridFileDimensions::node, "%s of network node");
+        define_topology_coordinates(UGridFileDimensions::node, "{} of network node");
 
         // Define node_id topological attribute and variable
         define_topological_attribute("node_id");
