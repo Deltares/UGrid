@@ -96,10 +96,6 @@ if(ENABLE_CODE_COVERAGE AND CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
   target_link_libraries(${TARGET_NAME} PRIVATE gcov)
 endif()
 
-if(${USE_LIBFMT})
-  target_link_libraries(${TARGET_NAME} PUBLIC fmt::fmt)
-endif()
-
 install(TARGETS ${TARGET_NAME} FILE_SET HEADERS DESTINATION "include")
 
 # group the sources in IDE tree
