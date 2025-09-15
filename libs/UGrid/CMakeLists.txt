@@ -55,18 +55,18 @@ target_sources(
         ${INC_LIST}
 )
 
-# Add precompiled header 
+# Add precompiled header
 target_precompile_headers(
   ${TARGET_NAME}
   PRIVATE
-    <map> 
-    <string> 
-    <unordered_map> 
-    <vector> 
+    <map>
+    <string>
+    <unordered_map>
+    <vector>
     <memory>
     <sstream>
-    <ncDim.h> 
-    <ncVar.h> 
+    <ncDim.h>
+    <ncVar.h>
     <ncFile.h>
 )
 
@@ -94,6 +94,10 @@ if(ENABLE_CODE_COVERAGE AND CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
       -static-libstdc++
   )
   target_link_libraries(${TARGET_NAME} PRIVATE gcov)
+endif()
+
+if(${USE_LIBFMT})
+  target_link_libraries(${TARGET_NAME} PUBLIC fmt::fmt)
 endif()
 
 install(TARGETS ${TARGET_NAME} FILE_SET HEADERS DESTINATION "include")
