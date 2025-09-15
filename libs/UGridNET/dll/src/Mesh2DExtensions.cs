@@ -13,21 +13,21 @@ namespace UGridNET
             {
                 try
                 {
-                    mesh2D.name = IntPtrHelpers.Allocate<byte>(UGrid.name_long_length);
-                    mesh2D.node_x = IntPtrHelpers.Allocate<double>(mesh2D.num_nodes);
-                    mesh2D.node_y = IntPtrHelpers.Allocate<double>(mesh2D.num_nodes);
-                    mesh2D.node_z = IntPtrHelpers.Allocate<double>(mesh2D.num_nodes);
-                    mesh2D.edge_x = IntPtrHelpers.Allocate<double>(mesh2D.num_edges);
-                    mesh2D.edge_y = IntPtrHelpers.Allocate<double>(mesh2D.num_edges);
-                    mesh2D.edge_z = IntPtrHelpers.Allocate<double>(mesh2D.num_edges);
-                    mesh2D.face_x = IntPtrHelpers.Allocate<double>(mesh2D.num_faces);
-                    mesh2D.face_y = IntPtrHelpers.Allocate<double>(mesh2D.num_faces);
-                    mesh2D.face_z = IntPtrHelpers.Allocate<double>(mesh2D.num_faces);
-                    mesh2D.edge_nodes = IntPtrHelpers.Allocate<int>(mesh2D.num_edges * 2);
-                    mesh2D.edge_faces = IntPtrHelpers.Allocate<int>(mesh2D.num_edges * 2);
-                    mesh2D.face_nodes = IntPtrHelpers.Allocate<int>(mesh2D.num_faces * mesh2D.num_face_nodes_max);
-                    mesh2D.face_edges = IntPtrHelpers.Allocate<int>(mesh2D.num_faces * mesh2D.num_face_nodes_max);
-                    mesh2D.face_faces = IntPtrHelpers.Allocate<int>(mesh2D.num_faces * mesh2D.num_face_nodes_max);
+                    mesh2D.name = IntPtrHelpers.AllocateZeroed<byte>(UGrid.name_long_length);
+                    mesh2D.node_x = IntPtrHelpers.AllocateZeroed<double>(mesh2D.num_nodes);
+                    mesh2D.node_y = IntPtrHelpers.AllocateZeroed<double>(mesh2D.num_nodes);
+                    mesh2D.node_z = IntPtrHelpers.AllocateZeroed<double>(mesh2D.num_nodes);
+                    mesh2D.edge_x = IntPtrHelpers.AllocateZeroed<double>(mesh2D.num_edges);
+                    mesh2D.edge_y = IntPtrHelpers.AllocateZeroed<double>(mesh2D.num_edges);
+                    mesh2D.edge_z = IntPtrHelpers.AllocateZeroed<double>(mesh2D.num_edges);
+                    mesh2D.face_x = IntPtrHelpers.AllocateZeroed<double>(mesh2D.num_faces);
+                    mesh2D.face_y = IntPtrHelpers.AllocateZeroed<double>(mesh2D.num_faces);
+                    mesh2D.face_z = IntPtrHelpers.AllocateZeroed<double>(mesh2D.num_faces);
+                    mesh2D.edge_nodes = IntPtrHelpers.AllocateZeroed<int>(mesh2D.num_edges * 2);
+                    mesh2D.edge_faces = IntPtrHelpers.AllocateZeroed<int>(mesh2D.num_edges * 2);
+                    mesh2D.face_nodes = IntPtrHelpers.AllocateZeroed<int>(mesh2D.num_faces * mesh2D.num_face_nodes_max);
+                    mesh2D.face_edges = IntPtrHelpers.AllocateZeroed<int>(mesh2D.num_faces * mesh2D.num_face_nodes_max);
+                    mesh2D.face_faces = IntPtrHelpers.AllocateZeroed<int>(mesh2D.num_faces * mesh2D.num_face_nodes_max);
                 }
                 catch
                 {

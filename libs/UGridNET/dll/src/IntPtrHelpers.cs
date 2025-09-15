@@ -9,14 +9,27 @@ namespace UGridNET
         /// <typeparam name="T"> The type of elements for which memory is being allocated. </typeparam>
         /// <param name="count">The number of elements to allocate memory for.</param>
         /// <returns> A pointer to the allocated unmanaged memory if <paramref name="count"/> is strictly positive, IntPtr.Zero otherwise . </returns>
-        /// <remarks> The caller is responsible for freeing the memory using <see cref="Free"/>. </remarks>
+        /// <remarks> The caller is responsible for freeing the memory using <see cref="Free(ref System.IntPtr)"/>. </remarks>
         public static IntPtr Allocate<T>(int count) where T : struct
         {
             return count > 0 ? Marshal.AllocHGlobal(count * Marshal.SizeOf<T>()) : IntPtr.Zero;
         }
+        
+        /// <summary> Allocates unmanaged memory for an array of elements of the specified type and initializes it to zero. </summary>
+        /// <typeparam name="T"> The type of elements for which memory is being allocated. </typeparam>
+        /// <param name="count">The number of elements to allocate memory for.</param>
+        /// <returns> A pointer to the allocated and zero-initialized unmanaged memory if <paramref name="count"/> is strictly positive, IntPtr.Zero otherwise. </returns>
+        /// <remarks> The caller is responsible for freeing the memory using <see cref="Free(ref System.IntPtr)"/>. </remarks>
+        public static IntPtr AllocateZeroed<T>(int count) where T : struct
+        {
+            var ptr = Allocate<T>(count);
+            if (ptr == IntPtr.Zero) return ptr;
+            var totalBytes = count * Marshal.SizeOf<T>();
+            Marshal.Copy(new byte[totalBytes], 0, ptr, totalBytes);
+            return ptr;
+        }
 
-
-        /// <summary> Frees unmanaged memory previously allocated with <see cref="Allocate"/>. </summary>
+        /// <summary> Frees unmanaged memory previously allocated with <see cref="Allocate{T}"/>. </summary>
         /// <param name="ptr"> A pointer to the unmanaged memory to free.</param>
         public static void Free(ref IntPtr ptr)
         {
@@ -25,7 +38,7 @@ namespace UGridNET
             ptr = IntPtr.Zero;
         }
 
-        /// <summary> Frees unmanaged memory previously allocated with <see cref="Allocate"/>. </summary>
+        /// <summary> Frees unmanaged memory previously allocated with <see cref="Allocate{T}"/>. </summary>
         /// <param name="getPtr">A function that returns the pointer to the unmanaged memory block.</param>
         /// <param name="setPtr">An action that sets the pointer to <see cref="IntPtr.Zero"/> after freeing the memory.</param>
         /// <remarks>
@@ -42,7 +55,6 @@ namespace UGridNET
             Marshal.FreeHGlobal(ptr);
             setPtr(IntPtr.Zero);
         }
-
     }
 
 }
