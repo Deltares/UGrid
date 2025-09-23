@@ -133,7 +133,7 @@ jobs:
 
       # Step: Test
       - name: Test
-        run: ${{ steps.paths.outputs.build_dir }}/tests/api/UGridAPITests
+        run: ${{ steps.paths.outputs.build_dir }}/tests/api/UGridAPITests --gtest_list_tests
 
       # Step: Install
       - name: Install
