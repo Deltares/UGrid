@@ -228,10 +228,10 @@ function install_all() {
 
   local hdf5_root="${INSTALL_DIR}/hdf5"
 
-  # netcdf 4.9.3
+  # netcdf 4.8.1
   install "netcdf" \
     "https://github.com/Unidata/netcdf-c.git" \
-    "v4.9.3" \
+    "v4.8.1" \
     "-DBUILD_SHARED_LIBS:BOOL=ON \
     -DENABLE_TESTS:BOOL=${BUILD_TESTS} \
     -DENABLE_NETCDF_4:BOOL=ON \
@@ -247,7 +247,7 @@ function install_all() {
   # netcdf
   local netcdf_cxx_name="netcdf_cxx4"
   local netcdf_cxx_repo="https://github.com/Unidata/netcdf-cxx4.git"
-  local necdf_cxx_git_tag="4.3.1"
+  local necdf_cxx_git_tag="dev"
   local basic_config_opts="-DNCXX_ENABLE_TESTS:BOOL=${BUILD_TESTS} \
     -DCMAKE_PREFIX_PATH=${INSTALL_DIR}"
   case "${OS_NAME}" in
