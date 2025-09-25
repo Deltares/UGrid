@@ -247,7 +247,7 @@ function install_all() {
   # netcdf
   local netcdf_cxx_name="netcdf_cxx4"
   local netcdf_cxx_repo="https://github.com/Unidata/netcdf-cxx4.git"
-  local necdf_cxx_git_tag="dev"
+  local necdf_cxx_git_tag="4.3.1"
   local basic_config_opts="-DNCXX_ENABLE_TESTS:BOOL=${BUILD_TESTS} \
     -DCMAKE_PREFIX_PATH=${INSTALL_DIR}"
   case "${OS_NAME}" in
