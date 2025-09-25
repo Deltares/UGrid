@@ -192,7 +192,7 @@ function install_all() {
     "zlib" \
     "https://github.com/madler/zlib.git" \
     "v1.3.1"
-  
+
   local zlib_root="${INSTALL_DIR}/zlib"
   local zlib_include_dir="${zlib_root}/include"
   local zlib_library="${zlib_root}/lib/$(get_zlib_lib_name).$(get_lib_extension)"
@@ -206,7 +206,7 @@ function install_all() {
      -DBUILD_STATIC_LIBS:BOOL=OFF \
      -DCURL_ENABLE_SSL:BOOL=ON \
      -DZLIB_ROOT=${zlib_root}"
-  
+
   local curl_root="${INSTALL_DIR}/curl"
 
   # hdf5 1.10.11
@@ -225,13 +225,13 @@ function install_all() {
     -DZLIB_INCLUDE_DIR:PATH=${zlib_include_dir} \
     -DZLIB_LIBRARY:FILEPATH=${zlib_library} \
     -DCMAKE_PREFIX_PATH=${INSTALL_DIR}"
-  
+
   local hdf5_root="${INSTALL_DIR}/hdf5"
 
-  # netcdf 4.8.1
+  # netcdf 4.9.3
   install "netcdf" \
     "https://github.com/Unidata/netcdf-c.git" \
-    "v4.8.1" \
+    "v4.9.3" \
     "-DBUILD_SHARED_LIBS:BOOL=ON \
     -DENABLE_TESTS:BOOL=${BUILD_TESTS} \
     -DENABLE_NETCDF_4:BOOL=ON \
