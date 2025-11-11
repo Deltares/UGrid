@@ -187,7 +187,7 @@ function get_zlib_lib_name() {
 }
 
 function install_all() {
-  # zlib v1.2.1
+  # zlib v1.3.1
   install \
     "zlib" \
     "https://github.com/madler/zlib.git" \
