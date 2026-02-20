@@ -242,6 +242,7 @@ function install_all() {
     -DZLIB_INCLUDE_DIR:PATH=${zlib_include_dir} \
     -DZLIB_LIBRARY:FILEPATH=${zlib_library} \
     -DHDF5_ROOT=${hdf5_root} \
+    -DCMAKE_POLICY_DEFAULT_CMP0074=NEW \
     -DCMAKE_PREFIX_PATH=${curl_root}"
 
   # netcdf
@@ -260,8 +261,12 @@ function install_all() {
   MINGW* | MSYS* | MYSYS*)
     local HDF5_C_LIBRARIES="${hdf5_root}/lib/hdf5.lib"
     local HDF5_INCLUDE_DIRS="${hdf5_root}/include"
-    local additional_config_opts="-DCMAKE_PREFIX_PATH=${INSTALL_DIR} \
+    local HDF5_DIR="${hdf5_root}/cmake"
+    local additional_config_opts="\
+      -DCMAKE_PREFIX_PATH=${INSTALL_DIR} \
       -DNCXX_ENABLE_TESTS:BOOL=${BUILD_TESTS} \
+      -DHDF5_DIR=${hdf5_root}/cmake \
+      -DHDF5_ROOT=${hdf5_root} \
       -DHDF5_C_LIBRARIES=${HDF5_C_LIBRARIES} \
       -DHDF5_INCLUDE_DIRS=${HDF5_INCLUDE_DIRS} \
       -DHDF5_C_LIBRARY_hdf5=${HDF5_C_LIBRARIES}"
