@@ -1,9 +1,0 @@
-﻿<Project>
-  <PropertyGroup>
-    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
-  </PropertyGroup>
-  <ItemGroup>
-    <PackageVersion Include="System.Buffers" Version="4.5.1" />
-    <PackageVersion Include="System.Memory" Version="4.5.5" />
-  </ItemGroup>
-</Project>
