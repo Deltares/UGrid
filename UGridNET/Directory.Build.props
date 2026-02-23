@@ -11,7 +11,7 @@
         <GitHash>DEV</GitHash>
         <BuildNumber>0</BuildNumber>
 
-        <UGridNETVersion>0.0.0</UGridNETVersion>
+        <UGridNETVersion>0.1.0</UGridNETVersion>
         <Version>$(UGridNETVersion).$(BuildNumber)</Version>
         <FileVersion>$(Version)</FileVersion>
         <InformationalVersion>$(Version).$(GitHash)</InformationalVersion>

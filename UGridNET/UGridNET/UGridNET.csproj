@@ -19,6 +19,7 @@
 
     <ItemGroup>
         <None Include="..\build\Deltares.UGridNET.targets" Visible="false">
+            <Pack>true</Pack>
             <PackagePath>build\</PackagePath>
         </None>
         <None Include="..\..\**\Libs\**\$(Configuration)\*.dll" Visible="false">
