@@ -1,3 +1,4 @@
+
 # UGrid
 
 Deltares library for reading/writing UGrid files. The UGrid entities available in this library are: Network1d, Mesh1d,
@@ -14,10 +15,20 @@ For more information about UGrid conventions:
 
 https://ugrid-conventions.github.io/ugrid-conventions/
 
+## Project Structure
+
+The repository contains two main components:
+
+- **UGrid**: Contains the C++ core library implementation
+- **UGridNET**: Contains the C# .NET wrapper for the C++ library
+
 ## Build
 
-The requirements are:
+**Important**: UGrid must be built before UGridNET to ensure native dependencies are set up correctly.
 
+### Building UGrid (C++)
+
+**Prerequisites**:
 - CMake 3.19 or higher
 - A C++17 compatible compiler
 - The Boost libraries
@@ -64,3 +75,26 @@ To build docs (requires Doxygen, output in `build/docs/html`):
 cmake --build build --target docs
 ```
 
+### Building UGridNET (C#)
+
+**Prerequisites**:
+- .NET Framework 4.8 or higher
+- .NET Standard 2.0 compatible runtime
+- UGrid native library must be built first (see above)
+- Visual Studio 2019 or higher, JetBrains Rider, or .NET CLI
+
+The UGridNET project is located in the `UGridNET` directory and provides C# bindings for the native UGrid library.
+
+#### Command line
+
+To build:
+
+```powershell
+dotnet build UGridNET.sln
+```
+
+To run tests:
+
+```powershell
+dotnet test UGridNET.sln
+```
