@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net48</TargetFramework>
+        <IsPackable>false</IsPackable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="NUnit"/>
+        <PackageReference Include="NUnit.Analyzers"/>
+        <PackageReference Include="NUnit.ConsoleRunner"/>
+        <PackageReference Include="NUnit3TestAdapter"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\UGridNET\UGridNET.csproj"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Update="TestData\**\*">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <Visible>false</Visible>
+        </None>
+    </ItemGroup>
+
+</Project>
