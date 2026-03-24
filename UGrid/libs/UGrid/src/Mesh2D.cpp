@@ -146,8 +146,15 @@ void Mesh2D::define(ugridapi::Mesh2D const& mesh2d)
             define_topology_coordinates(UGridFileDimensions::face, "characteristic %s of the mesh face");
         }
 
-        // Define face bounds (is this always required?)
-        // define_topology_coordinates(UGridFileDimensions::face, "%s bounds of mesh face (i.e. corner coordinates)", "%s%s_bnd");
+        // Define optional face bounds
+        if (mesh2d.face_x_bnd != nullptr && mesh2d.face_y_bnd != nullptr)
+        {
+            define_topology_related_coordinates(UGridFileDimensions::face,
+                                                "%s bounds of mesh faces (i.e. corner coordinates)",
+                                                "%s%s_bnd",
+                                                "face_coordinates",
+                                                "bounds");
+        }
 
         // Define optional variables
         if (mesh2d.face_edges != nullptr)
@@ -251,6 +258,14 @@ void Mesh2D::put(ugridapi::Mesh2D const& mesh2d)
     {
         it->second.at(1).putVar(mesh2d.face_y);
     }
+    if (auto const it = m_related_variables.find("face_x_bnd"); mesh2d.face_x_bnd != nullptr && it != m_related_variables.end())
+    {
+        it->second.putVar(mesh2d.face_x_bnd);
+    }
+    if (auto const it = m_related_variables.find("face_y_bnd"); mesh2d.face_y_bnd != nullptr && it != m_related_variables.end())
+    {
+        it->second.putVar(mesh2d.face_y_bnd);
+    }
     if (mesh2d.num_layers > 0)
     {
         // to complete
@@ -343,6 +358,14 @@ void Mesh2D::get(ugridapi::Mesh2D& mesh2d) const
     if (auto const it = m_topology_attribute_variables.find("face_coordinates"); mesh2d.face_y != nullptr && it != m_topology_attribute_variables.end())
     {
         it->second.at(1).getVar(mesh2d.face_y);
+    }
+    if (auto const it = m_related_variables.find("face_x_bnd"); mesh2d.face_x_bnd != nullptr && it != m_related_variables.end())
+    {
+        it->second.getVar(mesh2d.face_x_bnd);
+    }
+    if (auto const it = m_related_variables.find("face_y_bnd"); mesh2d.face_y_bnd != nullptr && it != m_related_variables.end())
+    {
+        it->second.getVar(mesh2d.face_y_bnd);
     }
     if (mesh2d.num_layers > 0)
     {

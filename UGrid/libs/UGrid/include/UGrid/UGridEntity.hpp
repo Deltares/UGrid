@@ -201,7 +201,7 @@ namespace ugrid
         /// @param nc_type [in] The variable type (int, float, char).
         /// @param ugridfile_dimensions [in] The variable dimensions (multidimensional variable are expressed as vectors).
         /// @param attributes [in] Any additional variable attributes.
-        /// @param  add_fill_value [in] Boolean to determine if a fill value should be used for empty data.
+        /// @param add_fill_value [in] Boolean to determine if a fill value should be used for empty data.
         void define_topological_variable(std::string const& topology_attribute_name,
                                          std::string const& variable_suffix,
                                          netCDF::NcType nc_type,
@@ -214,18 +214,34 @@ namespace ugrid
         /// @param nc_type [in] The variable type.
         /// @param ugridfile_dimensions [in] The variable dimensions (multidimensional variable are expressed as vectors).
         /// @param attributes [in] The variable attributes.
+        /// @param add_fill_value [in] Boolean to determine if a fill value should be used for empty data.
         void define_topology_related_variables(std::string const& variable,
                                                netCDF::NcType nc_type,
                                                std::vector<UGridFileDimensions> const& ugridfile_dimensions,
-                                               std::vector<std::pair<std::string, std::string>> const& attributes = {});
+                                               std::vector<std::pair<std::string, std::string>> const& attributes = {},
+                                               bool add_fill_value = false);
 
-        /// @brief Defines coordinate variables based on \ref m_spherical_coordinates
-        /// @param dimension [in] The dimension for which the coordinate will be added (either projected or not projected)
+        /// @brief Defines topology coordinate variables based on \ref m_spherical_coordinates and registers them
+        ///        on the topology variable as its coordinates attribute.
+        /// @param dimension [in] The topology location (node, edge or face)
         /// @param long_name_pattern [in] The string pattern to use for the long names
-        /// @param name_pattern [in] The string pattern to use for the names
+        /// @param name_pattern [in] The string pattern to use for the variable names
         void define_topology_coordinates(UGridFileDimensions dimension,
                                          std::string const& long_name_pattern,
                                          std::string const& name_pattern = "%s%s");
+
+        /// @brief Defines topology-related coordinate variables based on \ref m_spherical_coordinates and optionally
+        ///        registers them on the variables associated with \p topology_attribute_name as its coordinates attribute.
+        /// @param dimension [in] The topology location (node, edge or face)
+        /// @param long_name_pattern [in] The string pattern to use for the long names
+        /// @param name_pattern [in] The string pattern to use for the variable names
+        /// @param topology_attribute_name [in] (optional) The name of the attribute in topology
+        /// @param attribute_name [in] (optional) The attribute to attach
+        void define_topology_related_coordinates(UGridFileDimensions dimension,
+                                                 std::string const& long_name_pattern,
+                                                 std::string const& name_pattern = "%s%s",
+                                                 std::string const& topology_attribute_name = "",
+                                                 std::string const& attribute_name = "");
 
         /// @brief Get the location attribute variable based on \ref m_spherical_coordinates value
         /// @param location [in] The location (node, edge, face)
@@ -239,7 +255,7 @@ namespace ugrid
         std::map<UGridFileDimensions, netCDF::NcDim> m_dimensions;                              ///< All entity dimensions
 
         std::map<std::string, netCDF::NcVarAtt> m_topology_attributes; ///< The attributes of the topology variable
-        std::map<std::string, netCDF::NcVar> m_related_variables;      ///< Additional variables related to the entity (foe example defined on node, edge or face)
+        std::map<std::string, netCDF::NcVar> m_related_variables;      ///< Additional variables related to the entity (for example defined on node, edge or face)
         std::string m_entity_name = "";                                ///< The name of the entity
 
         bool m_spherical_coordinates = false;              ///< If it is a spherical entity

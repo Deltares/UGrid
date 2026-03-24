@@ -243,6 +243,75 @@ void UGridEntity::define_topology_coordinates(UGridFileDimensions dimension, std
                                  {"long_name", long_name_y}});
 }
 
+void UGridEntity::define_topology_related_coordinates(
+    UGridFileDimensions dimension,
+    std::string const& long_name_pattern,
+    std::string const& name_pattern,
+    std::string const& topology_attribute_name,
+    std::string const& attribute_name)
+{
+    std::string location;
+    std::vector<UGridFileDimensions> ugridfile_dimensions = {dimension};
+
+    switch (dimension)
+    {
+    case UGridFileDimensions::node:
+        location = "node";
+        break;
+    case UGridFileDimensions::edge:
+        location = "edge";
+        ugridfile_dimensions.emplace_back(UGridFileDimensions::Two);
+        break;
+    case UGridFileDimensions::face:
+        location = "face";
+        ugridfile_dimensions.emplace_back(UGridFileDimensions::max_face_node);
+        break;
+    default:
+        throw std::invalid_argument("define_topology_related_coordinates: Unsupported UGridFileDimensions value");
+    }
+
+    auto [location_coordinate_x,
+          location_coordinate_y,
+          standard_name_x,
+          standard_name_y,
+          long_name_x,
+          long_name_y,
+          units_x,
+          units_y] = get_location_variable_names(location, long_name_pattern, name_pattern);
+
+    if (!topology_attribute_name.empty() && !attribute_name.empty())
+    {
+        auto string_builder = UGridVarAttributeStringBuilder(m_entity_name);
+        string_builder << "_" << location_coordinate_x;
+        m_topology_attribute_variables.at(topology_attribute_name).at(0).putAtt(attribute_name, string_builder.str());
+    }
+
+    define_topology_related_variables(
+        location_coordinate_x,
+        netCDF::NcType::nc_DOUBLE,
+        ugridfile_dimensions,
+        {{"units", units_x},
+         {"standard_name", standard_name_x},
+         {"long_name", long_name_x}},
+        true);
+
+    if (!topology_attribute_name.empty() && !attribute_name.empty())
+    {
+        auto string_builder = UGridVarAttributeStringBuilder(m_entity_name);
+        string_builder << "_" << location_coordinate_y;
+        m_topology_attribute_variables.at(topology_attribute_name).at(1).putAtt(attribute_name, string_builder.str());
+    }
+
+    define_topology_related_variables(
+        location_coordinate_y,
+        netCDF::NcType::nc_DOUBLE,
+        ugridfile_dimensions,
+        {{"units", units_y},
+         {"standard_name", standard_name_y},
+         {"long_name", long_name_y}},
+        true);
+}
+
 std::map<std::string, std::vector<netCDF::NcVar>>::const_iterator UGridEntity::find_attribute_variable_name_with_aliases(std::string const& variable_name) const
 {
     auto iterator = m_topology_attribute_variables.end();
@@ -309,7 +378,9 @@ void UGridEntity::define_topological_variable(std::string const& topology_attrib
     // add fill value
     if (add_fill_value)
     {
-        nc_type == netCDF::NcType::nc_DOUBLE ? topology_attribute_variable.setFill(true, m_double_fill_value) : topology_attribute_variable.setFill(true, m_int_fill_value);
+        nc_type == netCDF::NcType::nc_DOUBLE
+            ? topology_attribute_variable.setFill(true, m_double_fill_value)
+            : topology_attribute_variable.setFill(true, m_int_fill_value);
     }
 
     // find if an attribute variable_suffix is already stored, otherwise fill it
@@ -327,12 +398,12 @@ void UGridEntity::define_topological_variable(std::string const& topology_attrib
 void UGridEntity::define_topology_related_variables(std::string const& variable,
                                                     netCDF::NcType nc_type,
                                                     std::vector<UGridFileDimensions> const& ugridfile_dimensions,
-                                                    std::vector<std::pair<std::string, std::string>> const& attributes)
+                                                    std::vector<std::pair<std::string, std::string>> const& attributes,
+                                                    bool add_fill_value)
 {
     auto string_builder = UGridVarAttributeStringBuilder(m_entity_name);
     string_builder << "_" << variable;
 
-    // create dimensions vector
     std::vector<netCDF::NcDim> dimensions;
     for (auto const d : ugridfile_dimensions)
     {
@@ -344,6 +415,13 @@ void UGridEntity::define_topology_related_variables(std::string const& variable,
     for (auto const& attribute : attributes)
     {
         topology_related_variable.putAtt(attribute.first, attribute.second);
+    }
+
+    if (add_fill_value)
+    {
+        nc_type == netCDF::NcType::nc_DOUBLE
+            ? topology_related_variable.setFill(true, m_double_fill_value)
+            : topology_related_variable.setFill(true, m_int_fill_value);
     }
 
     m_related_variables.insert({variable, {topology_related_variable}});

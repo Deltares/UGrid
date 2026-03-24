@@ -21,6 +21,8 @@ namespace UGridNET
                     mesh2D.face_x = IntPtrHelpers.AllocateZeroed<double>(mesh2D.num_faces);
                     mesh2D.face_y = IntPtrHelpers.AllocateZeroed<double>(mesh2D.num_faces);
                     mesh2D.face_z = IntPtrHelpers.AllocateZeroed<double>(mesh2D.num_faces);
+                    mesh2D.face_x_bnd = IntPtrHelpers.AllocateZeroed<double>(mesh2D.num_faces * mesh2D.num_face_nodes_max);
+                    mesh2D.face_y_bnd = IntPtrHelpers.AllocateZeroed<double>(mesh2D.num_faces * mesh2D.num_face_nodes_max);
                     mesh2D.edge_nodes = IntPtrHelpers.AllocateZeroed<int>(mesh2D.num_edges * 2);
                     mesh2D.edge_faces = IntPtrHelpers.AllocateZeroed<int>(mesh2D.num_edges * 2);
                     mesh2D.face_nodes = IntPtrHelpers.AllocateZeroed<int>(mesh2D.num_faces * mesh2D.num_face_nodes_max);
@@ -52,6 +54,8 @@ namespace UGridNET
                 IntPtrHelpers.Free(() => mesh2D.face_x, value => mesh2D.face_x = value);
                 IntPtrHelpers.Free(() => mesh2D.face_y, value => mesh2D.face_y = value);
                 IntPtrHelpers.Free(() => mesh2D.face_z, value => mesh2D.face_z = value);
+                IntPtrHelpers.Free(() => mesh2D.face_x_bnd, value => mesh2D.face_x_bnd = value);
+                IntPtrHelpers.Free(() => mesh2D.face_y_bnd, value => mesh2D.face_y_bnd = value);
                 IntPtrHelpers.Free(() => mesh2D.edge_nodes, value => mesh2D.edge_nodes = value);
                 IntPtrHelpers.Free(() => mesh2D.edge_faces, value => mesh2D.edge_faces = value);
                 IntPtrHelpers.Free(() => mesh2D.face_nodes, value => mesh2D.face_nodes = value);

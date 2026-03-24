@@ -18,6 +18,8 @@ namespace UGridNET
         private double[] faceX;
         private double[] faceY;
         private double[] faceZ;
+        private double[] faceBndX;
+        private double[] faceBndY;
         private int[] faceNodes;
         private int[] faceEdges;
         private int[] faceFaces;
@@ -47,6 +49,10 @@ namespace UGridNET
             FaceX = new double[NumFaces];
             FaceY = new double[NumFaces];
             //FaceZ = new double[NumFaces];
+            
+            FaceBoundsX = new double[NumFaces * NumFaceNodesMax];
+            FaceBoundsY = new double[NumFaces * NumFaceNodesMax];
+            
             FaceNodes = new int[NumFaces * NumFaceNodesMax];
             //FaceEdges = new int[NumFaces * NumFacesNodesMax];
             //FaceFaces = new int[NumFaces * NumFacesNodesMax];
@@ -152,6 +158,18 @@ namespace UGridNET
             get => faceZ;
             set => faceZ = value;
         }
+        
+        public double[] FaceBoundsX
+        {
+            get => faceBndX;
+            set => faceBndX = value;
+        }
+
+        public double[] FaceBoundsY
+        {
+            get => faceBndY;
+            set => faceBndY = value;
+        }
 
         public int[] FaceNodes
         {
@@ -193,6 +211,10 @@ namespace UGridNET
             mesh2D.face_x = GetPinnedObjectPointer(FaceX);
             mesh2D.face_y = GetPinnedObjectPointer(FaceY);
             mesh2D.face_z = GetPinnedObjectPointer(FaceZ);
+
+            mesh2D.face_x_bnd = GetPinnedObjectPointer(FaceBoundsX);
+            mesh2D.face_y_bnd = GetPinnedObjectPointer(FaceBoundsY);
+            
             mesh2D.face_nodes = GetPinnedObjectPointer(FaceNodes);
             mesh2D.face_edges = GetPinnedObjectPointer(FaceEdges);
             mesh2D.face_faces = GetPinnedObjectPointer(FaceFaces);

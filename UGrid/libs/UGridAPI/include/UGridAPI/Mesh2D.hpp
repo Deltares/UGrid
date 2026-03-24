@@ -61,6 +61,12 @@ namespace ugridapi
         /// @brief The face y coordinates
         double* face_y = nullptr;
 
+        /// @brief The x coordinate bounds of each face
+        double* face_x_bnd = nullptr;
+
+        /// @brief The y coordinate bounds of each face
+        double* face_y_bnd = nullptr;
+
         /// @brief The edge composing each face
         int* edge_faces = nullptr;
 
@@ -84,12 +90,6 @@ namespace ugridapi
 
         /// @brief The z coordinates of a layer interface
         double* interface_zs = nullptr;
-
-        /// @brief TODO to be detailed
-        double* boundary_node_connectivity = nullptr;
-
-        /// @brief TODO to be detailed
-        double* volume_coordinates = nullptr;
 
         /// @brief The number of node
         int num_nodes = 0;
