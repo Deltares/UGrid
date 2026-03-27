@@ -122,7 +122,7 @@ namespace ugridapi
                                                            MeshLocations location,
                                                            char* data_variables_names_result);
 
-        /// @brief Get the names of data variables for a specific topology on a specific location
+        /// @brief Defines a double variable on a topology with a named dimension.
         /// @param[in] file_id The file id
         /// @param[in] topology_id The topology id
         /// @param[in] topology_type The topology type
@@ -138,6 +138,26 @@ namespace ugridapi
                                                                      const char* variable_name,
                                                                      const char* dimension_name,
                                                                      const int dimension_value);
+
+        /// @brief Defines a double geometry variable on a topology with a named dimension.
+        ///        Use this function when the variable itself describes the spatial geometry of the
+        ///        topology element, as opposed to \ref ug_topology_define_double_variable_on_location
+        ///        which defines a data variable located at a topology element.
+        /// @param[in] file_id The file id
+        /// @param[in] topology_type The topology type
+        /// @param[in] topology_id The topology id
+        /// @param[in] location The location on the topology (e.g. node, edge or face)
+        /// @param[in] variable_name The variable name
+        /// @param[in] dimension_name The name of the dimension not related to a topology (e.g. "nmesh2d_NetLinkContourPts")
+        /// @param[in] dimension_value The dimension value
+        /// @return Error code
+        UGRID_API int ug_topology_define_geometry_variable_on_location(int file_id,
+                                                                       TopologyType topology_type,
+                                                                       int topology_id,
+                                                                       MeshLocations location,
+                                                                       const char* variable_name,
+                                                                       const char* dimension_name,
+                                                                       const int dimension_value);
 
         /// @brief Get the number of attributes of a specific variable
         /// @param[in] file_id The file id
@@ -202,6 +222,27 @@ namespace ugridapi
         /// @param[out] data The variable data
         /// @return Error code
         UGRID_API int ug_variable_get_data_char(int file_id, const char* variable_name, char* data);
+
+        /// @brief Put the variable data as a flat array of doubles. This might be large, because the arrays can have a large dimensionality
+        /// @param[in] file_id The file id
+        /// @param[in] variable_name The variable name
+        /// @param[in] data The variable data
+        /// @return Error code
+        UGRID_API int ug_variable_put_data_double(int file_id, const char* variable_name, double const* data);
+
+        /// @brief Put the variable data as a flat array of int. This might be large, because the arrays can have a large dimensionality
+        /// @param[in] file_id The file id
+        /// @param[in] variable_name The variable name
+        /// @param[in] data The variable data
+        /// @return Error code
+        UGRID_API int ug_variable_put_data_int(int file_id, const char* variable_name, int const* data);
+
+        /// @brief Put the variable data as a flat array of char. This might be large, because the arrays can have a large dimensionality
+        /// @param[in] file_id The file id
+        /// @param[in] variable_name The variable name
+        /// @param[in] data The variable data
+        /// @return Error code
+        UGRID_API int ug_variable_put_data_char(int file_id, const char* variable_name, char const* data);
 
         /// @brief Inquires if a variable exists
         /// @param[in] file_id The file id
@@ -354,6 +395,12 @@ namespace ugridapi
         /// @param[in] variable_name The variable name
         /// @return Error code
         UGRID_API int ug_variable_int_define(int file_id, const char* variable_name);
+
+        /// @brief Defines a new double variable
+        /// @param[in] file_id The file id
+        /// @param[in] variable_name The variable name
+        /// @return Error code
+        UGRID_API int ug_variable_double_define(int file_id, const char* variable_name);
 
         /// @brief Add integer attributes to an existing variable
         /// @param[in] file_id The file id

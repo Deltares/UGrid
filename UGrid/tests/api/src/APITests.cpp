@@ -513,6 +513,7 @@ TEST(ApiTest, DefineAndPut_OneNetwork1D_ShouldWriteData)
     error_code = ugridapi::ug_file_close(file_id);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 }
+
 TEST(ApiTest, InquireAndGet_OneMesh1D_ShouldReadMesh1D)
 {
     std::string const file_path = TEST_FOLDER + "/AllUGridEntities.nc";
@@ -1162,149 +1163,6 @@ TEST(ApiTest, DefineGlobalAttributes_OnExistingFile_ShouldDefineGlobalAttributes
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 }
 
-TEST(ApiTest, TopologyDefineDoubleVariableOnLocation_OnExistingFile_ShouldDefineDoubleVariable)
-{
-    // Prepare
-    int name_long_length;
-    auto error_code = ugridapi::ug_name_get_long_length(name_long_length);
-    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
-    ugridapi::Mesh2D mesh2d;
-    std::vector<char> name(name_long_length);
-    string_to_char_array("mesh2d", name_long_length, name.data());
-    mesh2d.name = name.data();
-    std::vector<double> node_x{0, 1, 0, 1, 0, 1, 0, 1, 2, 2, 2, 2, 3, 3, 3, 3};
-
-    mesh2d.node_x = node_x.data();
-    std::vector<double> node_y{0, 0, 1, 1, 2, 2, 3, 3, 0, 1, 2, 3, 0, 1, 2, 3};
-
-    mesh2d.node_y = node_y.data();
-    mesh2d.num_nodes = 16;
-    std::vector<int> edge_nodes{
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        2,
-        9,
-        4,
-        10,
-        6,
-        11,
-        8,
-        12,
-        9,
-        13,
-        10,
-        14,
-        11,
-        15,
-        12,
-        16,
-        1,
-        3,
-        3,
-        5,
-        5,
-        7,
-        2,
-        4,
-        4,
-        6,
-        6,
-        8,
-        9,
-        10,
-        10,
-        11,
-        11,
-        12,
-        13,
-        14,
-        14,
-        15,
-        15,
-        16,
-    };
-
-    mesh2d.edge_nodes = edge_nodes.data();
-    mesh2d.num_edges = 23;
-
-    std::vector<double> face_x{0.5, 0.5, 0.5, 1.5, 1.5, 1.5, 2.5, 2.5, 2.5};
-    mesh2d.face_x = face_x.data();
-    std::vector<double> face_y{0, 0, 1, 1, 2, 2, 3, 3, 0, 1, 2, 3, 0, 1, 2, 3};
-    mesh2d.face_y = face_y.data();
-    mesh2d.num_faces = 9;
-    std::vector<int> face_nodes{
-        1, 2, 4, 3,
-        3, 4, 6, 5,
-        5, 6, 8, 7,
-        2, 9, 10, 4,
-        4, 10, 11, 6,
-        6, 11, 12, 8,
-        9, 13, 14, 10,
-        10, 14, 15, 11,
-        11, 15, 16, 12};
-    mesh2d.face_nodes = face_nodes.data();
-    mesh2d.num_face_nodes_max = 4;
-
-    // Open file
-    std::string const file_path = TEST_WRITE_FOLDER + "/Mesh2DWriteWithAVariable.nc";
-    int file_mode = -1;
-    error_code = ugridapi::ug_file_replace_mode(file_mode);
-    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
-    int file_id = -1;
-    error_code = ugridapi::ug_file_open(file_path.c_str(), file_mode, file_id);
-    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
-
-    // Write mesh2d
-    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
-    int topology_id = -1;
-    error_code = ug_mesh2d_def(file_id, mesh2d, topology_id);
-    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
-    ASSERT_EQ(0, topology_id);
-    error_code = ug_mesh2d_put(file_id, topology_id, mesh2d);
-    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
-
-    // Close the file
-    error_code = ugridapi::ug_file_close(file_id);
-    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
-
-    // Open the file for writing
-    error_code = ugridapi::ug_file_write_mode(file_mode);
-    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
-    error_code = ugridapi::ug_file_open(file_path.c_str(), file_mode, file_id);
-    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
-
-    // Write s0 double variable on topology
-
-    std::vector<char> variable_name(name_long_length);
-    string_to_char_array("mesh2d_s0", name_long_length, variable_name.data());
-
-    std::vector<char> dimension_name(name_long_length);
-    string_to_char_array("numTimeSteps", name_long_length, dimension_name.data());
-
-    error_code = ugridapi::ug_topology_define_double_variable_on_location(file_id,
-                                                                          ugridapi::TopologyType::Mesh2dTopology,
-                                                                          0,
-                                                                          ugridapi::MeshLocations::Nodes,
-                                                                          variable_name.data(),
-                                                                          dimension_name.data(),
-                                                                          10);
-    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
-
-    define_variable_attributes(file_id, "mesh2d_s0", "standard_name", "sea_surface_height");
-    define_variable_attributes(file_id, "mesh2d_s0", "long_name", "Water level on previous timestep");
-    define_variable_attributes(file_id, "mesh2d_s0", "units", "m");
-    define_variable_attributes(file_id, "mesh2d_s0", "_FillValue", std::vector<double>{-999.0});
-
-    error_code = ugridapi::ug_file_close(file_id);
-    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
-}
-
 TEST(ApiTest, InquireAndGetFaceEdges_OneMesh2D_ShouldReadMesh2D)
 {
     // Prepare
@@ -1399,12 +1257,11 @@ TEST(ApiTest, UGridVariableExists_ShouldReturnCorrectValueForExistingAndNonExist
     ugridapi::ug_file_close(file_id);
 }
 
-/*
-TEST(ApiTest, DefineAndPut_TwoMesh2D_ShouldWriteData)
+TEST(ApiTest, DefineAndPut_OneMesh2D_ShouldWriteData)
 {
-    // Prepare
-    // Open a file
     std::string const file_path = TEST_WRITE_FOLDER + "/Mesh2DWrite.nc";
+
+    // Open a file
     int file_id = -1;
     int file_mode = -1;
     auto error_code = ugridapi::ug_file_replace_mode(file_mode);
@@ -1413,16 +1270,126 @@ TEST(ApiTest, DefineAndPut_TwoMesh2D_ShouldWriteData)
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
     // Fill data
-    std::string mesh_name_one = "mesh2d_one";
-    create_ugrid_mesh(mesh_name_one, file_id);
-    std::string mesh_name_two = "mesh2d_two";
-    create_ugrid_mesh(mesh_name_two, file_id);
+    int name_long_length;
+    error_code = ugridapi::ug_name_get_long_length(name_long_length);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+    ugridapi::Mesh2D mesh2d;
+    std::vector<char> name(name_long_length);
+    string_to_char_array("mesh2d", name_long_length, name.data());
+    mesh2d.name = name.data();
+    std::vector<double> node_x{0, 1, 0, 1, 0, 1, 0, 1, 2, 2, 2, 2, 3, 3, 3, 3};
+
+    mesh2d.node_x = node_x.data();
+    std::vector<double> node_y{0, 0, 1, 1, 2, 2, 3, 3, 0, 1, 2, 3, 0, 1, 2, 3};
+
+    mesh2d.node_y = node_y.data();
+    mesh2d.num_nodes = 16;
+    std::vector<int> edge_nodes{
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        2,
+        9,
+        4,
+        10,
+        6,
+        11,
+        8,
+        12,
+        9,
+        13,
+        10,
+        14,
+        11,
+        15,
+        12,
+        16,
+        1,
+        3,
+        3,
+        5,
+        5,
+        7,
+        2,
+        4,
+        4,
+        6,
+        6,
+        8,
+        9,
+        10,
+        10,
+        11,
+        11,
+        12,
+        13,
+        14,
+        14,
+        15,
+        15,
+        16,
+    };
+
+    mesh2d.edge_nodes = edge_nodes.data();
+    mesh2d.num_edges = 23;
+
+    std::vector<double> face_x{0.5, 0.5, 0.5, 1.5, 1.5, 1.5, 2.5, 2.5, 2.5};
+    mesh2d.face_x = face_x.data();
+    std::vector<double> face_y{0, 0, 1, 1, 2, 2, 3, 3, 0, 1, 2, 3, 0, 1, 2, 3};
+    mesh2d.face_y = face_y.data();
+    std::vector<double> face_x_bnd{
+        0, 1, 1, 0,
+        0, 1, 1, 0,
+        0, 1, 1, 0,
+        1, 2, 2, 1,
+        1, 2, 2, 1,
+        1, 2, 2, 1,
+        2, 3, 3, 2,
+        2, 3, 3, 2,
+        2, 3, 3, 2};
+    mesh2d.face_x_bnd = face_x_bnd.data();
+    std::vector<double> face_y_bnd{
+        0, 0, 1, 1,
+        1, 1, 2, 2,
+        2, 2, 3, 3,
+        0, 0, 1, 1,
+        1, 1, 2, 2,
+        2, 2, 3, 3,
+        0, 0, 1, 1,
+        1, 1, 2, 2,
+        2, 2, 3, 3};
+    mesh2d.face_y_bnd = face_y_bnd.data();
+    mesh2d.num_faces = 9;
+    std::vector<int> face_nodes{
+        1, 2, 4, 3,
+        3, 4, 6, 5,
+        5, 6, 8, 7,
+        2, 9, 10, 4,
+        4, 10, 11, 6,
+        6, 11, 12, 8,
+        9, 13, 14, 10,
+        10, 14, 15, 11,
+        11, 15, 16, 12};
+    mesh2d.face_nodes = face_nodes.data();
+    mesh2d.num_face_nodes_max = 4;
+
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+    int topology_id = -1;
+    error_code = ug_mesh2d_def(file_id, mesh2d, topology_id);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+    ASSERT_EQ(0, topology_id);
+    error_code = ug_mesh2d_put(file_id, topology_id, mesh2d);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 
     // Close the file
     error_code = ugridapi::ug_file_close(file_id);
     ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 }
-*/
 
 TEST(ApiTest, Enquire_GetAttributeValues_ShouldGetLongAttributeValues)
 {
@@ -1497,4 +1464,124 @@ TEST(ApiTest, Enquire_GetAttributeValues_ShouldGetLongAttributeValues)
     }
 
     ugridapi::ug_file_close(file_id);
+}
+
+TEST(ApiTest, DefineAndPutDoubleVariable_OnMesh2D_ShouldDefineDoubleVariable)
+{
+    std::string const file_path = TEST_WRITE_FOLDER + "/DoubleVariable.nc";
+
+    // Open a file
+    int file_id = -1;
+    int file_mode = -1;
+    auto error_code = ugridapi::ug_file_replace_mode(file_mode);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+    error_code = ugridapi::ug_file_open(file_path.c_str(), file_mode, file_id);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+
+    // Prepare
+    create_ugrid_mesh("mesh2d", file_id);
+
+    int name_long_length;
+    error_code = ugridapi::ug_name_get_long_length(name_long_length);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+
+    // Write s0 double variable on topology
+    std::vector<char> variable_name(name_long_length);
+    string_to_char_array("mesh2d_s0", name_long_length, variable_name.data());
+
+    std::vector<char> dimension_name(name_long_length);
+    string_to_char_array("numTimeSteps", name_long_length, dimension_name.data());
+
+    const int num_time_steps = 10;
+    const int num_nodes = 16;
+
+    error_code = ugridapi::ug_topology_define_double_variable_on_location(file_id,
+                                                                          ugridapi::TopologyType::Mesh2dTopology,
+                                                                          0,
+                                                                          ugridapi::MeshLocations::Nodes,
+                                                                          variable_name.data(),
+                                                                          dimension_name.data(),
+                                                                          num_time_steps);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+
+    define_variable_attributes(file_id, "mesh2d_s0", "standard_name", "sea_surface_height");
+    define_variable_attributes(file_id, "mesh2d_s0", "long_name", "Water level on previous timestep");
+    define_variable_attributes(file_id, "mesh2d_s0", "units", "m");
+    define_variable_attributes(file_id, "mesh2d_s0", "_FillValue", std::vector<double>{-999.0});
+
+    std::vector<double> s0_data(num_time_steps * num_nodes);
+    for (int t = 0; t < num_time_steps; ++t)
+    {
+        for (int n = 0; n < num_nodes; ++n)
+        {
+            s0_data[t * num_nodes + n] = static_cast<double>(t) + static_cast<double>(n) * 0.1;
+        }
+    }
+
+    error_code = ugridapi::ug_variable_put_data_double(file_id, variable_name.data(), s0_data.data());
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+
+    // Close the file
+    error_code = ugridapi::ug_file_close(file_id);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+}
+
+TEST(ApiTest, DefineAndPutGeometryVariable_OnMesh2D_ShouldDefineGeometryVariable)
+{
+    std::string const file_path = TEST_WRITE_FOLDER + "/GeometryVariable.nc";
+
+    // Open a file
+    int file_id = -1;
+    int file_mode = -1;
+    auto error_code = ugridapi::ug_file_replace_mode(file_mode);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+    error_code = ugridapi::ug_file_open(file_path.c_str(), file_mode, file_id);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+
+    // Prepare
+    create_ugrid_mesh("mesh2d", file_id);
+
+    int name_long_length;
+    error_code = ugridapi::ug_name_get_long_length(name_long_length);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+
+    // Define the netlink contour x geometry variable on edges
+    std::vector<char> variable_name(name_long_length);
+    string_to_char_array("mesh2d_NetLinkContour_x", name_long_length, variable_name.data());
+
+    std::vector<char> dimension_name(name_long_length);
+    string_to_char_array("nmesh2d_NetLinkContourPts", name_long_length, dimension_name.data());
+
+    const int num_contour_points = 4;
+    const int num_edges = 23;
+
+    error_code = ugridapi::ug_topology_define_geometry_variable_on_location(file_id,
+                                                                            ugridapi::TopologyType::Mesh2dTopology,
+                                                                            0,
+                                                                            ugridapi::MeshLocations::Edges,
+                                                                            variable_name.data(),
+                                                                            dimension_name.data(),
+                                                                            num_contour_points);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+
+    define_variable_attributes(file_id, "mesh2d_NetLinkContour_x", "standard_name", "projection_x_coordinate");
+    define_variable_attributes(file_id, "mesh2d_NetLinkContour_x", "long_name", "list of x-contour points of momentum control volume surrounding each net/flow link");
+    define_variable_attributes(file_id, "mesh2d_NetLinkContour_x", "units", "m");
+    define_variable_attributes(file_id, "mesh2d_NetLinkContour_x", "_FillValue", std::vector<double>{-999.0});
+
+    std::vector<double> contour_x_data(num_edges * num_contour_points);
+    for (int e = 0; e < num_edges; ++e)
+    {
+        for (int p = 0; p < num_contour_points; ++p)
+        {
+            contour_x_data[e * num_contour_points + p] = static_cast<double>(e) + static_cast<double>(p) * 0.1;
+        }
+    }
+
+    error_code = ugridapi::ug_variable_put_data_double(file_id, variable_name.data(), contour_x_data.data());
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
+
+    // Close the file
+    error_code = ugridapi::ug_file_close(file_id);
+    ASSERT_EQ(ugridapi::UGridioApiErrors::Success, error_code);
 }

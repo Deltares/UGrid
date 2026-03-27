@@ -20,55 +20,6 @@ namespace UGridNET.Tests
             { "Conventions", "CF-1.8 UGRID-1.0 Deltares-0.10" }
         };
 
-        private DisposableMesh2D CreateDisposableMesh2D(string meshName)
-        {
-            return new DisposableMesh2D
-            {
-                Name = meshName.GetRightPaddedNullTerminatedBytes(UGrid.name_long_length),
-                NumNodes = 4,
-                NumEdges = 4,
-                NumFaces = 1,
-                NumFaceNodesMax = 4,
-
-                NodeX = new[] { 0.0, 1.0, 1.0, 0.0 },
-                NodeY = new[] { 0.0, 0.0, 1.0, 1.0 },
-                NodeZ = new[] { 0.0, 0.0, 0.0, 0.0 },
-
-                EdgeX = new[] { 0.5, 1.0, 0.5, 0.0 },
-                EdgeY = new[] { 0.0, 0.5, 1.0, 0.5 },
-                EdgeZ = null,
-                EdgeNodes = new[] { 0, 1, 1, 2, 2, 3, 3, 0 },
-                EdgeFaces = null,
-
-                FaceX = new[] { 0.5 },
-                FaceY = new[] { 0.5 },
-                FaceZ = null,
-                FaceNodes = new[] { 0, 1, 2, 3 },
-                FaceEdges = new[] { 0, 0, 0, 0 },
-                FaceFaces = null,
-            };
-        }
-
-        private DisposableMesh1D CreateDisposableMesh1D(string meshName, string networkName)
-        {
-            return new DisposableMesh1D
-            {
-                Name = meshName.GetRightPaddedNullTerminatedBytes(UGrid.name_long_length),
-                NetworkName = networkName.GetRightPaddedNullTerminatedBytes(UGrid.name_long_length),
-                NumNodes = 4,
-                NumEdges = 4,
-
-                NodeX = new[] { 0.0, 1.0, 1.0, 0.0 },
-                NodeY = new[] { 0.0, 0.0, 1.0, 1.0 },
-                NodeEdgeID = new[] { 0, 0, 0, 0 },
-                NodeEdgeOffset = new[] { 0.0, 0.0, 0.0, 0.0 },
-
-                EdgeX = new[] { 0.5, 1.0, 0.5, 0.0 },
-                EdgeY = new[] { 0.0, 0.5, 1.0, 0.5 },
-                EdgeNodes = new[] { 0, 1, 1, 2, 2, 3, 3, 0 }
-            };
-        }
-
         [SetUp]
         public void SetUp()
         {
@@ -92,6 +43,7 @@ namespace UGridNET.Tests
         }
 
         [Test]
+        [Order(0)]
         public void WritingMesh1DSucceeds()
         {
             string filePath = Path.Combine(testOutputDir, "mesh1D.nc");
@@ -99,22 +51,7 @@ namespace UGridNET.Tests
             UGridWriter file = null;
 
             DisposableMesh1D disposableMesh1D = CreateDisposableMesh1D("myMesh1D", "myNetwork");
-
-            string wktStr =
-                "POINT (30 10)\n" + "LINESTRING (30 10, 10 30, 40 40)\n" + "POLYGON ((30 10, 40 40, 20 40, 10 20, 30 10))\n" + "MULTIPOINT ((10 40), (40 30), (20 20), (30 10))\n" + "GEOMETRYCOLLECTION (\n" + "    POINT (10 40),\n" + "    LINESTRING (30 10, 10 30, 40 40),\n" + "    POLYGON ((30 10, 40 40, 20 40, 10 20, 30 10))\n" + ')';
-
-            var projectedCoordinateSystem = new ProjectedCoordinateSystem(
-                0,
-                0.0,
-                6378137.0,
-                6356752.314245,
-                298.257223563,
-                "proj_coord_sys_name",
-                "gridMappingName",
-                "proj4Params",
-                "EPSG:0",
-                "",
-                wktStr);
+            ProjectedCoordinateSystem projectedCoordinateSystem = CreateCoordinateSystem();
 
             try
             {
@@ -142,23 +79,7 @@ namespace UGridNET.Tests
             UGridWriter file = null;
 
             DisposableMesh2D disposableMesh2D = CreateDisposableMesh2D("myMesh2D");
-            // var otherDisposableMesh2D = CreateDisposableMesh2D("myOtherMesh2D");
-
-            string wktStr =
-                "POINT (30 10)\n" + "LINESTRING (30 10, 10 30, 40 40)\n" + "POLYGON ((30 10, 40 40, 20 40, 10 20, 30 10))\n" + "MULTIPOINT ((10 40), (40 30), (20 20), (30 10))\n" + "GEOMETRYCOLLECTION (\n" + "    POINT (10 40),\n" + "    LINESTRING (30 10, 10 30, 40 40),\n" + "    POLYGON ((30 10, 40 40, 20 40, 10 20, 30 10))\n" + ')';
-
-            var projectedCoordinateSystem = new ProjectedCoordinateSystem(
-                0,
-                0.0,
-                6378137.0,
-                6356752.314245,
-                298.257223563,
-                "proj_coord_sys_name",
-                "gridMappingName",
-                "proj4Params",
-                "EPSG:0",
-                "",
-                wktStr);
+            ProjectedCoordinateSystem projectedCoordinateSystem = CreateCoordinateSystem();
 
             try
             {
@@ -229,19 +150,7 @@ namespace UGridNET.Tests
             UGridWriter file = null;
 
             DisposableMesh2D disposableMesh2D = CreateDisposableMesh2D("mesh2DWGS84");
-
-            var projectedCoordinateSystem = new ProjectedCoordinateSystem(
-                4326,
-                0.0,
-                6378137.0,
-                6356752.314245,
-                298.257223563,
-                "WGS84",
-                "latitude_longitude",
-                "proj4Params",
-                "EPSG:4326",
-                "",
-                "");
+            ProjectedCoordinateSystem projectedCoordinateSystem = CreateGeographicCoordinateSystem();
 
             try
             {
@@ -261,7 +170,7 @@ namespace UGridNET.Tests
         }
 
         [Test]
-        [Order(3)]
+        [Order(4)]
         public void ImportingExportedMesh2DWGS84_GetsCorrectEPSGCode()
         {
             string filePath = Path.Combine(testOutputDir, "mesh2DWGS84.nc");
@@ -278,6 +187,180 @@ namespace UGridNET.Tests
             {
                 file?.Dispose();
             }
+        }
+        
+        [Test]
+        [Order(5)]
+        public void WritingMesh2DNetlinkContoursSucceeds()
+        {
+            string filePath = Path.Combine(testOutputDir, "mesh2D_netlink.nc");
+
+            UGridWriter file = null;
+
+            DisposableMesh2D disposableMesh2D = CreateDisposableMesh2D("myMesh2D");
+            GeometryList geometryList = CreateNetLinkContours();
+            ProjectedCoordinateSystem projectedCoordinateSystem = CreateCoordinateSystem();
+
+            try
+            {
+                Assert.DoesNotThrow(() => file = new UGridWriter(filePath));
+                Assert.DoesNotThrow(() => file.AddMesh2D(disposableMesh2D));
+                Assert.DoesNotThrow(() => file.AddMesh2DNetLinkContours(0, geometryList));
+                Assert.DoesNotThrow(() => file.AddProjectedCoordinateSystem(projectedCoordinateSystem));
+                Assert.DoesNotThrow(() => file.AddGlobalAttribute("source", "Unit test"));
+                Assert.DoesNotThrow(() => file.AddGlobalAttributes(globalAttributes));
+                Assert.DoesNotThrow(() => file.WriteTopologies());
+                Assert.That(file.HasMesh2D, Is.True);
+                Assert.That(file.Mesh2DList.Count, Is.EqualTo(1));
+            }
+            finally
+            {
+                file?.Dispose();
+            }
+        }
+        
+        [Test]
+        [Order(6)]
+        public void ImportingExportedNetlinkContours_GetsCorrectCoordinates()
+        {
+            string filePath = Path.Combine(testOutputDir, "mesh2D_netlink.nc");
+            UGridReader file = null;
+
+            var contours = CreateNetLinkContours();
+            
+            try
+            {
+                file = new UGridReader(filePath);
+
+                Assert.That(file.HasMesh2D, Is.True);
+                double[] x = file.GetVariableByName<double>("myMesh2D_NetLinkContour_x");
+                double[] y = file.GetVariableByName<double>("myMesh2D_NetLinkContour_y");
+
+                Assert.That(x, Is.Not.Null);
+                Assert.That(x, Is.EqualTo(contours.XCoordinates));
+                Assert.That(y, Is.EqualTo(contours.YCoordinates));
+            }
+            finally
+            {
+                file?.Dispose();
+            }
+        }
+        
+        private static DisposableMesh2D CreateDisposableMesh2D(string meshName)
+        {
+            return new DisposableMesh2D
+            {
+                Name = meshName.GetRightPaddedNullTerminatedBytes(UGrid.name_long_length),
+                NumNodes = 4,
+                NumEdges = 4,
+                NumFaces = 1,
+                NumFaceNodesMax = 4,
+
+                NodeX = new[] { 0.0, 1.0, 1.0, 0.0 },
+                NodeY = new[] { 0.0, 0.0, 1.0, 1.0 },
+                NodeZ = new[] { 0.0, 0.0, 0.0, 0.0 },
+
+                EdgeX = new[] { 0.5, 1.0, 0.5, 0.0 },
+                EdgeY = new[] { 0.0, 0.5, 1.0, 0.5 },
+                EdgeZ = null,
+                EdgeNodes = new[] { 0, 1, 1, 2, 2, 3, 3, 0 },
+                EdgeFaces = null,
+
+                FaceX = new[] { 0.5 },
+                FaceY = new[] { 0.5 },
+                FaceZ = null,
+                FaceNodes = new[] { 0, 1, 2, 3 },
+                FaceEdges = new[] { 0, 0, 0, 0 },
+                FaceFaces = null,
+            };
+        }
+
+        private static DisposableMesh1D CreateDisposableMesh1D(string meshName, string networkName)
+        {
+            return new DisposableMesh1D
+            {
+                Name = meshName.GetRightPaddedNullTerminatedBytes(UGrid.name_long_length),
+                NetworkName = networkName.GetRightPaddedNullTerminatedBytes(UGrid.name_long_length),
+                NumNodes = 4,
+                NumEdges = 4,
+
+                NodeX = new[] { 0.0, 1.0, 1.0, 0.0 },
+                NodeY = new[] { 0.0, 0.0, 1.0, 1.0 },
+                NodeEdgeID = new[] { 0, 0, 0, 0 },
+                NodeEdgeOffset = new[] { 0.0, 0.0, 0.0, 0.0 },
+
+                EdgeX = new[] { 0.5, 1.0, 0.5, 0.0 },
+                EdgeY = new[] { 0.0, 0.5, 1.0, 0.5 },
+                EdgeNodes = new[] { 0, 1, 1, 2, 2, 3, 3, 0 }
+            };
+        }
+        
+        private static GeometryList CreateNetLinkContours()
+        {
+            var x = new[]
+            {
+                1.0, 0.0, 0.0, 1.0,
+                1.0, 1.0, 0.5, 0.5,
+                0.0, 1.0, 1.0, 0.0,
+                0.0, 0.0, 0.5, 0.5,
+            };
+
+            var y = new[]
+            {
+                0.0, 0.0, 0.5, 0.5,
+                0.0, 1.0, 1.0, 0.0,
+                1.0, 1.0, 0.5, 0.5,
+                1.0, 0.0, 0.0, 1.0,
+            };
+
+            return new GeometryList
+            {
+                XCoordinates = x,
+                YCoordinates = y,
+                NumberOfCoordinates = x.Length
+            };
+        }
+
+        private static ProjectedCoordinateSystem CreateCoordinateSystem()
+        {
+            string wktStr =
+                "POINT (30 10)\n" + 
+                "LINESTRING (30 10, 10 30, 40 40)\n" + 
+                "POLYGON ((30 10, 40 40, 20 40, 10 20, 30 10))\n" + 
+                "MULTIPOINT ((10 40), (40 30), (20 20), (30 10))\n" + 
+                "GEOMETRYCOLLECTION (\n" + 
+                "    POINT (10 40),\n" + 
+                "    LINESTRING (30 10, 10 30, 40 40),\n" + 
+                "    POLYGON ((30 10, 40 40, 20 40, 10 20, 30 10))\n" + ')';
+
+            return new ProjectedCoordinateSystem(
+                0,
+                0.0,
+                6378137.0,
+                6356752.314245,
+                298.257223563,
+                "proj_coord_sys_name",
+                "gridMappingName",
+                "proj4Params",
+                "EPSG:0",
+                "",
+                wktStr);
+        }
+
+        private static ProjectedCoordinateSystem CreateGeographicCoordinateSystem()
+        {
+            return new ProjectedCoordinateSystem(
+                4326,
+                0.0,
+                6378137.0,
+                6356752.314245,
+                298.257223563,
+                "WGS84",
+                "latitude_longitude",
+                "proj4Params",
+                "EPSG:4326",
+                "",
+                "");
         }
     }
 }

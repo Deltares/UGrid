@@ -231,7 +231,7 @@ namespace ugrid
                                          std::string const& name_pattern = "%s%s");
 
         /// @brief Defines topology-related coordinate variables based on \ref m_spherical_coordinates and optionally
-        ///        registers them on the variables associated with \p topology_attribute_name as its coordinates attribute.
+        ///        registers them on the variables associated with \p topology_attribute_name as attribute \p attribute_name
         /// @param dimension [in] The topology location (node, edge or face)
         /// @param long_name_pattern [in] The string pattern to use for the long names
         /// @param name_pattern [in] The string pattern to use for the variable names
