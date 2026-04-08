@@ -79,11 +79,13 @@ void Mesh2D::define(ugridapi::Mesh2D const& mesh2d)
                 "node_z",
                 netCDF::NcType::nc_DOUBLE,
                 {UGridFileDimensions::node},
-                {{"standard_name", "altitude"},
+                {{"mesh", m_entity_name},
+                 {"standard_name", "altitude"},
                  {"long_name", "z-coordinate of mesh node"},
                  {"units", "m"},
-                 {"coordinates", "node"},
-                 {"location", location_attribute_value}});
+                 {"coordinates", location_attribute_value},
+                 {"location", "node"}},
+                true);
         }
     }
 
