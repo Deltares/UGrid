@@ -248,7 +248,7 @@ namespace ugridapi
         {
             return netCDF::NcType::nc_CHAR;
         }
-        
+
         throw std::invalid_argument("Unsupported type for netCDF variable.");
     }
 
