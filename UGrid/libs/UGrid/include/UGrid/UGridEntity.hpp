@@ -223,21 +223,21 @@ namespace ugrid
 
         /// @brief Defines topology coordinate variables based on \ref m_spherical_coordinates and registers them
         ///        on the topology variable as its coordinates attribute.
-        /// @param dimension [in] The topology location (node, edge or face)
-        /// @param long_name_pattern [in] The string pattern to use for the long names
-        /// @param name_pattern [in] The string pattern to use for the variable names
-        void define_topology_coordinates(UGridFileDimensions dimension,
+        /// @param location [in] The entity location (node, edge or face) for which the coordinates are defined
+        /// @param long_name_pattern [in] The string pattern to use for the coordinate variable long names
+        /// @param name_pattern [in] The string pattern to use for the coordinate variable names
+        void define_topology_coordinates(UGridEntityLocations location,
                                          std::string const& long_name_pattern,
                                          std::string const& name_pattern = "%s%s");
 
         /// @brief Defines topology-related coordinate variables based on \ref m_spherical_coordinates and optionally
         ///        registers them on the variables associated with \p topology_attribute_name as attribute \p attribute_name
-        /// @param dimension [in] The topology location (node, edge or face)
-        /// @param long_name_pattern [in] The string pattern to use for the long names
-        /// @param name_pattern [in] The string pattern to use for the variable names
+        /// @param location [in] The entity location (node, edge or face) for which the coordinates are defined
+        /// @param long_name_pattern [in] The string pattern to use for the coordinate variable long names
+        /// @param name_pattern [in] The string pattern to use for the coordinate variable names
         /// @param topology_attribute_name [in] (optional) The name of the attribute in topology
         /// @param attribute_name [in] (optional) The attribute to attach
-        void define_topology_related_coordinates(UGridFileDimensions dimension,
+        void define_topology_related_coordinates(UGridEntityLocations location,
                                                  std::string const& long_name_pattern,
                                                  std::string const& name_pattern = "%s%s",
                                                  std::string const& topology_attribute_name = "",
@@ -265,10 +265,11 @@ namespace ugrid
         int m_epsg_code = 0;                               ///< The epsg code
 
     private:
-        /// @brief Produces the attribute variables related to coordinate locations
-        /// @param location [in] The entity location (e.g. node, edge, face)
+        /// @brief Produces the coordinate variable names, standard names, long names and units for a given location
+        /// @param location [in] The entity location (node, edge or face) for which the names are produced
         /// @param long_name_pattern [in] The string pattern to use for producing the long name string
         /// @param name_pattern [in] The string pattern to use for producing the name string
+        /// @return A tuple of (coordinate_x, coordinate_y, standard_name_x, standard_name_y, long_name_x, long_name_y, units_x, units_y)
         std::tuple<std::string,
                    std::string,
                    std::string,
@@ -277,7 +278,7 @@ namespace ugrid
                    std::string,
                    std::string,
                    std::string>
-        get_location_variable_names(std::string const& location,
+        get_location_variable_names(UGridEntityLocations location,
                                     std::string const& long_name_pattern,
                                     std::string const& name_pattern = "%s%s");
     };

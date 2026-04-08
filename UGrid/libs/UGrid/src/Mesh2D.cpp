@@ -68,7 +68,7 @@ void Mesh2D::define(ugridapi::Mesh2D const& mesh2d)
         bool const add_coordinate_variable = mesh2d.node_x != nullptr && mesh2d.node_y != nullptr;
         if (add_coordinate_variable)
         {
-            define_topology_coordinates(UGridFileDimensions::node, "%s of mesh node");
+            define_topology_coordinates(UGridEntityLocations::node, "%s of mesh node");
         }
 
         // Define optional related variables
@@ -113,7 +113,7 @@ void Mesh2D::define(ugridapi::Mesh2D const& mesh2d)
         // Define edge_nodes coordinates
         if (mesh2d.edge_x != nullptr && mesh2d.edge_y != nullptr)
         {
-            define_topology_coordinates(UGridFileDimensions::edge, "characteristic %s of the mesh edge (e.g. midpoint)");
+            define_topology_coordinates(UGridEntityLocations::edge, "characteristic %s of the mesh edge (e.g. midpoint)");
         }
     }
 
@@ -145,13 +145,13 @@ void Mesh2D::define(ugridapi::Mesh2D const& mesh2d)
         bool const add_coordinate_variable = mesh2d.face_x != nullptr && mesh2d.face_y != nullptr;
         if (add_coordinate_variable)
         {
-            define_topology_coordinates(UGridFileDimensions::face, "characteristic %s of the mesh face");
+            define_topology_coordinates(UGridEntityLocations::face, "characteristic %s of the mesh face");
         }
 
         // Define optional face bounds
         if (mesh2d.face_x_bnd != nullptr && mesh2d.face_y_bnd != nullptr)
         {
-            define_topology_related_coordinates(UGridFileDimensions::face,
+            define_topology_related_coordinates(UGridEntityLocations::face,
                                                 "%s bounds of mesh faces (i.e. corner coordinates)",
                                                 "%s%s_bnd",
                                                 "face_coordinates",

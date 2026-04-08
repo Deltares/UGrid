@@ -150,7 +150,7 @@ std::tuple<std::string,
            std::string,
            std::string,
            std::string>
-UGridEntity::get_location_variable_names(std::string const& location, std::string const& long_name_pattern, std::string const& name_pattern)
+UGridEntity::get_location_variable_names(UGridEntityLocations location, std::string const& long_name_pattern, std::string const& name_pattern)
 {
     std::string location_coordinate_x;
     std::string location_coordinate_y;
@@ -161,12 +161,12 @@ UGridEntity::get_location_variable_names(std::string const& location, std::strin
     std::string units_x;
     std::string units_y;
 
-    UGridVarAttributeStringBuilder string_builder(m_entity_name);
+    std::string const location_str = from_location_to_location_string(location);
 
     if (!m_spherical_coordinates)
     {
-        location_coordinate_x = (boost::format(name_pattern) % location % "_x").str();
-        location_coordinate_y = (boost::format(name_pattern) % location % "_y").str();
+        location_coordinate_x = (boost::format(name_pattern) % location_str % "_x").str();
+        location_coordinate_y = (boost::format(name_pattern) % location_str % "_y").str();
 
         long_name_x = (boost::format(long_name_pattern) % "x-coordinate").str();
         long_name_y = (boost::format(long_name_pattern) % "y-coordinate").str();
@@ -179,8 +179,8 @@ UGridEntity::get_location_variable_names(std::string const& location, std::strin
     }
     if (m_spherical_coordinates)
     {
-        location_coordinate_x = (boost::format(name_pattern) % location % "_lon").str();
-        location_coordinate_y = (boost::format(name_pattern) % location % "_lat").str();
+        location_coordinate_x = (boost::format(name_pattern) % location_str % "_lon").str();
+        location_coordinate_y = (boost::format(name_pattern) % location_str % "_lat").str();
 
         long_name_x = (boost::format(long_name_pattern) % "latitude coordinate").str();
         long_name_y = (boost::format(long_name_pattern) % "longitude coordinate").str();
@@ -195,22 +195,8 @@ UGridEntity::get_location_variable_names(std::string const& location, std::strin
     return {location_coordinate_x, location_coordinate_y, standard_name_x, standard_name_y, long_name_x, long_name_y, units_x, units_y};
 }
 
-void UGridEntity::define_topology_coordinates(UGridFileDimensions dimension, std::string const& long_name_pattern, std::string const& name_pattern)
+void UGridEntity::define_topology_coordinates(UGridEntityLocations location, std::string const& long_name_pattern, std::string const& name_pattern)
 {
-    std::string dimension_string;
-    if (dimension == UGridFileDimensions::node)
-    {
-        dimension_string = "node";
-    }
-    if (dimension == UGridFileDimensions::edge)
-    {
-        dimension_string = "edge";
-    }
-    if (dimension == UGridFileDimensions::face)
-    {
-        dimension_string = "face";
-    }
-
     auto [location_coordinate_x,
           location_coordinate_y,
           standard_name_x,
@@ -218,13 +204,15 @@ void UGridEntity::define_topology_coordinates(UGridFileDimensions dimension, std
           long_name_x,
           long_name_y,
           units_x,
-          units_y] = get_location_variable_names(dimension_string, long_name_pattern, name_pattern);
+          units_y] = get_location_variable_names(location, long_name_pattern, name_pattern);
 
     auto string_builder = UGridVarAttributeStringBuilder(m_entity_name);
     string_builder << "_" << location_coordinate_x << " " << m_entity_name << "_" << location_coordinate_y;
 
-    std::string attribute_name = dimension_string + "_coordinates";
+    std::string const attribute_name = from_location_to_location_string(location) + "_coordinates";
     define_topological_attribute(attribute_name, string_builder.str());
+
+    UGridFileDimensions const dimension = from_location_to_dimension(location);
 
     define_topological_variable(attribute_name,
                                 location_coordinate_x,
@@ -244,30 +232,22 @@ void UGridEntity::define_topology_coordinates(UGridFileDimensions dimension, std
 }
 
 void UGridEntity::define_topology_related_coordinates(
-    UGridFileDimensions dimension,
+    UGridEntityLocations location,
     std::string const& long_name_pattern,
     std::string const& name_pattern,
     std::string const& topology_attribute_name,
     std::string const& attribute_name)
 {
-    std::string location;
+    static std::map<UGridFileDimensions, UGridFileDimensions> const extra_dimension{
+        {UGridFileDimensions::edge, UGridFileDimensions::Two},
+        {UGridFileDimensions::face, UGridFileDimensions::max_face_node}};
+
+    UGridFileDimensions const dimension = from_location_to_dimension(location);
     std::vector<UGridFileDimensions> ugridfile_dimensions = {dimension};
 
-    switch (dimension)
+    if (auto const it = extra_dimension.find(dimension); it != extra_dimension.end())
     {
-    case UGridFileDimensions::node:
-        location = "node";
-        break;
-    case UGridFileDimensions::edge:
-        location = "edge";
-        ugridfile_dimensions.emplace_back(UGridFileDimensions::Two);
-        break;
-    case UGridFileDimensions::face:
-        location = "face";
-        ugridfile_dimensions.emplace_back(UGridFileDimensions::max_face_node);
-        break;
-    default:
-        throw std::invalid_argument("define_topology_related_coordinates: Unsupported UGridFileDimensions value");
+        ugridfile_dimensions.emplace_back(it->second);
     }
 
     auto [location_coordinate_x,
