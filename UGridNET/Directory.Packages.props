@@ -1,0 +1,14 @@
+﻿<Project>
+    <PropertyGroup>
+        <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageVersion Include="DHYDRO.SharedConfigurations" Version="1.0.0.47"/>
+        <PackageVersion Include="NUnit" Version="4.3.2"/>
+        <PackageVersion Include="NUnit.Analyzers" Version="4.7.0"/>
+        <PackageVersion Include="NUnit.ConsoleRunner" Version="3.20.0"/>
+        <PackageVersion Include="NUnit3TestAdapter" Version="5.0.0"/>
+        <PackageVersion Include="System.Buffers" Version="4.5.1"/>
+        <PackageVersion Include="System.Memory" Version="4.5.5"/>
+    </ItemGroup>
+</Project>

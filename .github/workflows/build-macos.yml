@@ -61,9 +61,9 @@ jobs:
       - name: Set paths
         id: paths
         run: |
-          echo "build_dir=${{ github.workspace }}/build" >> $GITHUB_OUTPUT
-          echo "ext_deps_dir=${{ github.workspace }}/external_dependencies" >> $GITHUB_OUTPUT
-          echo "install_dir=${{ github.workspace }}/install" >> $GITHUB_OUTPUT
+          echo "build_dir=${{ github.workspace }}/UGrid/build" >> $GITHUB_OUTPUT
+          echo "ext_deps_dir=${{ github.workspace }}/UGrid/external_dependencies" >> $GITHUB_OUTPUT
+          echo "install_dir=${{ github.workspace }}/UGrid/install" >> $GITHUB_OUTPUT
 
       # Step: Generate cache key
       - name: Generate cache key
@@ -99,8 +99,8 @@ jobs:
       - name: Build and install external dependencies
         if: steps.restore-cached-external-dependencies.outputs.cache-hit != 'true'
         run: |
-          chmod +x ${{ github.workspace }}/scripts/install_netcdf_cxx4.sh
-          ${{ github.workspace }}/scripts/install_netcdf_cxx4.sh \
+          chmod +x ${{ github.workspace }}/UGrid/scripts/install_netcdf_cxx4.sh
+          ${{ github.workspace }}/UGrid/scripts/install_netcdf_cxx4.sh \
             --work_dir ${{ steps.paths.outputs.ext_deps_dir }}/work \
             --install_dir ${{ steps.paths.outputs.ext_deps_dir }}/install \
             --build_type '${{ matrix.build_type }}' \
@@ -121,7 +121,7 @@ jobs:
           export netCDFCxx_DIR=${{ steps.paths.outputs.ext_deps_dir }}/install/netcdf_cxx4/lib/cmake/netCDF
           export OPENSSL_ROOT_DIR=$(brew --prefix openssl)
           cmake \
-            -S ${{ github.workspace }} \
+            -S ${{ github.workspace }}/UGrid \
             -B ${{ steps.paths.outputs.build_dir }} \
             -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
             -DCMAKE_PREFIX_PATH=${{ steps.paths.outputs.ext_deps_dir }}/install \

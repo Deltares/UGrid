@@ -19,11 +19,11 @@ jobs:
       - name: Run clang-format and report result
         run: |
           declare -a directories=(
-            "libs/UGrid/src"
-            "libs/UGrid/include"
-            "libs/UGridAPI/src"
-            "libs/UGridAPI/include"
-            "tests"
+            "UGrid/libs/UGrid/src"
+            "UGrid/libs/UGrid/include"
+            "UGrid/libs/UGridAPI/src"
+            "UGrid/libs/UGridAPI/include"
+            "UGrid/tests"
           )
           # Parse full lines
           export IFS=$'\n'

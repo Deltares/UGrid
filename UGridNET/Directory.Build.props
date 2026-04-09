@@ -1,0 +1,30 @@
+<Project>
+    <PropertyGroup>
+        <Company>Deltares</Company>
+        <Authors>Deltares</Authors>
+        <Copyright>Copyright © Deltares $([System.DateTime]::Now.Year)</Copyright>
+        <RepositoryUrl>https://github.com/Deltares/UGrid</RepositoryUrl>
+
+        <Product>$(MSBuildProjectName)</Product>
+        <AssemblyTitle>$(MSBuildProjectName)</AssemblyTitle>
+
+        <GitHash>DEV</GitHash>
+        <BuildNumber>0</BuildNumber>
+
+        <UGridNETVersion>0.1.0</UGridNETVersion>
+        <Version>$(UGridNETVersion).$(BuildNumber)</Version>
+        <FileVersion>$(Version)</FileVersion>
+        <InformationalVersion>$(Version).$(GitHash)</InformationalVersion>
+        <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
+
+        <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+        <OutputPath>$(SolutionDir)bin\$(Configuration)\</OutputPath>
+        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+
+        <DebugType>embedded</DebugType>
+        <DebugSymbols>true</DebugSymbols>
+
+        <LangVersion>7.3</LangVersion>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    </PropertyGroup>
+</Project>

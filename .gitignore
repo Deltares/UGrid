@@ -31,6 +31,7 @@ bld/
 [Oo]bj/
 [Ll]og/
 [Ll]ogs/
+[Oo]ut/
 
 # Visual Studio 2015/2017 cache/options directory
 .vs/
@@ -131,6 +132,7 @@ $tf/
 _ReSharper*/
 *.[Rr]e[Ss]harper
 *.DotSettings.user
+D-HYDRO.DotSettings
 
 # TeamCity is a build add-in
 _TeamCity*
@@ -373,6 +375,9 @@ MigrationBackup/
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
 
+# Rider
+.idea/
+
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 
@@ -398,12 +403,13 @@ FodyWeavers.xsd
 *.sln.iml
 
 # Building
-/build*
+UGrid/build*
 
 # User specific
-/tests/utils/include/TestUtils/Definitions.hpp
-/include/Version/Version.hpp
-/tests/data/written_files/*.nc
+UGrid/CmakePresets.json
+UGrid/**/TestUtils/Definitions.hpp
+UGrid/**/Version/Version.hpp
+UGrid/**/written_files/
 
 # coverage
 gcov_reports_dir
