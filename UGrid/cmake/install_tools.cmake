@@ -39,28 +39,33 @@ if(WIN32)
     # Set the download URL and file paths
     set(SWIG_URL "http://prdownloads.sourceforge.net/swig/swigwin-${ARGS_SWIG_VERSION}.zip")
     set(DOWNLOAD_DIR "${ARGS_SWIG_INSTALL_PREFIX}/download")
+    set(INSTALL_DIR "${ARGS_SWIG_INSTALL_PREFIX}/swigwin-${ARGS_SWIG_VERSION}")
 
-    # Create the download and extraction directories
-    file(MAKE_DIRECTORY ${ARGS_SWIG_INSTALL_PREFIX})
-    file(MAKE_DIRECTORY ${DOWNLOAD_DIR})
+    # Only download and extract if not already installed
+    if(NOT EXISTS "${INSTALL_DIR}")
+      # Create the download and extraction directories
+      file(MAKE_DIRECTORY ${ARGS_SWIG_INSTALL_PREFIX})
+      file(MAKE_DIRECTORY ${DOWNLOAD_DIR})
 
-    # Download the SWIG zip file
-    set(SWIG_ZIP "${DOWNLOAD_DIR}/swigwin-${ARGS_SWIG_VERSION}.zip")
-    if(NOT EXISTS ${SWIG_ZIP})
-      file(DOWNLOAD ${SWIG_URL} ${SWIG_ZIP})
-    endif()
+      # Download the SWIG zip file
+      set(SWIG_ZIP "${DOWNLOAD_DIR}/swigwin-${ARGS_SWIG_VERSION}.zip")
+      if(NOT EXISTS ${SWIG_ZIP})
+        message(STATUS "Downloading SWIG ${ARGS_SWIG_VERSION}...")
+        file(DOWNLOAD ${SWIG_URL} ${SWIG_ZIP} SHOW_PROGRESS)
+      endif()
 
-    # Unzip the downloaded file
-    set(INSTALL_DIR ${ARGS_SWIG_INSTALL_PREFIX}/swigwin-${ARGS_SWIG_VERSION})
-    if(NOT EXISTS ${INSTALL_DIR})
+      # Unzip the downloaded file
+      message(STATUS "Extracting SWIG ${ARGS_SWIG_VERSION}...")
       file(ARCHIVE_EXTRACT 
         INPUT ${SWIG_ZIP} 
         DESTINATION ${ARGS_SWIG_INSTALL_PREFIX})
-    endif()
 
-    # Remove the zip file after extraction
-    if(${ARGS_SWIG_CLEAN})
-      file(REMOVE_RECURSE ${DOWNLOAD_DIR})
+      # Remove the zip file after extraction
+      if(${ARGS_SWIG_CLEAN})
+        file(REMOVE_RECURSE ${DOWNLOAD_DIR})
+      endif()
+    else()
+      message(STATUS "SWIG ${ARGS_SWIG_VERSION} already installed at ${INSTALL_DIR}, skipping download.")
     endif()
 
     # Set the output
