@@ -189,63 +189,6 @@ namespace UGridNET.Tests
             }
         }
         
-        [Test]
-        [Order(5)]
-        public void WritingMesh2DNetlinkContoursSucceeds()
-        {
-            string filePath = Path.Combine(testOutputDir, "mesh2D_netlink.nc");
-
-            UGridWriter file = null;
-
-            DisposableMesh2D disposableMesh2D = CreateDisposableMesh2D("myMesh2D");
-            GeometryList geometryList = CreateNetLinkContours();
-            ProjectedCoordinateSystem projectedCoordinateSystem = CreateCoordinateSystem();
-
-            try
-            {
-                Assert.DoesNotThrow(() => file = new UGridWriter(filePath));
-                Assert.DoesNotThrow(() => file.AddMesh2D(disposableMesh2D));
-                Assert.DoesNotThrow(() => file.AddMesh2DNetLinkContours(0, geometryList));
-                Assert.DoesNotThrow(() => file.AddProjectedCoordinateSystem(projectedCoordinateSystem));
-                Assert.DoesNotThrow(() => file.AddGlobalAttribute("source", "Unit test"));
-                Assert.DoesNotThrow(() => file.AddGlobalAttributes(globalAttributes));
-                Assert.DoesNotThrow(() => file.WriteTopologies());
-                Assert.That(file.HasMesh2D, Is.True);
-                Assert.That(file.Mesh2DList.Count, Is.EqualTo(1));
-            }
-            finally
-            {
-                file?.Dispose();
-            }
-        }
-        
-        [Test]
-        [Order(6)]
-        public void ImportingExportedNetlinkContours_GetsCorrectCoordinates()
-        {
-            string filePath = Path.Combine(testOutputDir, "mesh2D_netlink.nc");
-            UGridReader file = null;
-
-            var contours = CreateNetLinkContours();
-            
-            try
-            {
-                file = new UGridReader(filePath);
-
-                Assert.That(file.HasMesh2D, Is.True);
-                double[] x = file.GetVariableByName<double>("myMesh2D_NetLinkContour_x");
-                double[] y = file.GetVariableByName<double>("myMesh2D_NetLinkContour_y");
-
-                Assert.That(x, Is.Not.Null);
-                Assert.That(x, Is.EqualTo(contours.XCoordinates));
-                Assert.That(y, Is.EqualTo(contours.YCoordinates));
-            }
-            finally
-            {
-                file?.Dispose();
-            }
-        }
-        
         private static DisposableMesh2D CreateDisposableMesh2D(string meshName)
         {
             return new DisposableMesh2D
@@ -292,32 +235,6 @@ namespace UGridNET.Tests
                 EdgeX = new[] { 0.5, 1.0, 0.5, 0.0 },
                 EdgeY = new[] { 0.0, 0.5, 1.0, 0.5 },
                 EdgeNodes = new[] { 0, 1, 1, 2, 2, 3, 3, 0 }
-            };
-        }
-        
-        private static GeometryList CreateNetLinkContours()
-        {
-            var x = new[]
-            {
-                1.0, 0.0, 0.0, 1.0,
-                1.0, 1.0, 0.5, 0.5,
-                0.0, 1.0, 1.0, 0.0,
-                0.0, 0.0, 0.5, 0.5,
-            };
-
-            var y = new[]
-            {
-                0.0, 0.0, 0.5, 0.5,
-                0.0, 1.0, 1.0, 0.0,
-                1.0, 1.0, 0.5, 0.5,
-                1.0, 0.0, 0.0, 1.0,
-            };
-
-            return new GeometryList
-            {
-                XCoordinates = x,
-                YCoordinates = y,
-                NumberOfCoordinates = x.Length
             };
         }
 

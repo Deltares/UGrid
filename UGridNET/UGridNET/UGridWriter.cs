@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using UGridNET.Extensions;
 
 namespace UGridNET
@@ -25,85 +24,6 @@ namespace UGridNET
             Meshes2D.Add(mesh2D);
             int topologyId = -1;
             Invoke(() => UGrid.ug_mesh2d_def(FileID, mesh2D, ref topologyId));
-        }
-
-        public void AddMesh2DNetLinkContours(int topologyId, GeometryList geometryList)
-        {
-            Mesh2D mesh = Meshes2D[topologyId];
-            string meshName = Marshal.PtrToStringAnsi(mesh.name).Trim();
-            
-            double fillValue = -999.0;
-            Invoke(() => UGrid.ug_get_double_fill_value(ref fillValue));
-            
-            var xVariableName = $"{meshName}_NetLinkContour_x";
-            var yVariableName = $"{meshName}_NetLinkContour_y";
-            var dimensionName = $"n{meshName}_NetLinkContourPts";
-
-            var variableMetadata = new[]
-            {
-                (
-                    NameBytes: xVariableName.GetRightPaddedNullTerminatedBytes(UGrid.name_long_length),
-                    StandardName: "projection_x_coordinate",
-                    LongName: "list of x-contour points of momentum control volume surrounding each net/flow link",
-                    Data: geometryList.XCoordinates
-                ),
-                (
-                    NameBytes: yVariableName.GetRightPaddedNullTerminatedBytes(UGrid.name_long_length),
-                    StandardName: "projection_y_coordinate",
-                    LongName: "list of y-contour points of momentum control volume surrounding each net/flow link",
-                    Data: geometryList.YCoordinates
-                )
-            };
-            
-            foreach (var (variableNameBytes, standardName, longName, data) in variableMetadata)
-            {
-                Invoke(() => UGrid.ug_topology_define_geometry_variable_on_location(
-                           FileID,
-                           TopologyType.Mesh2dTopology,
-                           topologyId,
-                           MeshLocations.Edges,
-                           variableNameBytes,
-                           dimensionName.GetRightPaddedNullTerminatedBytes(UGrid.name_long_length),
-                           4));
-
-                Invoke(() => UGrid.ug_attribute_char_define(
-                           FileID, variableNameBytes,
-                           "mesh".GetRightPaddedNullTerminatedBytes(UGrid.name_long_length),
-                           meshName.GetRightPaddedNullTerminatedBytes(UGrid.name_long_length),
-                           meshName.Length));
-
-                Invoke(() => UGrid.ug_attribute_char_define(
-                           FileID, variableNameBytes,
-                           "location".GetRightPaddedNullTerminatedBytes(UGrid.name_long_length),
-                           "edge".GetRightPaddedNullTerminatedBytes(UGrid.name_long_length),
-                           "edge".Length));
-
-                Invoke(() => UGrid.ug_attribute_char_define(
-                           FileID, variableNameBytes,
-                           "units".GetRightPaddedNullTerminatedBytes(UGrid.name_long_length),
-                           "m".GetRightPaddedNullTerminatedBytes(2),
-                           1));
-
-                Invoke(() => UGrid.ug_attribute_char_define(
-                           FileID, variableNameBytes,
-                           "standard_name".GetRightPaddedNullTerminatedBytes(UGrid.name_long_length),
-                           standardName.GetRightPaddedNullTerminatedBytes(standardName.Length + 1),
-                           standardName.Length));
-
-                Invoke(() => UGrid.ug_attribute_char_define(
-                           FileID, variableNameBytes,
-                           "long_name".GetRightPaddedNullTerminatedBytes(UGrid.name_long_length),
-                           longName.GetRightPaddedNullTerminatedBytes(longName.Length + 1),
-                           longName.Length));
-
-                Invoke(() => UGrid.ug_attribute_double_define(
-                           FileID, variableNameBytes,
-                           "_FillValue".GetRightPaddedNullTerminatedBytes(UGrid.name_long_length),
-                           new[] { fillValue },
-                           1));
-                
-                Invoke(() => UGrid.ug_variable_put_data_double(FileID, variableNameBytes, data));
-            }
         }
 
         public void AddGlobalAttribute(string attributeName, string attributeValue)
