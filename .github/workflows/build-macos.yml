@@ -23,8 +23,9 @@ jobs:
       fail-fast: false
       matrix:
         platform:
-          - macos-13 # x86_64 (free)
           - macos-14 # arm64 (free)
+          - macos-15 # arm64 (free)
+          - macos-15-intel # intel (free)
         build_type:
           - Release
 
@@ -36,27 +37,11 @@ jobs:
       run:
         shell: bash
 
-    # The default compiler on macos is clang, switch to gcc. Specifying the version is necessary.
-    # It seems like gcc and g++ are symbolic links to the default clang and clang++ compilers, respectively.
-    # CMAKE_CXX_COMPILER_ID will evaluate to AppleClang rather than GNU on macos.
-    env:
-      CC: gcc-12
-      CXX: g++-12
-
     # Build steps
     steps:
       # Step: Checkout
       - name: Checkout
         uses: actions/checkout@v4
-
-      # Explicitly set the Xcode version for macos-13. With the default (newer), GCC
-      # fails to find some components of the standard library which causes build failure.
-      # This should not happen if clang is used instead (clang has better support under macOS).
-      # Setting a newer GCC version in the env section might also resolve the issue.
-      # The Linux Docker build must use the same version for consistency.
-      - name: Set Xcode version
-        if: startsWith(matrix.platform, 'macos-13')
-        run: sudo xcode-select -s /Applications/Xcode_14.1.app/Contents/Developer
 
       # Step: Set paths
       - name: Set paths
@@ -79,8 +64,7 @@ jobs:
           brew install bash
           echo "$(brew --prefix)/bin/bash" | sudo tee -a /etc/shells
           sudo chsh -s "$(brew --prefix)/bin/bash"
-          brew install boost
-          brew install doxygen 
+          brew install doxygen
           brew install m4
           brew install perl
           brew install openssl
@@ -131,7 +115,7 @@ jobs:
 
       # Step: Build
       - name: Build
-        run: cmake --build ${{ steps.paths.outputs.build_dir }} --config ${{ matrix.build_type }} -j
+        run: cmake --build ${{ steps.paths.outputs.build_dir }} --config ${{ matrix.build_type }} -j 4
 
       # Step: Test
       - name: Test

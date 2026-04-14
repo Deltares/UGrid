@@ -27,8 +27,7 @@
 
 #pragma once
 
-#include <boost/algorithm/string.hpp>
-#include <boost/algorithm/string/split.hpp>
+#include <algorithm>
 #include <netcdf>
 
 #include <UGrid/Constants.hpp>
@@ -117,6 +116,20 @@ namespace ugrid
         return true;
     }
 
+    static void split(std::vector<std::string>& tokenised, const std::string& str)
+    {
+        std::istringstream buffer(str);
+        std::string token;
+
+        while (buffer >> token)
+        {
+            if (!token.empty())
+            {
+                tokenised.emplace_back(token);
+            }
+        }
+    }
+
     static std::tuple<std::map<std::string, std::vector<netCDF::NcVar>>,
                       std::map<std::string, std::vector<std::string>>,
                       std::map<UGridFileDimensions, netCDF::NcDim>>
@@ -146,7 +159,8 @@ namespace ugrid
             }
 
             std::vector<std::string> attribute_value_string_tokens;
-            split(attribute_value_string_tokens, attribute_value_string, boost::is_any_of(" "));
+            split(attribute_value_string_tokens, attribute_value_string);
+
             std::vector<std::string> valid_variable_names;
             std::vector<netCDF::NcVar> valid_attribute_variables;
             for (auto const& token : attribute_value_string_tokens)

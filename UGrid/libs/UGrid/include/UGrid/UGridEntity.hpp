@@ -225,7 +225,7 @@ namespace ugrid
         /// @param name_pattern [in] The string pattern to use for the names
         void define_topology_coordinates(UGridFileDimensions dimension,
                                          std::string const& long_name_pattern,
-                                         std::string const& name_pattern = "%s%s");
+                                         std::string const& name_pattern = "{}{}");
 
         /// @brief Get the location attribute variable based on \ref m_spherical_coordinates value
         /// @param location [in] The location (node, edge, face)
@@ -263,6 +263,6 @@ namespace ugrid
                    std::string>
         get_location_variable_names(std::string const& location,
                                     std::string const& long_name_pattern,
-                                    std::string const& name_pattern = "%s%s");
+                                    std::string const& name_pattern = "{}{}");
     };
 } // namespace ugrid

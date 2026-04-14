@@ -26,24 +26,11 @@ The repository contains two main components:
 
 **Prerequisites**:
 - CMake 3.19 or higher
-- A C++17 compatible compiler
-- The Boost libraries
+- A C++20 compatible compiler
 - Git
 - Doxygen (optional)
 
-On windows precompiled boost binaries (with MSVC compiler) can be downloaded here:
-
-https://sourceforge.net/projects/boost/files/boost-binaries/
-
 ### Dependencies
-
-#### Boost
-
-- Under Windows, precompiled boost binaries (with MSVC compiler) can be downloaded [here](https://sourceforge.net/projects/boost/files/boost-binaries/). Alternatively, the source code is available [here](https://sourceforge.net/projects/boost/files/boost/) and the installation instructions can be found [here](https://www.boost.org/doc/libs/1_74_0/more/getting_started/windows.html). Once installed, set the boost environment variable `BOOST_INCLUDEDIR` to the appropriate path. For example, if version 1.74.0 is installed in `C:\Apps`, set `BOOST_INCLUDEDIR=C:\Apps\boost_1_74_0`.
-- Under Linux, Boost can be either obtained from the package repository of the used Linux distribution or built from [source](https://sourceforge.net/projects/boost/files/boost/) following these [instructions](https://www.boost.org/doc/libs/1_74_0/more/getting_started/unix-variants.html).
-- Under macOS, Boost can be installed by following these [instructions](https://www.boost.org/doc/libs/1_74_0/doc/html/quickbook/install.html).
-
-Once installed, modify boost environmental variables accordingly. For example:
 
 ```powershell
 BOOST_INCLUDEDIR=C:\Apps\boost_1_74_0

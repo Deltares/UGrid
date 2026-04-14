@@ -36,6 +36,6 @@ if(ENABLE_UNIT_TESTING)
       add_subdirectory(${googletest_SOURCE_DIR} ${googletest_BINARY_DIR} EXCLUDE_FROM_ALL)
     endif()
   endif()
-  
+
   enable_testing()
 endif()
