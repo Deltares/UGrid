@@ -228,7 +228,7 @@ namespace ugrid
         /// @param name_pattern [in] The string pattern to use for the coordinate variable names
         void define_topology_coordinates(UGridEntityLocations location,
                                          std::string const& long_name_pattern,
-                                         std::string const& name_pattern = "%s%s");
+                                         std::string const& name_pattern = "{}{}");
 
         /// @brief Defines topology-related coordinate variables based on \ref m_spherical_coordinates and optionally
         ///        registers them on the variables associated with \p topology_attribute_name as attribute \p attribute_name
@@ -239,7 +239,7 @@ namespace ugrid
         /// @param attribute_name [in] (optional) The attribute to attach
         void define_topology_related_coordinates(UGridEntityLocations location,
                                                  std::string const& long_name_pattern,
-                                                 std::string const& name_pattern = "%s%s",
+                                                 std::string const& name_pattern = "{}{}",
                                                  std::string const& topology_attribute_name = "",
                                                  std::string const& attribute_name = "");
 
@@ -280,6 +280,6 @@ namespace ugrid
                    std::string>
         get_location_variable_names(UGridEntityLocations location,
                                     std::string const& long_name_pattern,
-                                    std::string const& name_pattern = "%s%s");
+                                    std::string const& name_pattern = "{}{}");
     };
 } // namespace ugrid

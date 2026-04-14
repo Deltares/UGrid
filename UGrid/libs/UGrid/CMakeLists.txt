@@ -55,18 +55,18 @@ target_sources(
         ${INC_LIST}
 )
 
-# Add precompiled header 
+# Add precompiled header
 target_precompile_headers(
   ${TARGET_NAME}
   PRIVATE
-    <map> 
-    <string> 
-    <unordered_map> 
-    <vector> 
+    <map>
+    <string>
+    <unordered_map>
+    <vector>
     <memory>
     <sstream>
-    <ncDim.h> 
-    <ncVar.h> 
+    <ncDim.h>
+    <ncVar.h>
     <ncFile.h>
 )
 
