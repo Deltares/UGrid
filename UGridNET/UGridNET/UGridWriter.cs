@@ -8,16 +8,6 @@ namespace UGridNET
         public UGridWriter(string path)
             : base(path, FileMode.Write)
         {
-            try
-            {
-            }
-            catch
-            {
-                // If initialization fails, dispose of any partially initialized resources
-                Dispose();
-                // Rethrow to inform the caller of the failure
-                throw;
-            }
         }
 
         public void AddMesh1D(DisposableMesh1D disposableMesh1D)

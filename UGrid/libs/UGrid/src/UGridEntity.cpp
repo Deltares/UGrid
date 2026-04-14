@@ -150,7 +150,7 @@ std::tuple<std::string,
            std::string,
            std::string,
            std::string>
-UGridEntity::get_location_variable_names(std::string const& location, std::string const& long_name_pattern, std::string const& name_pattern)
+UGridEntity::get_location_variable_names(UGridEntityLocations location, std::string const& long_name_pattern, std::string const& name_pattern)
 {
     std::string location_coordinate_x;
     std::string location_coordinate_y;
@@ -161,12 +161,12 @@ UGridEntity::get_location_variable_names(std::string const& location, std::strin
     std::string units_x;
     std::string units_y;
 
-    UGridVarAttributeStringBuilder string_builder(m_entity_name);
+    std::string const location_str = from_location_to_location_string(location);
 
     if (!m_spherical_coordinates)
     {
-        location_coordinate_x = std::vformat(name_pattern, std::make_format_args(location, "_x"));
-        location_coordinate_y = std::vformat(name_pattern, std::make_format_args(location, "_y"));
+        location_coordinate_x = std::vformat(name_pattern, std::make_format_args(location_str, "_x"));
+        location_coordinate_y = std::vformat(name_pattern, std::make_format_args(location_str, "_y"));
 
         long_name_x = std::vformat(long_name_pattern, std::make_format_args("x-coordinate"));
         long_name_y = std::vformat(long_name_pattern, std::make_format_args("y-coordinate"));
@@ -179,8 +179,8 @@ UGridEntity::get_location_variable_names(std::string const& location, std::strin
     }
     if (m_spherical_coordinates)
     {
-        location_coordinate_x = std::vformat(name_pattern, std::make_format_args(location, "_lon"));
-        location_coordinate_y = std::vformat(name_pattern, std::make_format_args(location, "_lat"));
+        location_coordinate_x = std::vformat(name_pattern, std::make_format_args(location_str, "_lon"));
+        location_coordinate_y = std::vformat(name_pattern, std::make_format_args(location_str, "_lat"));
 
         long_name_x = std::vformat(long_name_pattern, std::make_format_args("latitude coordinate"));
         long_name_y = std::vformat(long_name_pattern, std::make_format_args("longitude coordinate"));
@@ -195,22 +195,8 @@ UGridEntity::get_location_variable_names(std::string const& location, std::strin
     return {location_coordinate_x, location_coordinate_y, standard_name_x, standard_name_y, long_name_x, long_name_y, units_x, units_y};
 }
 
-void UGridEntity::define_topology_coordinates(UGridFileDimensions dimension, std::string const& long_name_pattern, std::string const& name_pattern)
+void UGridEntity::define_topology_coordinates(UGridEntityLocations location, std::string const& long_name_pattern, std::string const& name_pattern)
 {
-    std::string dimension_string;
-    if (dimension == UGridFileDimensions::node)
-    {
-        dimension_string = "node";
-    }
-    if (dimension == UGridFileDimensions::edge)
-    {
-        dimension_string = "edge";
-    }
-    if (dimension == UGridFileDimensions::face)
-    {
-        dimension_string = "face";
-    }
-
     auto [location_coordinate_x,
           location_coordinate_y,
           standard_name_x,
@@ -218,13 +204,15 @@ void UGridEntity::define_topology_coordinates(UGridFileDimensions dimension, std
           long_name_x,
           long_name_y,
           units_x,
-          units_y] = get_location_variable_names(dimension_string, long_name_pattern, name_pattern);
+          units_y] = get_location_variable_names(location, long_name_pattern, name_pattern);
 
     auto string_builder = UGridVarAttributeStringBuilder(m_entity_name);
     string_builder << "_" << location_coordinate_x << " " << m_entity_name << "_" << location_coordinate_y;
 
-    std::string attribute_name = dimension_string + "_coordinates";
+    std::string const attribute_name = from_location_to_location_string(location) + "_coordinates";
     define_topological_attribute(attribute_name, string_builder.str());
+
+    UGridFileDimensions const dimension = from_location_to_dimension(location);
 
     define_topological_variable(attribute_name,
                                 location_coordinate_x,
@@ -241,6 +229,67 @@ void UGridEntity::define_topology_coordinates(UGridFileDimensions dimension, std
                                 {{"units", units_y},
                                  {"standard_name", standard_name_y},
                                  {"long_name", long_name_y}});
+}
+
+void UGridEntity::define_topology_related_coordinates(
+    UGridEntityLocations location,
+    std::string const& long_name_pattern,
+    std::string const& name_pattern,
+    std::string const& topology_attribute_name,
+    std::string const& attribute_name)
+{
+    static std::map<UGridFileDimensions, UGridFileDimensions> const extra_dimension{
+        {UGridFileDimensions::edge, UGridFileDimensions::Two},
+        {UGridFileDimensions::face, UGridFileDimensions::max_face_node}};
+
+    UGridFileDimensions const dimension = from_location_to_dimension(location);
+    std::vector<UGridFileDimensions> ugridfile_dimensions = {dimension};
+
+    if (auto const it = extra_dimension.find(dimension); it != extra_dimension.end())
+    {
+        ugridfile_dimensions.emplace_back(it->second);
+    }
+
+    auto [location_coordinate_x,
+          location_coordinate_y,
+          standard_name_x,
+          standard_name_y,
+          long_name_x,
+          long_name_y,
+          units_x,
+          units_y] = get_location_variable_names(location, long_name_pattern, name_pattern);
+
+    if (!topology_attribute_name.empty() && !attribute_name.empty())
+    {
+        auto string_builder = UGridVarAttributeStringBuilder(m_entity_name);
+        string_builder << "_" << location_coordinate_x;
+        m_topology_attribute_variables.at(topology_attribute_name).at(0).putAtt(attribute_name, string_builder.str());
+    }
+
+    define_topology_related_variables(
+        location_coordinate_x,
+        netCDF::NcType::nc_DOUBLE,
+        ugridfile_dimensions,
+        {{"units", units_x},
+         {"standard_name", standard_name_x},
+         {"long_name", long_name_x}},
+        true);
+
+    if (!topology_attribute_name.empty() && !attribute_name.empty())
+    {
+        auto string_builder = UGridVarAttributeStringBuilder(m_entity_name);
+        string_builder << "_" << location_coordinate_y;
+        m_topology_attribute_variables.at(topology_attribute_name).at(1).putAtt(attribute_name, string_builder.str());
+    }
+
+    define_topology_related_variables(
+        location_coordinate_y,
+        netCDF::NcType::nc_DOUBLE,
+        ugridfile_dimensions,
+        {{"units", units_y},
+         {"standard_name", standard_name_y},
+         {"long_name", long_name_y}},
+        true);
 }
 
 std::map<std::string, std::vector<netCDF::NcVar>>::const_iterator UGridEntity::find_attribute_variable_name_with_aliases(std::string const& variable_name) const
@@ -309,7 +358,9 @@ void UGridEntity::define_topological_variable(std::string const& topology_attrib
     // add fill value
     if (add_fill_value)
     {
-        nc_type == netCDF::NcType::nc_DOUBLE ? topology_attribute_variable.setFill(true, m_double_fill_value) : topology_attribute_variable.setFill(true, m_int_fill_value);
+        nc_type == netCDF::NcType::nc_DOUBLE
+            ? topology_attribute_variable.setFill(true, m_double_fill_value)
+            : topology_attribute_variable.setFill(true, m_int_fill_value);
     }
 
     // find if an attribute variable_suffix is already stored, otherwise fill it
@@ -327,12 +378,12 @@ void UGridEntity::define_topological_variable(std::string const& topology_attrib
 void UGridEntity::define_topology_related_variables(std::string const& variable,
                                                     netCDF::NcType nc_type,
                                                     std::vector<UGridFileDimensions> const& ugridfile_dimensions,
-                                                    std::vector<std::pair<std::string, std::string>> const& attributes)
+                                                    std::vector<std::pair<std::string, std::string>> const& attributes,
+                                                    bool add_fill_value)
 {
     auto string_builder = UGridVarAttributeStringBuilder(m_entity_name);
     string_builder << "_" << variable;
 
-    // create dimensions vector
     std::vector<netCDF::NcDim> dimensions;
     for (auto const d : ugridfile_dimensions)
     {
@@ -344,6 +395,13 @@ void UGridEntity::define_topology_related_variables(std::string const& variable,
     for (auto const& attribute : attributes)
     {
         topology_related_variable.putAtt(attribute.first, attribute.second);
+    }
+
+    if (add_fill_value)
+    {
+        nc_type == netCDF::NcType::nc_DOUBLE
+            ? topology_related_variable.setFill(true, m_double_fill_value)
+            : topology_related_variable.setFill(true, m_int_fill_value);
     }
 
     m_related_variables.insert({variable, {topology_related_variable}});

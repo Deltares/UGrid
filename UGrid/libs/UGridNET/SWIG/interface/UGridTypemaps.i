@@ -50,7 +50,7 @@ CSHARP_ARRAYS(char, byte)
 %csmethodmodifiers ug_topology_define_double_variable_on_location "public unsafe";
 %apply char FIXED[] { const char* variable_name };
 %apply char FIXED[] { const char* dimension_name };
- %{
+%{
     int ug_topology_define_double_variable_on_location(int file_id,
                                                        ugridapi::TopologyType topology_type,
                                                        int topology_id,
@@ -60,9 +60,24 @@ CSHARP_ARRAYS(char, byte)
                                                        const int dimension_value);
 %}
 
+%csmethodmodifiers ug_topology_define_geometry_variable_on_location "public unsafe";
+%apply char FIXED[] { const char* variable_name };
+%apply char FIXED[] { const char* dimension_name };
+%{
+    int ug_topology_define_geometry_variable_on_location(int file_id,
+                                                         ugridapi::TopologyType topology_type,
+                                                         int topology_id,
+                                                         ugridapi::MeshLocations location,
+                                                         const char* variable_name,
+                                                         const char* dimension_name,
+                                                         const int dimension_value);
+%}
+
 %csmethodmodifiers ug_variable_count_attributes "public unsafe";
 %csmethodmodifiers ug_variable_count_dimensions "public unsafe";
 %csmethodmodifiers ug_variable_int_define "public unsafe";
+%csmethodmodifiers ug_variable_double_define "public unsafe";
+
 %csmethodmodifiers ug_attribute_global_char_define "public unsafe";
 
 %csmethodmodifiers ug_attribute_global_char_get "public unsafe";
@@ -124,6 +139,10 @@ int ug_variable_get_attributes_max_length(int file_id,
                                   const char* variable_name,
                                   char* data);
 %}
+
+%csmethodmodifiers ug_variable_put_data_double "public unsafe";
+%csmethodmodifiers ug_variable_put_data_int "public unsafe";
+%csmethodmodifiers ug_variable_put_data_char "public unsafe";
 
 %csmethodmodifiers ug_variable_inq "public unsafe";
 %apply char FIXED[] { const char* variable_name };

@@ -68,7 +68,7 @@ void Mesh2D::define(ugridapi::Mesh2D const& mesh2d)
         bool const add_coordinate_variable = mesh2d.node_x != nullptr && mesh2d.node_y != nullptr;
         if (add_coordinate_variable)
         {
-            define_topology_coordinates(UGridFileDimensions::node, "{} of mesh node");
+            define_topology_coordinates(UGridEntityLocations::node, "{} of mesh node");
         }
 
         // Define optional related variables
@@ -79,11 +79,13 @@ void Mesh2D::define(ugridapi::Mesh2D const& mesh2d)
                 "node_z",
                 netCDF::NcType::nc_DOUBLE,
                 {UGridFileDimensions::node},
-                {{"standard_name", "altitude"},
+                {{"mesh", m_entity_name},
+                 {"standard_name", "altitude"},
                  {"long_name", "z-coordinate of mesh node"},
                  {"units", "m"},
-                 {"coordinates", "node"},
-                 {"location", location_attribute_value}});
+                 {"coordinates", location_attribute_value},
+                 {"location", "node"}},
+                true);
         }
     }
 
@@ -111,7 +113,7 @@ void Mesh2D::define(ugridapi::Mesh2D const& mesh2d)
         // Define edge_nodes coordinates
         if (mesh2d.edge_x != nullptr && mesh2d.edge_y != nullptr)
         {
-            define_topology_coordinates(UGridFileDimensions::edge, "characteristic {} of the mesh edge (e.g. midpoint)");
+            define_topology_coordinates(UGridEntityLocations::edge, "characteristic {} of the mesh edge (e.g. midpoint)");
         }
     }
 
@@ -143,11 +145,18 @@ void Mesh2D::define(ugridapi::Mesh2D const& mesh2d)
         bool const add_coordinate_variable = mesh2d.face_x != nullptr && mesh2d.face_y != nullptr;
         if (add_coordinate_variable)
         {
-            define_topology_coordinates(UGridFileDimensions::face, "characteristic {} of the mesh face");
+            define_topology_coordinates(UGridEntityLocations::face, "characteristic {} of the mesh face");
         }
 
-        // Define face bounds (is this always required?)
-        // define_topology_coordinates(UGridFileDimensions::face, "{} bounds of mesh face (i.e. corner coordinates)", "{}{}_bnd");
+        // Define optional face bounds
+        if (mesh2d.face_x_bnd != nullptr && mesh2d.face_y_bnd != nullptr)
+        {
+            define_topology_related_coordinates(UGridEntityLocations::face,
+                                                "{} bounds of mesh faces (i.e. corner coordinates)",
+                                                "{}{}_bnd",
+                                                "face_coordinates",
+                                                "bounds");
+        }
 
         // Define optional variables
         if (mesh2d.face_edges != nullptr)
@@ -251,6 +260,14 @@ void Mesh2D::put(ugridapi::Mesh2D const& mesh2d)
     {
         it->second.at(1).putVar(mesh2d.face_y);
     }
+    if (auto const it = m_related_variables.find("face_x_bnd"); mesh2d.face_x_bnd != nullptr && it != m_related_variables.end())
+    {
+        it->second.putVar(mesh2d.face_x_bnd);
+    }
+    if (auto const it = m_related_variables.find("face_y_bnd"); mesh2d.face_y_bnd != nullptr && it != m_related_variables.end())
+    {
+        it->second.putVar(mesh2d.face_y_bnd);
+    }
     if (mesh2d.num_layers > 0)
     {
         // to complete
@@ -343,6 +360,14 @@ void Mesh2D::get(ugridapi::Mesh2D& mesh2d) const
     if (auto const it = m_topology_attribute_variables.find("face_coordinates"); mesh2d.face_y != nullptr && it != m_topology_attribute_variables.end())
     {
         it->second.at(1).getVar(mesh2d.face_y);
+    }
+    if (auto const it = m_related_variables.find("face_x_bnd"); mesh2d.face_x_bnd != nullptr && it != m_related_variables.end())
+    {
+        it->second.getVar(mesh2d.face_x_bnd);
+    }
+    if (auto const it = m_related_variables.find("face_y_bnd"); mesh2d.face_y_bnd != nullptr && it != m_related_variables.end())
+    {
+        it->second.getVar(mesh2d.face_y_bnd);
     }
     if (mesh2d.num_layers > 0)
     {

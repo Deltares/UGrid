@@ -45,6 +45,9 @@ namespace ugrid
         return std::abs(value - referenceValue) < std::numeric_limits<T>::epsilon();
     }
 
+    /// @brief Converts a dimension string to its corresponding \ref UGridFileDimensions enum value
+    /// @param dimension_string [in] The dimension string (e.g. "node", "edge", "face", "max_face_node")
+    /// @return The corresponding \ref UGridFileDimensions enum value
     static UGridFileDimensions from_dimension_string_to_dimension_enum(std::string const& dimension_string)
     {
         if (dimension_string == "node" || dimension_string == "nodes")
@@ -66,6 +69,9 @@ namespace ugrid
         throw std::invalid_argument("from_dimension_string_to_dimension_enum: Dimension not found.");
     }
 
+    /// @brief Converts a location string to its corresponding \ref UGridEntityLocations enum value
+    /// @param location_string [in] The location string (e.g. "node", "edge", "face")
+    /// @return The corresponding \ref UGridEntityLocations enum value
     static UGridEntityLocations from_location_string_to_location(std::string const& location_string)
     {
         if (location_string == "node")
@@ -83,11 +89,12 @@ namespace ugrid
         throw std::invalid_argument("from_location_string_to_location: Dimension not found.");
     }
 
-    static std::string from_location_integer_to_location_string(int location)
+    /// @brief Converts a \ref UGridEntityLocations enum value to its string representation
+    /// @param location [in] The topological entity location
+    /// @return The string representation of the location (e.g. "node", "edge", "face")
+    static std::string from_location_to_location_string(UGridEntityLocations location)
     {
-        auto const ug_entity_location = static_cast<UGridEntityLocations>(location);
-
-        switch (ug_entity_location)
+        switch (location)
         {
         case node:
             return "node";
@@ -102,7 +109,33 @@ namespace ugrid
         case vertical:
             return "vertical";
         default:
-            throw std::runtime_error("Invalid location.");
+            throw std::runtime_error("from_location_to_location_string: Invalid location.");
+        }
+    }
+
+    /// @brief Converts an integer location value to its string representation
+    /// @param location [in] The integer representation of a \ref UGridEntityLocations value
+    /// @return The string representation of the location (e.g. "node", "edge", "face")
+    static std::string from_location_integer_to_location_string(int location)
+    {
+        return from_location_to_location_string(static_cast<UGridEntityLocations>(location));
+    }
+
+    /// @brief Converts a \ref UGridEntityLocations value to its corresponding \ref UGridFileDimensions
+    /// @param location [in] The topological entity (node, edge or face)
+    /// @return The corresponding \ref UGridFileDimensions
+    static UGridFileDimensions from_location_to_dimension(UGridEntityLocations location)
+    {
+        switch (location)
+        {
+        case node:
+            return UGridFileDimensions::node;
+        case edge:
+            return UGridFileDimensions::edge;
+        case face:
+            return UGridFileDimensions::face;
+        default:
+            throw std::invalid_argument("from_location_to_dimension: Location has no corresponding dimension.");
         }
     }
 
