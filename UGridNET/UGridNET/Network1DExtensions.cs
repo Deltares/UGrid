@@ -24,6 +24,7 @@ namespace UGridNET
                     network1D.geometry_nodes_x = IntPtrHelpers.AllocateZeroed<double>(network1D.num_geometry_nodes);
                     network1D.geometry_nodes_y = IntPtrHelpers.AllocateZeroed<double>(network1D.num_geometry_nodes);
                     network1D.num_edge_geometry_nodes = IntPtrHelpers.AllocateZeroed<int>(network1D.num_edges);
+                    network1D.grid_mapping = IntPtrHelpers.AllocateZeroed<byte>(UGrid.name_long_length);
                 }
                 catch
                 {
@@ -53,6 +54,7 @@ namespace UGridNET
                 IntPtrHelpers.Free(() => network1D.geometry_nodes_x, value => network1D.geometry_nodes_x = value);
                 IntPtrHelpers.Free(() => network1D.geometry_nodes_y, value => network1D.geometry_nodes_y = value);
                 IntPtrHelpers.Free(() => network1D.num_edge_geometry_nodes, value => network1D.num_edge_geometry_nodes = value);
+                IntPtrHelpers.Free(() => network1D.grid_mapping, value => network1D.grid_mapping = value);
             }
         }
     }

@@ -65,7 +65,7 @@ void Mesh1D::define(ugridapi::Mesh1D const& mesh1d)
         throw std::invalid_argument("Mesh1D::define mesh1d node edge offset is empty");
     }
 
-    UGridEntity::define(mesh1d.name, mesh1d.start_index, "Topology data of 1D mesh", 1, mesh1d.is_spherical);
+    UGridEntity::define(mesh1d.name, mesh1d.start_index, "Topology data of 1D mesh", 1, mesh1d.is_spherical, mesh1d.grid_mapping);
     auto string_builder = UGridVarAttributeStringBuilder(m_entity_name);
 
     std::string network_name(mesh1d.network_name);

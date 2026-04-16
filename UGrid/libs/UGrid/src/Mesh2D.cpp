@@ -52,7 +52,7 @@ void Mesh2D::define(ugridapi::Mesh2D const& mesh2d)
         throw std::invalid_argument("Mesh2D::define mesh name field is empty");
     }
 
-    UGridEntity::define(mesh2d.name, mesh2d.start_index, "Topology data of 2D mesh", 2, mesh2d.is_spherical);
+    UGridEntity::define(mesh2d.name, mesh2d.start_index, "Topology data of 2D mesh", 2, mesh2d.is_spherical, mesh2d.grid_mapping);
     auto string_builder = UGridVarAttributeStringBuilder(m_entity_name);
 
     // node variables
@@ -74,18 +74,8 @@ void Mesh2D::define(ugridapi::Mesh2D const& mesh2d)
         // Define optional related variables
         if (mesh2d.node_z != nullptr)
         {
-            auto const location_attribute_value = get_location_attribute_value("node");
-            define_topology_related_variables(
-                "node_z",
-                netCDF::NcType::nc_DOUBLE,
-                {UGridFileDimensions::node},
-                {{"mesh", m_entity_name},
-                 {"standard_name", "altitude"},
-                 {"long_name", "z-coordinate of mesh node"},
-                 {"units", "m"},
-                 {"coordinates", location_attribute_value},
-                 {"location", "node"}},
-                true);
+            auto const attributes = create_data_variable_attributes("altitude", "z-coordinate of mesh node", "m", UGridEntityLocations::node);
+            define_topology_related_variables("node_z", netCDF::NcType::nc_DOUBLE, {UGridFileDimensions::node}, attributes, true);
         }
     }
 

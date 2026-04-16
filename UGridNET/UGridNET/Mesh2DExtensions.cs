@@ -28,6 +28,7 @@ namespace UGridNET
                     mesh2D.face_nodes = IntPtrHelpers.AllocateZeroed<int>(mesh2D.num_faces * mesh2D.num_face_nodes_max);
                     mesh2D.face_edges = IntPtrHelpers.AllocateZeroed<int>(mesh2D.num_faces * mesh2D.num_face_nodes_max);
                     mesh2D.face_faces = IntPtrHelpers.AllocateZeroed<int>(mesh2D.num_faces * mesh2D.num_face_nodes_max);
+                    mesh2D.grid_mapping = IntPtrHelpers.AllocateZeroed<byte>(UGrid.name_long_length);
                 }
                 catch
                 {
@@ -61,6 +62,7 @@ namespace UGridNET
                 IntPtrHelpers.Free(() => mesh2D.face_nodes, value => mesh2D.face_nodes = value);
                 IntPtrHelpers.Free(() => mesh2D.face_edges, value => mesh2D.face_edges = value);
                 IntPtrHelpers.Free(() => mesh2D.face_faces, value => mesh2D.face_faces = value);
+                IntPtrHelpers.Free(() => mesh2D.grid_mapping, value => mesh2D.grid_mapping = value);
             }
         }
     }

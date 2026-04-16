@@ -86,7 +86,7 @@ void Network1D::define(ugridapi::Network1D const& network1d)
         throw std::invalid_argument("Network1D::define network geometry coordinates missing");
     }
 
-    UGridEntity::define(network1d.name, network1d.start_index, "Topology data of 1D network", 1, network1d.is_spherical);
+    UGridEntity::define(network1d.name, network1d.start_index, "Topology data of 1D network", 1, network1d.is_spherical, network1d.grid_mapping);
     auto string_builder = UGridVarAttributeStringBuilder(m_entity_name);
 
     // node variables

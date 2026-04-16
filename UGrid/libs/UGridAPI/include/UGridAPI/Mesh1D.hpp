@@ -82,6 +82,9 @@ namespace ugridapi
         /// @brief 1 If coordinates are in a spherical system, 0 otherwise
         int is_spherical = 0;
 
+        /// @brief The name of the variable that defines the coordinate system
+        char* grid_mapping = nullptr;
+
         /// @brief The start index used in arrays using indices, such as edge_node
         int start_index = 0;
 
