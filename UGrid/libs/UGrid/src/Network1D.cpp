@@ -140,7 +140,8 @@ void Network1D::define(ugridapi::Network1D const& network1d)
                                     netCDF::NcType::nc_INT,
                                     {UGridFileDimensions::edge, UGridFileDimensions::Two},
                                     {{"cf_role", "edge_node_connectivity"},
-                                     {"long_name", "Start and end node of network edge"}});
+                                     {"long_name", "Start and end node of network edge"}},
+                                    true);
 
         // Define edge_lengths topology attribute and variable
         define_topological_attribute("edge_length");

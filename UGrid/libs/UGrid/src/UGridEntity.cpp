@@ -343,6 +343,7 @@ void UGridEntity::define_topological_variable(std::string const& topology_attrib
                                               netCDF::NcType nc_type,
                                               std::vector<UGridFileDimensions> const& ugridfile_dimensions,
                                               std::vector<std::pair<std::string, std::string>> const& attributes,
+                                              bool add_start_index,
                                               bool add_fill_value)
 {
     auto string_builder = UGridVarAttributeStringBuilder(m_entity_name);
@@ -364,8 +365,8 @@ void UGridEntity::define_topological_variable(std::string const& topology_attrib
         topology_attribute_variable.putAtt(attribute.first, attribute.second);
     }
 
-    // add start index if necessary
-    if (m_start_index != 0)
+    // add start index
+    if (add_start_index)
     {
         topology_attribute_variable.putAtt("start_index", netCDF::NcType::nc_INT, m_start_index);
     }
@@ -435,7 +436,7 @@ void UGridEntity::define(char const* const entity_name,
     m_spherical_coordinates = is_spherical == 0 ? false : true;
 
     // Topology name
-    m_topology_variable = m_nc_file->addVar(m_entity_name, netCDF::NcType::nc_CHAR);
+    m_topology_variable = m_nc_file->addVar(m_entity_name, netCDF::NcType::nc_INT);
 
     // Topology attributes
     define_topological_attribute("cf_role", "mesh_topology");

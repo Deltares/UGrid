@@ -209,12 +209,14 @@ namespace ugrid
         /// @param nc_type [in] The variable type (int, float, char).
         /// @param ugridfile_dimensions [in] The variable dimensions (multidimensional variable are expressed as vectors).
         /// @param attributes [in] Any additional variable attributes.
+        /// @param add_start_index [in] Boolean to determine if the start index should be used for index variables.
         /// @param add_fill_value [in] Boolean to determine if a fill value should be used for empty data.
         void define_topological_variable(std::string const& topology_attribute_name,
                                          std::string const& variable_suffix,
                                          netCDF::NcType nc_type,
                                          std::vector<UGridFileDimensions> const& ugridfile_dimensions,
                                          std::vector<std::pair<std::string, std::string>> const& attributes = {},
+                                         bool add_start_index = false,
                                          bool add_fill_value = false);
 
         /// @brief Defines a new topology-related variable.

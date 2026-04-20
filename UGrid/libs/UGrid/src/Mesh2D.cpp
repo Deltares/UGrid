@@ -98,7 +98,7 @@ void Mesh2D::define(ugridapi::Mesh2D const& mesh2d)
                                     "edge_nodes",
                                     netCDF::NcType::nc_INT,
                                     {UGridFileDimensions::edge, UGridFileDimensions::Two},
-                                    {{"long_name", "Start and end node of mesh edge"}});
+                                    {{"long_name", "Start and end node of mesh edge"}}, true);
 
         // Define edge_nodes coordinates
         if (mesh2d.edge_x != nullptr && mesh2d.edge_y != nullptr)
@@ -129,7 +129,7 @@ void Mesh2D::define(ugridapi::Mesh2D const& mesh2d)
                                     "face_nodes",
                                     netCDF::NcType::nc_INT,
                                     {UGridFileDimensions::face, UGridFileDimensions::max_face_node},
-                                    {{"long_name", "Vertex node of mesh face(counterclockwise)"}}, true);
+                                    {{"long_name", "Vertex node of mesh face(counterclockwise)"}}, true, true);
 
         // Define face coordinates
         bool const add_coordinate_variable = mesh2d.face_x != nullptr && mesh2d.face_y != nullptr;
@@ -153,13 +153,13 @@ void Mesh2D::define(ugridapi::Mesh2D const& mesh2d)
         {
             // Define face_edges topology attribute and variable
             string_builder.clear();
-            string_builder << "_face_edge";
+            string_builder << "_face_edges";
             define_topological_attribute("face_edge_connectivity", string_builder.str());
             define_topological_variable("face_edge_connectivity",
-                                        "face_edge",
+                                        "face_edges",
                                         netCDF::NcType::nc_INT,
                                         {UGridFileDimensions::face, UGridFileDimensions::max_face_node},
-                                        {{"long_name", "Side edge of mesh face (counterclockwise)"}}, true);
+                                        {{"long_name", "Side edge of mesh face (counterclockwise)"}}, true, true);
         }
         if (mesh2d.face_faces != nullptr)
         {
@@ -171,7 +171,7 @@ void Mesh2D::define(ugridapi::Mesh2D const& mesh2d)
                                         "face_links",
                                         netCDF::NcType::nc_INT,
                                         {UGridFileDimensions::face, UGridFileDimensions::max_face_node},
-                                        {{"long_name", "Neighboring face of mesh face (counterclockwise)"}});
+                                        {{"long_name", "Neighboring face of mesh face (counterclockwise)"}}, true, true);
         }
         if (mesh2d.edge_faces != nullptr)
         {
@@ -183,7 +183,7 @@ void Mesh2D::define(ugridapi::Mesh2D const& mesh2d)
                                         "edge_faces",
                                         netCDF::NcType::nc_INT,
                                         {UGridFileDimensions::edge, UGridFileDimensions::Two},
-                                        {{"long_name", "Neighboring face of mesh edge"}});
+                                        {{"long_name", "Neighboring face of mesh edge"}}, true, true);
         }
     }
 
