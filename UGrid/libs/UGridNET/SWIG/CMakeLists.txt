@@ -27,35 +27,36 @@ set(SWIG_OUTPUT_SRC_DIR ${CMAKE_CURRENT_BINARY_DIR}/src)
 set(SWIG_OUTPUT_DIR ${SWIG_OUTPUT_SRC_DIR}/csharp)
 set(SWIG_OUTFILE_DIR ${SWIG_OUTPUT_SRC_DIR}/cxx)
 set(SWIG_CPP_OUTFILE_NAME "${TARGET_NAME}.cxx")
+set(SWIG_CPP_OUTFILE "${SWIG_OUTFILE_DIR}/${SWIG_CPP_OUTFILE_NAME}")
 
 file(MAKE_DIRECTORY ${SWIG_OUTPUT_DIR})
 file(MAKE_DIRECTORY ${SWIG_OUTFILE_DIR})
 
-message(STATUS "Generating code...")
-execute_process(
-  COMMAND ${SWIG_EXECUTABLE}
-    -v                                              # verbose
-    -module UGrid                                   # module name
-    -dllimport ${TARGET_NAME}                       # override DllImport attribute name to target name
-    -namespace UGridNET                             # generate wrappers into the specified C# namespace
-    -csharp                                         # target language
-    -c++                                            # enable c++ processing
-    -I${UGridAPI_INC_DIR}                           # look for SWIG files in the specified directory
-    -outdir ${SWIG_OUTPUT_DIR}                      # language specific files output directory, C# src in tis case
-    -o ${SWIG_OUTFILE_DIR}/${SWIG_CPP_OUTFILE_NAME} # name of C/C++ output file
-    -O                                              # enable optimization
-    ${SWIG_INTERFACE}
-  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-  RESULT_VARIABLE SWIG_RESULT
-  ERROR_VARIABLE SWIG_ERROR
-  ECHO_OUTPUT_VARIABLE
-  ECHO_ERROR_VARIABLE
-  COMMAND_ERROR_IS_FATAL LAST
+file(GLOB_RECURSE SWIG_INTERFACE_DEPS
+  "${CMAKE_CURRENT_SOURCE_DIR}/interface/*.i"
+  "${UGridAPI_INC_DIR}/*.hpp"
+  "${UGridAPI_INC_DIR}/*.h"
 )
 
-# Get list of generated sources
-file(GLOB SWIG_GENERATED_CSHARP_SRCS CONFIGURE_DEPENDS "${SWIG_OUTPUT_DIR}/*.cs")
-set(SWIG_GENERATED_CSHARP_SRCS ${SWIG_GENERATED_CSHARP_SRCS} PARENT_SCOPE)
+add_custom_command(
+  OUTPUT ${SWIG_CPP_OUTFILE}
+  COMMAND ${SWIG_EXECUTABLE}
+    -v                         # verbose
+    -module UGrid              # module name
+    -dllimport ${TARGET_NAME}  # override DllImport attribute name to target name
+    -namespace UGridNET        # generate wrappers into the specified C# namespace
+    -csharp                    # target language
+    -c++                       # enable c++ processing
+    -I${UGridAPI_INC_DIR}      # look for SWIG files in the specified directory
+    -outdir ${SWIG_OUTPUT_DIR} # language specific files output directory, C# src in tis case
+    -o ${SWIG_CPP_OUTFILE}     # name of C/C++ output file
+    -O                         # enable optimization
+    ${SWIG_INTERFACE}
+  DEPENDS ${SWIG_INTERFACE} ${SWIG_INTERFACE_DEPS}
+  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+  COMMENT "Generating SWIG C# wrappers..."
+  VERBATIM
+)
 
 add_library(${TARGET_NAME} SHARED ${CMAKE_BINARY_DIR}/version.rc)
 
