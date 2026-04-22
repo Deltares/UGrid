@@ -33,6 +33,7 @@ file(MAKE_DIRECTORY ${SWIG_OUTPUT_DIR})
 file(MAKE_DIRECTORY ${SWIG_OUTFILE_DIR})
 
 file(GLOB_RECURSE SWIG_INTERFACE_DEPS
+  CONFIGURE_DEPENDS
   "${CMAKE_CURRENT_SOURCE_DIR}/interface/*.i"
   "${UGridAPI_INC_DIR}/*.hpp"
   "${UGridAPI_INC_DIR}/*.h"
@@ -48,7 +49,7 @@ add_custom_command(
     -csharp                    # target language
     -c++                       # enable c++ processing
     -I${UGridAPI_INC_DIR}      # look for SWIG files in the specified directory
-    -outdir ${SWIG_OUTPUT_DIR} # language specific files output directory, C# src in tis case
+    -outdir ${SWIG_OUTPUT_DIR} # language specific files output directory, C# src in this case
     -o ${SWIG_CPP_OUTFILE}     # name of C/C++ output file
     -O                         # enable optimization
     ${SWIG_INTERFACE}
