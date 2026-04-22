@@ -53,8 +53,8 @@ namespace UGridNET
         /// <summary>
         /// Maps the <typeparamref name="TNative"/> object with current state (used in <see cref="CreateNativeObject"/>)
         /// </summary>
-        /// <param name="mesh1D">Newly created native object</param>
-        protected abstract void SetNativeObject(ref TNative mesh1D);
+        /// <param name="nativeObject">Newly created native object</param>
+        protected abstract void SetNativeObject(ref TNative nativeObject);
 
         /// <summary>
         /// Get the pointer to the pinned object

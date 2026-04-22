@@ -146,7 +146,7 @@ void Mesh1D::define(ugridapi::Mesh1D const& mesh1d)
                                     netCDF::NcType::nc_INT,
                                     {UGridFileDimensions::edge, UGridFileDimensions::Two},
                                     {{"cf_role", topology_attribute.getName()},
-                                     {"long_name", "Maps every edge to the two node that it connects"}},
+                                     {"long_name", "Maps every edge to the two nodes that it connects"}},
                                     true);
 
         if (mesh1d.edge_edge_offset != nullptr && mesh1d.edge_edge_id)
@@ -161,7 +161,7 @@ void Mesh1D::define(ugridapi::Mesh1D const& mesh1d)
                                         "edge_edge",
                                         netCDF::NcType::nc_INT,
                                         {UGridFileDimensions::edge},
-                                        {{"long_name", "Index of branch on which mesh edge are located"}}, true, true);
+                                        {{"long_name", "Index of branch on which mesh edges are located"}}, true, true);
             // Define edge_offset variable
             define_topological_variable("edge_coordinates",
                                         "edge_edge_offset",

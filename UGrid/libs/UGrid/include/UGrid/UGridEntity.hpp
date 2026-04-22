@@ -255,7 +255,7 @@ namespace ugrid
 
         /// @brief Creates a vector of coordinate variable attributes
         /// @param units [in] The units of the coordinate (e.g. "m", "degrees_east")
-        /// @param standard_name [in] The CF standard name of the coordinate (e.g. "projection_x_coordinate")
+        /// @param standard_name [in] The CF standard name of the coordinate (e.g. "projection_x_coordinate", "longitude")
         /// @param long_name [in] A descriptive name for the variable
         /// @return A vector of name-value attribute pairs.
         [[nodiscard]] std::vector<std::pair<std::string, std::string>> create_coordinate_variable_attributes(
