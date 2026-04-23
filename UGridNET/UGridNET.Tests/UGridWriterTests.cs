@@ -51,13 +51,13 @@ namespace UGridNET.Tests
             UGridWriter file = null;
 
             DisposableMesh1D disposableMesh1D = CreateDisposableMesh1D("myMesh1D", "myNetwork");
-            ProjectedCoordinateSystem projectedCoordinateSystem = CreateCoordinateSystem();
+            CoordinateSystem coordinateSystem = CreateCoordinateSystem();
 
             try
             {
                 Assert.DoesNotThrow(() => file = new UGridWriter(filePath));
                 Assert.DoesNotThrow(() => file.AddMesh1D(disposableMesh1D));
-                Assert.DoesNotThrow(() => file.AddProjectedCoordinateSystem(projectedCoordinateSystem));
+                Assert.DoesNotThrow(() => file.AddCoordinateSystem(coordinateSystem));
                 Assert.DoesNotThrow(() => file.AddGlobalAttribute("source", "Unit test"));
                 Assert.DoesNotThrow(() => file.AddGlobalAttributes(globalAttributes));
                 Assert.DoesNotThrow(() => file.WriteTopologies());
@@ -79,13 +79,13 @@ namespace UGridNET.Tests
             UGridWriter file = null;
 
             DisposableMesh2D disposableMesh2D = CreateDisposableMesh2D("myMesh2D");
-            ProjectedCoordinateSystem projectedCoordinateSystem = CreateCoordinateSystem();
+            CoordinateSystem coordinateSystem = CreateCoordinateSystem();
 
             try
             {
                 Assert.DoesNotThrow(() => file = new UGridWriter(filePath));
                 Assert.DoesNotThrow(() => file.AddMesh2D(disposableMesh2D));
-                Assert.DoesNotThrow(() => file.AddProjectedCoordinateSystem(projectedCoordinateSystem));
+                Assert.DoesNotThrow(() => file.AddCoordinateSystem(coordinateSystem));
                 Assert.DoesNotThrow(() => file.AddGlobalAttribute("source", "Unit test"));
                 Assert.DoesNotThrow(() => file.AddGlobalAttributes(globalAttributes));
                 Assert.DoesNotThrow(() => file.WriteTopologies());
@@ -143,20 +143,48 @@ namespace UGridNET.Tests
 
         [Test]
         [Order(3)]
-        public void WritingMesh2DWGS84_ShouldWriteFile()
+        public void WritingMesh2D_WGS84_ShouldWriteFile()
         {
-            string filePath = Path.Combine(testOutputDir, "mesh2DWGS84.nc");
+            string filePath = Path.Combine(testOutputDir, "mesh2D_WGS84.nc");
 
             UGridWriter file = null;
 
-            DisposableMesh2D disposableMesh2D = CreateDisposableMesh2D("mesh2DWGS84");
-            ProjectedCoordinateSystem projectedCoordinateSystem = CreateGeographicCoordinateSystem();
+            DisposableMesh2D disposableMesh2D = CreateDisposableMesh2D("mesh2D_WGS84", true);
+            CoordinateSystem coordinateSystem = CreateGeographicCoordinateSystem();
 
             try
             {
                 Assert.DoesNotThrow(() => file = new UGridWriter(filePath));
                 Assert.DoesNotThrow(() => file.AddMesh2D(disposableMesh2D));
-                Assert.DoesNotThrow(() => file.AddProjectedCoordinateSystem(projectedCoordinateSystem));
+                Assert.DoesNotThrow(() => file.AddCoordinateSystem(coordinateSystem));
+                Assert.DoesNotThrow(() => file.AddGlobalAttribute("source", "Unit test"));
+                Assert.DoesNotThrow(() => file.AddGlobalAttributes(globalAttributes));
+                Assert.DoesNotThrow(() => file.WriteTopologies());
+                Assert.That(file.HasMesh2D, Is.True);
+                Assert.That(file.Mesh2DList.Count, Is.EqualTo(1));
+            }
+            finally
+            {
+                file?.Dispose();
+            }
+        }
+        
+        [Test]
+        [Order(4)]
+        public void WritingMesh2D_AmersfoortRdNew_ShouldWriteFile()
+        {
+            string filePath = Path.Combine(testOutputDir, "mesh2D_Amersfoort.nc");
+
+            UGridWriter file = null;
+
+            DisposableMesh2D disposableMesh2D = CreateDisposableMesh2D("mesh2D_Amersfoort");
+            CoordinateSystem coordinateSystem = CreateProjectedCoordinateSystem();
+
+            try
+            {
+                Assert.DoesNotThrow(() => file = new UGridWriter(filePath));
+                Assert.DoesNotThrow(() => file.AddMesh2D(disposableMesh2D));
+                Assert.DoesNotThrow(() => file.AddCoordinateSystem(coordinateSystem));
                 Assert.DoesNotThrow(() => file.AddGlobalAttribute("source", "Unit test"));
                 Assert.DoesNotThrow(() => file.AddGlobalAttributes(globalAttributes));
                 Assert.DoesNotThrow(() => file.WriteTopologies());
@@ -170,10 +198,10 @@ namespace UGridNET.Tests
         }
 
         [Test]
-        [Order(4)]
-        public void ImportingExportedMesh2DWGS84_GetsCorrectEPSGCode()
+        [Order(5)]
+        public void ImportingExportedMesh2D_WGS84_GetsCorrectEPSGCode()
         {
-            string filePath = Path.Combine(testOutputDir, "mesh2DWGS84.nc");
+            string filePath = Path.Combine(testOutputDir, "mesh2D_WGS84.nc");
             UGridReader file = null;
             try
             {
@@ -188,12 +216,33 @@ namespace UGridNET.Tests
                 file?.Dispose();
             }
         }
+
+        [Test]
+        [Order(6)]
+        public void ImportingExportedMesh2D_Amersfoort_GetsCorrectEPSGCode()
+        {
+            string filePath = Path.Combine(testOutputDir, "mesh2D_Amersfoort.nc");
+            UGridReader file = null;
+            try
+            {
+                file = new UGridReader(filePath);
+
+                Assert.That(file.HasMesh2D, Is.True);
+                Assert.That(file.GetEPSGCode(), Is.EqualTo(28992));
+                Assert.That(file.Mesh2DList.Count, Is.EqualTo(1));
+            }
+            finally
+            {
+                file?.Dispose();
+            }
+        }
         
-        private static DisposableMesh2D CreateDisposableMesh2D(string meshName)
+        private static DisposableMesh2D CreateDisposableMesh2D(string meshName, bool spherical = false)
         {
             return new DisposableMesh2D
             {
                 Name = meshName.GetRightPaddedNullTerminatedBytes(UGrid.name_long_length),
+                IsSpherical = spherical,
                 NumNodes = 4,
                 NumEdges = 4,
                 NumFaces = 1,
@@ -238,46 +287,52 @@ namespace UGridNET.Tests
             };
         }
 
-        private static ProjectedCoordinateSystem CreateCoordinateSystem()
+        private static CoordinateSystem CreateCoordinateSystem()
         {
-            string wktStr =
-                "POINT (30 10)\n" + 
-                "LINESTRING (30 10, 10 30, 40 40)\n" + 
-                "POLYGON ((30 10, 40 40, 20 40, 10 20, 30 10))\n" + 
-                "MULTIPOINT ((10 40), (40 30), (20 20), (30 10))\n" + 
-                "GEOMETRYCOLLECTION (\n" + 
-                "    POINT (10 40),\n" + 
-                "    LINESTRING (30 10, 10 30, 40 40),\n" + 
-                "    POLYGON ((30 10, 40 40, 20 40, 10 20, 30 10))\n" + ')';
-
-            return new ProjectedCoordinateSystem(
-                0,
-                0.0,
-                6378137.0,
-                6356752.314245,
-                298.257223563,
-                "proj_coord_sys_name",
-                "gridMappingName",
-                "proj4Params",
-                "EPSG:0",
-                "",
-                wktStr);
+            return new CoordinateSystem
+            {
+                Name = "Unknown projected",
+                VariableName = "projected_coordinate_system",
+                EPSG = 0,
+                GridMappingName = "Unknown projected",
+                LongitudeOfPrimeMeridian = 0.0,
+                SemiMajorAxis = 6378137.0,
+                SemiMinorAxis = 6356752.314245,
+                InverseFlattening = 298.257223563,
+                EPSGCode = "EPSG:0"
+            };
         }
 
-        private static ProjectedCoordinateSystem CreateGeographicCoordinateSystem()
+        private static CoordinateSystem CreateGeographicCoordinateSystem()
         {
-            return new ProjectedCoordinateSystem(
-                4326,
-                0.0,
-                6378137.0,
-                6356752.314245,
-                298.257223563,
-                "WGS84",
-                "latitude_longitude",
-                "proj4Params",
-                "EPSG:4326",
-                "",
-                "");
+            return new CoordinateSystem
+            {
+                Name = "WGS84",
+                VariableName = "wgs84",
+                EPSG = 4326,
+                GridMappingName = "latitude_longitude",
+                LongitudeOfPrimeMeridian = 0.0,
+                SemiMajorAxis = 6378137.0,
+                SemiMinorAxis = 6356752.314245,
+                InverseFlattening = 298.257223563,
+                EPSGCode = "EPSG:4326"
+            };
+        }
+
+        private static CoordinateSystem CreateProjectedCoordinateSystem()
+        {
+            return new CoordinateSystem
+            {
+                Name = "Amersfoort / RD New",
+                VariableName = "projected_coordinate_system",
+                EPSG = 28992,
+                GridMappingName = "Unknown projected",
+                LongitudeOfPrimeMeridian = 0.0,
+                SemiMajorAxis = 6378137.0,
+                SemiMinorAxis = 6356752.31424518,
+                InverseFlattening = 298.1528128,
+                EPSGCode = "EPSG:28992"
+            };
         }
     }
 }

@@ -120,6 +120,13 @@ namespace ugrid
             return m_entity_name;
         }
 
+        /// @brief Gets the name of the variable that defines the coordinate system
+        /// @return The grid mapping name
+        [[nodiscard]] const auto& get_grid_mapping() const
+        {
+            return m_grid_mapping;
+        }
+
         /// @brief Gets a vector of nc variables
         /// @param attribute_name The attribute name
         /// @return The vector of nc variables
@@ -172,7 +179,8 @@ namespace ugrid
         /// @param long_name [in] The entity long name
         /// @param topology_dimension [in] The dimension of the topology
         /// @param is_spherical [in] 1 if coordinates are in a spherical system, 0 otherwise
-        void define(char const* const entity_name, int start_index, std::string const& long_name, int topology_dimension, int is_spherical);
+        /// @param grid_mapping [in] The name of the variable that defines the coordinate system
+        void define(char const* const entity_name, int start_index, std::string const& long_name, int topology_dimension, int is_spherical, char const* const grid_mapping);
 
         /// @brief A function to determine if a variable is a topology variable (this function might get overwritten in derived if necessary)
         /// @param attributes [in] The variable attributes
@@ -201,12 +209,14 @@ namespace ugrid
         /// @param nc_type [in] The variable type (int, float, char).
         /// @param ugridfile_dimensions [in] The variable dimensions (multidimensional variable are expressed as vectors).
         /// @param attributes [in] Any additional variable attributes.
+        /// @param add_start_index [in] Boolean to determine if the start index should be used for index variables.
         /// @param add_fill_value [in] Boolean to determine if a fill value should be used for empty data.
         void define_topological_variable(std::string const& topology_attribute_name,
                                          std::string const& variable_suffix,
                                          netCDF::NcType nc_type,
                                          std::vector<UGridFileDimensions> const& ugridfile_dimensions,
                                          std::vector<std::pair<std::string, std::string>> const& attributes = {},
+                                         bool add_start_index = false,
                                          bool add_fill_value = false);
 
         /// @brief Defines a new topology-related variable.
@@ -243,10 +253,27 @@ namespace ugrid
                                                  std::string const& topology_attribute_name = "",
                                                  std::string const& attribute_name = "");
 
-        /// @brief Get the location attribute variable based on \ref m_spherical_coordinates value
-        /// @param location [in] The location (node, edge, face)
-        /// @return The location string appended with "x"/"y" or "lat"/"lon"
-        std::string get_location_attribute_value(std::string const& location);
+        /// @brief Creates a vector of coordinate variable attributes
+        /// @param units [in] The units of the coordinate (e.g. "m", "degrees_east")
+        /// @param standard_name [in] The CF standard name of the coordinate (e.g. "projection_x_coordinate", "longitude")
+        /// @param long_name [in] A descriptive name for the variable
+        /// @return A vector of name-value attribute pairs.
+        [[nodiscard]] std::vector<std::pair<std::string, std::string>> create_coordinate_variable_attributes(
+            std::string const& units,
+            std::string const& standard_name,
+            std::string const& long_name);
+
+        /// @brief Creates a vector of data variable attributes
+        /// @param standard_name [in] The CF standard name of the variable (e.g. "altitude")
+        /// @param long_name [in] A descriptive name for the variable
+        /// @param units [in] The units of the variable (e.g. "m")
+        /// @param location [in] The entity location (node, edge or face)
+        /// @return A vector of name-value attribute pairs.
+        [[nodiscard]] std::vector<std::pair<std::string, std::string>> create_data_variable_attributes(
+            std::string const& standard_name,
+            std::string const& long_name,
+            std::string const& units,
+            UGridEntityLocations location);
 
         std::shared_ptr<netCDF::NcFile> m_nc_file;                                              ///< A pointer to the opened file
         netCDF::NcVar m_topology_variable;                                                      ///< The topology variable
@@ -258,6 +285,7 @@ namespace ugrid
         std::map<std::string, netCDF::NcVar> m_related_variables;      ///< Additional variables related to the entity (for example defined on node, edge or face)
         std::string m_entity_name = "";                                ///< The name of the entity
 
+        std::string m_grid_mapping = "";                   ///< The name of the variable that defines the coordinate system
         bool m_spherical_coordinates = false;              ///< If it is a spherical entity
         int m_start_index = 0;                             ///< The start index
         int m_int_fill_value = int_missing_value;          ///< The fill value for arrays of int

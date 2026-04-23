@@ -4,6 +4,8 @@ namespace UGridNET
     {
         private byte[] name;
         private byte[] networkName;
+        private byte[] gridMapping;
+        private bool isSpherical;
         private int numNodes;
         private int numEdges;
         private double[] nodeX;
@@ -51,6 +53,18 @@ namespace UGridNET
         {
             get => networkName;
             set => networkName = value;
+        }
+
+        public byte[] GridMapping
+        {
+            get => gridMapping;
+            set => gridMapping = value;
+        }
+        
+        public bool IsSpherical
+        {
+            get => isSpherical;
+            set => isSpherical = value;
         }
 
         public int NumNodes
@@ -107,22 +121,25 @@ namespace UGridNET
             set => edgeNodes = value;
         }
 
-        protected override void SetNativeObject(ref Mesh1D mesh2D)
+        protected override void SetNativeObject(ref Mesh1D mesh1D)
         {
-            mesh2D.name = GetPinnedObjectPointer(Name);
-            mesh2D.network_name = GetPinnedObjectPointer(NetworkName);
+            mesh1D.name = GetPinnedObjectPointer(Name);
+            mesh1D.network_name = GetPinnedObjectPointer(NetworkName);
+            mesh1D.grid_mapping = GetPinnedObjectPointer(GridMapping);
+            
+            mesh1D.is_spherical = IsSpherical ? 1 : 0;
 
-            mesh2D.num_nodes = NumNodes;
-            mesh2D.num_edges = NumEdges;
+            mesh1D.num_nodes = NumNodes;
+            mesh1D.num_edges = NumEdges;
 
-            mesh2D.node_x = GetPinnedObjectPointer(NodeX);
-            mesh2D.node_y = GetPinnedObjectPointer(NodeY);
-            mesh2D.node_edge_id = GetPinnedObjectPointer(NodeEdgeID);
-            mesh2D.node_edge_offset = GetPinnedObjectPointer(NodeEdgeOffset);
+            mesh1D.node_x = GetPinnedObjectPointer(NodeX);
+            mesh1D.node_y = GetPinnedObjectPointer(NodeY);
+            mesh1D.node_edge_id = GetPinnedObjectPointer(NodeEdgeID);
+            mesh1D.node_edge_offset = GetPinnedObjectPointer(NodeEdgeOffset);
 
-            mesh2D.edge_x = GetPinnedObjectPointer(EdgeX);
-            mesh2D.edge_y = GetPinnedObjectPointer(EdgeY);
-            mesh2D.edge_nodes = GetPinnedObjectPointer(EdgeNodes);
+            mesh1D.edge_x = GetPinnedObjectPointer(EdgeX);
+            mesh1D.edge_y = GetPinnedObjectPointer(EdgeY);
+            mesh1D.edge_nodes = GetPinnedObjectPointer(EdgeNodes);
         }
     }
 }

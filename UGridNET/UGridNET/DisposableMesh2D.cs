@@ -3,6 +3,8 @@ namespace UGridNET
     public sealed class DisposableMesh2D : DisposableNativeObject<Mesh2D>
     {
         private byte[] name;
+        private byte[] gridMapping;
+        private bool isSpherical;
         private int numNodes;
         private int numEdges;
         private int numFaces;
@@ -67,6 +69,18 @@ namespace UGridNET
         {
             get => name;
             set => name = value;
+        }
+
+        public bool IsSpherical
+        {
+            get => isSpherical;
+            set => isSpherical = value;
+        }
+        
+        public byte[] GridMapping
+        {
+            get => gridMapping;
+            set => gridMapping = value;
         }
 
         public int NumNodes
@@ -192,7 +206,9 @@ namespace UGridNET
         protected override void SetNativeObject(ref Mesh2D mesh2D)
         {
             mesh2D.name = GetPinnedObjectPointer(Name);
-
+            mesh2D.grid_mapping = GetPinnedObjectPointer(GridMapping);
+            mesh2D.is_spherical = IsSpherical ? 1 : 0;
+            
             mesh2D.num_nodes = NumNodes;
             mesh2D.num_edges = NumEdges;
             mesh2D.num_faces = NumFaces;

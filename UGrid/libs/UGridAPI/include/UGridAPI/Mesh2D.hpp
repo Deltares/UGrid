@@ -112,6 +112,9 @@ namespace ugridapi
         /// @brief 1 if coordinates are in a spherical system, 0 otherwise
         int is_spherical = 0;
 
+        /// @brief The name of the variable that defines the coordinate system
+        char* grid_mapping = nullptr;
+
         /// @brief The fill value for array of doubles
         double double_fill_value = ugrid::double_missing_value;
 

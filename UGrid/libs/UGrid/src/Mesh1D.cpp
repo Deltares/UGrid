@@ -65,7 +65,7 @@ void Mesh1D::define(ugridapi::Mesh1D const& mesh1d)
         throw std::invalid_argument("Mesh1D::define mesh1d node edge offset is empty");
     }
 
-    UGridEntity::define(mesh1d.name, mesh1d.start_index, "Topology data of 1D mesh", 1, mesh1d.is_spherical);
+    UGridEntity::define(mesh1d.name, mesh1d.start_index, "Topology data of 1D mesh", 1, mesh1d.is_spherical, mesh1d.grid_mapping);
     auto string_builder = UGridVarAttributeStringBuilder(m_entity_name);
 
     std::string network_name(mesh1d.network_name);
@@ -90,7 +90,7 @@ void Mesh1D::define(ugridapi::Mesh1D const& mesh1d)
                                     "node_edge",
                                     netCDF::NcType::nc_INT,
                                     {UGridFileDimensions::node},
-                                    {{"long_name", "Index of branch on which mesh node are located"}});
+                                    {{"long_name", "Index of branch on which mesh node are located"}}, true);
 
         // Define node offset variable
         define_topological_variable("node_coordinates",
@@ -146,7 +146,8 @@ void Mesh1D::define(ugridapi::Mesh1D const& mesh1d)
                                     netCDF::NcType::nc_INT,
                                     {UGridFileDimensions::edge, UGridFileDimensions::Two},
                                     {{"cf_role", topology_attribute.getName()},
-                                     {"long_name", "Maps every edge to the two node that it connects"}});
+                                     {"long_name", "Maps every edge to the two nodes that it connects"}},
+                                    true);
 
         if (mesh1d.edge_edge_offset != nullptr && mesh1d.edge_edge_id)
         {
@@ -160,7 +161,7 @@ void Mesh1D::define(ugridapi::Mesh1D const& mesh1d)
                                         "edge_edge",
                                         netCDF::NcType::nc_INT,
                                         {UGridFileDimensions::edge},
-                                        {{"long_name", "Index of branch on which mesh edge are located"}});
+                                        {{"long_name", "Index of branch on which mesh edges are located"}}, true, true);
             // Define edge_offset variable
             define_topological_variable("edge_coordinates",
                                         "edge_edge_offset",

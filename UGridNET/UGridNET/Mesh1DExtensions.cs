@@ -22,6 +22,7 @@ namespace UGridNET
                     mesh1D.edge_edge_id = IntPtrHelpers.AllocateZeroed<int>(mesh1D.num_edges);
                     mesh1D.node_edge_id = IntPtrHelpers.AllocateZeroed<int>(mesh1D.num_nodes);
                     mesh1D.node_edge_offset = IntPtrHelpers.AllocateZeroed<double>(mesh1D.num_nodes);
+                    mesh1D.grid_mapping = IntPtrHelpers.AllocateZeroed<byte>(UGrid.name_long_length);
                 }
                 catch
                 {
@@ -49,6 +50,7 @@ namespace UGridNET
                 IntPtrHelpers.Free(() => mesh1D.edge_edge_id, value => mesh1D.edge_edge_id = value);
                 IntPtrHelpers.Free(() => mesh1D.node_edge_id, value => mesh1D.node_edge_id = value);
                 IntPtrHelpers.Free(() => mesh1D.node_edge_offset, value => mesh1D.node_edge_offset = value);
+                IntPtrHelpers.Free(() => mesh1D.grid_mapping, value => mesh1D.grid_mapping = value);
             }
         }
     }
