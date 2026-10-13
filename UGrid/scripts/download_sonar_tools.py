@@ -10,7 +10,7 @@ import argparse
 
 from pathlib import Path
 
-SONAR_SCANNER_VERSION = "5.0.1.3006"
+SONAR_SCANNER_VERSION = "8.1.0.6389"
 
 
 def download_file(url: str, save_path: Path, chunk_size=128) -> None:
