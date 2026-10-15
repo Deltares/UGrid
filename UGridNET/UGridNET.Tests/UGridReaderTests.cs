@@ -184,6 +184,47 @@ namespace UGridNET.Tests
         }
 
         [Test]
+        [TestCase("ResultFile.nc", 0)]
+        [TestCase("1D2D_net.nc", 28992)]
+        [TestCase("OneMesh2D.nc", 0)]
+        public void TryGetEPSGCodeReturnsTrueAndEPSGCode(string fileName, int expectedEpsgCode)
+        {
+            string filePath = TestHelper.GetTestFilePath(fileName);
+            UGridReader file = null;
+
+            try
+            {
+                file = new UGridReader(filePath);
+                bool result = file.TryGetEPSGCode(out int epsgCode);
+                Assert.That(result, Is.True);
+                Assert.That(epsgCode, Is.EqualTo(expectedEpsgCode));
+            }
+            finally
+            {
+                file?.Dispose();
+            }
+        }
+
+        [Test]
+        public void TryGetEPSGCodeReturnsFalseDueToMissingProjectedCoordinateSystemVariable()
+        {
+            string filePath = TestHelper.GetTestFilePath("AllUGridEntities.nc");
+            UGridReader file = null;
+
+            try
+            {
+                file = new UGridReader(filePath);
+                bool result = file.TryGetEPSGCode(out int epsgCode);
+                Assert.That(result, Is.False);
+                Assert.That(epsgCode, Is.EqualTo(0));
+            }
+            finally
+            {
+                file?.Dispose();
+            }
+        }
+
+        [Test]
         public void GetConventions()
         {
             string filePath = TestHelper.GetTestFilePath("ResultFile.nc");

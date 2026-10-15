@@ -169,6 +169,16 @@ namespace UGridNET
 
         public int GetEPSGCode()
         {
+            if (TryGetEPSGCode(out int epsg))
+            {
+                return epsg;
+            }
+
+            throw new UGridNETException("Coordinate system not found or 'epsg' attribute missing.");
+        }
+
+        public bool TryGetEPSGCode(out int epsg)
+        {
             string[] variableNames = { "projected_coordinate_system", "wgs84" };
 
             foreach (string name in variableNames)
@@ -182,14 +192,15 @@ namespace UGridNET
                 if (attributes.Count > 0)
                 {
                     if (attributes.TryGetValue("epsg", out string valueString) &&
-                        int.TryParse(valueString, out int epsg))
+                        int.TryParse(valueString, out epsg))
                     {
-                        return epsg;
+                        return true;
                     }
                 }
             }
 
-            throw new UGridNETException("Coordinate system not found or 'epsg' attribute missing.");
+            epsg = 0;
+            return false;
         }
 
         public Dictionary<string, string> GetEntityAttributesByIndex(TopologyType topologyType, int index)
