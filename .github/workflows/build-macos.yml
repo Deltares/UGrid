@@ -23,7 +23,6 @@ jobs:
       fail-fast: false
       matrix:
         platform:
-          - macos-14 # arm64 (free)
           - macos-15 # arm64 (free)
           - macos-15-intel # intel (free)
           - macos-26 # arm64 (free)
@@ -57,8 +56,9 @@ jobs:
       - name: Generate cache key
         id: cache-key-gen
         run: |
-          cache_key="dependencies-cache-key-${{ matrix.platform }}-${{ matrix.build_type }}-$(echo $GITHUB_REF | sed 's/refs\/heads\///')"
-          echo "cache_key=$cache_key" >> $GITHUB_OUTPUT
+          cache_prefix="dependencies-cache-key-${{ hashFiles('UGrid/scripts/install_netcdf_cxx4.sh') }}-${{ matrix.platform }}-${{ matrix.build_type }}-"
+          echo "cache_prefix=$cache_prefix" >> $GITHUB_OUTPUT
+          echo "cache_key=${cache_prefix}$(echo $GITHUB_REF | sed 's/refs\/heads\///')" >> $GITHUB_OUTPUT
 
       # Step: Install system-provided dependencies
       - name: Install system-provided dependencies
@@ -80,8 +80,8 @@ jobs:
           path: ${{ steps.paths.outputs.ext_deps_dir }}/install
           key: ${{ steps.cache-key-gen.outputs.cache_key }}
           restore-keys: |
-            dependencies-cache-key-${{ matrix.platform }}-${{ matrix.build_type }}-master
-            dependencies-cache-key-${{ matrix.platform }}-${{ matrix.build_type }}-
+            ${{ steps.cache-key-gen.outputs.cache_prefix }}master
+            ${{ steps.cache-key-gen.outputs.cache_prefix }}
 
       # Step: Build and install external dependencies
       - name: Build and install external dependencies

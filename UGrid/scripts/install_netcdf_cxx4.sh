@@ -197,11 +197,16 @@ function install_all() {
   local zlib_include_dir="${zlib_root}/include"
   local zlib_library="${zlib_root}/lib/$(get_zlib_lib_name).$(get_lib_extension)"
 
-  # curl curl-8_9_1
+  # curl
+  local curl_tag="curl-8_9_1"
+  if [[ "${OS_NAME}" == "Darwin" ]]; then
+    curl_tag="curl-8_23_0"
+  fi
+
   install \
     "curl" \
     "https://github.com/curl/curl.git" \
-    "curl-8_9_1" \
+    "${curl_tag}" \
     "-DBUILD_SHARED_LIBS:BOOL=ON \
      -DBUILD_STATIC_LIBS:BOOL=OFF \
      -DCURL_ENABLE_SSL:BOOL=ON \
